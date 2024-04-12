@@ -4,5 +4,5 @@
 #define SCREEN_HEIGHT 720
 #define SCREEN_COLORBIT 32
 
-#define FRAMERATE 60.0			//ƒtƒŒ[ƒ€ƒŒ[ƒg
+#define FRAMERATE 60.0			//ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½g
 #define UPDATETIME 800

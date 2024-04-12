@@ -4,19 +4,19 @@
 
 class FpsController {
 private:
-    int FrameTime;                              // 1ƒtƒŒ[ƒ€‚ÌŠÔ(ƒ~ƒŠ•b)
-    int WaitTime;                               // ‘Ò‚¿ŠÔ
-    int LastTime, NowTime;                      // ÅŒã‚Éæ“¾‚µ‚½ŠÔ‚ÆC¡‚ÌŠÔ
-    float Count;                                // ƒtƒŒ[ƒ€‚ÌƒJƒEƒ“ƒg
-    float Fps;                                  // •\¦‚·‚é‚µ‚½FPS’l
-    int UpdateTime;                             // •\¦’l‚ğXV‚·‚éŠÔ
-    int LastUpdate;                             // ÅŒã‚É•\¦’l‚ğXV‚µ‚½ŠÔ
+    int FrameTime;                              // 1ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½(ï¿½~ï¿½ï¿½ï¿½b)
+    int WaitTime;                               // ï¿½Ò‚ï¿½ï¿½ï¿½ï¿½ï¿½
+    int LastTime, NowTime;                      // ï¿½ÅŒï¿½Éæ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ÆCï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
+    float Count;                                // ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ÌƒJï¿½Eï¿½ï¿½ï¿½g
+    float Fps;                                  // ï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½é‚µï¿½ï¿½FPSï¿½l
+    int UpdateTime;                             // ï¿½\ï¿½ï¿½ï¿½lï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½éï¿½ï¿½
+    int LastUpdate;                             // ï¿½ÅŒï¿½É•\ï¿½ï¿½ï¿½lï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    // ‰Šú‰»
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void Init(float RefreshRate, int UpdateTime);
 public:
 
-    // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    // ï¿½Rï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
     FpsController(float RefreshRate, int UpdateTime) {
         Init(RefreshRate, UpdateTime);
     }
@@ -25,18 +25,18 @@ public:
     }
 
     
-    void Wait();        // ‘Ò‚¿ŠÔ‚ÌŒvZ
+    void Wait();        // ï¿½Ò‚ï¿½ï¿½ï¿½ï¿½Ô‚ÌŒvï¿½Z
 
    
-    float Get();        //FPS’l‚ÌŒvZ
+    float Get();        //FPSï¿½lï¿½ÌŒvï¿½Z
 
-    // •`‰æˆ—
+    // ï¿½`ï¿½æˆï¿½ï¿½
     void Disp() {
         SetFontSize(10);
         DrawFormatString(10, 10, 0xffffff, "fps:%0.1f", Fps);
         SetFontSize(24);
     }
-    // ˆ—‚ğ‚Ü‚Æ‚ß‚½‚à‚Ì
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Æ‚ß‚ï¿½ï¿½ï¿½ï¿½
     float All() {
         Get();
         Wait();

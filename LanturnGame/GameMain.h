@@ -1,15 +1,20 @@
 #pragma once
 #include"DxLib.h"
 #include"AbstractScene.h"
+#include "Bomb.h"
+#include "Explosion.h"
 class GameMain : public AbstractScene
 {
+private:
+	Bomb** bomb;
+	Explosion** explosion;
 public:
 	GameMain();
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	~GameMain();								// ƒfƒXƒgƒ‰ƒNƒ^
+	// ï¿½Rï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
+	~GameMain();								// ï¿½fï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
 
-	virtual AbstractScene* Update() override;	// •`‰æˆÈŠO‚ÌXV‚ğÀs
-	void Draw() const override;					// •`‰æ‚ÉŠÖ‚·‚é‚±‚Æ‚ğÀ‘•
-	void Game();								// ƒQ[ƒ€‚Ìˆ—
+	virtual AbstractScene* Update() override;	// ï¿½`ï¿½ï¿½ÈŠOï¿½ÌXï¿½Vï¿½ï¿½ï¿½ï¿½s
+	void Draw() const override;					// ï¿½`ï¿½ï¿½ÉŠÖ‚ï¿½ï¿½é‚±ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½
+	void Game();								// ï¿½Qï¿½[ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
 };
 
