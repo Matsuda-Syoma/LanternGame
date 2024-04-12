@@ -18,6 +18,8 @@ public:
 
 	float SetMinBomb(Vector2D loc);
 
+	void SetNormalize(Vector2D loc);
+
 	
 };
 

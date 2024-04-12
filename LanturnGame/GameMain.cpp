@@ -40,6 +40,8 @@ AbstractScene* GameMain::Update()
 
 		// 敵がnullptrじゃないなら
 		if (bomb[i] != nullptr) {
+
+			// 敵と敵の距離を見る
 			int temp = -1;
 			float length = 65535;
 			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
@@ -51,8 +53,14 @@ AbstractScene* GameMain::Update()
 						}
 					}
 				}
+				else {
+					temp = j;
+					length = 0;
+				}
 			}
-			printfDx("%d -> %d\n",i,temp);
+			
+			printfDx("%f %f",bomb[temp]->SetMinBomb(player->GetLocation()));
+			//printfDx("%d -> %d\n",i,temp);
 			// 敵の更新
 			bomb[i]->Update();
 

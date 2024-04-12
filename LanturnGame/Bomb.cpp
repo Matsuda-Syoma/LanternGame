@@ -47,3 +47,8 @@ float Bomb::SetMinBomb(Vector2D loc)
 {
 	return sqrtf(powf((loc.x - location.x), 2) + powf((loc.y - location.y), 2));
 }
+
+void Bomb::SetNormalize(Vector2D loc)
+{
+
+}
