@@ -1,7 +1,7 @@
 #include "PAD_INPUT.h"
 #include "DxLib.h"
 
-// ƒfƒoƒbƒOƒ‚[ƒh
+// ï¿½fï¿½oï¿½bï¿½Oï¿½ï¿½ï¿½[ï¿½h
 // #define __DEBUG__
 
 int PAD_INPUT::NowKey[BUTTONS] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -10,9 +10,9 @@ int PAD_INPUT::KeyFlg[BUTTONS] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 XINPUT_STATE PAD_INPUT::Input;
 
 void PAD_INPUT::UpdateInput() {
-	// Œ»İ‚Ì“ü—Í‚Ìæ“¾
+	// ï¿½ï¿½ï¿½İ‚Ì“ï¿½ï¿½Í‚Ìæ“¾
 	GetJoypadXInputState(DX_INPUT_KEY_PAD1, &Input);
-	// “ü—Íî•ñ‚Ì”½‰f
+	// ï¿½ï¿½ï¿½Íï¿½ï¿½Ì”ï¿½ï¿½f
 	for (int i = 0; i < BUTTONS; i++)
 	{
 		OldKey[i] = NowKey[i];
@@ -20,7 +20,7 @@ void PAD_INPUT::UpdateInput() {
 		KeyFlg[i] = NowKey[i] & ~OldKey[i];
 	}
 
-	// __DEBUG__ƒ}ƒNƒ‚ª’è‹`‚³‚ê‚Ä‚¢‚½‚ç
+	// __DEBUG__ï¿½}ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½
 #ifdef __DEBUG__
 	DebugInput();
 #endif
@@ -28,22 +28,22 @@ void PAD_INPUT::UpdateInput() {
 }
 
 void PAD_INPUT::DebugInput() {
-	// ‰æ–Ê‚ÌƒNƒŠƒA
+	// ï¿½ï¿½Ê‚ÌƒNï¿½ï¿½ï¿½A
 	clsDx();
 
-	printfDx("ƒ{ƒ^ƒ“‚Ì“ü—Íî•ñ\n");
-	// Šeƒ{ƒ^ƒ“‚Ì“ü—Íî•ñ‚Ìo—Í
+	printfDx("ï¿½{ï¿½^ï¿½ï¿½ï¿½Ì“ï¿½ï¿½Íï¿½ï¿½\n");
+	// ï¿½eï¿½{ï¿½^ï¿½ï¿½ï¿½Ì“ï¿½ï¿½Íï¿½ï¿½Ìoï¿½ï¿½
 	for (int i = 0; i < BUTTONS; i++) {
 		printfDx("OldKey: %d\tNowKey: %d\tKeyFlg: %d\n", OldKey[i], NowKey[i], KeyFlg[i]);
 	}
 
-	// ƒXƒeƒBƒbƒN‚Ì“ü—Íî•ñ‚Ìo—Í
-	printfDx("\nƒXƒeƒBƒbƒN‚Ì“ü—Íî•ñ\n");
+	// ï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½Ì“ï¿½ï¿½Íï¿½ï¿½Ìoï¿½ï¿½
+	printfDx("\nï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½Ì“ï¿½ï¿½Íï¿½ï¿½\n");
 	printfDx("LX: %d\tLY: %d\n", GetPadThumbLX(), GetPadThumbLY());
 	printfDx("RX: %d\tRY: %d\n", GetPadThumbRX(), GetPadThumbRY());
 
-	// ƒgƒŠƒK[‚Ì“ü—Íî•ñ‚Ìo—Í
-	printfDx("\nƒgƒŠƒK[‚Ì“ü—Íî•ñ\n");
+	// ï¿½gï¿½ï¿½ï¿½Kï¿½[ï¿½Ì“ï¿½ï¿½Íï¿½ï¿½Ìoï¿½ï¿½
+	printfDx("\nï¿½gï¿½ï¿½ï¿½Kï¿½[ï¿½Ì“ï¿½ï¿½Íï¿½ï¿½\n");
 	printfDx("LT: %d\n", GetLeftTrigger());
 	printfDx("RT: %d\n", GetRightTrigger());
 }

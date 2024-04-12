@@ -9,7 +9,7 @@ public:
 	Bomb();
 	~Bomb();
 	void Update();
-	void Draw() const;
+	void Draw(Vector2D loc) const;
 	bool GetFlg() const;
 	void SetFlg(bool b);
 	

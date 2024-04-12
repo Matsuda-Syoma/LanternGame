@@ -2,8 +2,7 @@
 #include "DxLib.h"
 #include "Utility/InputControl.h"
 #include <math.h>
-#include <iostream>
-#include <algorithm>
+#include "common.h"
 Player::Player()
 {
 	speed = 5;
@@ -26,7 +25,7 @@ void Player::Update()
 
 void Player::Draw(int camerashake) const
 {
-	DrawCircle(location.x, location.y, radius, 0xffff00, true, true);
+	DrawCircle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, radius, 0xffff00, true, true);
 }
 
 void Player::Movement()
@@ -105,5 +104,13 @@ void Player::Movement()
 	if (location.x >= 1280.0f - radius)
 	{
 		location.x = 1280.0f - radius;
+	}
+	if (location.y < 0)
+	{
+		location.y = 0;
+	}
+	if (location.y >= 720.0f - radius)
+	{
+		location.y = 720.0f - radius;
 	}
 }

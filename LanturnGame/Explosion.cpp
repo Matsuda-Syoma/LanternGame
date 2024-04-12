@@ -1,5 +1,6 @@
 #include "Explosion.h"
 #include "DxLib.h"
+#include "common.h"
 Explosion::Explosion()
 {
 	radius = 15.0f;
@@ -20,9 +21,9 @@ void Explosion::Update()
 	}
 }
 
-void Explosion::Draw() const
+void Explosion::Draw(Vector2D loc) const
 {
-	DrawCircle(location.x, location.y, radius, 0xff4444, true, true);
+	DrawCircle(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 0xff4444, true, true);
 }
 
 bool Explosion::Getflg() const

@@ -1,30 +1,31 @@
 #include "GameMain.h"
+#include "common.h"
 
 GameMain::GameMain()
 {
 	player = new Player;
 
-	bomb = new Bomb * [10];
-	for (int i = 0; i < 10; i++) {
+	bomb = new Bomb * [GM_MAX_ENEMY_BOMB];
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		bomb[i] = nullptr;
 	}
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 15; i++) {
 		bomb[i] = new Bomb;
 	}
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 15; i++) {
 		bomb[i]->SetLocation(Vector2D(50 * (i + 1), 100));
 	}
 
-	explosion = new Explosion * [10];
-	for (int i = 0; i < 10; i++) {
+	explosion = new Explosion * [GM_MAX_EFFECT_EXPLOSION];
+	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
 		explosion[i] = nullptr;
 	}
 
 	//for (int i = 0; i < 10; i++) {
 	//	explosion[i] = new Explosion;
 	//}
-	explosion[0] = new Explosion;
-	explosion[0]->SetLocation(bomb[0]->GetLocation());
+	//explosion[0] = new Explosion;
+	//explosion[0]->SetLocation(bomb[0]->GetLocation());
 }
 
 GameMain::~GameMain()
@@ -36,17 +37,17 @@ AbstractScene* GameMain::Update()
 
 	player->Update();
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 
 		if (bomb[i] != nullptr) {
 
-			for (int j = 0; j < 10; j++) {
+			for (int j = 0; j < GM_MAX_EFFECT_EXPLOSION; j++) {
 
 				if (explosion[j] != nullptr) {
 
 					if (bomb[i]->HitSphere(explosion[j])) {
 
-						for (int k = 0; k < 10; k++) {
+						for (int k = 0; k < GM_MAX_EFFECT_EXPLOSION; k++) {
 							if (explosion[k] == nullptr) {
 								explosion[k] = new Explosion;
 								explosion[k]->SetLocation(bomb[i]->GetLocation());
@@ -65,7 +66,7 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
 
 		if (explosion[i] != nullptr) {
 
@@ -82,14 +83,14 @@ AbstractScene* GameMain::Update()
 
 void GameMain::Draw() const
 {
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++){
 		if (bomb[i] != nullptr) {
-			bomb[i]->Draw();
+			bomb[i]->Draw(player->GetLocation());
 		}
 	}
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
 		if (explosion[i] != nullptr) {
-			explosion[i]->Draw();
+			explosion[i]->Draw(player->GetLocation());
 		}
 	}
 

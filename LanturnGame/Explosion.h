@@ -9,7 +9,7 @@ public:
 	Explosion();
 	~Explosion();
 	void Update();
-	void Draw() const;
+	void Draw(Vector2D loc) const;
 	bool Getflg()const;
 
 };
