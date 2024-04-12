@@ -1,9 +1,8 @@
 #pragma once
-#include "SphereCollider.h"
-class Player : public SphereCollider
+#include "CharaBase.h"
+class Player : public CharaBase
 {
 private:
-	float speed;
 	Vector2D velocity;
 public:
 	Player();

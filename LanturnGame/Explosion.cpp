@@ -13,11 +13,11 @@ Explosion::~Explosion()
 void Explosion::Update()
 {
 	if (flg) {
-		if (count > 45) {
+		if (count > 30) {
 			flg = false;
 		}
 		count++;
-		radius = count * 2;
+		radius = count * 1;
 	}
 }
 

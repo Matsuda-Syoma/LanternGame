@@ -5,8 +5,7 @@
 #include "common.h"
 Player::Player()
 {
-	speed = 5;
-	radius = 5;
+	speed = 10;
 }
 
 Player::~Player()
@@ -93,8 +92,6 @@ void Player::Movement()
 			velocity.y = 0;
 		}
 	}
-	clsDx();
-	printfDx("%f %f", fabsf(InputControl::GetLeftStick().x), InputControl::GetLeftStick().y);
 
 	// 画面外に出ないように
 	if (location.x < 0)

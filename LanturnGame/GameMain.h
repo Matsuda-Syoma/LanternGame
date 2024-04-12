@@ -12,11 +12,11 @@ private:
 	Player* player;
 public:
 	GameMain();
-	// �R���X�g���N�^
-	~GameMain();								// �f�X�g���N�^
+	~GameMain();
 
-	virtual AbstractScene* Update() override;	// �`��ȊO�̍X�V����s
-	void Draw() const override;					// �`��Ɋւ��邱�Ƃ����
-	void Game();								// �Q�[���̏���
+	virtual AbstractScene* Update() override;
+	void Draw() const override;
+	void Game();	
+	void SpawnExplosion(Vector2D loc);
 };
 

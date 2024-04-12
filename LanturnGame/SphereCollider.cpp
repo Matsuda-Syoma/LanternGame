@@ -5,7 +5,7 @@
 
 SphereCollider::SphereCollider()
 {
-	radius = 5;
+	radius = 32;
 }
 
 bool SphereCollider::HitSphere(SphereCollider* spherecollider)const
