@@ -2,6 +2,8 @@
 
 GameMain::GameMain()
 {
+	player = new Player;
+
 	bomb = new Bomb * [10];
 	for (int i = 0; i < 10; i++) {
 		bomb[i] = nullptr;
@@ -31,6 +33,9 @@ GameMain::~GameMain()
 
 AbstractScene* GameMain::Update()
 {
+
+	player->Update();
+
 	for (int i = 0; i < 10; i++) {
 
 		if (bomb[i] != nullptr) {
@@ -87,6 +92,8 @@ void GameMain::Draw() const
 			explosion[i]->Draw();
 		}
 	}
+
+	player->Draw(0);
 }
 
 void GameMain::Game()

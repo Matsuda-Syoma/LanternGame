@@ -3,11 +3,13 @@
 #include"AbstractScene.h"
 #include "Bomb.h"
 #include "Explosion.h"
+#include "Player.h"
 class GameMain : public AbstractScene
 {
 private:
 	Bomb** bomb;
 	Explosion** explosion;
+	Player* player;
 public:
 	GameMain();
 	// �R���X�g���N�^

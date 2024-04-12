@@ -3,43 +3,44 @@
 #include"FPSController.h"
 #include"SceneManager.h"
 #include"GameMain.h"
+#include"Utility/InputControl.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
 
-	//ƒ^ƒCƒgƒ‹‚ğİ’è
+	//ï¿½^ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½İ’ï¿½
 	SetMainWindowText("Lantern");
 
-	//ƒEƒBƒ“ƒhƒEƒ‚[ƒh‚Å‹N“®
+	//ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½ï¿½ï¿½[ï¿½hï¿½Å‹Nï¿½ï¿½
 	ChangeWindowMode(true);
 
-	//ƒEƒBƒ“ƒhƒEƒTƒCƒY‚Ìİ’è
+	//ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½Tï¿½Cï¿½Yï¿½Ìİ’ï¿½
 	SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_COLORBIT);
 	SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	//DXƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰Šú‰»ˆ—
+	//DXï¿½ï¿½ï¿½Cï¿½uï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if (DxLib_Init() == -1)return -1;
 
-	//•`‰ææ‰æ–Ê‚ğ— ‚É‚·‚éiƒ_ƒuƒ‹ƒoƒbƒtƒ@ƒŠƒ“ƒOj
+	//ï¿½`ï¿½ï¿½ï¿½ï¿½Ê‚ğ— ‚É‚ï¿½ï¿½ï¿½iï¿½_ï¿½uï¿½ï¿½ï¿½oï¿½bï¿½tï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½j
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	SceneManager scene = (dynamic_cast<AbstractScene*>(new GameMain()));
 
 	FpsController FPSct(FRAMERATE, UPDATETIME);
 
-	//ƒQ[ƒ€ƒ‹[ƒv
+	//ï¿½Qï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½v
 	while (ProcessMessage() == 0 && scene.Update() != nullptr) {
 
-		//‰æ–Ê‚Ì‰Šú‰»
-		PAD_INPUT::UpdateInput();			// PAD‚Ì“ü—ÍXV
+		//ï¿½ï¿½Ê‚Ìï¿½ï¿½ï¿½ï¿½ï¿½
+		InputControl::Update();
 		ClearDrawScreen();
 		scene.Draw();
-		//•`‰æˆ—
+		//ï¿½`ï¿½æˆï¿½ï¿½
 
-		//— ‰æ–Ê‚Ì“à—e‚ğ•\‚É•\¦‚·‚é
+		//ï¿½ï¿½ï¿½ï¿½Ê‚Ì“ï¿½eï¿½ï¿½\ï¿½É•\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		ScreenFlip();
 	}
 
-	//DXƒ‰ƒCƒuƒ‰ƒŠ‚ÌI—¹ˆ—
+	//DXï¿½ï¿½ï¿½Cï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ÌIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	DxLib_End();
 
 	return 0;
