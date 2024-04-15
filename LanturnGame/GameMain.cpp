@@ -95,16 +95,20 @@ AbstractScene* GameMain::Update()
 						bomb[i]->SetVelocity(NULL);
 					}
 				}
-
-
 				break;
+
 			case 2:
 				vvec = (bomb[i]->GetLocation() - player->GetLocation());
 				length = bomb[i]->GetLength(player->GetLocation());
 				vvec /= length;
 				bomb[i]->SetVelocity(vvec);
 				break;
+
 			case 3:
+				vvec = (player->GetLocation() - bomb[i]->GetLocation());
+				length = bomb[i]->GetLength(player->GetLocation());
+				vvec /= length;
+				bomb[i]->SetVelocity(vvec);
 				break;
 			}
 			// 敵の更新

@@ -4,6 +4,7 @@
 #include <math.h>
 Bomb::Bomb()
 {
+	speed = 2;
 }
 Bomb::~Bomb()
 {
@@ -11,12 +12,14 @@ Bomb::~Bomb()
 void Bomb::Update()
 {
 	if (expflg) {
+		mode = 3;
+		speed = 3;
 		expcnt--;
 		if (expcnt < 0) {
 			flg = false;
 		}
 	}
-	location += velocity * 2;
+	location += velocity * speed;
 }
 
 void Bomb::Draw(Vector2D loc) const
