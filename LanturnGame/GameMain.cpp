@@ -1,8 +1,10 @@
 #include "GameMain.h"
 #include "common.h"
+#include "LoadSounds.h"
 
 GameMain::GameMain()
 {
+	Sounds::LoadSounds();
 	player = new Player;
 
 	bomb = new Bomb * [GM_MAX_ENEMY_BOMB];
@@ -32,7 +34,6 @@ GameMain::~GameMain()
 
 AbstractScene* GameMain::Update()
 {
-	clsDx();
 	player->Update();
 	// 敵の数を見る
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
@@ -47,7 +48,6 @@ AbstractScene* GameMain::Update()
 			}
 			else if (240 >= bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
 				bomb[i]->SetMode(2);
-				printfDx("!");
 			}
 			// 敵と敵の距離を見る
 			int temp = -1;
@@ -154,6 +154,7 @@ AbstractScene* GameMain::Update()
 			if (!bomb[i]->GetFlg()) {
 				// 爆発を発生して敵をnullptrにしてループを抜ける
 				SpawnExplosion(bomb[i]->GetLocation());
+				PlaySoundMem(Sounds::SE_Explosion, DX_PLAYTYPE_BACK, true);
 				bomb[i] = nullptr;
 				delete bomb[i];
 				break;
