@@ -19,7 +19,11 @@ void Bomb::Update()
 			flg = false;
 		}
 	}
+	if (knockback != 0.0f) {
+		knockback /= 1.1;
+	}
 	location += velocity * speed;
+	location += knockback;
 }
 
 void Bomb::Draw(Vector2D loc) const
@@ -66,3 +70,7 @@ int Bomb::GetMode()
 	return this->mode;
 }
 
+void Bomb::SetKnockBack(Vector2D vec, int i)
+{
+	this->knockback = vec * i;
+}

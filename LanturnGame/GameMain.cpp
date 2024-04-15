@@ -98,17 +98,22 @@ AbstractScene* GameMain::Update()
 				break;
 
 			case 2:
-				vvec = (bomb[i]->GetLocation() - player->GetLocation());
 				length = bomb[i]->GetLength(player->GetLocation());
+				vvec = (bomb[i]->GetLocation() - player->GetLocation());
 				vvec /= length;
 				bomb[i]->SetVelocity(vvec);
 				break;
 
 			case 3:
-				vvec = (player->GetLocation() - bomb[i]->GetLocation());
 				length = bomb[i]->GetLength(player->GetLocation());
-				vvec /= length;
-				bomb[i]->SetVelocity(vvec);
+				if (length > 80) {
+					vvec = (player->GetLocation() - bomb[i]->GetLocation());
+					vvec /= length;
+					bomb[i]->SetVelocity(vvec);
+				}
+				else {
+					bomb[i]->SetVelocity(NULL);
+				}
 				break;
 			}
 			// 敵の更新
@@ -137,6 +142,12 @@ AbstractScene* GameMain::Update()
 				// 敵とプレイヤーの当たり判定
 				if (bomb[i]->HitSphere(player)) {
 					bomb[i]->SetExpFlg(true);
+					if (bomb[i]->GetMode() == 3) {
+						vvec = (bomb[i]->GetLocation() - player->GetLocation());
+						length = bomb[i]->GetLength(player->GetLocation());
+						vvec /= length;
+						bomb[i]->SetKnockBack(vvec,50);
+					}
 				}
 			}
 			// 敵のフラグが0なら

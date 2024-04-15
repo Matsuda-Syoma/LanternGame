@@ -130,4 +130,18 @@ public:
 
 		return *this;
 	}
+
+	bool operator != (const float& scalar)
+	{
+		if (this->x == scalar) {
+			return false;
+		}
+		if (this->y == scalar) {
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 };

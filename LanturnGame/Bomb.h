@@ -9,6 +9,7 @@ private:
 	bool expflg = false;
 	int expcnt = 180;
 	Vector2D velocity = 0;
+	Vector2D knockback = 0;
 public:
 	Bomb();
 	~Bomb();
@@ -26,5 +27,6 @@ public:
 	void SetMode(int i);
 
 	int GetMode();
+	void SetKnockBack(Vector2D vec, int i);
 };
 
