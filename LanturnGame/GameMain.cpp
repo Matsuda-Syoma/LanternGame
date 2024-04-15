@@ -9,10 +9,10 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		bomb[i] = nullptr;
 	}
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 50; i++) {
 		bomb[i] = new Bomb;
 	}
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 50; i++) {
 		bomb[i]->SetLocation(Vector2D(64 * (i + 1) + GetRand(64), 100 + GetRand(320) * 2));
 	}
 
@@ -42,10 +42,10 @@ AbstractScene* GameMain::Update()
 
 			// プレイヤーとの距離を見る
 			// プレイヤーと320離れていたら
-			if (160 < bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
+			if (240 < bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
 				bomb[i]->SetMode(1);
 			}
-			else if (160 >= bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
+			else if (240 >= bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
 				bomb[i]->SetMode(2);
 				printfDx("!");
 			}
@@ -69,6 +69,7 @@ AbstractScene* GameMain::Update()
 							// 距離が短いなら変数を保存する
 							if (length > bomb[j]->GetLength(bomb[i]->GetLocation())) {
 								temp = j;
+								length = bomb[j]->GetLength(bomb[i]->GetLocation());
 							}
 						}
 					}
@@ -78,13 +79,18 @@ AbstractScene* GameMain::Update()
 					}
 				}
 				if (temp != -1) {
-					length = bomb[temp]->GetLength(bomb[i]->GetLocation());
-					if (length > 72) {
+					if (length > 80) {
 						vvec = (bomb[temp]->GetLocation() - bomb[i]->GetLocation());
 						vvec /= length;
 						bomb[i]->SetVelocity(vvec);
+						break;
 					}
-
+					else if (length < 72) {
+						vvec = (bomb[i]->GetLocation() - bomb[temp]->GetLocation());
+						vvec /= length;
+						bomb[i]->SetVelocity(vvec);
+						break;
+					}
 					else {
 						bomb[i]->SetVelocity(NULL);
 					}

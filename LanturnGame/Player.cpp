@@ -94,6 +94,7 @@ void Player::Movement()
 	}
 
 	// 画面外に出ないように
+	/*
 	if (location.x < 0)
 	{
 		location.x = 0;
@@ -109,5 +110,5 @@ void Player::Movement()
 	if (location.y >= 720.0f - radius)
 	{
 		location.y = 720.0f - radius;
-	}
+	}*/
 }
