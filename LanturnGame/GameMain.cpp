@@ -13,7 +13,7 @@ GameMain::GameMain()
 		bomb[i] = new Bomb;
 	}
 	for (int i = 0; i < 5; i++) {
-		bomb[i]->SetLocation(Vector2D(80 * (i + 1), 100));
+		bomb[i]->SetLocation(Vector2D(64 * (i + 1) + GetRand(64), 100 + GetRand(320) * 2));
 	}
 
 	explosion = new Explosion * [GM_MAX_EFFECT_EXPLOSION];
@@ -32,35 +32,75 @@ GameMain::~GameMain()
 
 AbstractScene* GameMain::Update()
 {
-
+	clsDx();
 	player->Update();
 	// 敵の数を見る
-	clsDx();
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 
 		// 敵がnullptrじゃないなら
 		if (bomb[i] != nullptr) {
 
+			// プレイヤーとの距離を見る
+			// プレイヤーと320離れていたら
+			if (160 < bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
+				bomb[i]->SetMode(1);
+			}
+			else if (160 >= bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
+				bomb[i]->SetMode(2);
+				printfDx("!");
+			}
 			// 敵と敵の距離を見る
 			int temp = -1;
 			float length = 65535;
-			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
-				if (j != i) {
-					if (bomb[j] != nullptr) {
-						if (length > bomb[j]->SetMinBomb(bomb[i]->GetLocation())) {
-							temp = j;
-							length = bomb[j]->SetMinBomb(bomb[i]->GetLocation());
+			Vector2D vvec = 0;
+			switch (bomb[i]->GetMode()) {
+			case 0:
+				break;
+			case 1:
+
+				for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
+
+					// 自分以外なら
+					if (j != i) {
+
+						// nullptrじゃないなら距離を見る
+						if (bomb[j] != nullptr) {
+
+							// 距離が短いなら変数を保存する
+							if (length > bomb[j]->GetLength(bomb[i]->GetLocation())) {
+								temp = j;
+							}
 						}
 					}
+					else if (bomb[j] == nullptr) {
+						temp = -1;
+						length = 65535;
+					}
 				}
-				else {
-					temp = j;
-					length = 0;
+				if (temp != -1) {
+					length = bomb[temp]->GetLength(bomb[i]->GetLocation());
+					if (length > 72) {
+						vvec = (bomb[temp]->GetLocation() - bomb[i]->GetLocation());
+						vvec /= length;
+						bomb[i]->SetVelocity(vvec);
+					}
+
+					else {
+						bomb[i]->SetVelocity(NULL);
+					}
 				}
+
+
+				break;
+			case 2:
+				vvec = (bomb[i]->GetLocation() - player->GetLocation());
+				length = bomb[i]->GetLength(player->GetLocation());
+				vvec /= length;
+				bomb[i]->SetVelocity(vvec);
+				break;
+			case 3:
+				break;
 			}
-			
-			printfDx("%f %f",bomb[temp]->SetMinBomb(player->GetLocation()));
-			//printfDx("%d -> %d\n",i,temp);
 			// 敵の更新
 			bomb[i]->Update();
 

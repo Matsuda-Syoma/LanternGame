@@ -61,6 +61,7 @@ public:
 		return Vector2D(this->x / scalar, this->y / scalar);
 	}
 
+
 	const Vector2D operator / (const Vector2D& location)
 	{
 		if (location.x < 1e-6f) {

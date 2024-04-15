@@ -17,7 +17,7 @@ void Explosion::Update()
 			flg = false;
 		}
 		count++;
-		radius = count * 1;
+		radius = count * 3;
 	}
 }
 

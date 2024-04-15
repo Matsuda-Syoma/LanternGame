@@ -10,13 +10,13 @@ Bomb::~Bomb()
 }
 void Bomb::Update()
 {
-
 	if (expflg) {
 		expcnt--;
 		if (expcnt < 0) {
 			flg = false;
 		}
 	}
+	location += velocity * 2;
 }
 
 void Bomb::Draw(Vector2D loc) const
@@ -43,12 +43,23 @@ void Bomb::SetExpFlg(bool b)
 	this->expflg = b;
 }
 
-float Bomb::SetMinBomb(Vector2D loc) 
+float Bomb::GetLength(Vector2D loc) 
 {
 	return sqrtf(powf((loc.x - location.x), 2) + powf((loc.y - location.y), 2));
 }
 
-void Bomb::SetNormalize(Vector2D loc)
+void Bomb::SetVelocity(Vector2D loc)
 {
-
+	this->velocity = loc;
 }
+
+void Bomb::SetMode(int i)
+{
+	this->mode = i;
+}
+
+int Bomb::GetMode()
+{
+	return this->mode;
+}
+
