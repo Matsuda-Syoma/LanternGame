@@ -18,6 +18,8 @@ private:
 	unsigned int ratio = 0;
 
 	int life = 3;
+	int lifeimage;
+	int lifematchimage;
 	bool hitmoment = false;
 	bool ratioflg = false;
 

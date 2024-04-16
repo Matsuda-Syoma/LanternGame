@@ -11,10 +11,10 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		bomb[i] = nullptr;
 	}
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		bomb[i] = new Bomb;
 	}
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		bomb[i]->SetLocation(Vector2D(64 + GetRand(80) * 2, GetRand(80) * 2));
 	}
 
@@ -34,6 +34,8 @@ GameMain::GameMain()
 	//		backnum++;
 	//	}
 	//}
+	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
+	lifematchimage = LoadGraph("Resources/images/match.png", 0);
 }
 
 GameMain::~GameMain()
@@ -177,6 +179,19 @@ AbstractScene* GameMain::Update()
 				break;
 			}
 		}
+		else {
+			bomb[i] = new Bomb;
+			if ((bool)GetRand(1)) {
+				bomb[i]->SetLocation(Vector2D(
+					player->GetLocation().x - (SCREEN_WIDTH / 2), 
+					player->GetLocation().y - (SCREEN_WIDTH / 2) + GetRand(SCREEN_HEIGHT)));
+			}
+			else {
+				bomb[i]->SetLocation(Vector2D(
+					player->GetLocation().x - (SCREEN_WIDTH / 2) + GetRand(SCREEN_WIDTH),
+					player->GetLocation().y - (SCREEN_HEIGHT / 2)));
+			}
+		}
 	}
 
 	ratioflg = false;
@@ -249,6 +264,10 @@ void GameMain::Draw() const
 	}
 	else {
 		DrawString(10, 10, "GameOver", 0xffffff);
+	}
+	DrawRotaGraph(128, 32, 1.0, 0.0, lifeimage, true);
+	for (int i = 0; i < life; i++) {
+		DrawRotaGraph(172 + (24 * i), 32, 1.0, 0.0, lifematchimage, true);
 	}
 	
 }
