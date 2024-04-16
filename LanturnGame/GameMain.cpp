@@ -11,10 +11,10 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		bomb[i] = nullptr;
 	}
-	for (int i = 0; i < 50; i++) {
+	for (int i = 0; i < 100; i++) {
 		bomb[i] = new Bomb;
 	}
-	for (int i = 0; i < 50; i++) {
+	for (int i = 0; i < 100; i++) {
 		bomb[i]->SetLocation(Vector2D(8 * (i + 1) + GetRand(64), 100 + GetRand(80) * 2));
 	}
 
