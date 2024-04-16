@@ -173,6 +173,15 @@ AbstractScene* GameMain::Update()
 		if (explosion[i] != nullptr) {
 			ratioflg = true;
 			explosion[i]->Update();
+			// プレイヤーと爆発の当たり判定
+			if (explosion[i]->HitSphere(player) && hitmoment == false) {
+				life--;
+				hitmoment = true;
+			}
+			else if (!explosion[i]->HitSphere(player) && hitmoment == true) {
+				hitmoment = false;
+			}
+
 			if (!explosion[i]->Getflg()) {
 				explosion[i] = nullptr;
 				delete explosion[i];
@@ -208,11 +217,20 @@ void GameMain::Draw() const
 	player->Draw(0);
 
 	DrawFormatString(640, 10, 0xffffff, "%06d", score);
+
 	if (ratioflg) {
 		SetFontSize(16 + ((1 + (ui_ratio_framecount)) + (ratio / 2)));
 		DrawFormatString(720, 10, GetColor(255, 255, 255 - (25 * ratio)), "%dx", ratio);
 	}
 	SetFontSize(16);
+
+	if (life > 0) {
+		DrawFormatString(10, 10, 0xffffff, "life : %d", life);
+	}
+	else {
+		DrawString(10, 10, "GameOver", 0xffffff);
+	}
+	
 }
 
 void GameMain::Game()
