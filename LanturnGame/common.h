@@ -9,3 +9,8 @@
 
 #define GM_MAX_ENEMY_BOMB 100
 #define GM_MAX_EFFECT_EXPLOSION 100
+
+#define IcefloorR_x 100
+#define IcefloorR_y 100
+#define IcefloorL_x 100
+#define IcefloorL_y 100

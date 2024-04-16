@@ -3,7 +3,6 @@
 class stage
 {
 private:
-  
 
 public:
     stage();    //コンストラクタ

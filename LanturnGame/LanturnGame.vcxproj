@@ -28,6 +28,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
+    <ClCompile Include="stage.cpp" />
     <ClCompile Include="Utility\InputControl.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +43,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SphereCollider.h" />
+    <ClInclude Include="stage.h" />
     <ClInclude Include="Utility\InputControl.h" />
     <ClInclude Include="Utility\Vector2D.h" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include"stage.h"
-#include"DxLib.h"
+#include"Dxlib.h"
+#include"common.h"
 
 stage::stage() {
 
@@ -10,10 +11,10 @@ stage::~stage() {
 	
 }
 
-void Stage::Update() {
+void stage::Update() {
 
 }
 
-void Stage::Draw() const {
-	int DrawBox(int x1, int y1, int x2, int y2, unsigned int Color, int FillFlag);
+void stage::Draw() const {
+	DrawBox(IcefloorR_x,IcefloorR_y,IcefloorL_x,IcefloorL_y, 0xff2255,FALSE);
 }
