@@ -15,7 +15,7 @@ GameMain::GameMain()
 		bomb[i] = new Bomb;
 	}
 	for (int i = 0; i < 50; i++) {
-		bomb[i]->SetLocation(Vector2D(64 * (i + 1) + GetRand(64), 100 + GetRand(320) * 2));
+		bomb[i]->SetLocation(Vector2D(8 * (i + 1) + GetRand(64), 100 + GetRand(80) * 2));
 	}
 
 	explosion = new Explosion * [GM_MAX_EFFECT_EXPLOSION];
@@ -158,6 +158,7 @@ AbstractScene* GameMain::Update()
 				SpawnExplosion(bomb[i]->GetLocation());
 				PlaySoundMem(Sounds::SE_Explosion, DX_PLAYTYPE_BACK, true);
 				ratio += 1;
+				ui_ratio_framecount = 25;
 				score += (ratio * 100);
 				bomb[i] = nullptr;
 				delete bomb[i];
@@ -182,6 +183,11 @@ AbstractScene* GameMain::Update()
 	if (!ratioflg) {
 		ratio = 0;
 	}
+	game_frametime++;
+	if (ui_ratio_framecount > 0) {
+		ui_ratio_framecount--;
+	}
+	
 	return this;
 
 }
@@ -202,6 +208,11 @@ void GameMain::Draw() const
 	player->Draw(0);
 
 	DrawFormatString(640, 10, 0xffffff, "%06d", score);
+	if (ratioflg) {
+		SetFontSize(16 + ((1 + (ui_ratio_framecount)) + (ratio / 2)));
+		DrawFormatString(720, 10, GetColor(255, 255, 255 - (25 * ratio)), "%dx", ratio);
+	}
+	SetFontSize(16);
 }
 
 void GameMain::Game()

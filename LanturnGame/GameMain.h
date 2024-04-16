@@ -10,9 +10,15 @@ private:
 	Bomb** bomb;
 	Explosion** explosion;
 	Player* player;
-	int score = 0;
-	int ratio = 0;
+
+	unsigned int game_frametime = 0;
+	unsigned int score = 0;
+	unsigned int ratio = 0;
+
 	bool ratioflg = false;
+
+	__int8 ui_ratio_framecount = 0;
+
 public:
 	GameMain();
 	~GameMain();
