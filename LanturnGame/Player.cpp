@@ -24,7 +24,7 @@ void Player::Update()
 
 void Player::Draw(int camerashake) const
 {
-	DrawCircle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, radius, 0xffff00, true, true);
+	DrawCircle(camerashake + SCREEN_WIDTH / 2, camerashake + SCREEN_HEIGHT / 2, radius, 0xffff00, true, true);
 }
 
 void Player::Movement()

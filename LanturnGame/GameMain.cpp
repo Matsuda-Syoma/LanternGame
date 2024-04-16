@@ -1,7 +1,7 @@
 #include "GameMain.h"
 #include "common.h"
 #include "LoadSounds.h"
-
+#include <math.h>
 GameMain::GameMain()
 {
 	Sounds::LoadSounds();
@@ -160,6 +160,7 @@ AbstractScene* GameMain::Update()
 				ratio += 1;
 				ui_ratio_framecount = 25;
 				score += (ratio * 100);
+				SetCameraShake(7);
 				bomb[i] = nullptr;
 				delete bomb[i];
 				break;
@@ -183,11 +184,12 @@ AbstractScene* GameMain::Update()
 	if (!ratioflg) {
 		ratio = 0;
 	}
-	game_frametime++;
 	if (ui_ratio_framecount > 0) {
 		ui_ratio_framecount--;
 	}
-	
+
+	game_frametime++;
+	CameraUpdate();
 	return this;
 
 }
@@ -196,16 +198,16 @@ void GameMain::Draw() const
 {
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++){
 		if (bomb[i] != nullptr) {
-			bomb[i]->Draw(player->GetLocation());
+			bomb[i]->Draw(player->GetLocation() + +Camerashake);
 		}
 	}
 	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
 		if (explosion[i] != nullptr) {
-			explosion[i]->Draw(player->GetLocation());
+			explosion[i]->Draw(player->GetLocation() + Camerashake);
 		}
 	}
 
-	player->Draw(0);
+	player->Draw(Camerashake);
 
 	DrawFormatString(640, 10, 0xffffff, "%06d", score);
 	if (ratioflg) {
@@ -227,4 +229,18 @@ void GameMain::SpawnExplosion(Vector2D loc) {
 			break;
 		}
 	}
+}
+
+void GameMain::CameraUpdate() {
+	if (CamerashakeCount > 0) {
+		Camerashake = round(CamerashakeCount / 2);
+		if (CamerashakeCount % 2 == 0) {
+			Camerashake *= -1;
+		}
+		CamerashakeCount--;
+	}
+}
+
+void GameMain::SetCameraShake(int _i) {
+	CamerashakeCount = _i;
 }

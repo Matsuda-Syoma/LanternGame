@@ -19,6 +19,9 @@ private:
 
 	__int8 ui_ratio_framecount = 0;
 
+	int CamerashakeCount = 0;
+	int Camerashake = 0;
+
 public:
 	GameMain();
 	~GameMain();
@@ -27,5 +30,7 @@ public:
 	void Draw() const override;
 	void Game();	
 	void SpawnExplosion(Vector2D loc);
+	void CameraUpdate();
+	void SetCameraShake(int _i);
 };
 
