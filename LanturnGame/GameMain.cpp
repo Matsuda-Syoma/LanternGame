@@ -1,8 +1,10 @@
 #include "GameMain.h"
 #include "common.h"
+#include "LoadSounds.h"
 
 GameMain::GameMain()
 {
+	Sounds::LoadSounds();
 	player = new Player;
 
 	bomb = new Bomb * [GM_MAX_ENEMY_BOMB];
@@ -13,16 +15,13 @@ GameMain::GameMain()
 		bomb[i] = new Bomb;
 	}
 	for (int i = 0; i < 50; i++) {
-		bomb[i]->SetLocation(Vector2D(64 * (i + 1) + GetRand(64), 100 + GetRand(320) * 2));
+		bomb[i]->SetLocation(Vector2D(8 * (i + 1) + GetRand(64), 100 + GetRand(80) * 2));
 	}
 
 	explosion = new Explosion * [GM_MAX_EFFECT_EXPLOSION];
 	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
 		explosion[i] = nullptr;
 	}
-
-	//explosion[0] = new Explosion;
-	//explosion[0]->SetLocation(bomb[0]->GetLocation());
 
 }
 
@@ -32,7 +31,6 @@ GameMain::~GameMain()
 
 AbstractScene* GameMain::Update()
 {
-	clsDx();
 	player->Update();
 	// 敵の数を見る
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
@@ -47,15 +45,17 @@ AbstractScene* GameMain::Update()
 			}
 			else if (240 >= bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
 				bomb[i]->SetMode(2);
-				printfDx("!");
 			}
 			// 敵と敵の距離を見る
 			int temp = -1;
 			float length = 65535;
 			Vector2D vvec = 0;
+
 			switch (bomb[i]->GetMode()) {
 			case 0:
 				break;
+
+				// 敵同士集まる
 			case 1:
 
 				for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
@@ -97,6 +97,7 @@ AbstractScene* GameMain::Update()
 				}
 				break;
 
+				// プレイヤーから逃げる
 			case 2:
 				length = bomb[i]->GetLength(player->GetLocation());
 				vvec = (bomb[i]->GetLocation() - player->GetLocation());
@@ -104,6 +105,7 @@ AbstractScene* GameMain::Update()
 				bomb[i]->SetVelocity(vvec);
 				break;
 
+				// プレイヤーを追いかける
 			case 3:
 				length = bomb[i]->GetLength(player->GetLocation());
 				if (length > 80) {
@@ -154,6 +156,10 @@ AbstractScene* GameMain::Update()
 			if (!bomb[i]->GetFlg()) {
 				// 爆発を発生して敵をnullptrにしてループを抜ける
 				SpawnExplosion(bomb[i]->GetLocation());
+				PlaySoundMem(Sounds::SE_Explosion, DX_PLAYTYPE_BACK, true);
+				ratio += 1;
+				ui_ratio_framecount = 25;
+				score += (ratio * 100);
 				bomb[i] = nullptr;
 				delete bomb[i];
 				break;
@@ -161,17 +167,36 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
+	ratioflg = false;
 	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
 
 		if (explosion[i] != nullptr) {
-
+			ratioflg = true;
 			explosion[i]->Update();
+			// プレイヤーと爆発の当たり判定
+			if (explosion[i]->HitSphere(player) && hitmoment == false) {
+				life--;
+				hitmoment = true;
+			}
+			else if (!explosion[i]->HitSphere(player) && hitmoment == true) {
+				hitmoment = false;
+			}
+
 			if (!explosion[i]->Getflg()) {
 				explosion[i] = nullptr;
 				delete explosion[i];
 			}
 		}
 	}
+
+	if (!ratioflg) {
+		ratio = 0;
+	}
+	game_frametime++;
+	if (ui_ratio_framecount > 0) {
+		ui_ratio_framecount--;
+	}
+	
 	return this;
 
 }
@@ -190,6 +215,22 @@ void GameMain::Draw() const
 	}
 
 	player->Draw(0);
+
+	DrawFormatString(640, 10, 0xffffff, "%06d", score);
+
+	if (ratioflg) {
+		SetFontSize(16 + ((1 + (ui_ratio_framecount)) + (ratio / 2)));
+		DrawFormatString(720, 10, GetColor(255, 255, 255 - (25 * ratio)), "%dx", ratio);
+	}
+	SetFontSize(16);
+
+	if (life > 0) {
+		DrawFormatString(10, 10, 0xffffff, "life : %d", life);
+	}
+	else {
+		DrawString(10, 10, "GameOver", 0xffffff);
+	}
+	
 }
 
 void GameMain::Game()

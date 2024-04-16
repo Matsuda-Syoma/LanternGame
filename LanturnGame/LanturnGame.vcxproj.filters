@@ -57,7 +57,8 @@
     <ClInclude Include="CharaBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="stage.h">
+    <ClInclude Include="object\soldier.h">
+    <ClInclude Include="LoadSounds.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,7 +93,8 @@
     <ClCompile Include="Utility\InputControl.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="stage.cpp">
+    <ClCompile Include="object\soldier.cpp">
+    <ClCompile Include="LoadSounds.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

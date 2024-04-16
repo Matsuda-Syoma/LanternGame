@@ -32,6 +32,9 @@ void Bomb::Draw(Vector2D loc) const
 	if (expcnt % 60 > 30) {
 		DrawCircle(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 0x888888, true, true);
 	}
+	if (expflg) {
+		DrawFormatString((location.x - 4) + (-loc.x + (SCREEN_WIDTH / 2)), (location.y - 8) + (-loc.y + (SCREEN_HEIGHT / 2)), GetColor(255 - expcnt * 1.5, 0, 0), "%d", expcnt / 60);
+	}
 
 }
 

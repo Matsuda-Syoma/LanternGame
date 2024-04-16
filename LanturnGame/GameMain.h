@@ -10,6 +10,17 @@ private:
 	Bomb** bomb;
 	Explosion** explosion;
 	Player* player;
+
+	unsigned int game_frametime = 0;
+	unsigned int score = 0;
+	unsigned int ratio = 0;
+
+	int life = 3;
+	bool hitmoment = false;
+	bool ratioflg = false;
+
+	__int8 ui_ratio_framecount = 0;
+
 public:
 	GameMain();
 	~GameMain();
