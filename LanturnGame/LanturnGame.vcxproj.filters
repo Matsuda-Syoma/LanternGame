@@ -57,6 +57,7 @@
     <ClInclude Include="CharaBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="object\soldier.h">
     <ClInclude Include="LoadSounds.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -92,6 +93,7 @@
     <ClCompile Include="Utility\InputControl.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="object\soldier.cpp">
     <ClCompile Include="LoadSounds.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>

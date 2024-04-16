@@ -28,6 +28,7 @@
     <ClCompile Include="PAD_INPUT.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="object\soldier.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Utility\InputControl.cpp" />
   </ItemGroup>
@@ -43,6 +44,7 @@
     <ClInclude Include="PAD_INPUT.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="object\soldier.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Utility\InputControl.h" />
     <ClInclude Include="Utility\Vector2D.h" />
