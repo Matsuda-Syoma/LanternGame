@@ -58,6 +58,7 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="object\soldier.h">
+    <ClInclude Include="LoadSounds.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -93,6 +94,7 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="object\soldier.cpp">
+    <ClCompile Include="LoadSounds.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

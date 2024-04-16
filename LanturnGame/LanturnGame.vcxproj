@@ -23,6 +23,7 @@
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="FPSController.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="LoadSounds.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PAD_INPUT.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -39,6 +40,7 @@
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="FPSController.h" />
     <ClInclude Include="GameMain.h" />
+    <ClInclude Include="LoadSounds.h" />
     <ClInclude Include="PAD_INPUT.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
