@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="object\BackGround.cpp" />
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="FPSController.cpp" />
@@ -34,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractScene.h" />
+    <ClInclude Include="object\BackGround.h" />
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="CharaBase.h" />
     <ClInclude Include="common.h" />

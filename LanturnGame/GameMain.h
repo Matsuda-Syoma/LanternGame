@@ -4,12 +4,14 @@
 #include "Bomb.h"
 #include "Explosion.h"
 #include "Player.h"
+#include "object/BackGround.h"
 class GameMain : public AbstractScene
 {
 private:
 	Bomb** bomb;
 	Explosion** explosion;
 	Player* player;
+	BackGround** background;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;

@@ -15,7 +15,7 @@ GameMain::GameMain()
 		bomb[i] = new Bomb;
 	}
 	for (int i = 0; i < 100; i++) {
-		bomb[i]->SetLocation(Vector2D(8 * (i + 1) + GetRand(64), 100 + GetRand(80) * 2));
+		bomb[i]->SetLocation(Vector2D(64 + GetRand(80) * 2, GetRand(80) * 2));
 	}
 
 	explosion = new Explosion * [GM_MAX_EFFECT_EXPLOSION];
@@ -23,6 +23,17 @@ GameMain::GameMain()
 		explosion[i] = nullptr;
 	}
 
+	background = new BackGround * [GM_MAX_ENEMY_BOMB];
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		background[i] = nullptr;
+	}
+	int backnum = 0;
+	//for (int i = 0; i < GM_MAX_BACKGROUND_WIDTH;i++) {
+	//	for (int j = 0; j < GM_MAX_BACKGROUND_HEIGHT; j++) {
+	//		background[backnum] = new BackGround(Vector2D(i * 64, j * 64));
+	//		backnum++;
+	//	}
+	//}
 }
 
 GameMain::~GameMain()
@@ -205,6 +216,13 @@ AbstractScene* GameMain::Update()
 
 void GameMain::Draw() const
 {
+
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		if (background[i] != nullptr) {
+			background[i]->Draw(player->GetLocation() + +Camerashake);
+		}
+	}
+
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++){
 		if (bomb[i] != nullptr) {
 			bomb[i]->Draw(player->GetLocation() + +Camerashake);
