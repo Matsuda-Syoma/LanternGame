@@ -10,6 +10,9 @@ private:
 	Bomb** bomb;
 	Explosion** explosion;
 	Player* player;
+	int score = 0;
+	int ratio = 0;
+	bool ratioflg = false;
 public:
 	GameMain();
 	~GameMain();

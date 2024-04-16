@@ -23,9 +23,6 @@ GameMain::GameMain()
 		explosion[i] = nullptr;
 	}
 
-	//explosion[0] = new Explosion;
-	//explosion[0]->SetLocation(bomb[0]->GetLocation());
-
 }
 
 GameMain::~GameMain()
@@ -53,9 +50,12 @@ AbstractScene* GameMain::Update()
 			int temp = -1;
 			float length = 65535;
 			Vector2D vvec = 0;
+
 			switch (bomb[i]->GetMode()) {
 			case 0:
 				break;
+
+				// 敵同士集まる
 			case 1:
 
 				for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
@@ -97,6 +97,7 @@ AbstractScene* GameMain::Update()
 				}
 				break;
 
+				// プレイヤーから逃げる
 			case 2:
 				length = bomb[i]->GetLength(player->GetLocation());
 				vvec = (bomb[i]->GetLocation() - player->GetLocation());
@@ -104,6 +105,7 @@ AbstractScene* GameMain::Update()
 				bomb[i]->SetVelocity(vvec);
 				break;
 
+				// プレイヤーを追いかける
 			case 3:
 				length = bomb[i]->GetLength(player->GetLocation());
 				if (length > 80) {
@@ -155,6 +157,8 @@ AbstractScene* GameMain::Update()
 				// 爆発を発生して敵をnullptrにしてループを抜ける
 				SpawnExplosion(bomb[i]->GetLocation());
 				PlaySoundMem(Sounds::SE_Explosion, DX_PLAYTYPE_BACK, true);
+				ratio += 1;
+				score += (ratio * 100);
 				bomb[i] = nullptr;
 				delete bomb[i];
 				break;
@@ -162,16 +166,21 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
+	ratioflg = false;
 	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
 
 		if (explosion[i] != nullptr) {
-
+			ratioflg = true;
 			explosion[i]->Update();
 			if (!explosion[i]->Getflg()) {
 				explosion[i] = nullptr;
 				delete explosion[i];
 			}
 		}
+	}
+
+	if (!ratioflg) {
+		ratio = 0;
 	}
 	return this;
 
@@ -191,6 +200,8 @@ void GameMain::Draw() const
 	}
 
 	player->Draw(0);
+
+	DrawFormatString(640, 10, 0xffffff, "%06d", score);
 }
 
 void GameMain::Game()
