@@ -23,7 +23,7 @@ public:
 
 	void SetVelocity(Vector2D loc);
 
-	// 0:‘Ò‹@ 1:W‡ 2:“¦‚°‚é 3:’ÇÕ
+	// 0:ï¿½Ò‹@ 1:ï¿½Wï¿½ï¿½ 2:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3:ï¿½Çï¿½
 	void SetMode(int i);
 
 	int GetMode();
