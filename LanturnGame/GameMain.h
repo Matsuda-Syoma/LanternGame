@@ -12,6 +12,8 @@ private:
 	Player* player;
 	int score = 0;
 	int ratio = 0;
+	int life = 3;
+	bool hitmoment = false;
 	bool ratioflg = false;
 public:
 	GameMain();
