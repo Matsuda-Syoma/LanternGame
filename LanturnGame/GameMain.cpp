@@ -160,7 +160,7 @@ AbstractScene* GameMain::Update()
 				ratio += 1;
 				ui_ratio_framecount = 25;
 				score += (ratio * 100);
-				SetCameraShake(7);
+				SetCameraShake(GetRand(8) + 4);
 				bomb[i] = nullptr;
 				delete bomb[i];
 				break;
