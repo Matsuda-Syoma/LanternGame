@@ -1,8 +1,8 @@
 #include"DxLib.h"
-#include"common.h"
-#include"FPSController.h"
-#include"SceneManager.h"
-#include"GameMain.h"
+#include"Utility/common.h"
+#include"Utility/FPSController.h"
+#include"Scene/SceneManager.h"
+#include"Scene/GameMain.h"
 #include"Utility/InputControl.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {

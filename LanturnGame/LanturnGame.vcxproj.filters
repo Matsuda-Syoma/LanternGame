@@ -1,101 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Utility">
-      <UniqueIdentifier>{b6e6d18b-5c85-4393-b7cf-c8bfba1cff3b}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="object\soldier.cpp" />
+    <ClCompile Include="Utility\InputControl.cpp" />
+    <ClCompile Include="object\BackGround.cpp" />
+    <ClCompile Include="Scene\GameMain.cpp" />
+    <ClCompile Include="Scene\SceneManager.cpp" />
+    <ClCompile Include="Utility\FPSController.cpp" />
+    <ClCompile Include="Utility\LoadSounds.cpp" />
+    <ClCompile Include="Object\Bomb.cpp" />
+    <ClCompile Include="Object\Explosion.cpp" />
+    <ClCompile Include="Object\Player.cpp" />
+    <ClCompile Include="Object\SphereCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSController.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMain.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="PAD_INPUT.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Vector2D.h">
-      <Filter>ヘッダー ファイル\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="SphereCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Bomb.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Explosion.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\InputControl.h">
-      <Filter>ヘッダー ファイル\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="CharaBase.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="object\soldier.h">
-    <ClInclude Include="LoadSounds.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="FPSController.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMain.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="PAD_INPUT.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SphereCollider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Bomb.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Explosion.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\InputControl.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="object\soldier.cpp">
-    <ClCompile Include="LoadSounds.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
+    <ClInclude Include="object\soldier.h" />
+    <ClInclude Include="Utility\InputControl.h" />
+    <ClInclude Include="Utility\Vector2D.h" />
+    <ClInclude Include="object\BackGround.h" />
+    <ClInclude Include="Scene\AbstractScene.h" />
+    <ClInclude Include="Scene\GameMain.h" />
+    <ClInclude Include="Scene\SceneManager.h" />
+    <ClInclude Include="Utility\FPSController.h" />
+    <ClInclude Include="Utility\common.h" />
+    <ClInclude Include="Utility\LoadSounds.h" />
+    <ClInclude Include="Object\Bomb.h" />
+    <ClInclude Include="Object\CharaBase.h" />
+    <ClInclude Include="Object\Explosion.h" />
+    <ClInclude Include="Object\Player.h" />
+    <ClInclude Include="Object\SphereCollider.h" />
   </ItemGroup>
 </Project>

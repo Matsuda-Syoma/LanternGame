@@ -1,7 +1,7 @@
 #include "GameMain.h"
-#include "common.h"
-#include "LoadSounds.h"
-
+#include "../Utility/common.h"
+#include "../Utility/LoadSounds.h"
+#include <math.h>
 GameMain::GameMain()
 {
 	Sounds::LoadSounds();
@@ -11,11 +11,11 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		bomb[i] = nullptr;
 	}
-	for (int i = 0; i < 50; i++) {
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		bomb[i] = new Bomb;
 	}
-	for (int i = 0; i < 50; i++) {
-		bomb[i]->SetLocation(Vector2D(8 * (i + 1) + GetRand(64), 100 + GetRand(80) * 2));
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		bomb[i]->SetLocation(Vector2D(64 + GetRand(80) * 2, GetRand(80) * 2));
 	}
 
 	explosion = new Explosion * [GM_MAX_EFFECT_EXPLOSION];
@@ -23,6 +23,19 @@ GameMain::GameMain()
 		explosion[i] = nullptr;
 	}
 
+	background = new BackGround * [GM_MAX_ENEMY_BOMB];
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		background[i] = nullptr;
+	}
+	int backnum = 0;
+	//for (int i = 0; i < GM_MAX_BACKGROUND_WIDTH;i++) {
+	//	for (int j = 0; j < GM_MAX_BACKGROUND_HEIGHT; j++) {
+	//		background[backnum] = new BackGround(Vector2D(i * 64, j * 64));
+	//		backnum++;
+	//	}
+	//}
+	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
+	lifematchimage = LoadGraph("Resources/images/match.png", 0);
 }
 
 GameMain::~GameMain()
@@ -161,11 +174,27 @@ AbstractScene* GameMain::Update()
 				ratio += 1;
 				ui_ratio_framecount = 25;
 				score += (ratio * 100);
+				SetCameraShake(GetRand(8) + 4);
 				bomb[i] = nullptr;
 				delete bomb[i];
-				break;
+				// break;
+				continue;
 			}
 		}
+		// スポーン仮
+		//else {
+		//	bomb[i] = new Bomb;
+		//	if ((bool)GetRand(1)) {
+		//		bomb[i]->SetLocation(Vector2D(
+		//			player->GetLocation().x - (SCREEN_WIDTH / 2), 
+		//			player->GetLocation().y - (SCREEN_WIDTH / 2) + GetRand(SCREEN_HEIGHT)));
+		//	}
+		//	else {
+		//		bomb[i]->SetLocation(Vector2D(
+		//			player->GetLocation().x - (SCREEN_WIDTH / 2) + GetRand(SCREEN_WIDTH),
+		//			player->GetLocation().y - (SCREEN_HEIGHT / 2)));
+		//	}
+		//}
 	}
 
 	ratioflg = false;
@@ -197,32 +226,39 @@ AbstractScene* GameMain::Update()
 	if (!ratioflg) {
 		ratio = 0;
 	}
-	game_frametime++;
 	if (ui_ratio_framecount > 0) {
 		ui_ratio_framecount--;
 	}
-	
+
+	game_frametime++;
+	CameraUpdate();
 	return this;
 
 }
 
 void GameMain::Draw() const
 {
+
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		if (background[i] != nullptr) {
+			background[i]->Draw(player->GetLocation() + +Camerashake);
+		}
+	}
+
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++){
 		if (bomb[i] != nullptr) {
-			bomb[i]->Draw(player->GetLocation());
+			bomb[i]->Draw(player->GetLocation() + +Camerashake);
 		}
 	}
 	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
 		if (explosion[i] != nullptr) {
-			explosion[i]->Draw(player->GetLocation());
+			explosion[i]->Draw(player->GetLocation() + Camerashake);
 		}
 	}
 
 	soldier->Draw(player->GetLocation());
 
-	player->Draw(0);
-	
+	player->Draw(Camerashake);
 
 	DrawFormatString(640, 10, 0xffffff, "%06d", score);
 
@@ -238,7 +274,21 @@ void GameMain::Draw() const
 	else {
 		DrawString(10, 10, "GameOver", 0xffffff);
 	}
-	
+	DrawRotaGraph(128, 32, 1.0, 0.0, lifeimage, true);
+	for (int i = 0; i < life; i++) {
+		DrawRotaGraph(172 + (24 * i), 32, 1.0, 0.0, lifematchimage, true);
+	}
+
+
+	DrawCircle(SCREEN_WIDTH - 128, 128, 104, 0x004400, true);
+	DrawCircle(SCREEN_WIDTH - 128, 128, 96, 0x88ff88, true);
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		if (bomb[i] != nullptr) {
+			DrawCircle(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / 16), 128 + (bomb[i]->GetLocation().y / 16), 2, 0xff0000, true);
+		}
+	}
+	DrawCircle(SCREEN_WIDTH - 128 + (player->GetLocation().x / 16), 128 + (player->GetLocation().y / 16), 2, 0x8888ff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void GameMain::Game()
@@ -253,4 +303,18 @@ void GameMain::SpawnExplosion(Vector2D loc) {
 			break;
 		}
 	}
+}
+
+void GameMain::CameraUpdate() {
+	if (CamerashakeCount > 0) {
+		Camerashake = round(CamerashakeCount / 2);
+		if (CamerashakeCount % 2 == 0) {
+			Camerashake *= -1;
+		}
+		CamerashakeCount--;
+	}
+}
+
+void GameMain::SetCameraShake(int _i) {
+	CamerashakeCount = _i;
 }

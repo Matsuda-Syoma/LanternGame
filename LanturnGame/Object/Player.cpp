@@ -1,8 +1,8 @@
 #include "Player.h"
 #include "DxLib.h"
-#include "Utility/InputControl.h"
+#include "../Utility/InputControl.h"
 #include <math.h>
-#include "common.h"
+#include "../Utility/common.h"
 Player::Player()
 {
 	speed = 10;
