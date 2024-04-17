@@ -1,10 +1,10 @@
 #pragma once
 #include"DxLib.h"
 #include"AbstractScene.h"
-#include "Bomb.h"
-#include "Explosion.h"
-#include "Player.h"
-#include "object/BackGround.h"
+#include "../Object/Bomb.h"
+#include "../Object/Explosion.h"
+#include "../Object/Player.h"
+#include "../Object/BackGround.h"
 class GameMain : public AbstractScene
 {
 private:

@@ -1,6 +1,6 @@
 #include "GameMain.h"
-#include "common.h"
-#include "LoadSounds.h"
+#include "../Utility/common.h"
+#include "../Utility/LoadSounds.h"
 #include <math.h>
 GameMain::GameMain()
 {

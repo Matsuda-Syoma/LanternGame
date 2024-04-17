@@ -1,6 +1,6 @@
 #pragma once
-#include "../CharaBase.h"
-#include "../Player.h"
+#include "CharaBase.h"
+#include "Player.h"
 
 class soldier : public CharaBase
 {

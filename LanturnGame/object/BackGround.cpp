@@ -1,6 +1,6 @@
 #include "BackGround.h"
 #include "DxLib.h"
-#include "../common.h"
+#include "../Utility/common.h"
 BackGround::BackGround(Vector2D loc)
 {
 	location = loc;

@@ -20,35 +20,33 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="object\BackGround.cpp" />
-    <ClCompile Include="Bomb.cpp" />
-    <ClCompile Include="Explosion.cpp" />
-    <ClCompile Include="FPSController.cpp" />
-    <ClCompile Include="GameMain.cpp" />
-    <ClCompile Include="LoadSounds.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PAD_INPUT.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Object\Bomb.cpp" />
+    <ClCompile Include="Object\Explosion.cpp" />
+    <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="object\soldier.cpp" />
-    <ClCompile Include="SphereCollider.cpp" />
+    <ClCompile Include="Object\SphereCollider.cpp" />
+    <ClCompile Include="Scene\GameMain.cpp" />
+    <ClCompile Include="Scene\SceneManager.cpp" />
+    <ClCompile Include="Utility\FPSController.cpp" />
     <ClCompile Include="Utility\InputControl.cpp" />
+    <ClCompile Include="Utility\LoadSounds.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractScene.h" />
     <ClInclude Include="object\BackGround.h" />
-    <ClInclude Include="Bomb.h" />
-    <ClInclude Include="CharaBase.h" />
-    <ClInclude Include="common.h" />
-    <ClInclude Include="Explosion.h" />
-    <ClInclude Include="FPSController.h" />
-    <ClInclude Include="GameMain.h" />
-    <ClInclude Include="LoadSounds.h" />
-    <ClInclude Include="PAD_INPUT.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Object\Bomb.h" />
+    <ClInclude Include="Object\CharaBase.h" />
+    <ClInclude Include="Object\Explosion.h" />
+    <ClInclude Include="Object\Player.h" />
     <ClInclude Include="object\soldier.h" />
-    <ClInclude Include="SphereCollider.h" />
+    <ClInclude Include="Object\SphereCollider.h" />
+    <ClInclude Include="Scene\AbstractScene.h" />
+    <ClInclude Include="Scene\GameMain.h" />
+    <ClInclude Include="Scene\SceneManager.h" />
+    <ClInclude Include="Utility\common.h" />
+    <ClInclude Include="Utility\FPSController.h" />
     <ClInclude Include="Utility\InputControl.h" />
+    <ClInclude Include="Utility\LoadSounds.h" />
     <ClInclude Include="Utility\Vector2D.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

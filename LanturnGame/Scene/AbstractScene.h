@@ -1,7 +1,6 @@
 #pragma once
 
-#include "common.h"
-#include "PAD_INPUT.h"
+#include "../Utility/common.h"
 
 class AbstractScene {
 public:

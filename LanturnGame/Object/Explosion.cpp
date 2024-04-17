@@ -1,6 +1,6 @@
 #include "Explosion.h"
 #include "DxLib.h"
-#include "common.h"
+#include "../Utility/common.h"
 Explosion::Explosion()
 {
 	radius = 15.0f;
