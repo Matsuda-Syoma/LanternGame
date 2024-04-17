@@ -176,8 +176,11 @@ AbstractScene* GameMain::Update()
 			explosion[i]->Update();
 			// プレイヤーと爆発の当たり判定
 			if (explosion[i]->HitSphere(player) && hitmoment == false) {
-				life--;
-				hitmoment = true;
+				if (player->GetFlg() == false) {
+					life--;
+					hitmoment = true;
+					player->SetFlg(true);
+				}
 			}
 			else if (!explosion[i]->HitSphere(player) && hitmoment == true) {
 				hitmoment = false;
@@ -188,6 +191,7 @@ AbstractScene* GameMain::Update()
 				delete explosion[i];
 			}
 		}
+
 	}
 
 	if (!ratioflg) {
