@@ -17,5 +17,6 @@ public:
 
 	bool GetFlg() const;
 	void SetFlg(bool b);
+	Vector2D GetVelocity();
 };
 

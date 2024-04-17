@@ -5,6 +5,7 @@
 GameMain::GameMain()
 {
 	Sounds::LoadSounds();
+	BackGround::LoadImages();
 	player = new Player;
 	soldier = new Soldier;
 	bomb = new Bomb * [GM_MAX_ENEMY_BOMB];
@@ -25,17 +26,17 @@ GameMain::GameMain()
 	explosion[0] = new Explosion;
 	explosion[0]->SetLocation(bomb[0]->GetLocation());
 
-	background = new BackGround * [GM_MAX_ENEMY_BOMB];
-	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+	background = new BackGround * [GM_MAX_BACKGROUND_WIDTH * GM_MAX_BACKGROUND_HEIGHT];
+	for (int i = 0; i < GM_MAX_BACKGROUND_WIDTH * GM_MAX_BACKGROUND_HEIGHT; i++) {
 		background[i] = nullptr;
 	}
 	int backnum = 0;
-	//for (int i = 0; i < GM_MAX_BACKGROUND_WIDTH;i++) {
-	//	for (int j = 0; j < GM_MAX_BACKGROUND_HEIGHT; j++) {
-	//		background[backnum] = new BackGround(Vector2D(i * 64, j * 64));
-	//		backnum++;
-	//	}
-	//}
+	for (int i = 0; i < GM_MAX_BACKGROUND_WIDTH;i++) {
+		for (int j = 0; j < GM_MAX_BACKGROUND_HEIGHT; j++) {
+			background[backnum] = new BackGround(Vector2D((i - (GM_MAX_BACKGROUND_WIDTH / 2))* 64, (j - (GM_MAX_BACKGROUND_HEIGHT / 2)) * 64));
+			backnum++;
+		}
+	}
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
 }
@@ -247,7 +248,7 @@ AbstractScene* GameMain::Update()
 void GameMain::Draw() const
 {
 
-	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+	for (int i = 0; i < GM_MAX_BACKGROUND_WIDTH * GM_MAX_BACKGROUND_HEIGHT; i++) {
 		if (background[i] != nullptr) {
 			background[i]->Draw(player->GetLocation() + +Camerashake);
 		}
