@@ -1,28 +1,26 @@
 #pragma once
 #include "../CharaBase.h"
-#include "../Player.h"
 
-class soldier : public CharaBase
+class Soldier : public CharaBase
 {
 public:
-	soldier();
-	~soldier();
+	Soldier();
+	~Soldier();
 
 	//初期化
 	void Initialize();
 	//終了時
 	void finalize();
 	//更新
-	void Upadate();
+	void Upadate(Vector2D PL);
 	//描画
-	void Draw();
+	void Draw(Vector2D PL);
 
 	//移動
-	void Move();
+	void Move(Vector2D PL);
 
 private:
-	Player* player;
 	int image;	//画像イメージ
-	Vector2D PL;
+	Vector2D length;
 };
 

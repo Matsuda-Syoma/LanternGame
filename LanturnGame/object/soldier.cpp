@@ -1,21 +1,21 @@
 #include "soldier.h"
-
+#include "../common.h"
 #include "DxLib.h"
 
-soldier::soldier()
+Soldier::Soldier()
 {
 	Initialize();
 }
 
-soldier::~soldier()
+Soldier::~Soldier()
 {
 
 }
 
-void soldier::Initialize()
+void Soldier::Initialize()
 {
 	speed = 0;	//速度の初期化
-	location = player->GetLocation() + Vector2D(50.0f, 50.0f);	//座標の初期化
+	location = (0.0f,0.0f);	//座標の初期化
 
 	//画像の読み込みと画像があるかの確認
 	/*image = LoadGraph();
@@ -26,44 +26,59 @@ void soldier::Initialize()
 	}*/
 }
 
-void soldier::Upadate()
+void Soldier::Upadate(Vector2D PL)
 {
-	Move();	//座標を比べて兵隊の移動の向きを変える	
-}
+	length = location - PL;
 
-void soldier::Draw()
-{
-	DrawCircle(location.x, location.y, radius, 0x123456, true, true);
-	/*DrawGraph(location.x, location.y, image, TRUE);*/
-}
-
-void soldier::Move()
-{
-	PL = player->GetLocation();
-
-	//プレイヤーが右にいるなら
-	if (location.x <= PL.x)
+	if (length.x <= 0)
 	{
 		location.x += speed;
 	}
-	//プレイヤーが左にいるなら
-	if (location.x >= PL.x)
+	if (length.x >= 0)
 	{
 		location.x -= speed;
 	}
-	//プレイヤーが上にいるなら
-	if (location.y <= PL.y)
+	if (length.y <= 0)
 	{
 		location.y += speed;
 	}
-	//プレイヤーが下にいるなら
-	if (location.y >= PL.y)
+	if (length.y >= 0)
 	{
 		location.y -= speed;
 	}
+	//Move(PL);	//座標を比べて兵隊の移動の向きを変える	
 }
 
-void soldier::finalize()
+void Soldier::Draw(Vector2D PL)
+{
+	DrawCircle(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 0xffffff, true, true);
+	/*DrawGraph(location.x, location.y, image, TRUE);*/
+}
+
+//void Soldier::Move(Vector2D PL)
+//{
+//	length = location - PL;
+//
+//	if (length.x <= 0)
+//	{
+//		location.x += speed;
+//	}
+//	if (length.x >= 0)
+//	{
+//		location.x -= speed;
+//	}
+//	if (length.y <= 0)
+//	{
+//		location.y += speed;
+//	}
+//	if (length.y >= 0)
+//	{
+//		location.y -= speed;
+//	}
+//
+//}
+
+void Soldier::finalize()
 {
 	//画像の削除
 
