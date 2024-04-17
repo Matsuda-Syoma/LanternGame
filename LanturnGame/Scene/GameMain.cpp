@@ -223,6 +223,19 @@ AbstractScene* GameMain::Update()
 
 	}
 
+	// 兵隊とプレイヤーの当たり判定
+	if (soldier->HitSphere(player) && hitmoment == false) {
+		if (player->GetFlg() == false) {
+			life--;
+			hitmoment = true;
+			player->SetFlg(true);
+		}
+	}
+	else if (!soldier->HitSphere(player) && hitmoment == true) {
+		hitmoment = false;
+	}
+
+
 	if (!ratioflg) {
 		ratio = 0;
 	}
