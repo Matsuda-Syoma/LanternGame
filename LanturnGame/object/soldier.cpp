@@ -1,6 +1,7 @@
 #include "soldier.h"
 #include "../Utility/common.h"
 #include "DxLib.h"
+#include "math.h"
 
 Soldier::Soldier()
 {
@@ -28,7 +29,9 @@ void Soldier::Initialize()
 
 void Soldier::Upadate(Vector2D PL)
 {
+	//’†S“_‚Ì‹——£
 	length = location - PL;
+	CD = sqrtf(length.x * length.x + length.y * length.y);
 
 	if (length.x <= 0)
 	{
@@ -46,6 +49,11 @@ void Soldier::Upadate(Vector2D PL)
 	{
 		location.y -= speed;
 	}	
+	
+	if (radius *2 >= CD)
+	{
+		finalize();
+	}
 }
 
 void Soldier::Draw(Vector2D PL)
@@ -79,6 +87,6 @@ void Soldier::Draw(Vector2D PL)
 
 void Soldier::finalize()
 {
-	//‰æ‘œ‚Ìíœ
 
+	/*printfDx("•ß‚Ü‚¦‚½\n");*/
 }
