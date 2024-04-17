@@ -24,6 +24,25 @@ void Bomb::Update()
 	}
 	location += velocity * speed;
 	location += knockback;
+
+	// âÊñ äOÇ…èoÇ»Ç¢ÇÊÇ§Ç…
+
+	if (location.x < -GM_MAX_MAPSIZE)
+	{
+		location.x = -GM_MAX_MAPSIZE;
+	}
+	if (location.x >= GM_MAX_MAPSIZE - radius)
+	{
+		location.x = GM_MAX_MAPSIZE - radius;
+	}
+	if (location.y < -GM_MAX_MAPSIZE)
+	{
+		location.y = -GM_MAX_MAPSIZE;
+	}
+	if (location.y >= GM_MAX_MAPSIZE - radius)
+	{
+		location.y = GM_MAX_MAPSIZE - radius;
+	}
 }
 
 void Bomb::Draw(Vector2D loc) const

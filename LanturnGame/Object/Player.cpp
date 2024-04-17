@@ -102,23 +102,23 @@ void Player::Movement()
 	}
 
 	// 画面外に出ないように
-	/*
-	if (location.x < 0)
+	
+	if (location.x < -GM_MAX_MAPSIZE)
 	{
-		location.x = 0;
+		location.x = -GM_MAX_MAPSIZE;
 	}
-	if (location.x >= 1280.0f - radius)
+	if (location.x >= GM_MAX_MAPSIZE - radius)
 	{
-		location.x = 1280.0f - radius;
+		location.x = GM_MAX_MAPSIZE - radius;
 	}
-	if (location.y < 0)
+	if (location.y < -GM_MAX_MAPSIZE)
 	{
-		location.y = 0;
+		location.y = -GM_MAX_MAPSIZE;
 	}
-	if (location.y >= 720.0f - radius)
+	if (location.y >= GM_MAX_MAPSIZE - radius)
 	{
-		location.y = 720.0f - radius;
-	}*/
+		location.y = GM_MAX_MAPSIZE - radius;
+	}
 }
 
 // 無敵時間

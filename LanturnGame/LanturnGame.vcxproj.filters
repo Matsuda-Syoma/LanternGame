@@ -11,9 +11,9 @@
     <ClCompile Include="Utility\LoadSounds.cpp" />
     <ClCompile Include="Object\Bomb.cpp" />
     <ClCompile Include="Object\Explosion.cpp" />
-    <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="Object\SphereCollider.cpp" />
     <ClCompile Include="stage.cpp" />
+    <ClCompile Include="Object\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object\soldier.h" />
