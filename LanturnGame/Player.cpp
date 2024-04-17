@@ -20,6 +20,8 @@ void Player::Update()
 {
 	Movement();
 	location += velocity;
+
+	// 爆発に当たったら無敵時間
 	if (hitflg == true) {
 		Invincible();
 	}
@@ -119,6 +121,7 @@ void Player::Movement()
 	}*/
 }
 
+// 無敵時間
 void Player::Invincible()
 {
 	cun++;
