@@ -6,7 +6,7 @@ GameMain::GameMain()
 {
 	Sounds::LoadSounds();
 	player = new Player;
-
+	soldier = new Soldier;
 	bomb = new Bomb * [GM_MAX_ENEMY_BOMB];
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		bomb[i] = nullptr;
@@ -32,6 +32,7 @@ GameMain::~GameMain()
 AbstractScene* GameMain::Update()
 {
 	player->Update();
+	soldier->Upadate(player->GetLocation());
 	// 敵の数を見る
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 
@@ -214,7 +215,10 @@ void GameMain::Draw() const
 		}
 	}
 
+	soldier->Draw(player->GetLocation());
+
 	player->Draw(0);
+	
 
 	DrawFormatString(640, 10, 0xffffff, "%06d", score);
 
