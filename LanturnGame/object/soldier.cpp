@@ -14,8 +14,8 @@ Soldier::~Soldier()
 
 void Soldier::Initialize()
 {
-	speed = 0;	//速度の初期化
-	location = (0.0f,0.0f);	//座標の初期化
+	speed = 2;	//速度の初期化
+	location = (100.0f,100.0f);	//座標の初期化
 
 	//画像の読み込みと画像があるかの確認
 	/*image = LoadGraph();
@@ -45,13 +45,12 @@ void Soldier::Upadate(Vector2D PL)
 	if (length.y >= 0)
 	{
 		location.y -= speed;
-	}
-	//Move(PL);	//座標を比べて兵隊の移動の向きを変える	
+	}	
 }
 
 void Soldier::Draw(Vector2D PL)
 {
-	DrawCircle(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 0xffffff, true, true);
+	DrawCircle(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 0xf14f5f, true, true);
 	/*DrawGraph(location.x, location.y, image, TRUE);*/
 }
 

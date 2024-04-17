@@ -31,8 +31,8 @@ GameMain::~GameMain()
 
 AbstractScene* GameMain::Update()
 {
-	player->Update();
 	soldier->Upadate(player->GetLocation());
+	player->Update();
 	// 敵の数を見る
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 
