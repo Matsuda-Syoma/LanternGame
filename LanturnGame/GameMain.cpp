@@ -176,22 +176,24 @@ AbstractScene* GameMain::Update()
 				SetCameraShake(GetRand(8) + 4);
 				bomb[i] = nullptr;
 				delete bomb[i];
-				break;
+				// break;
+				continue;
 			}
 		}
-		else {
-			bomb[i] = new Bomb;
-			if ((bool)GetRand(1)) {
-				bomb[i]->SetLocation(Vector2D(
-					player->GetLocation().x - (SCREEN_WIDTH / 2), 
-					player->GetLocation().y - (SCREEN_WIDTH / 2) + GetRand(SCREEN_HEIGHT)));
-			}
-			else {
-				bomb[i]->SetLocation(Vector2D(
-					player->GetLocation().x - (SCREEN_WIDTH / 2) + GetRand(SCREEN_WIDTH),
-					player->GetLocation().y - (SCREEN_HEIGHT / 2)));
-			}
-		}
+		// スポーン仮
+		//else {
+		//	bomb[i] = new Bomb;
+		//	if ((bool)GetRand(1)) {
+		//		bomb[i]->SetLocation(Vector2D(
+		//			player->GetLocation().x - (SCREEN_WIDTH / 2), 
+		//			player->GetLocation().y - (SCREEN_WIDTH / 2) + GetRand(SCREEN_HEIGHT)));
+		//	}
+		//	else {
+		//		bomb[i]->SetLocation(Vector2D(
+		//			player->GetLocation().x - (SCREEN_WIDTH / 2) + GetRand(SCREEN_WIDTH),
+		//			player->GetLocation().y - (SCREEN_HEIGHT / 2)));
+		//	}
+		//}
 	}
 
 	ratioflg = false;
@@ -269,7 +271,17 @@ void GameMain::Draw() const
 	for (int i = 0; i < life; i++) {
 		DrawRotaGraph(172 + (24 * i), 32, 1.0, 0.0, lifematchimage, true);
 	}
-	
+
+
+	DrawCircle(SCREEN_WIDTH - 128, 128, 104, 0x004400, true);
+	DrawCircle(SCREEN_WIDTH - 128, 128, 96, 0x88ff88, true);
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		if (bomb[i] != nullptr) {
+			DrawCircle(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / 16), 128 + (bomb[i]->GetLocation().y / 16), 2, 0xff0000, true);
+		}
+	}
+	DrawCircle(SCREEN_WIDTH - 128 + (player->GetLocation().x / 16), 128 + (player->GetLocation().y / 16), 2, 0x8888ff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void GameMain::Game()

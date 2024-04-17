@@ -23,7 +23,9 @@ void Explosion::Update()
 
 void Explosion::Draw(Vector2D loc) const
 {
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - count * 8);
 	DrawCircle(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 0xff4444, true, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 bool Explosion::Getflg() const
