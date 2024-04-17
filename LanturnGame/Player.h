@@ -4,6 +4,8 @@ class Player : public CharaBase
 {
 private:
 	Vector2D velocity;
+	bool hitflg = false;
+	int cun = 0;
 public:
 	Player();
 	~Player();
@@ -11,5 +13,9 @@ public:
 	void Update();
 	void Draw(int camerashake)const;
 	void Movement();
+	void Invincible();
+
+	bool GetFlg() const;
+	void SetFlg(bool b);
 };
 

@@ -20,11 +20,17 @@ void Player::Update()
 {
 	Movement();
 	location += velocity;
+	if (hitflg == true) {
+		Invincible();
+	}
 }
 
 void Player::Draw(int camerashake) const
 {
 	DrawCircle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, radius, 0xffff00, true, true);
+	if (hitflg == true) {
+		DrawString(10, 30, "Invincible", 0xffffff);
+	}
 }
 
 void Player::Movement()
@@ -111,4 +117,30 @@ void Player::Movement()
 	{
 		location.y = 720.0f - radius;
 	}*/
+}
+
+void Player::Invincible()
+{
+	cun++;
+	switch (cun)
+	{
+	case(0):
+		break;
+	case(180):
+		hitflg = false;
+		cun = 0;
+		break;
+	default:
+		break;
+	}
+}
+
+bool Player::GetFlg() const
+{
+	return hitflg;
+}
+
+void Player::SetFlg(bool b)
+{
+	this->hitflg = b;
 }
