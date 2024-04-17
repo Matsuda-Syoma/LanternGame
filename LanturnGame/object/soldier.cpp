@@ -1,5 +1,5 @@
 #include "soldier.h"
-#include "../common.h"
+#include "../Utility/common.h"
 #include "DxLib.h"
 
 Soldier::Soldier()

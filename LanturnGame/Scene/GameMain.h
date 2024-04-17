@@ -5,6 +5,7 @@
 #include "../Object/Explosion.h"
 #include "../Object/Player.h"
 #include "../Object/BackGround.h"
+#include "../Object/Soldier.h"
 class GameMain : public AbstractScene
 {
 private:

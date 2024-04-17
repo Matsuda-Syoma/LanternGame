@@ -13,6 +13,7 @@
     <ClCompile Include="Object\Explosion.cpp" />
     <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="Object\SphereCollider.cpp" />
+    <ClCompile Include="stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object\soldier.h" />
@@ -30,5 +31,6 @@
     <ClInclude Include="Object\Explosion.h" />
     <ClInclude Include="Object\Player.h" />
     <ClInclude Include="Object\SphereCollider.h" />
+    <ClInclude Include="stage.h" />
   </ItemGroup>
 </Project>

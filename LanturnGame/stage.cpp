@@ -1,6 +1,6 @@
 #include"stage.h"
 #include"Dxlib.h"
-#include"common.h"
+#include"Utility/common.h"
 
 stage::stage() {
 
