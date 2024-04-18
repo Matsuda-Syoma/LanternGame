@@ -28,7 +28,6 @@ void Soldier::Initialize()
 
 void Soldier::Upadate(Vector2D PL)
 {
-	printfDx("x:%f y:%f\n", location.x, location.y);
 	Move(PL);
 }
 

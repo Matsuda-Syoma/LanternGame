@@ -57,8 +57,8 @@ AbstractScene* GameMain::Update()
 {
 
 
-	soldier->GetMapSize(MapSize);
-	soldier->Upadate(player->GetLocation());
+	/*soldier->GetMapSize(MapSize);
+	soldier->Upadate(player->GetLocation());*/
 	player->GetMapSize(MapSize);
 	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
 	{
