@@ -6,7 +6,21 @@ GameMain::GameMain()
 {
 	Sounds::LoadSounds();
 	player = new Player;
-	soldier = new Soldier;
+
+	soldier = new Soldier * [STAGE_ENEMY_MAX];
+	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	{
+		soldier[i] = nullptr;
+	}
+	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	{
+		soldier[i] = new Soldier;
+	}
+	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	{
+		soldier[i]->SetLocation(Vector2D(100 + GetRand(80) * 2, 100 + GetRand(80) * 2));
+	}
+
 	bomb = new Bomb * [GM_MAX_ENEMY_BOMB];
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		bomb[i] = nullptr;
@@ -46,7 +60,13 @@ GameMain::~GameMain()
 
 AbstractScene* GameMain::Update()
 {
-	soldier->Upadate(player->GetLocation());
+	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	{
+		if (soldier[i] != nullptr)
+		{
+			soldier[i]->Upadate(player->GetLocation());
+		}
+	}
 	player->Update();
 	// 敵の数を見る
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
@@ -232,16 +252,19 @@ AbstractScene* GameMain::Update()
 	}
 
 	// 兵隊とプレイヤーの当たり判定
-	if (soldier->HitSphere(player) && hitmoment == false) {
-		if (player->GetFlg() == false) {
-			life--;
-			hitmoment = true;
-			player->SetFlg(true);
-			soldier->finalize();
+	for (int i = 0; i < STAGE_ENEMY_MAX; i++) 
+	{
+		if (soldier[i]->HitSphere(player) && hitmoment == false) {
+			if (player->GetFlg() == false) {
+				life--;
+				hitmoment = true;
+				player->SetFlg(true);
+				soldier[i]->finalize();
+			}
 		}
-	}
-	else if (!soldier->HitSphere(player) && hitmoment == true) {
-		hitmoment = false;
+		else if (!soldier[i]->HitSphere(player) && hitmoment == true) {
+			hitmoment = false;
+		}
 	}
 
 
@@ -288,7 +311,14 @@ void GameMain::Draw() const
 		}
 	}
 
-	soldier->Draw(player->GetLocation());
+	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	{
+		if (soldier != nullptr)
+		{
+			soldier[i]->Draw(player->GetLocation());
+		}
+	}
+	
 
 	player->Draw(Camerashake);
 
