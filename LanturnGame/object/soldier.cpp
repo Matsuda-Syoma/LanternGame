@@ -15,21 +15,32 @@ Soldier::~Soldier()
 
 void Soldier::Initialize()
 {
-	speed = 2;	//ë¨ìxÇÃèâä˙âª
-	location = (100.0f,100.0f);	//ç¿ïWÇÃèâä˙âª
+	speed = 2;	//ÔøΩÔøΩÔøΩxÔøΩÃèÔøΩÔøΩÔøΩÔøΩÔøΩ
+	location = (100.0f,100.0f);	//ÔøΩÔøΩÔøΩWÔøΩÃèÔøΩÔøΩÔøΩÔøΩÔøΩ
 
-	//âÊëúÇÃì«Ç›çûÇ›Ç∆âÊëúÇ™Ç†ÇÈÇ©ÇÃämîF
+	//ÔøΩÊëúÔøΩÃì«Ç›çÔøΩÔøΩ›Ç∆âÊëúÔøΩÔøΩÔøΩÔøΩÔøΩÈÇ©ÔøΩÃämÔøΩF
 	/*image = LoadGraph();
 
 	if (image == -1)
 	{
-		throw("ï∫ë‡Ç™Ç†ÇËÇ‹ÇπÇÒÅB\n");
+		throw("ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ‹ÇÔøΩÔøΩÔøΩB\n");
 	}*/
 }
 
 void Soldier::Upadate(Vector2D PL)
 {
-	//íÜêSì_ÇÃãóó£
+	Move(PL);
+}
+
+void Soldier::Draw(Vector2D PL)
+{
+	DrawCircle(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 0xf14f5f, true, true);
+	/*DrawGraph(location.x, location.y, image, TRUE);*/
+}
+
+void Soldier::Move(Vector2D PL)
+{
+	//„Éó„É¨„Ç§„É§„Éº„Å®„ÅÆ‰∏≠ÂøÉÂ∫ßÊ®ô„ÅÆË∑ùÈõ¢
 	length = location - PL;
 	CD = sqrtf(length.x * length.x + length.y * length.y);
 
@@ -48,46 +59,11 @@ void Soldier::Upadate(Vector2D PL)
 	if (length.y >= 0)
 	{
 		location.y -= speed;
-	}	
-	
-	if (radius *2 >= CD)
-	{
-		finalize();
 	}
 }
 
-void Soldier::Draw(Vector2D PL)
+void Soldier::finalize()
 {
-	DrawCircle(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 0xf14f5f, true, true);
-	/*DrawGraph(location.x, location.y, image, TRUE);*/
-}
-
-//void Soldier::Move(Vector2D PL)
-//{
-//	length = location - PL;
-//
-//	if (length.x <= 0)
-//	{
-//		location.x += speed;
-//	}
-//	if (length.x >= 0)
-//	{
-//		location.x -= speed;
-//	}
-//	if (length.y <= 0)
-//	{
-//		location.y += speed;
-//	}
-//	if (length.y >= 0)
-//	{
-//		location.y -= speed;
-//	}
-//
-//}
-
-int Soldier::finalize()
-{
-	/*printfDx("ïﬂÇ‹Ç¶ÇΩ\n");*/
+	/*printfDx("Êçï„Åæ„Åà„Åü");*/
 	delete this;
-	return 0;
 }
