@@ -237,6 +237,7 @@ AbstractScene* GameMain::Update()
 			life--;
 			hitmoment = true;
 			player->SetFlg(true);
+			soldier->finalize();
 		}
 	}
 	else if (!soldier->HitSphere(player) && hitmoment == true) {
