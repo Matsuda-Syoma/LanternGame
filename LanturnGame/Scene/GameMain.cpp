@@ -93,12 +93,14 @@ AbstractScene* GameMain::Update()
 					}
 				}
 				if (temp != -1) {
+					// 距離が長いなら
 					if (length > 80) {
 						vvec = (bomb[temp]->GetLocation() - bomb[i]->GetLocation());
 						vvec /= length;
 						bomb[i]->SetVelocity(vvec);
 						break;
 					}
+					// 距離が近いなら
 					else if (length < 72) {
 						vvec = (bomb[i]->GetLocation() - bomb[temp]->GetLocation());
 						vvec /= length;
@@ -307,16 +309,16 @@ void GameMain::Draw() const
 	// DrawCircle(SCREEN_WIDTH - 128, 128, 104, 0x004400, true);
 	// DrawCircle(SCREEN_WIDTH - 128, 128, 96, 0x88ff88, true);
 	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
-	DrawBox(SCREEN_WIDTH - 128 - 96, 128 - 96, SCREEN_WIDTH - 128 + 96, 128 + 96, 0x8844ff, true);
+	DrawBox(SCREEN_WIDTH - 128 - (GM_MAX_MAPSIZE / 16), 128 - (GM_MAX_MAPSIZE / 16), SCREEN_WIDTH - 128 + (GM_MAX_MAPSIZE / 16), 128 + (GM_MAX_MAPSIZE / 16), 0x8844ff, true);
 	//DrawBoxAA(SCREEN_WIDTH - 128 - (104 * (MapSize / GM_MAX_MAPSIZE)), 128 - (104 * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + (104 * (MapSize / GM_MAX_MAPSIZE)), 128 + (104 * (MapSize / GM_MAX_MAPSIZE)), 0x004400, true);
-	DrawBoxAA(SCREEN_WIDTH - 128 - (96 * (MapSize / GM_MAX_MAPSIZE)), 128 - (96 * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + (96 * (MapSize / GM_MAX_MAPSIZE)), 128 + (96 * (MapSize / GM_MAX_MAPSIZE)), 0x88ff88, true);
+	DrawBoxAA(SCREEN_WIDTH - 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 0x88ff88, true);
 
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		if (bomb[i] != nullptr) {
-			DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / 96)), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / 96)), 2, 8, 0xff0000, true);
+			DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0xff0000, true);
 		}
 	}
-	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / 96)), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / 96)), 2, 8, 0x8888ff, true);
+	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
