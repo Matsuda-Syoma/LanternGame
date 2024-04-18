@@ -20,7 +20,7 @@ void Bomb::Update()
 		}
 	}
 	if (knockback != 0.0f) {
-		knockback /= 1.1;
+		knockback /= 1.1f;
 	}
 	location += velocity * speed;
 	location += knockback;
@@ -47,12 +47,12 @@ void Bomb::Update()
 
 void Bomb::Draw(Vector2D loc) const
 {
-	DrawCircle(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 0xffffff, true, true);
+	DrawCircleAA(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 16, 0xffffff, true, true);
 	if (expcnt % 60 > 30) {
-		DrawCircle(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 0x888888, true, true);
+		DrawCircleAA(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 16, 0x888888, true, true);
 	}
 	if (expflg) {
-		DrawFormatString((location.x - 4) + (-loc.x + (SCREEN_WIDTH / 2)), (location.y - 8) + (-loc.y + (SCREEN_HEIGHT / 2)), GetColor(255 - expcnt * 1.5, 0, 0), "%d", expcnt / 60);
+		DrawFormatString((int)((location.x - 4) + (-loc.x + (SCREEN_WIDTH / 2))), (int)((location.y - 8) + (-loc.y + (SCREEN_HEIGHT / 2))), GetColor(255 - (int)(expcnt * 1.5), 0, 0), "%d", expcnt / 60);
 	}
 
 }
@@ -94,5 +94,5 @@ int Bomb::GetMode()
 
 void Bomb::SetKnockBack(Vector2D vec, int i)
 {
-	this->knockback = vec * i;
+	this->knockback = vec * (float)i;
 }

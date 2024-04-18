@@ -17,12 +17,9 @@ public:
 	void Upadate(Vector2D PL);
 	//描画
 	void Draw(Vector2D PL);
-
 	//移動
 	void Move(Vector2D PL);
-
 private:
 	int image;	//画像イメージ
 	Vector2D length;
 };
-

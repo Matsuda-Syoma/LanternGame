@@ -17,14 +17,14 @@ void Explosion::Update()
 			flg = false;
 		}
 		count++;
-		radius = count * 4;
+		radius = (float)count * 4;
 	}
 }
 
 void Explosion::Draw(Vector2D loc) const
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - count * 8);
-	DrawCircle(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 0xff4444, true, true);
+	DrawCircleAA(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 16, 0xff4444, true, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
