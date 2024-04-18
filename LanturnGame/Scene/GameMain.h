@@ -6,6 +6,7 @@
 #include "../Object/Player.h"
 #include "../Object/BackGround.h"
 #include "../Object/Soldier.h"
+#include "../Utility/common.h"
 class GameMain : public AbstractScene
 {
 private:
@@ -18,6 +19,9 @@ private:
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
 	unsigned int ratio = 0;
+	float MapSize = GM_MAX_MAPSIZE;
+	float MapCloseSpeed = 1;
+	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
 
 	int life = 3;
 	int lifeimage;
@@ -40,5 +44,6 @@ public:
 	void SpawnExplosion(Vector2D loc);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
+	void SetMapSize(int i);
 };
 
