@@ -24,5 +24,7 @@ private:
 	int image;	//画像イメージ
 	Vector2D length;
 	int CD;//中心点の距離
+
+	float SY,SX;
 };
 

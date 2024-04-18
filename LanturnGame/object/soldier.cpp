@@ -16,8 +16,7 @@ Soldier::~Soldier()
 void Soldier::Initialize()
 {
 	speed = 2;	//���x�̏�����
-	location = (100.0f,100.0f);	//���W�̏�����
-
+	
 	//�摜�̓ǂݍ��݂Ɖ摜�����邩�̊m�F
 	/*image = LoadGraph();
 
@@ -29,6 +28,7 @@ void Soldier::Initialize()
 
 void Soldier::Upadate(Vector2D PL)
 {
+	printfDx("x:%f y:%f\n", location.x, location.y);
 	Move(PL);
 }
 
@@ -43,6 +43,7 @@ void Soldier::Move(Vector2D PL)
 	//プレイヤーとの中心座標の距離
 	length = location - PL;
 	CD = sqrtf(length.x * length.x + length.y * length.y);
+
 
 	if (length.x <= 0)
 	{

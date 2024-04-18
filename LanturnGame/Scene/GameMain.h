@@ -13,7 +13,7 @@ private:
 	Bomb** bomb;
 	Explosion** explosion;
 	Player* player;
-	Soldier* soldier;
+	Soldier** soldier;
 	BackGround** background;
 
 	unsigned int game_frametime = 0;
