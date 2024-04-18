@@ -102,21 +102,21 @@ void Player::Movement()
 
 	// 画面外に出ないように
 	
-	if (location.x < -GM_MAX_MAPSIZE + radius)
+	if (location.x < -MapSize + radius)
 	{
-		location.x = -GM_MAX_MAPSIZE + radius;
+		location.x = -MapSize + radius;
 	}
-	if (location.x >= GM_MAX_MAPSIZE - radius)
+	if (location.x >= MapSize - radius)
 	{
-		location.x = GM_MAX_MAPSIZE - radius;
+		location.x = MapSize - radius;
 	}
-	if (location.y < -GM_MAX_MAPSIZE + radius)
+	if (location.y < -MapSize + radius)
 	{
-		location.y = -GM_MAX_MAPSIZE + radius;
+		location.y = -MapSize + radius;
 	}
-	if (location.y >= GM_MAX_MAPSIZE - radius)
+	if (location.y >= MapSize - radius)
 	{
-		location.y = GM_MAX_MAPSIZE - radius;
+		location.y = MapSize - radius;
 	}
 }
 

@@ -11,6 +11,7 @@
 #define GM_MAX_EFFECT_EXPLOSION 100
 
 #define GM_MAX_MAPSIZE 1500
+#define GM_MIN_MAPSIZE 320
 
 #define IcefloorR_x 100
 #define IcefloorR_y 100
