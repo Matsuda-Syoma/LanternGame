@@ -11,7 +11,7 @@ public:
 	//初期化
 	void Initialize();
 	//終了時
-	void finalize();
+	int finalize();
 	//更新
 	void Upadate(Vector2D PL);
 	//描画

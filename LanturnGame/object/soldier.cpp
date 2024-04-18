@@ -85,8 +85,9 @@ void Soldier::Draw(Vector2D PL)
 //
 //}
 
-void Soldier::finalize()
+int Soldier::finalize()
 {
-
 	/*printfDx("•ß‚Ü‚¦‚½\n");*/
+	delete this;
+	return 0;
 }
