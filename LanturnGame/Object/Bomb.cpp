@@ -25,7 +25,7 @@ void Bomb::Update()
 	location += velocity * speed;
 	location += knockback;
 
-	// ‰æ–ÊŠO‚Éo‚È‚¢‚æ‚¤‚É
+	// ï¿½ï¿½ÊŠOï¿½Éoï¿½È‚ï¿½ï¿½æ‚¤ï¿½ï¿½
 
 	if (location.x < -MapSize + radius)
 	{

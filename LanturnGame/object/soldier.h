@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CharaBase.h"
-#include "Player.h"
 
 class Soldier : public CharaBase
 {
@@ -22,4 +21,7 @@ public:
 private:
 	int image;	//画像イメージ
 	Vector2D length;
+	int CD;//中心点の距離
+
+	float SY,SX;
 };
