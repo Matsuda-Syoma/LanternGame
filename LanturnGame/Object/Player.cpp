@@ -5,7 +5,7 @@
 #include "../Utility/common.h"
 Player::Player()
 {
-	speed = 10;
+	speed = 5;
 }
 
 Player::~Player()
@@ -56,11 +56,11 @@ void Player::Movement()
 	}
 	if (fabsf(InputControl::GetLeftStick().x) > 0.1)
 	{
-		velocity += Vector2D(InputControl::GetLeftStick().x, 0.0f);
+		velocity = Vector2D(InputControl::GetLeftStick().x * speed, GetVelocity().y);
 	}
 	if (fabsf(InputControl::GetLeftStick().y) > 0.1)
 	{
-		velocity += Vector2D(0.0f, -InputControl::GetLeftStick().y);
+		velocity = Vector2D(GetVelocity().x, -InputControl::GetLeftStick().y * speed);
 	}
 	// 速度の制限(Y)
 	if (velocity.y > speed)
@@ -81,21 +81,20 @@ void Player::Movement()
 	{
 		velocity.x = -speed;
 	}
-
-	// 減速(X)
-	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) || 
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) || 
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) ||
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) ||
-		fabsf(InputControl::GetLeftStick().y) < 0.2 ||
+	// 減速
+	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && 
+		!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && 
+		!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) &&
+		!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
+		fabsf(InputControl::GetLeftStick().y) < 0.2 &&
 		fabsf(InputControl::GetLeftStick().x) < 0.2)
 	{
 		velocity /= 1.2;
-		if (fabs(velocity.x) < 0.1)
+		if (fabs(velocity.x) < 0.01)
 		{
 			velocity.x = 0;
 		}
-		if (fabs(velocity.y) < 0.1)
+		if (fabs(velocity.y) < 0.01)
 		{
 			velocity.y = 0;
 		}
@@ -103,21 +102,21 @@ void Player::Movement()
 
 	// 画面外に出ないように
 	
-	if (location.x < -GM_MAX_MAPSIZE)
+	if (location.x < -MapSize + radius)
 	{
-		location.x = -GM_MAX_MAPSIZE;
+		location.x = -MapSize + radius;
 	}
-	if (location.x >= GM_MAX_MAPSIZE - radius)
+	if (location.x >= MapSize - radius)
 	{
-		location.x = GM_MAX_MAPSIZE - radius;
+		location.x = MapSize - radius;
 	}
-	if (location.y < -GM_MAX_MAPSIZE)
+	if (location.y < -MapSize + radius)
 	{
-		location.y = -GM_MAX_MAPSIZE;
+		location.y = -MapSize + radius;
 	}
-	if (location.y >= GM_MAX_MAPSIZE - radius)
+	if (location.y >= MapSize - radius)
 	{
-		location.y = GM_MAX_MAPSIZE - radius;
+		location.y = MapSize - radius;
 	}
 }
 
@@ -146,4 +145,9 @@ bool Player::GetFlg() const
 void Player::SetFlg(bool b)
 {
 	this->hitflg = b;
+}
+
+Vector2D Player::GetVelocity()
+{
+	return this->velocity;
 }

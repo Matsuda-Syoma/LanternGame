@@ -25,23 +25,23 @@ void Bomb::Update()
 	location += velocity * speed;
 	location += knockback;
 
-	// ‰æ–ÊŠO‚Éo‚È‚¢‚æ‚¤‚É
+	// ï¿½ï¿½ÊŠOï¿½Éoï¿½È‚ï¿½ï¿½æ‚¤ï¿½ï¿½
 
-	if (location.x < -GM_MAX_MAPSIZE)
+	if (location.x < -MapSize + radius)
 	{
-		location.x = -GM_MAX_MAPSIZE;
+		location.x = -MapSize + radius;
 	}
-	if (location.x >= GM_MAX_MAPSIZE - radius)
+	if (location.x >= MapSize - radius)
 	{
-		location.x = GM_MAX_MAPSIZE - radius;
+		location.x = MapSize - radius;
 	}
-	if (location.y < -GM_MAX_MAPSIZE)
+	if (location.y < -MapSize + radius)
 	{
-		location.y = -GM_MAX_MAPSIZE;
+		location.y = -MapSize + radius;
 	}
-	if (location.y >= GM_MAX_MAPSIZE - radius)
+	if (location.y >= MapSize - radius)
 	{
-		location.y = GM_MAX_MAPSIZE - radius;
+		location.y = MapSize - radius;
 	}
 }
 
