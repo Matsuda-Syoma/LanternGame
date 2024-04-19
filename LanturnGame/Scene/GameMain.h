@@ -28,6 +28,7 @@ private:
 	int lifematchimage;
 	bool hitmoment = false;
 	bool ratioflg = false;
+	bool resultflg = false;
 
 	__int8 ui_ratio_framecount = 0;
 
