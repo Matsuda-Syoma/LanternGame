@@ -1,6 +1,5 @@
 #pragma once
 
-// �񎟌��x�N�g���N���X
 class Vector2D
 {
 public:

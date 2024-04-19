@@ -18,7 +18,7 @@ GameMain::GameMain()
 	}
 	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
 	{
-		soldier[i]->SetLocation(Vector2D(100 + GetRand(80) * 2, 100 + GetRand(80) * 2));
+		soldier[i]->SetLocation(Vector2D((float)(100 + GetRand(80) * 2), (float)(100 + GetRand(80) * 2)));
 	}
 
 	bomb = new Bomb * [GM_MAX_ENEMY_BOMB];
@@ -31,11 +31,9 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
 		explosion[i] = nullptr;
 	}
-	//explosion[0] = new Explosion;
-	//explosion[0]->SetLocation(bomb[0]->GetLocation());
 
-	background = new BackGround * [(int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2)];
-	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2); i++) {
+	background = new BackGround * [(int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2) + 1];
+	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2) + 1; i++) {
 		background[i] = nullptr;
 	}
 	int backnum = 0;
@@ -279,7 +277,7 @@ AbstractScene* GameMain::Update()
 				if (i < MaxEnemyBomb) {
 					bomb[i] = new Bomb;
 					while (1) {
-						Vector2D spawnloc = (Vector2D((float)GetRand(MapSize * 2) - MapSize, (float)GetRand(MapSize * 2) - MapSize));
+						Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 						if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
 
 							powf((spawnloc.x - player->GetLocation().x), 2) +
@@ -395,7 +393,7 @@ AbstractScene* GameMain::Update()
 	if (MapSize > GM_MIN_MAPSIZE) {
 		MapSize -= MapCloseSpeed / 10;
 	}
-	MaxEnemyBomb = GM_MAX_ENEMY_BOMB * (MapSize / GM_MAX_MAPSIZE);
+	MaxEnemyBomb = (int)(GM_MAX_ENEMY_BOMB * (MapSize / GM_MAX_MAPSIZE));
 	game_frametime++;
 	CameraUpdate();
 
@@ -408,7 +406,7 @@ void GameMain::Draw() const
 
 	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2); i++) {
 		if (background[i] != nullptr) {
-			background[i]->Draw(player->GetLocation() + +Camerashake);
+			background[i]->Draw(player->GetLocation() + +(float)Camerashake);
 		}
 	}
 
@@ -426,7 +424,7 @@ void GameMain::Draw() const
 				powf((bomb[i]->GetLocation().x - player->GetLocation().x), 2) +
 				powf((bomb[i]->GetLocation().y - player->GetLocation().y), 2))))
 			{
-				bomb[i]->Draw(player->GetLocation() + +Camerashake);
+				bomb[i]->Draw(player->GetLocation() + +(float)Camerashake);
 			}
 		}
 	}
@@ -436,7 +434,7 @@ void GameMain::Draw() const
 				powf((explosion[i]->GetLocation().x - player->GetLocation().x), 2) +
 				powf((explosion[i]->GetLocation().y - player->GetLocation().y), 2))))
 			{
-				explosion[i]->Draw(player->GetLocation() + Camerashake);
+				explosion[i]->Draw(player->GetLocation() + (float)Camerashake);
 			}
 		}
 	}
@@ -512,7 +510,7 @@ void GameMain::SpawnExplosion(Vector2D loc) {
 
 void GameMain::CameraUpdate() {
 	if (CamerashakeCount > 0) {
-		Camerashake = round(CamerashakeCount / 2);
+		Camerashake = (int)round((double)CamerashakeCount / 2);
 		if (CamerashakeCount % 2 == 0) {
 			Camerashake *= -1;
 		}
@@ -525,5 +523,5 @@ void GameMain::SetCameraShake(int _i) {
 }
 
 void GameMain::SetMapSize(int i) {
-	MapSize = i;
+	MapSize = (float)i;
 }

@@ -3,10 +3,10 @@
 class CharaBase : public SphereCollider
 {
 protected:
-	float speed;
-	float MapSize;
+	float speed = 0;
+	float MapSize = 1000;
 public:
-	virtual void GetMapSize(int i) {
+	virtual void GetMapSize(float i) {
 		MapSize = i;
 	}
 };
