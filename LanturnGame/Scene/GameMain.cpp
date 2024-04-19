@@ -18,7 +18,7 @@ GameMain::GameMain()
 	}
 	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
 	{
-		soldier[i]->SetLocation(Vector2D(100 + GetRand(80) * 2, 100 + GetRand(80) * 2));
+		soldier[i]->SetLocation(Vector2D((float)(100 + GetRand(80) * 2), (float)(100 + GetRand(80) * 2)));
 	}
 
 	bomb = new Bomb * [GM_MAX_ENEMY_BOMB];
@@ -32,8 +32,8 @@ GameMain::GameMain()
 		explosion[i] = nullptr;
 	}
 
-	background = new BackGround * [(int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2)];
-	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2); i++) {
+	background = new BackGround * [(int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2) + 1];
+	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2) + 1; i++) {
 		background[i] = nullptr;
 	}
 	int backnum = 0;

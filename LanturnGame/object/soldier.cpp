@@ -33,7 +33,7 @@ void Soldier::Upadate(Vector2D PL)
 
 void Soldier::Draw(Vector2D PL)
 {
-	DrawCircle(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 0xf14f5f, true, true);
+	DrawCircleAA(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 16, 0xf14f5f, true, true);
 	/*DrawGraph(location.x, location.y, image, TRUE);*/
 }
 
@@ -41,7 +41,7 @@ void Soldier::Move(Vector2D PL)
 {
 	//プレイヤーとの中心座標の距離
 	length = location - PL;
-	CD = sqrtf(length.x * length.x + length.y * length.y);
+	CD = (int)sqrtf(length.x * length.x + length.y * length.y);
 
 
 	if (length.x <= 0)

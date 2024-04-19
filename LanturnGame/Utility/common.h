@@ -18,11 +18,6 @@
 #define IcefloorL_x 100
 #define IcefloorL_y 100
 
-#define GM_MAX_BACKGROUND_WIDTH 47
-#define GM_MAX_BACKGROUND_HEIGHT 47
-#define GM_MAX_BACKGROUND_WIDTH 22
-#define GM_MAX_BACKGROUND_HEIGHT 18
-
 #define STAGE_ENEMY_MAX 3
 #define CREATE_ENEMY_TIME 10
 
