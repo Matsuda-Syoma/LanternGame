@@ -239,6 +239,7 @@ AbstractScene* GameMain::Update()
 				}
 			}
 			else if (!explosion[i]->HitSphere(player) && hitmoment == true) {
+
 				hitmoment = false;
 			}
 
@@ -253,13 +254,22 @@ AbstractScene* GameMain::Update()
 	// 兵隊とプレイヤーの当たり判定
 	for (int i = 0; i < STAGE_ENEMY_MAX; i++) 
 	{
-		if (soldier[i]->HitSphere(player) && hitmoment == false) {
-			if (player->GetFlg() == false) {
-				life--;
-				hitmoment = true;
-				player->SetFlg(true);
-				soldier[i]->finalize();
-			}
+		//兵隊が当たった時
+		if (soldier[i]->HitSphere(player)) 
+		{
+				if (player->GetFlg() == false) {
+					life--;
+					hitmoment = true;
+					player->SetFlg(true);
+					soldier[i]->finalize();
+				}
+				else
+				{
+					Vector2D ev = (soldier[i]->GetLocation() - player->GetLocation());
+					float l = soldier[i]->direction(player->GetLocation());
+					ev /= l;
+					soldier[i]->Knockback(ev, 50);
+				}
 		}
 		else if (!soldier[i]->HitSphere(player) && hitmoment == true) {
 			hitmoment = false;
