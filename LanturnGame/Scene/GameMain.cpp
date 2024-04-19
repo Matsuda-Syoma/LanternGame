@@ -6,6 +6,7 @@ GameMain::GameMain()
 {
 	Sounds::LoadSounds();
 	BackGround::LoadImages();
+	Bomb::LoadImages();
 	player = new Player;
 
 	soldier = new Soldier * [STAGE_ENEMY_MAX];
