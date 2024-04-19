@@ -291,6 +291,7 @@ AbstractScene* GameMain::Update()
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
 			life = 3;
 			resultflg = false;
+
 		}
 	}
 

@@ -43,22 +43,28 @@ void Soldier::Move(Vector2D PL)
 	length = location - PL;
 	CD = (int)sqrtf(length.x * length.x + length.y * length.y);
 
+	if (knockback != 0.0f) {
+		knockback /= 1.1f;
+	}
+
+	location += knockback;
+
 
 	if (length.x <= 0)
 	{
-		location.x += speed;
+		location += Vector2D(5.0f,0.0f);
 	}
 	if (length.x >= 0)
 	{
-		location.x -= speed;
+		location -= Vector2D(5.0f, 0.0f);
 	}
 	if (length.y <= 0)
 	{
-		location.y += speed;
+		location += Vector2D(0.0f, 5.0f);
 	}
 	if (length.y >= 0)
 	{
-		location.y -= speed;
+		location -= Vector2D(0.0f, 5.0f);
 	}
 }
 
@@ -66,4 +72,14 @@ void Soldier::finalize()
 {
 	/*printfDx("捕まえた");*/
 	delete this;
+}
+
+float Soldier::direction(Vector2D PL)
+{
+	return  sqrtf(powf((PL.x - location.x), 2) + powf((PL.y - location.y), 2));
+}
+
+void Soldier::Knockback(Vector2D V, float P)
+{
+	this->knockback = V * P;
 }
