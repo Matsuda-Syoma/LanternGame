@@ -54,11 +54,11 @@ void Player::Movement()
 	{
 		velocity += Vector2D(0.0f, -0.5f);
 	}
-	if (fabsf(InputControl::GetLeftStick().x) > 0.1)
+	if (fabsf(InputControl::GetLeftStick().x) > deadzone)
 	{
 		velocity = Vector2D(InputControl::GetLeftStick().x * speed, GetVelocity().y);
 	}
-	if (fabsf(InputControl::GetLeftStick().y) > 0.1)
+	if (fabsf(InputControl::GetLeftStick().y) > deadzone)
 	{
 		velocity = Vector2D(GetVelocity().x, -InputControl::GetLeftStick().y * speed);
 	}
@@ -86,8 +86,8 @@ void Player::Movement()
 		!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && 
 		!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) &&
 		!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
-		fabsf(InputControl::GetLeftStick().y) < 0.2 &&
-		fabsf(InputControl::GetLeftStick().x) < 0.2)
+		fabsf(InputControl::GetLeftStick().y) < deadzone &&
+		fabsf(InputControl::GetLeftStick().x) < deadzone)
 	{
 		velocity /= 1.2f;
 		if (fabs(velocity.x) < 0.01)
