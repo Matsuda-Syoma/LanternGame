@@ -16,8 +16,7 @@ Soldier::~Soldier()
 void Soldier::Initialize()
 {
 	speed = 2;	//���x�̏�����
-	
-	//�摜�̓ǂݍ��݂Ɖ摜�����邩�̊m�F
+
 	/*image = LoadGraph();
 
 	if (image == -1)
@@ -50,19 +49,19 @@ void Soldier::Move(Vector2D PL)
 	location += knockback;
 
 
-	if (length.x <= 0)
+	if (length.x < 0)
 	{
 		location += Vector2D(5.0f,0.0f);
 	}
-	if (length.x >= 0)
+	if (length.x > 0)
 	{
 		location -= Vector2D(5.0f, 0.0f);
 	}
-	if (length.y <= 0)
+	if (length.y <0)
 	{
 		location += Vector2D(0.0f, 5.0f);
 	}
-	if (length.y >= 0)
+	if (length.y > 0)
 	{
 		location -= Vector2D(0.0f, 5.0f);
 	}
