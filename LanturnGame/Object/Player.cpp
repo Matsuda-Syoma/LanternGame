@@ -14,6 +14,7 @@ Player::~Player()
 
 void Player::Init()
 {
+	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
 }
 
 void Player::Update()
@@ -29,7 +30,22 @@ void Player::Update()
 
 void Player::Draw(int camerashake) const
 {
-	DrawCircle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, (int)radius, 0xffff00, true, true);
+	/*DrawCircle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, (int)radius, 0xffff00, true, true);*/
+
+	if (direction == 0) {
+		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[1], true);
+	}
+	else if (direction == 1){
+		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[4], true);
+	}
+	else if (direction == 2){
+		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[7], true);
+	}
+	else if (direction == 3) {
+		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[10], true);
+	}
+	
+
 	if (hitflg == true) {
 		DrawString(10, 30, "Invincible", 0xffffff);
 	}
@@ -41,18 +57,22 @@ void Player::Movement()
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
 	{
 		velocity += Vector2D(-0.5f, 0.0f);
+		direction = 1;
 	}
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
 	{
 		velocity += Vector2D(0.5f, 0.0f);
+		direction = 2;
 	}
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
 	{
 		velocity += Vector2D(0.0f, 0.5f);
+		direction = 0;
 	}
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
 	{
 		velocity += Vector2D(0.0f, -0.5f);
+		direction = 3;
 	}
 	if (fabsf(InputControl::GetLeftStick().x) > 0.1)
 	{

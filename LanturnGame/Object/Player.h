@@ -6,6 +6,9 @@ private:
 	Vector2D velocity;
 	bool hitflg = false;
 	int cun = 0;
+	int playerimg[12];
+	int direction = 0;	// 
+
 public:
 	Player();
 	~Player();
