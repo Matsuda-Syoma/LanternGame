@@ -67,6 +67,14 @@ AbstractScene* GameMain::Update()
 			{
 				soldier[i]->Upadate(player->GetLocation());
 			}
+			for (int j; j < STAGE_ENEMY_MAX; j++)
+			{
+				ev = (soldier[i]->GetLocation() - soldier[j]->GetLocation());
+				l = soldier[i]->direction(soldier[j]->GetLocation());
+				ev /= l;
+				soldier[i]->Knockback(ev, 5);
+				soldier[j]->Knockback(ev, 5);
+			}
 		}
 		player->Update();
 		// 敵の数を見る
@@ -266,8 +274,8 @@ AbstractScene* GameMain::Update()
 				}
 				else
 				{
-					Vector2D ev = (soldier[i]->GetLocation() - player->GetLocation());
-					float l = soldier[i]->direction(player->GetLocation());
+					ev = (soldier[i]->GetLocation() - player->GetLocation());
+					l = soldier[i]->direction(player->GetLocation());
 					ev /= l;
 					soldier[i]->Knockback(ev,50);
 				}

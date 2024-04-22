@@ -35,6 +35,8 @@ private:
 	int CamerashakeCount = 0;
 	int Camerashake = 0;
 
+	Vector2D ev;
+	float l;
 public:
 	GameMain();
 	~GameMain();
