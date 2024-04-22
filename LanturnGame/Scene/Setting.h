@@ -2,6 +2,8 @@
 #include "AbstractScene.h"
 class Setting : public AbstractScene
 {
+private:
+	float deadzone;
 public:
 	Setting();
 	~Setting();

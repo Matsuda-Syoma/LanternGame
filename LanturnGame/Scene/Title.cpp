@@ -57,7 +57,7 @@ AbstractScene* Title::Update()
 			break;
 		}
 	}
-	return this;
+	return new Setting;
 }
 
 void Title::Draw() const
