@@ -8,6 +8,7 @@ GameMain::GameMain()
 	BackGround::LoadImages();
 	Bomb::LoadImages();
 	player = new Player;
+	player->Init();
 	stage = new Stage;
 	stage->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 
