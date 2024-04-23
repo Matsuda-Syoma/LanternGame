@@ -18,10 +18,13 @@ public:
 	void Draw(Vector2D PL);
 	//移動
 	void Move(Vector2D PL);
+	//向き
+	float direction(Vector2D PL);
+	//ノックバック
+	void Knockback(Vector2D V, float P);
 private:
 	int image;	//画像イメージ
-	Vector2D length;
+	Vector2D length = 0;
+	Vector2D knockback = 0;
 	int CD;//中心点の距離
-
-	float SY,SX;
 };

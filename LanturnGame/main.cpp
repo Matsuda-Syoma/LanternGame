@@ -3,6 +3,7 @@
 #include"Utility/FPSController.h"
 #include"Scene/SceneManager.h"
 #include"Scene/GameMain.h"
+#include"Scene/Title.h"
 #include"Utility/InputControl.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
@@ -23,7 +24,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	//�`����ʂ𗠂ɂ���i�_�u���o�b�t�@�����O�j
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	SceneManager scene = (dynamic_cast<AbstractScene*>(new GameMain()));
+	SceneManager scene = (dynamic_cast<AbstractScene*>(new Title()));
 
 	FpsController FPSct(FRAMERATE, UPDATETIME);
 

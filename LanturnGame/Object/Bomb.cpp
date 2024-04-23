@@ -2,6 +2,8 @@
 #include "DxLib.h"
 #include "../Utility/common.h"
 #include <math.h>
+
+int Bomb::images;
 Bomb::Bomb()
 {
 	speed = 2;
@@ -47,14 +49,14 @@ void Bomb::Update()
 
 void Bomb::Draw(Vector2D loc) const
 {
-	DrawCircleAA(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 16, 0xffffff, true, true);
-	if (expcnt % 60 > 30) {
-		DrawCircleAA(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 16, 0x888888, true, true);
+	if (expcnt % 60 > 30 && expflg) {
+		SetDrawBright(255, 0, 0);// 赤以外を暗くする
 	}
+	DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, images, true);
+	SetDrawBright(255, 255, 255);// 全色暗くしない（デフォルト）
 	if (expflg) {
 		DrawFormatString((int)((location.x - 4) + (-loc.x + (SCREEN_WIDTH / 2))), (int)((location.y - 8) + (-loc.y + (SCREEN_HEIGHT / 2))), GetColor(255 - (int)(expcnt * 1.5), 0, 0), "%d", expcnt / 60);
 	}
-
 }
 
 bool Bomb::GetFlg() const
@@ -95,4 +97,9 @@ int Bomb::GetMode()
 void Bomb::SetKnockBack(Vector2D vec, int i)
 {
 	this->knockback = vec * (float)i;
+}
+
+void Bomb::LoadImages()
+{
+	images = LoadGraph("Resources/images/bomb.png", 0);
 }

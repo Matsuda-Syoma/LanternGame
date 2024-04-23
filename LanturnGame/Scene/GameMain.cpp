@@ -1,10 +1,12 @@
 #include "GameMain.h"
 #include "../Utility/LoadSounds.h"
 #include <math.h>
+#include "../Utility/InputControl.h"
 GameMain::GameMain()
 {
 	Sounds::LoadSounds();
 	BackGround::LoadImages();
+	Bomb::LoadImages();
 	player = new Player;
 	stage = new Stage;
 	stage->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
@@ -56,231 +58,262 @@ GameMain::~GameMain()
 AbstractScene* GameMain::Update()
 {
 
+	if (resultflg == false) {
 
-	/*soldier->GetMapSize(MapSize);
-	soldier->Upadate(player->GetLocation());*/
-	player->GetMapSize(MapSize);
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
-	{
-		if (soldier[i] != nullptr)
+		/*soldier->GetMapSize(MapSize);
+		soldier->Upadate(player->GetLocation());*/
+		player->GetMapSize(MapSize);
+		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
 		{
-			soldier[i]->Upadate(player->GetLocation());
+			if (soldier[i] != nullptr)
+			{
+				soldier[i]->Upadate(player->GetLocation());
+			}
+			for (int j = 0; j < STAGE_ENEMY_MAX; j++)
+			{
+				/*ev = (soldier[i]->GetLocation() - soldier[j]->GetLocation());
+				l = soldier[i]->direction(soldier[j]->GetLocation());
+				ev /= l;
+				soldier[i]->Knockback(ev, 25);
+				soldier[j]->Knockback(ev, 25);*/
+			}
 		}
-	}
-	player->Update();
-	// 敵の数を見る
-	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		player->Update();
+		// 敵の数を見る
+		for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 
-		// 敵がnullptrじゃないなら
-		if (bomb[i] != nullptr) {
+			// 敵がnullptrじゃないなら
+			if (bomb[i] != nullptr) {
 
-			// プレイヤーとの距離を見る
-			// プレイヤーと320離れていたら
-			if (240 < bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
-				bomb[i]->SetMode(1);
-			}
-			else if (240 >= bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
-				bomb[i]->SetMode(2);
-			}
-			// 敵と敵の距離を見る
-			int temp = -1;
-			float length = 65535;
-			Vector2D vvec = 0;
+				// プレイヤーとの距離を見る
+				// プレイヤーと320離れていたら
+				if (240 < bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
+					bomb[i]->SetMode(1);
+				}
+				else if (240 >= bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
+					bomb[i]->SetMode(2);
+				}
+				// 敵と敵の距離を見る
+				int temp = -1;
+				float length = 65535;
+				Vector2D vvec = 0;
 
-			switch (bomb[i]->GetMode()) {
-			case 0:
-				break;
+				switch (bomb[i]->GetMode()) {
+				case 0:
+					break;
 
-				// 敵同士集まる
-			case 1:
+					// 敵同士集まる
+				case 1:
 
-				for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
+					for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
 
-					// 自分以外なら
-					if (j != i) {
+						// 自分以外なら
+						if (j != i) {
 
-						// nullptrじゃないなら距離を見る
-						if (bomb[j] != nullptr) {
+							// nullptrじゃないなら距離を見る
+							if (bomb[j] != nullptr) {
 
-							// 距離が短いなら変数を保存する
-							if (length > bomb[j]->GetLength(bomb[i]->GetLocation())) {
-								temp = j;
-								length = bomb[j]->GetLength(bomb[i]->GetLocation());
+								// 距離が短いなら変数を保存する
+								if (length > bomb[j]->GetLength(bomb[i]->GetLocation())) {
+									temp = j;
+									length = bomb[j]->GetLength(bomb[i]->GetLocation());
+								}
 							}
 						}
+						else if (bomb[j] == nullptr) {
+							temp = -1;
+							length = 65535;
+						}
 					}
-					else if (bomb[j] == nullptr) {
-						temp = -1;
-						length = 65535;
+					if (temp != -1) {
+						// 距離が長いなら
+						if (length > 80) {
+							vvec = (bomb[temp]->GetLocation() - bomb[i]->GetLocation());
+							vvec /= length;
+							bomb[i]->SetVelocity(vvec);
+							break;
+						}
+						// 距離が近いなら
+						else if (length < 72) {
+							vvec = (bomb[i]->GetLocation() - bomb[temp]->GetLocation());
+							vvec /= length;
+							bomb[i]->SetVelocity(vvec);
+							break;
+						}
+						else {
+							bomb[i]->SetVelocity(NULL);
+						}
 					}
-				}
-				if (temp != -1) {
-					// 距離が長いなら
+					break;
+
+					// プレイヤーから逃げる
+				case 2:
+					length = bomb[i]->GetLength(player->GetLocation());
+					vvec = (bomb[i]->GetLocation() - player->GetLocation());
+					vvec /= length;
+					bomb[i]->SetVelocity(vvec);
+					break;
+
+					// プレイヤーを追いかける
+				case 3:
+					length = bomb[i]->GetLength(player->GetLocation());
 					if (length > 80) {
-						vvec = (bomb[temp]->GetLocation() - bomb[i]->GetLocation());
+						vvec = (player->GetLocation() - bomb[i]->GetLocation());
 						vvec /= length;
 						bomb[i]->SetVelocity(vvec);
-						break;
-					}
-					// 距離が近いなら
-					else if (length < 72) {
-						vvec = (bomb[i]->GetLocation() - bomb[temp]->GetLocation());
-						vvec /= length;
-						bomb[i]->SetVelocity(vvec);
-						break;
 					}
 					else {
 						bomb[i]->SetVelocity(NULL);
 					}
+					break;
 				}
-				break;
+				// 敵の更新
+				bomb[i]->GetMapSize(MapSize);
+				bomb[i]->Update();
 
-				// プレイヤーから逃げる
-			case 2:
-				length = bomb[i]->GetLength(player->GetLocation());
-				vvec = (bomb[i]->GetLocation() - player->GetLocation());
-				vvec /= length;
-				bomb[i]->SetVelocity(vvec);
-				break;
+				// 敵のフラグが1なら
+				if (bomb[i]->GetFlg()) {
 
-				// プレイヤーを追いかける
-			case 3:
-				length = bomb[i]->GetLength(player->GetLocation());
-				if (length > 80) {
-					vvec = (player->GetLocation() - bomb[i]->GetLocation());
-					vvec /= length;
-					bomb[i]->SetVelocity(vvec);
-				}
-				else {
-					bomb[i]->SetVelocity(NULL);
-				}
-				break;
-			}
-			// 敵の更新
-			bomb[i]->GetMapSize(MapSize);
-			bomb[i]->Update();
+					// 爆発の数を見る
+					for (int j = 0; j < GM_MAX_EFFECT_EXPLOSION; j++) {
 
-			// 敵のフラグが1なら
-			if (bomb[i]->GetFlg()) {
+						// 爆発がnullptrじゃないなら
+						if (explosion[j] != nullptr) {
 
-				// 爆発の数を見る
-				for (int j = 0; j < GM_MAX_EFFECT_EXPLOSION; j++) {
+							// 敵と爆発の当たり判定
+							if (bomb[i]->HitSphere(explosion[j])) {
 
-					// 爆発がnullptrじゃないなら
-					if (explosion[j] != nullptr) {
+								// 敵のフラグを切って爆発のループを抜ける
+								bomb[i]->SetFlg(false);
+								break;
 
-						// 敵と爆発の当たり判定
-						if (bomb[i]->HitSphere(explosion[j])) {
+							}
+						}
+					}
 
-							// 敵のフラグを切って爆発のループを抜ける
-							bomb[i]->SetFlg(false);
-							break;
-
+					// 敵とプレイヤーの当たり判定
+					if (bomb[i]->HitSphere(player)) {
+						bomb[i]->SetExpFlg(true);
+						if (bomb[i]->GetMode() == 3) {
+							vvec = (bomb[i]->GetLocation() - player->GetLocation());
+							length = bomb[i]->GetLength(player->GetLocation());
+							vvec /= length;
+							bomb[i]->SetKnockBack(vvec, 50);
 						}
 					}
 				}
-
-				// 敵とプレイヤーの当たり判定
-				if (bomb[i]->HitSphere(player)) {
-					bomb[i]->SetExpFlg(true);
-					if (bomb[i]->GetMode() == 3) {
-						vvec = (bomb[i]->GetLocation() - player->GetLocation());
-						length = bomb[i]->GetLength(player->GetLocation());
-						vvec /= length;
-						bomb[i]->SetKnockBack(vvec, 50);
-					}
+				// 敵のフラグが0なら
+				if (!bomb[i]->GetFlg()) {
+					// 爆発を発生して敵をnullptrにしてループを抜ける
+					SpawnExplosion(bomb[i]->GetLocation());
+					PlaySoundMem(Sounds::SE_Explosion, DX_PLAYTYPE_BACK, true);
+					ratio += 1;
+					ui_ratio_framecount = 25;
+					score += (ratio * 100);
+					SetCameraShake(GetRand(8) + 4);
+					bomb[i] = nullptr;
+					delete bomb[i];
+					// break;
+					continue;
 				}
 			}
-			// 敵のフラグが0なら
-			if (!bomb[i]->GetFlg()) {
-				// 爆発を発生して敵をnullptrにしてループを抜ける
-				SpawnExplosion(bomb[i]->GetLocation());
-				PlaySoundMem(Sounds::SE_Explosion, DX_PLAYTYPE_BACK, true);
-				ratio += 1;
-				ui_ratio_framecount = 25;
-				score += (ratio * 100);
-				SetCameraShake(GetRand(8) + 4);
-				bomb[i] = nullptr;
-				delete bomb[i];
-				// break;
-				continue;
-			}
-		}
-		// スポーン仮
-		else {
-			if (!ratioflg) {
-				if (i < MaxEnemyBomb) {
-					bomb[i] = new Bomb;
-					while (1) {
-						Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-						if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
-							powf((spawnloc.x - player->GetLocation().x), 2) +
-							powf((spawnloc.y - player->GetLocation().y), 2))))
-						{
-							bomb[i]->SetLocation(spawnloc);
-							break;
+			// スポーン仮
+			else {
+				if (!ratioflg) {
+					if (i < MaxEnemyBomb) {
+						bomb[i] = new Bomb;
+						while (1) {
+							Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+							if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+								powf((spawnloc.x - player->GetLocation().x), 2) +
+								powf((spawnloc.y - player->GetLocation().y), 2))))
+							{
+								bomb[i]->SetLocation(spawnloc);
+								break;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 
-	ratioflg = false;
-	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
+		ratioflg = false;
+		for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++) {
 
-		if (explosion[i] != nullptr) {
-			ratioflg = true;
-			explosion[i]->Update();
-			// プレイヤーと爆発の当たり判定
-			if (explosion[i]->HitSphere(player) && hitmoment == false) {
+			if (explosion[i] != nullptr) {
+				ratioflg = true;
+				explosion[i]->Update();
+				// プレイヤーと爆発の当たり判定
+				if (explosion[i]->HitSphere(player) && hitmoment == false) {
+					if (player->GetFlg() == false) {
+						life--;
+						hitmoment = true;
+						player->SetFlg(true);
+					}
+				}
+				else if (!explosion[i]->HitSphere(player) && hitmoment == true) {
+					hitmoment = false;
+				}
+
+				if (!explosion[i]->Getflg()) {
+					explosion[i] = nullptr;
+					delete explosion[i];
+				}
+			}
+
+		}
+
+		// 兵隊とプレイヤーの当たり判定
+		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+		{
+			if (soldier[i]->HitSphere(player)) 
+			{
 				if (player->GetFlg() == false) {
 					life--;
 					hitmoment = true;
 					player->SetFlg(true);
+					soldier[i]->finalize();
+				}
+				else
+				{
+					ev = (soldier[i]->GetLocation() - player->GetLocation());
+					l = soldier[i]->direction(player->GetLocation());
+					ev /= l;
+					soldier[i]->Knockback(ev,50);
 				}
 			}
-			else if (!explosion[i]->HitSphere(player) && hitmoment == true) {
+			else if (!soldier[i]->HitSphere(player) && hitmoment == true) {
 				hitmoment = false;
 			}
+		}
 
-			if (!explosion[i]->Getflg()) {
-				explosion[i] = nullptr;
-				delete explosion[i];
-			}
+
+		if (!ratioflg) {
+			ratio = 0;
+		}
+		if (ui_ratio_framecount > 0) {
+			ui_ratio_framecount--;
+		}
+		if (MapSize > GM_MIN_MAPSIZE) {
+			MapSize -= MapCloseSpeed / 10;
+		}
+		MaxEnemyBomb = (int)(GM_MAX_ENEMY_BOMB * (MapSize / GM_MAX_MAPSIZE));
+		game_frametime++;
+		CameraUpdate();
+
+		if (life == 0) {
+			resultflg = true;
 		}
 
 	}
+	else {
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
+			life = 3;
+			resultflg = false;
 
-	// 兵隊とプレイヤーの当たり判定
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++) 
-	{
-		if (soldier[i]->HitSphere(player) && hitmoment == false) {
-			if (player->GetFlg() == false) {
-				life--;
-				hitmoment = true;
-				player->SetFlg(true);
-				soldier[i]->finalize();
-			}
-		}
-		else if (!soldier[i]->HitSphere(player) && hitmoment == true) {
-			hitmoment = false;
 		}
 	}
 
-
-	if (!ratioflg) {
-		ratio = 0;
-	}
-	if (ui_ratio_framecount > 0) {
-		ui_ratio_framecount--;
-	}
-	if (MapSize > GM_MIN_MAPSIZE) {
-		MapSize -= MapCloseSpeed / 10;
-	}
-	MaxEnemyBomb = (int)(GM_MAX_ENEMY_BOMB * (MapSize / GM_MAX_MAPSIZE));
-	game_frametime++;
-	CameraUpdate();
 	return this;
 
 }
@@ -335,8 +368,16 @@ void GameMain::Draw() const
 	player->Draw(Camerashake);
 	stage->Draw(player->GetLocation());
 
-	DrawFormatString(640, 10, 0xffffff, "%06d", score);
-
+	if (resultflg == false) {
+		DrawFormatString(640, 10, 0xffffff, "%06d", score);
+	}
+	else {
+		DrawBox(400, 250, 860, 490, 0xffffff, true);
+		DrawString(600, 280, "Result", 0x000000);
+		DrawString(500, 460, "--- Restart with B button ---", 0x000000);
+		DrawFormatString(602, 380, 0x000000, "%06d", score);
+	}
+	
 	if (ratioflg) {
 		SetFontSize(16 + ((1 + (ui_ratio_framecount)) + (ratio / 2)));
 		DrawFormatString(720, 10, GetColor(255, 255, 255 - (25 * ratio)), "%dx", ratio);

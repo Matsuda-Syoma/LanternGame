@@ -14,6 +14,7 @@
     <ClCompile Include="Object\SphereCollider.cpp" />
     <ClCompile Include="stage.cpp" />
     <ClCompile Include="Object\Player.cpp" />
+    <ClCompile Include="Scene\Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object\soldier.h" />
@@ -32,5 +33,6 @@
     <ClInclude Include="Object\Player.h" />
     <ClInclude Include="Object\SphereCollider.h" />
     <ClInclude Include="stage.h" />
+    <ClInclude Include="Scene\Title.h" />
   </ItemGroup>
 </Project>
