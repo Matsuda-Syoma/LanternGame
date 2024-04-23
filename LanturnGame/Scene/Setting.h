@@ -4,6 +4,7 @@ class Setting : public AbstractScene
 {
 private:
 	float deadzone;
+	int menu_cursor = 0;
 public:
 	Setting();
 	~Setting();

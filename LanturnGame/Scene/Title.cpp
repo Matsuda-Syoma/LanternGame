@@ -57,11 +57,15 @@ AbstractScene* Title::Update()
 			break;
 		}
 	}
-	return new Setting;
+	return this;
 }
 
 void Title::Draw() const
 {
-	DrawString(640, 60, "ここはタイトルです", 0xffffff);
-	DrawCircle(640, 340 + menu_cursor * 32, 16,0xffffff, TRUE);
+	DrawString(580, 60, "ここはタイトルです", 0xffffff);
+	DrawCircle(560, 340 + menu_cursor * 32, 8,0xffffff, TRUE);
+	DrawString(580, 336 + (0 * 32), "ゲームスタート", 0xffffff);
+	DrawString(580, 336 + (1 * 32), "設定画面", 0xffffff);
+	DrawString(580, 336 + (2 * 32), "ヘルプ", 0xffffff);
+	DrawString(580, 336 + (3 * 32), "終了", 0xffffff);
 }

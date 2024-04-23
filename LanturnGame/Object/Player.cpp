@@ -1,11 +1,13 @@
 #include "Player.h"
 #include "DxLib.h"
-#include "../Utility/InputControl.h"
 #include <math.h>
+#include "../Utility/InputControl.h"
 #include "../Utility/common.h"
+#include "../Utility/UserData.h"
 Player::Player()
 {
 	speed = 5;
+	deadzone = UserData::LoadData(0);
 }
 
 Player::~Player()
