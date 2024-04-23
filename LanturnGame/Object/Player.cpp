@@ -27,6 +27,7 @@ void Player::Update()
 	// 爆発に当たったら無敵時間
 	if (hitflg == true) {
 		Invincible();
+		Blinking();
 	}
 
 	// プレイヤーアニメーション
@@ -59,8 +60,15 @@ void Player::Update()
 
 void Player::Draw(int camerashake) const
 {
-
-	DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
+	if (blinkingflg == false)
+	{
+		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
+	}
+	else {
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
 
 	if (hitflg == true) {
 		DrawString(10, 30, "Invincible", 0xffffff);
@@ -212,6 +220,25 @@ void Player::Invincible()
 		hitflg = false;
 		cun = 0;
 		break;
+	default:
+		break;
+	}
+}
+
+// 点滅
+void Player::Blinking()
+{
+	blinkingcun++;
+	switch (blinkingcun)
+	{
+	case(1):
+		blinkingflg = true;
+		break;
+	case(10):
+		blinkingflg = false;
+		break;
+	case(20):
+		blinkingcun = 0;
 	default:
 		break;
 	}
