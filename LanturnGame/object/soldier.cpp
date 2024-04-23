@@ -51,7 +51,7 @@ void Soldier::Move(Vector2D PL)
 	}
 
 	location += knockback;
-	location += move;
+	location += velocity * move;
 
 	if (length.x < 0 && move.x < EMMAX)
 	{
@@ -77,12 +77,16 @@ void Soldier::finalize()
 	delete this;
 }
 
-float Soldier::direction(Vector2D PL)
+float Soldier::direction(Vector2D L)
 {
-	return  sqrtf(powf((PL.x - location.x), 2) + powf((PL.y - location.y), 2));
+	return  sqrtf(powf((L.x - location.x), 2) + powf((L.y - location.y), 2));
 }
 
 void Soldier::Knockback(Vector2D V, float P)
 {
 	this->knockback = V * P;
+}
+void Soldier::SetVelocity(Vector2D loc)
+{
+	this->velocity = loc;
 }

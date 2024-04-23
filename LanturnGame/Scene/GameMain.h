@@ -39,6 +39,7 @@ private:
 
 	Vector2D ev;
 	float l;
+
 public:
 	GameMain();
 	~GameMain();
