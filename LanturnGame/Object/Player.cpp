@@ -70,9 +70,9 @@ void Player::Draw(int camerashake) const
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
-	if (hitflg == true) {
-		DrawString(10, 30, "Invincible", 0xffffff);
-	}
+	
+		DrawFormatString(10, 100, 0xffffff, "%d", direction);
+	
 }
 
 void Player::Movement()
@@ -82,41 +82,53 @@ void Player::Movement()
 	{
 		velocity += Vector2D(-0.5f, 0.0f);
 		direction = 1;
+		stopdirection = 5;
 	}
 	
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
 	{
 		velocity += Vector2D(0.5f, 0.0f);
 		direction = 2;
+		stopdirection = 6;
 	}
 	
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
 	{
 		velocity += Vector2D(0.0f, 0.5f);
 		direction = 0;
+		stopdirection = 4;
 	}
 	
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
 	{
 		velocity += Vector2D(0.0f, -0.5f);
 		direction = 3;
+		stopdirection = 7;
 	}
 	if (fabsf(InputControl::GetLeftStick().x) > deadzone)
 	{
 		if (InputControl::GetLeftStick().x < 0.f) {
 			velocity += Vector2D((InputControl::GetLeftStick().x + deadzone) * speed, 0);
+			direction = 1;
+			stopdirection = 5;
 		}
 		if (InputControl::GetLeftStick().x > 0.f) {
 			velocity += Vector2D((InputControl::GetLeftStick().x - deadzone) * speed, 0);
+			direction = 2;
+			stopdirection = 6;
 		}
 	}
 	if (fabsf(InputControl::GetLeftStick().y) > deadzone)
 	{
 		if (InputControl::GetLeftStick().y < 0.f) {
 			velocity += Vector2D(0, (-InputControl::GetLeftStick().y - deadzone) * speed);
+			direction = 0;
+			stopdirection = 4;
 		}
 		if (InputControl::GetLeftStick().y > 0.f) {
 			velocity += Vector2D(0, (-InputControl::GetLeftStick().y + deadzone) * speed);
+			direction = 3;
+			stopdirection = 7;
 		}
 	}
 	// 速度の制限(Y)
@@ -200,6 +212,14 @@ void Player::Movement()
 	if (InputControl::GetButtonUp(XINPUT_BUTTON_DPAD_UP))
 	{
 		direction = 7;
+	}
+
+	/*if (InputControl::GetLeftStick().x == 0 && InputControl::GetLeftStick().y == 0) {
+		direction = stopdirection;
+	}*/
+
+	if (InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2 && InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2) {
+		direction = stopdirection;
 	}
 
 	/*if (InputControl::GetLeftStick().x > 1) {

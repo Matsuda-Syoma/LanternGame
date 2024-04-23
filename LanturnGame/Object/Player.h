@@ -12,7 +12,7 @@ private:
 	int imgnum = 1;			// 画像描画用変数
 	int playerimg[12];		// プレイヤー画像
 	int direction = 4;		// 向き取得
-	int stopdirection = 0;
+	int stopdirection = 4;
 	float deadzone = 0.1;
 public:
 	Player();
