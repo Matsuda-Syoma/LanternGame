@@ -3,6 +3,10 @@
 #include "DxLib.h"
 #include "math.h"
 
+#define EM 0.1f
+#define EMMAX 3.0f
+#define EMMIN -3.0f
+
 Soldier::Soldier()
 {
 	Initialize();
@@ -47,23 +51,23 @@ void Soldier::Move(Vector2D PL)
 	}
 
 	location += knockback;
+	location += move;
 
-
-	if (length.x < 0)
+	if (length.x < 0 && move.x < EMMAX)
 	{
-		location += Vector2D(5.0f,0.0f);
+		move += Vector2D(EM,0.0f);
 	}
-	if (length.x > 0)
+	if (length.x > 0 && move.x > EMMIN)
 	{
-		location -= Vector2D(5.0f, 0.0f);
+		move -= Vector2D(EM, 0.0f);
 	}
-	if (length.y <0)
+	if (length.y < 0 && move.y < EMMAX)
 	{
-		location += Vector2D(0.0f, 5.0f);
+		move += Vector2D(0.0f, EM);
 	}
-	if (length.y > 0)
+	if (length.y > 0 && move.y > EMMIN)
 	{
-		location -= Vector2D(0.0f, 5.0f);
+		move -= Vector2D(0.0f, EM);
 	}
 }
 

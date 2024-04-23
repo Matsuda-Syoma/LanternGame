@@ -67,14 +67,6 @@ AbstractScene* GameMain::Update()
 			{
 				soldier[i]->Upadate(player->GetLocation());
 			}
-			for (int j = 0; j < STAGE_ENEMY_MAX; j++)
-			{
-				/*ev = (soldier[i]->GetLocation() - soldier[j]->GetLocation());
-				l = soldier[i]->direction(soldier[j]->GetLocation());
-				ev /= l;
-				soldier[i]->Knockback(ev, 25);
-				soldier[j]->Knockback(ev, 25);*/
-			}
 		}
 		player->Update();
 		// 敵の数を見る

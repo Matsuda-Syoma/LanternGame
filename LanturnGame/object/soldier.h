@@ -25,6 +25,7 @@ public:
 private:
 	int image;	//画像イメージ
 	Vector2D length = 0;
+	Vector2D move = 0;
 	Vector2D knockback = 0;
 	int CD;//中心点の距離
 };
