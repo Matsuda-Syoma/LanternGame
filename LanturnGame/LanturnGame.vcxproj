@@ -25,8 +25,8 @@
     <ClCompile Include="Object\Explosion.cpp" />
     <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="object\soldier.cpp" />
-    <ClCompile Include="stage.cpp" />
     <ClCompile Include="Object\SphereCollider.cpp" />
+    <ClCompile Include="object\stage.cpp" />
     <ClCompile Include="Scene\GameMain.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Utility\FPSController.cpp" />
@@ -40,8 +40,8 @@
     <ClInclude Include="Object\Explosion.h" />
     <ClInclude Include="Object\Player.h" />
     <ClInclude Include="object\soldier.h" />
-    <ClInclude Include="stage.h" />
     <ClInclude Include="Object\SphereCollider.h" />
+    <ClInclude Include="object\stage.h" />
     <ClInclude Include="Scene\AbstractScene.h" />
     <ClInclude Include="Scene\GameMain.h" />
     <ClInclude Include="Scene\SceneManager.h" />

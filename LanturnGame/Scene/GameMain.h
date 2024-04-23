@@ -7,6 +7,7 @@
 #include "../Object/BackGround.h"
 #include "../Object/Soldier.h"
 #include "../Utility/common.h"
+#include "../Object/stage.h"
 class GameMain : public AbstractScene
 {
 private:
@@ -15,6 +16,7 @@ private:
 	Player* player;
 	Soldier** soldier;
 	BackGround** background;
+	Stage* stage;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;

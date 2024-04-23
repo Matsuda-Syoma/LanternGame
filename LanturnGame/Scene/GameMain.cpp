@@ -6,6 +6,8 @@ GameMain::GameMain()
 	Sounds::LoadSounds();
 	BackGround::LoadImages();
 	player = new Player;
+	stage = new Stage;
+	stage->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 
 	soldier = new Soldier * [STAGE_ENEMY_MAX];
 	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
@@ -331,6 +333,7 @@ void GameMain::Draw() const
 	
 
 	player->Draw(Camerashake);
+	stage->Draw(player->GetLocation());
 
 	DrawFormatString(640, 10, 0xffffff, "%06d", score);
 
@@ -362,6 +365,7 @@ void GameMain::Draw() const
 			DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0xff0000, true);
 		}
 	}
+	DrawCircleAA(SCREEN_WIDTH - 128 + (stage->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (stage->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
