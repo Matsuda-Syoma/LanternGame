@@ -2,6 +2,8 @@
 #include "../Utility/LoadSounds.h"
 #include <math.h>
 #include "../Utility/InputControl.h"
+#include "Title.h"
+
 GameMain::GameMain()
 {
 	Sounds::LoadSounds();
@@ -339,9 +341,13 @@ AbstractScene* GameMain::Update()
 
 	}
 	else {
-		if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
-			life = 3;
-			resultflg = false;
+		//if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
+		//	life = 3;
+		//	resultflg = false;
+
+		//}
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_A)) {
+			return new Title;
 
 		}
 	}
@@ -406,7 +412,8 @@ void GameMain::Draw() const
 	else {
 		DrawBox(400, 250, 860, 490, 0xffffff, true);
 		DrawString(600, 280, "Result", 0x000000);
-		DrawString(500, 460, "--- Restart with B button ---", 0x000000);
+		//DrawString(500, 460, "--- Restart with B button ---", 0x000000);
+		DrawString(500, 460, "--- Title with A button ---", 0x000000);
 		DrawFormatString(602, 380, 0x000000, "%06d", score);
 	}
 	
