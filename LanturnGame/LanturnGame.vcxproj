@@ -25,6 +25,7 @@
     <ClCompile Include="Object\Explosion.cpp" />
     <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="object\soldier.cpp" />
+    <ClCompile Include="Object\Particle.cpp" />
     <ClCompile Include="Scene\Setting.cpp" />
     <ClCompile Include="Object\SphereCollider.cpp" />
     <ClCompile Include="object\stage.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="Object\Explosion.h" />
     <ClInclude Include="Object\Player.h" />
     <ClInclude Include="object\soldier.h" />
+    <ClInclude Include="Object\Particle.h" />
     <ClInclude Include="Scene\Setting.h" />
     <ClInclude Include="Object\SphereCollider.h" />
     <ClInclude Include="object\stage.h" />

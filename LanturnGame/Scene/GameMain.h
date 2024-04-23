@@ -6,6 +6,7 @@
 #include "../Object/Player.h"
 #include "../Object/BackGround.h"
 #include "../Object/Soldier.h"
+#include "../Object/Particle.h"
 #include "../Utility/common.h"
 #include "../Object/stage.h"
 class GameMain : public AbstractScene
@@ -16,6 +17,7 @@ private:
 	Player* player;
 	Soldier** soldier;
 	BackGround** background;
+	Particle** particle;
 	Stage* stage;
 
 	unsigned int game_frametime = 0;
@@ -48,6 +50,7 @@ public:
 	void Draw() const override;
 	void Game();	
 	void SpawnExplosion(Vector2D loc);
+	void SpawnParticle(int i, Vector2D loc, Vector2D loc2);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
 	void SetMapSize(int i);
