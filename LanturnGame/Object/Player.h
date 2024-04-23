@@ -6,6 +6,7 @@ private:
 	Vector2D velocity;
 	bool hitflg = false;
 	int cun = 0;
+	float deadzone = 0.1;
 public:
 	Player();
 	~Player();

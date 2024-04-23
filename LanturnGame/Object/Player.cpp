@@ -1,11 +1,13 @@
 #include "Player.h"
 #include "DxLib.h"
-#include "../Utility/InputControl.h"
 #include <math.h>
+#include "../Utility/InputControl.h"
 #include "../Utility/common.h"
+#include "../Utility/UserData.h"
 Player::Player()
 {
 	speed = 5;
+deadzone = UserData::LoadData(0);
 }
 
 Player::~Player()
@@ -54,13 +56,23 @@ void Player::Movement()
 	{
 		velocity += Vector2D(0.0f, -0.5f);
 	}
-	if (fabsf(InputControl::GetLeftStick().x) > 0.1)
+	if (fabsf(InputControl::GetLeftStick().x) > deadzone)
 	{
-		velocity = Vector2D(InputControl::GetLeftStick().x * speed, GetVelocity().y);
+		if (InputControl::GetLeftStick().x < 0.f) {
+			velocity += Vector2D((InputControl::GetLeftStick().x + deadzone) * speed, 0);
+		}
+		if (InputControl::GetLeftStick().x > 0.f) {
+			velocity += Vector2D((InputControl::GetLeftStick().x - deadzone) * speed, 0);
+		}
 	}
-	if (fabsf(InputControl::GetLeftStick().y) > 0.1)
+	if (fabsf(InputControl::GetLeftStick().y) > deadzone)
 	{
-		velocity = Vector2D(GetVelocity().x, -InputControl::GetLeftStick().y * speed);
+		if (InputControl::GetLeftStick().y < 0.f) {
+			velocity += Vector2D(0, (-InputControl::GetLeftStick().y - deadzone) * speed);
+		}
+		if (InputControl::GetLeftStick().y > 0.f) {
+			velocity += Vector2D(0, (-InputControl::GetLeftStick().y + deadzone) * speed);
+		}
 	}
 	// 速度の制限(Y)
 	if (velocity.y > speed)
@@ -81,15 +93,23 @@ void Player::Movement()
 	{
 		velocity.x = -speed;
 	}
-	// 減速
-	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && 
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && 
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) &&
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
-		fabsf(InputControl::GetLeftStick().y) < 0.2 &&
-		fabsf(InputControl::GetLeftStick().x) < 0.2)
+
+	if (fabsf(velocity.x) == fabsf(velocity.y))
 	{
-		velocity /= 1.2f;
+		velocity *= 0.7071f;
+	}
+	// 減速
+
+		if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) &&
+			!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && 
+			fabsf(InputControl::GetLeftStick().x) < deadzone) {
+			velocity.x /= 1.2f;
+		}
+		if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) &&
+			!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) && 
+			fabsf(InputControl::GetLeftStick().y) < deadzone) {
+			velocity.y /= 1.2f;
+		}
 		if (fabs(velocity.x) < 0.01)
 		{
 			velocity.x = 0;
@@ -97,8 +117,8 @@ void Player::Movement()
 		if (fabs(velocity.y) < 0.01)
 		{
 			velocity.y = 0;
-		}
 	}
+
 
 	// 画面外に出ないように
 	
