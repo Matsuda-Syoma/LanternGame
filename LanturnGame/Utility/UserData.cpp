@@ -31,8 +31,6 @@ float UserData::LoadData(int i)
 
 	//ファイルクローズ
 	fclose(fp);
-	
-	printfDx("%f", temp);
 	return temp;
 }
 

@@ -5,6 +5,6 @@ public:
 	UserData(){}
 	~UserData(){}
 	static float LoadData(int i);
-	int SaveData(int i, float data);
+	static int SaveData(int i, float data);
 };
 
