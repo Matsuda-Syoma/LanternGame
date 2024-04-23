@@ -72,6 +72,10 @@ AbstractScene* GameMain::Update()
 				soldier[i]->Upadate(player->GetLocation());
 				soldier[i]->SetVelocity(1);
 			}
+			else
+			{
+					soldier[i] = new Soldier;
+			}
 		}
 
 		Vector2D ee = 0;
@@ -284,6 +288,19 @@ AbstractScene* GameMain::Update()
 				else if (!explosion[i]->HitSphere(player) && hitmoment == true) {
 					hitmoment = false;
 				}
+				//兵隊と爆発の当たり判定
+				for (int j = 0; j < STAGE_ENEMY_MAX; j++)
+				{
+					if (soldier[j] != nullptr)
+					{
+						if (explosion[i]->HitSphere(soldier[j]))
+						{
+							soldier[j] = nullptr;
+							delete soldier[j];
+							break;
+						}
+					}
+				}
 
 				if (!explosion[i]->Getflg()) {
 					explosion[i] = nullptr;
@@ -296,24 +313,27 @@ AbstractScene* GameMain::Update()
 		// 兵隊とプレイヤーの当たり判定
 		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
 		{
-			if (soldier[i]->HitSphere(player)) 
+			if (soldier[i] != nullptr)
 			{
-				if (player->GetFlg() == false) {
-					life--;
-					hitmoment = true;
-					player->SetFlg(true);
-					soldier[i]->finalize();
-				}
-				else//無敵状態なら兵隊が反発する
+				if (soldier[i]->HitSphere(player))
 				{
-					ev = (soldier[i]->GetLocation() - player->GetLocation());
-					l = soldier[i]->direction(player->GetLocation());
-					ev /= l;
-					soldier[i]->Knockback(ev,50);
+					if (player->GetFlg() == false) {
+						life--;
+						hitmoment = true;
+						player->SetFlg(true);
+						soldier[i]->finalize();
+					}
+					else//無敵状態なら兵隊が反発する
+					{
+						ev = (soldier[i]->GetLocation() - player->GetLocation());
+						l = soldier[i]->direction(player->GetLocation());
+						ev /= l;
+						soldier[i]->Knockback(ev, 50);
+					}
 				}
-			}
-			else if (!soldier[i]->HitSphere(player) && hitmoment == true) {
-				hitmoment = false;
+				else if (!soldier[i]->HitSphere(player) && hitmoment == true) {
+					hitmoment = false;
+				}
 			}
 		}
 
@@ -388,7 +408,7 @@ void GameMain::Draw() const
 
 	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
 	{
-		if (soldier != nullptr)
+		if (soldier[i] != nullptr)
 		{
 			soldier[i]->Draw(player->GetLocation());
 		}
