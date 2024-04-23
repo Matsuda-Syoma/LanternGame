@@ -6,7 +6,7 @@ private:
 	bool flg = true;
 	unsigned int count = 0;
 	static int images[];
-
+	int RGB[3] = { 0 };
 public:
 	Explosion();
 	~Explosion();
