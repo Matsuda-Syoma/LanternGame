@@ -7,6 +7,7 @@ GameMain::GameMain()
 	Sounds::LoadSounds();
 	BackGround::LoadImages();
 	Bomb::LoadImages();
+	Explosion::LoadImages();
 	player = new Player;
 	player->Init();
 	stage = new Stage;
@@ -23,7 +24,7 @@ GameMain::GameMain()
 	}
 	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
 	{
-		soldier[i]->SetLocation(Vector2D((float)(100 + GetRand(80) * 2), (float)(100 + GetRand(80) * 2)));
+		soldier[i]->SetLocation(Vector2D((float)(100 + GetRand(200) * 2), (float)(100 + GetRand(200) * 2)));
 	}
 
 	bomb = new Bomb * [GM_MAX_ENEMY_BOMB];
@@ -64,11 +65,49 @@ AbstractScene* GameMain::Update()
 		/*soldier->GetMapSize(MapSize);
 		soldier->Upadate(player->GetLocation());*/
 		player->GetMapSize(MapSize);
+
+
 		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
 		{
 			if (soldier[i] != nullptr)
 			{
 				soldier[i]->Upadate(player->GetLocation());
+				soldier[i]->SetVelocity(1);
+			}
+		}
+
+		Vector2D ee = 0;
+		float eel = 65535;
+		int chek = -1;
+
+
+		//兵隊同士の当たり判定
+		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+		{
+			for (int j = 0; j < STAGE_ENEMY_MAX; j++)
+			{
+				if (i != j)
+				{
+					// nullptrじゃないなら距離を見る
+					if (soldier[i] != nullptr) {
+
+						// 距離が短いなら変数を保存する
+						if (eel > soldier[i]->direction(soldier[j]->GetLocation())) {
+							chek = j;
+							eel = soldier[i]->direction(soldier[j]->GetLocation());
+						}
+					}
+				}
+			}
+			if (chek != -1)
+			{
+				if (eel < 80)
+				{
+					ee = (soldier[chek]->GetLocation() - soldier[i]->GetLocation());
+					ee /= eel;
+					soldier[i]->SetVelocity(ee);
+					break;
+				}
 			}
 		}
 		player->Update();
@@ -267,7 +306,7 @@ AbstractScene* GameMain::Update()
 					player->SetFlg(true);
 					soldier[i]->finalize();
 				}
-				else
+				else//無敵状態なら兵隊が反発する
 				{
 					ev = (soldier[i]->GetLocation() - player->GetLocation());
 					l = soldier[i]->direction(player->GetLocation());
@@ -402,6 +441,7 @@ void GameMain::Draw() const
 	DrawCircleAA(SCREEN_WIDTH - 128 + (stage->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (stage->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 }
 
 void GameMain::Game()

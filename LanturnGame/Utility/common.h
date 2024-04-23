@@ -18,6 +18,6 @@
 #define IcefloorL_x 300
 #define IcefloorL_y 200
 
-#define STAGE_ENEMY_MAX 3
+#define STAGE_ENEMY_MAX 5
 #define CREATE_ENEMY_TIME 10
 

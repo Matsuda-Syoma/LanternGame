@@ -11,7 +11,7 @@ private:
 	int playerimg[12];		// ƒvƒŒƒCƒ„[‰æ‘œ
 	int direction = 4;		// Œü‚«æ“¾
 	int stopdirection = 0;
-
+	float deadzone = 0.1;
 public:
 	Player();
 	~Player();

@@ -1,13 +1,13 @@
 #pragma once
 #include "AbstractScene.h"
-
-class Title : public AbstractScene
+class Setting : public AbstractScene
 {
 private:
+	float deadzone;
 	int menu_cursor = 0;
 public:
-	Title();
-	~Title();
+	Setting();
+	~Setting();
 	virtual AbstractScene* Update() override;
 	void Draw() const override;
 };
