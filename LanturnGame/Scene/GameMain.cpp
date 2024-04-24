@@ -8,6 +8,7 @@ GameMain::GameMain()
 	BackGround::LoadImages();
 	Bomb::LoadImages();
 	player = new Player;
+
 	stage = new Stage * [GM_MAX_ICEFLOOR];
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
 	{
@@ -375,16 +376,18 @@ void GameMain::Draw() const
 		}
 	}
 	
-
-	player->Draw(Camerashake);
-
-	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
+    for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
 	{
 		if (stage[i] != nullptr)
 		{
-			stage[i]->Draw(player->GetLocation());
+			stage[i]->Draw(player->GetLocation() + +(float)Camerashake);
 		}
 	}
+
+	player->Draw(Camerashake);
+
+	
+
 	if (resultflg == false) {
 		DrawFormatString(640, 10, 0xffffff, "%06d", score);
 	}
