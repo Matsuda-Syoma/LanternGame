@@ -2,12 +2,16 @@
 #include "../Utility/LoadSounds.h"
 #include <math.h>
 #include "../Utility/InputControl.h"
+#include "Title.h"
+
 GameMain::GameMain()
 {
 	Sounds::LoadSounds();
 	BackGround::LoadImages();
 	Bomb::LoadImages();
+	Explosion::LoadImages();
 	player = new Player;
+	player->Init();
 	stage = new Stage;
 	stage->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 
@@ -357,9 +361,13 @@ AbstractScene* GameMain::Update()
 
 	}
 	else {
-		if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
-			life = 3;
-			resultflg = false;
+		//if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
+		//	life = 3;
+		//	resultflg = false;
+
+		//}
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_A)) {
+			return new Title;
 
 		}
 	}
@@ -424,7 +432,8 @@ void GameMain::Draw() const
 	else {
 		DrawBox(400, 250, 860, 490, 0xffffff, true);
 		DrawString(600, 280, "Result", 0x000000);
-		DrawString(500, 460, "--- Restart with B button ---", 0x000000);
+		//DrawString(500, 460, "--- Restart with B button ---", 0x000000);
+		DrawString(500, 460, "--- Title with A button ---", 0x000000);
 		DrawFormatString(602, 380, 0x000000, "%06d", score);
 	}
 	
@@ -459,6 +468,7 @@ void GameMain::Draw() const
 	DrawCircleAA(SCREEN_WIDTH - 128 + (stage->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (stage->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 }
 
 void GameMain::Game()

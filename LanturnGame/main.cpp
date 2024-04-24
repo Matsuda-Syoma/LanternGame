@@ -4,6 +4,7 @@
 #include"Scene/SceneManager.h"
 #include"Scene/GameMain.h"
 #include"Scene/Title.h"
+#include"Scene/Setting.h"
 #include"Utility/InputControl.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
