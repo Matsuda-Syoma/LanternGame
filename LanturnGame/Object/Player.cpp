@@ -70,9 +70,6 @@ void Player::Draw(int camerashake) const
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
-	
-		DrawFormatString(10, 100, 0xffffff, "%d", direction);
-	
 }
 
 void Player::Movement()
@@ -155,25 +152,25 @@ void Player::Movement()
 	{
 		velocity *= 0.7071f;
 	}
-	// 減速
 
-		if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) &&
-			!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && 
-			fabsf(InputControl::GetLeftStick().x) < deadzone) {
-			velocity.x /= 1.2f;
-		}
-		if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) &&
-			!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) && 
-			fabsf(InputControl::GetLeftStick().y) < deadzone) {
-			velocity.y /= 1.2f;
-		}
-		if (fabs(velocity.x) < 0.01)
-		{
-			velocity.x = 0;
-		}
-		if (fabs(velocity.y) < 0.01)
-		{
-			velocity.y = 0;
+	// 減速
+	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) &&
+		!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && 
+		fabsf(InputControl::GetLeftStick().x) < deadzone) {
+		velocity.x /= 1.2f;
+	}
+	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) &&
+		!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) && 
+		fabsf(InputControl::GetLeftStick().y) < deadzone) {
+		velocity.y /= 1.2f;
+	}
+	if (fabs(velocity.x) < 0.01)
+	{
+		velocity.x = 0;
+	}
+	if (fabs(velocity.y) < 0.01)
+	{
+		velocity.y = 0;
 	}
 
 
@@ -196,35 +193,15 @@ void Player::Movement()
 		location.y = MapSize - radius;
 	}
 
-	// 十字キーが離されたとき
-	if (InputControl::GetButtonUp(XINPUT_BUTTON_DPAD_LEFT))
-	{
-		direction = 5;
-	}
-	if (InputControl::GetButtonUp(XINPUT_BUTTON_DPAD_RIGHT))
-	{
-		direction = 6;
-	}
-	if (InputControl::GetButtonUp(XINPUT_BUTTON_DPAD_DOWN))
-	{
-		direction = 4;
-	}
-	if (InputControl::GetButtonUp(XINPUT_BUTTON_DPAD_UP))
-	{
-		direction = 7;
-	}
-
-	/*if (InputControl::GetLeftStick().x == 0 && InputControl::GetLeftStick().y == 0) {
-		direction = stopdirection;
-	}*/
-
+	// 立ち止まっているとき（アニメーション）
+	// 左スティックが入力されていなかったら
 	if (InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2 && InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2) {
-		direction = stopdirection;
+		// 十字ボタンが入力されていなかったら
+		if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN)) {
+			direction = stopdirection;
+		}
+		
 	}
-
-	/*if (InputControl::GetLeftStick().x > 1) {
-		direction = 1;
-	}*/
 
 }
 
