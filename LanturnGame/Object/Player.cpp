@@ -195,9 +195,12 @@ void Player::Movement()
 
 	// 立ち止まっているとき（アニメーション）
 	// 左スティックが入力されていなかったら
-	if (InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2 && InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2) {
+	if (InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2 
+		&& InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2) {
 		// 十字ボタンが入力されていなかったら
-		if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN)) {
+		if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) 
+			&& !InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN)) 
+		{
 			direction = stopdirection;
 		}
 		
