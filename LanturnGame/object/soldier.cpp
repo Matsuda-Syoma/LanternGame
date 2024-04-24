@@ -34,7 +34,7 @@ void Soldier::Upadate(Vector2D PL)
 	Move(PL);
 }
 
-void Soldier::Draw(Vector2D PL)
+void Soldier::Draw(Vector2D S)
 {
 	DrawCircleAA(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 16, 0xf14f5f, true, true);
 	/*DrawGraph(location.x, location.y, image, TRUE);*/
@@ -53,6 +53,7 @@ void Soldier::Move(Vector2D PL)
 	location += knockback;
 	location += velocity * move;
 
+	//移動速度の処理
 	if (length.x < 0 && move.x < EMMAX)
 	{
 		move += Vector2D(EM,0.0f);
@@ -68,6 +69,24 @@ void Soldier::Move(Vector2D PL)
 	if (length.y > 0 && move.y > EMMIN)
 	{
 		move -= Vector2D(0.0f, EM);
+	}
+
+	//ステージの壁より外に行かない
+	if (location.x < -MapSize + radius)
+	{
+		location.x = -MapSize + radius;
+	}
+	if (location.x >= MapSize - radius)
+	{
+		location.x = MapSize - radius;
+	}
+	if (location.y < -MapSize + radius)
+	{
+		location.y = -MapSize + radius;
+	}
+	if (location.y >= MapSize - radius)
+	{
+		location.y = MapSize - radius;
 	}
 }
 
