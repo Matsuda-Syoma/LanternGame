@@ -16,7 +16,7 @@ private:
 	Player* player;
 	Soldier** soldier;
 	BackGround** background;
-	Stage* stage;
+	Stage** stage;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
