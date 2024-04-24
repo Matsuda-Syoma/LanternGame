@@ -79,6 +79,7 @@ AbstractScene* GameMain::Update()
 			else
 			{
 					soldier[i] = new Soldier;
+					soldier[i]->SetLocation(Vector2D((float)(100 + GetRand(200) * 2), (float)(100 + GetRand(200) * 2)));
 			}
 		}
 
@@ -325,6 +326,7 @@ AbstractScene* GameMain::Update()
 						life--;
 						hitmoment = true;
 						player->SetFlg(true);
+						soldier[i] = nullptr;
 						soldier[i]->finalize();
 					}
 					else//無敵状態なら兵隊が反発する
@@ -379,6 +381,7 @@ AbstractScene* GameMain::Update()
 void GameMain::Draw() const
 {
 
+	
 	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2); i++) {
 		if (background[i] != nullptr) {
 			background[i]->Draw(player->GetLocation() + +(float)Camerashake);
@@ -391,7 +394,18 @@ void GameMain::Draw() const
 	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2))+ 16 , MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) + 16, 0x8844ff, true);
 	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16,-MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)),MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + 16, -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) - 16, 0x8844ff, true);
 
-
+	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	{
+		if (soldier[i] != nullptr)
+		{
+			if (720 > fabsf(sqrtf(
+				powf((soldier[i]->GetLocation().x - player->GetLocation().x), 2) +
+				powf((soldier[i]->GetLocation().y - player->GetLocation().y), 2))))
+			{
+				soldier[i]->Draw(player->GetLocation() + +(float)Camerashake);
+			}
+		}
+	}
 
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++){
 		if (bomb[i] != nullptr) {
@@ -414,13 +428,7 @@ void GameMain::Draw() const
 		}
 	}
 
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
-	{
-		if (soldier[i] != nullptr)
-		{
-			soldier[i]->Draw(player->GetLocation());
-		}
-	}
+	
 	
 
 	player->Draw(Camerashake);
