@@ -3,6 +3,10 @@
 #include "DxLib.h"
 #include "math.h"
 
+#define EM 0.1f
+#define EMMAX 2.0f
+#define EMMIN -2.0f
+
 Soldier::Soldier()
 {
 	Initialize();
@@ -47,23 +51,42 @@ void Soldier::Move(Vector2D PL)
 	}
 
 	location += knockback;
+	location += velocity * move;
 
+	//移動速度の処理
+	if (length.x < 0 && move.x < EMMAX)
+	{
+		move += Vector2D(EM,0.0f);
+	}
+	if (length.x > 0 && move.x > EMMIN)
+	{
+		move -= Vector2D(EM, 0.0f);
+	}
+	if (length.y < 0 && move.y < EMMAX)
+	{
+		move += Vector2D(0.0f, EM);
+	}
+	if (length.y > 0 && move.y > EMMIN)
+	{
+		move -= Vector2D(0.0f, EM);
+	}
 
-	if (length.x < 0)
+	//ステージの壁より外に行かない
+	if (location.x < -MapSize + radius)
 	{
-		location += Vector2D(5.0f,0.0f);
+		location.x = -MapSize + radius;
 	}
-	if (length.x > 0)
+	if (location.x >= MapSize - radius)
 	{
-		location -= Vector2D(5.0f, 0.0f);
+		location.x = MapSize - radius;
 	}
-	if (length.y <0)
+	if (location.y < -MapSize + radius)
 	{
-		location += Vector2D(0.0f, 5.0f);
+		location.y = -MapSize + radius;
 	}
-	if (length.y > 0)
+	if (location.y >= MapSize - radius)
 	{
-		location -= Vector2D(0.0f, 5.0f);
+		location.y = MapSize - radius;
 	}
 }
 
@@ -73,12 +96,16 @@ void Soldier::finalize()
 	delete this;
 }
 
-float Soldier::direction(Vector2D PL)
+float Soldier::direction(Vector2D L)
 {
-	return  sqrtf(powf((PL.x - location.x), 2) + powf((PL.y - location.y), 2));
+	return  sqrtf(powf((L.x - location.x), 2) + powf((L.y - location.y), 2));
 }
 
 void Soldier::Knockback(Vector2D V, float P)
 {
 	this->knockback = V * P;
+}
+void Soldier::SetVelocity(Vector2D loc)
+{
+	this->velocity = loc;
 }
