@@ -4,7 +4,7 @@
 class Bomb : public CharaBase
 {
 private:
-	static int images;
+	static int images[];
 	int mode = 0;
 	bool flg = true;
 	bool expflg = false;

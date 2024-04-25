@@ -3,7 +3,7 @@
 #include "../Utility/common.h"
 #include <math.h>
 
-int Bomb::images;
+int Bomb::images[3];
 Bomb::Bomb()
 {
 	speed = 2;
@@ -52,7 +52,7 @@ void Bomb::Draw(Vector2D loc) const
 	if (expcnt % 60 > 30 && expflg) {
 		SetDrawBright(255, 0, 0);// 赤以外を暗くする
 	}
-	DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, images, true);
+	DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, images[mode - 1], true);
 	SetDrawBright(255, 255, 255);// 全色暗くしない（デフォルト）
 	if (expflg) {
 		DrawFormatString((int)((location.x - 4) + (-loc.x + (SCREEN_WIDTH / 2))), (int)((location.y - 8) + (-loc.y + (SCREEN_HEIGHT / 2))), GetColor(255 - (int)(expcnt * 1.5), 0, 0), "%d", expcnt / 60);
@@ -101,5 +101,9 @@ void Bomb::SetKnockBack(Vector2D vec, int i)
 
 void Bomb::LoadImages()
 {
-	images = LoadGraph("Resources/images/bomb.png", 0);
+	//images = LoadGraph("Resources/images/bomb.png", 0);
+	int result = LoadDivGraph("Resources/images/bomb.png", 3, 3, 1, 64, 64, images);
+	if (result == -1) {
+		printfDx("画像エラー");
+	}
 }
