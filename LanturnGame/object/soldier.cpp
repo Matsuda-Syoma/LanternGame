@@ -21,12 +21,7 @@ void Soldier::Initialize()
 {
 	speed = 2;	//���x�̏�����
 
-	/*image = LoadGraph();
-
-	if (image == -1)
-	{
-		throw("���������܂���B\n");
-	}*/
+	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 64, soldierimg);
 }
 
 void Soldier::Upadate(Vector2D PL)
@@ -36,8 +31,8 @@ void Soldier::Upadate(Vector2D PL)
 
 void Soldier::Draw(Vector2D PL)
 {
-	DrawCircleAA(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 16, 0xf14f5f, true, true);
-	/*DrawGraph(location.x, location.y, image, TRUE);*/
+	//DrawCircleAA(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 16, 0xf14f5f, true, true);
+	DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierimg[1], true);
 }
 
 void Soldier::Move(Vector2D PL)

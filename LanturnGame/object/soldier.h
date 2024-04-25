@@ -31,4 +31,5 @@ private:
 	Vector2D knockback = 0;
 	Vector2D velocity = 0;
 	int CD;//中心点の距離
+	int soldierimg[12];//画像イメージ
 };

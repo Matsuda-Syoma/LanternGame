@@ -27,16 +27,16 @@ GameMain::GameMain()
 	}
 	player->Init();
 
-	soldier = new Soldier * [STAGE_ENEMY_MAX];
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	soldier = new Soldier * [GM_MAX_ENEMY_SOLDIER];
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		soldier[i] = nullptr;
 	}
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		soldier[i] = new Soldier;
 	}
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		soldier[i]->SetLocation(Vector2D((float)(100 + GetRand(200) * 2), (float)(100 + GetRand(200) * 2)));
 	}
@@ -81,7 +81,7 @@ AbstractScene* GameMain::Update()
 		player->GetMapSize(MapSize);
 
 
-		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
 			if (soldier[i] != nullptr)
 			{
@@ -101,10 +101,11 @@ AbstractScene* GameMain::Update()
 		int chek = -1;
 
 
-		//兵隊同士の当たり判定
-		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+		
+		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
-			for (int j = 0; j < STAGE_ENEMY_MAX; j++)
+			//兵隊同士の当たり判定
+			for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
 			{
 				if (i != j)
 				{
@@ -127,6 +128,29 @@ AbstractScene* GameMain::Update()
 					ee /= eel;
 					soldier[i]->SetVelocity(ee);
 					break;
+				}
+			}
+			//兵隊と爆弾の当たり判定
+			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
+			{
+					// nullptrじゃないなら距離を見る
+					if (soldier[i] != nullptr && bomb[j] != nullptr) {
+
+						// 距離が短いなら変数を保存する
+						if (eel > soldier[i]->direction(bomb[j]->GetLocation())) {
+							chek = j;
+							eel = soldier[i]->direction(bomb[j]->GetLocation());
+						}
+					}
+			}
+			if (chek != -1)
+			{
+				if (eel < 80)
+				{
+						ee = (bomb[chek]->GetLocation() - soldier[i]->GetLocation());
+						ee /= eel;
+						soldier[i]->SetVelocity(ee);
+						break;
 				}
 			}
 		}
@@ -307,7 +331,7 @@ AbstractScene* GameMain::Update()
 					hitmoment = false;
 				}
 				//兵隊と爆発の当たり判定
-				for (int j = 0; j < STAGE_ENEMY_MAX; j++)
+				for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
 				{
 					if (soldier[j] != nullptr)
 					{
@@ -329,7 +353,7 @@ AbstractScene* GameMain::Update()
 		}
 
 		// 兵隊とプレイヤーの当たり判定
-		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
 			if (soldier[i] != nullptr)
 			{
@@ -407,7 +431,7 @@ void GameMain::Draw() const
 	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2))+ 16 , MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) + 16, 0x8844ff, true);
 	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16,-MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)),MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + 16, -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) - 16, 0x8844ff, true);
 
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		if (soldier[i] != nullptr)
 		{
