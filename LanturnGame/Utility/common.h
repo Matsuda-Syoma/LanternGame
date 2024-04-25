@@ -9,14 +9,11 @@
 
 #define GM_MAX_ENEMY_BOMB 100
 #define GM_MAX_EFFECT_EXPLOSION 100
+#define GM_MAX_ICEFLOOR 2
 
 #define GM_MAX_MAPSIZE 1500
 #define GM_MIN_MAPSIZE 320
 
-#define IcefloorR_x 200
-#define IcefloorR_y 300
-#define IcefloorL_x 300
-#define IcefloorL_y 200
 
 #define STAGE_ENEMY_MAX 5
 #define CREATE_ENEMY_TIME 10

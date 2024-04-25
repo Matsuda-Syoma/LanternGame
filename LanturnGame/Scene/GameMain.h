@@ -18,7 +18,7 @@ private:
 	Soldier** soldier;
 	BackGround** background;
 	Particle** particle;
-	Stage* stage;
+	Stage** stage;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
@@ -27,7 +27,7 @@ private:
 	float MapCloseSpeed = 1;
 	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
 
-	int life = 3;
+	int life = 6;
 	int lifeimage;
 	int lifematchimage;
 	bool hitmoment = false;

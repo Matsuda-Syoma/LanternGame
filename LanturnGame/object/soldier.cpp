@@ -4,8 +4,8 @@
 #include "math.h"
 
 #define EM 0.1f
-#define EMMAX 3.0f
-#define EMMIN -3.0f
+#define EMMAX 2.0f
+#define EMMIN -2.0f
 
 Soldier::Soldier()
 {
@@ -53,6 +53,7 @@ void Soldier::Move(Vector2D PL)
 	location += knockback;
 	location += velocity * move;
 
+	//移動速度の処理
 	if (length.x < 0 && move.x < EMMAX)
 	{
 		move += Vector2D(EM,0.0f);
@@ -68,6 +69,24 @@ void Soldier::Move(Vector2D PL)
 	if (length.y > 0 && move.y > EMMIN)
 	{
 		move -= Vector2D(0.0f, EM);
+	}
+
+	//ステージの壁より外に行かない
+	if (location.x < -MapSize + radius)
+	{
+		location.x = -MapSize + radius;
+	}
+	if (location.x >= MapSize - radius)
+	{
+		location.x = MapSize - radius;
+	}
+	if (location.y < -MapSize + radius)
+	{
+		location.y = -MapSize + radius;
+	}
+	if (location.y >= MapSize - radius)
+	{
+		location.y = MapSize - radius;
 	}
 }
 
