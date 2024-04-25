@@ -34,7 +34,7 @@ void Soldier::Upadate(Vector2D PL)
 	Move(PL);
 }
 
-void Soldier::Draw(Vector2D S)
+void Soldier::Draw(Vector2D PL)
 {
 	DrawCircleAA(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 16, 0xf14f5f, true, true);
 	/*DrawGraph(location.x, location.y, image, TRUE);*/
