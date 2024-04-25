@@ -10,6 +10,7 @@ GameMain::GameMain()
 	BackGround::LoadImages();
 	Bomb::LoadImages();
 	Explosion::LoadImages();
+	Particle::LoadImages();
 	player = new Player;
 
 	stage = new Stage * [GM_MAX_ICEFLOOR];
@@ -63,6 +64,12 @@ GameMain::GameMain()
 			backnum++;
 		}
 	}
+
+	particle = new Particle * [GM_MAX_ENEMY_BOMB];
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		particle[i] = nullptr;
+	}
+
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
 }
@@ -154,8 +161,26 @@ AbstractScene* GameMain::Update()
 				}
 			}
 		}
+
 		player->Update();
+
+
+		for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+
+			// 敵がnullptrじゃないなら
+			if (particle[i] != nullptr) {
+				particle[i]->Update();
+
+				if (!particle[i]->Getflg()) {
+					particle[i] = nullptr;
+					delete particle[i];
+				}
+			}
+		}
+
+
 		// 敵の数を見る
+		SE_HitFlg = false;
 		for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 
 			// 敵がnullptrじゃないなら
@@ -269,12 +294,16 @@ AbstractScene* GameMain::Update()
 
 					// 敵とプレイヤーの当たり判定
 					if (bomb[i]->HitSphere(player)) {
+						SE_HitFlg = true;
 						bomb[i]->SetExpFlg(true);
 						if (bomb[i]->GetMode() == 3) {
 							vvec = (bomb[i]->GetLocation() - player->GetLocation());
 							length = bomb[i]->GetLength(player->GetLocation());
 							vvec /= length;
 							bomb[i]->SetKnockBack(vvec, 50);
+							SpawnParticle(0, bomb[i]->GetLocation(), player->GetLocation());
+							SetCameraShake(7);
+
 						}
 					}
 				}
@@ -380,6 +409,15 @@ AbstractScene* GameMain::Update()
 			}
 		}
 
+		if (SE_HitFlg) {
+			if (!SE_NewHitFlg) {
+				PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
+				SE_NewHitFlg = true;
+			}
+		}
+		else {
+			SE_NewHitFlg = false;
+		}
 
 		if (!ratioflg) {
 			ratio = 0;
@@ -479,6 +517,15 @@ void GameMain::Draw() const
 
 	
 
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+
+		// 敵がnullptrじゃないなら
+		if (particle[i] != nullptr) {
+			particle[i]->Draw(player->GetLocation());
+
+		}
+	}
+
 	if (resultflg == false) {
 		DrawFormatString(640, 10, 0xffffff, "%06d", score);
 	}
@@ -537,6 +584,17 @@ void GameMain::SpawnExplosion(Vector2D loc) {
 		if (explosion[i] == nullptr) {
 			explosion[i] = new Explosion;
 			explosion[i]->SetLocation(loc);
+			break;
+		}
+	}
+}
+
+void GameMain::SpawnParticle(int i, Vector2D loc, Vector2D loc2) {
+	for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
+		if (particle[j] == nullptr) {
+			particle[j] = new Particle;
+			particle[j]->SetLocation(loc);
+			particle[j]->SetAngle(loc, loc2);
 			break;
 		}
 	}

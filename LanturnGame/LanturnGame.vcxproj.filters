@@ -17,6 +17,7 @@
     <ClCompile Include="Scene\Setting.cpp" />
     <ClCompile Include="Utility\UserData.cpp" />
     <ClCompile Include="object\stage.cpp" />
+    <ClCompile Include="Object\Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object\soldier.h" />
@@ -38,5 +39,6 @@
     <ClInclude Include="Scene\Setting.h" />
     <ClInclude Include="Utility\UserData.h" />
     <ClInclude Include="object\stage.h" />
+    <ClInclude Include="Object\Particle.h" />
   </ItemGroup>
 </Project>

@@ -9,7 +9,7 @@ void Sounds::LoadSounds() {
 	BGM_Game = LoadSoundMem("Resources/sounds/BGM_Trip.wav");
 	SE_Explosion = LoadSoundMem("Resources/sounds/explosion.wav");
 	SE_Shoot = LoadSoundMem("Resources/sounds/SE_Shoot.mp3");
-	SE_Hit = LoadSoundMem("Resources/sounds/SE_Hit.mp3");
+	SE_Hit = LoadSoundMem("Resources/sounds/hit.wav");
 	SE_PlayerHit = LoadSoundMem("Resources/sounds/SE_PlayerHit.mp3");
 }
 
