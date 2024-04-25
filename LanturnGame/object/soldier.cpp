@@ -4,8 +4,8 @@
 #include "math.h"
 
 #define EM 0.1f
-#define EMMAX 3.0f
-#define EMMIN -3.0f
+#define EMMAX 2.0f
+#define EMMIN -2.0f
 
 Soldier::Soldier()
 {

@@ -74,6 +74,7 @@ AbstractScene* GameMain::Update()
 			if (soldier[i] != nullptr)
 			{
 				soldier[i]->Upadate(player->GetLocation());
+				soldier[i]->GetMapSize(MapSize);
 				soldier[i]->SetVelocity(1);
 			}
 			else
