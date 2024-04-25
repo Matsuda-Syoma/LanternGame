@@ -18,8 +18,7 @@ void Particle::Update()
 {
 	if (flg) {
 		if (count > 30) {
-			count = 0;
-			//flg = false;
+			flg = false;
 		}
 		count++;
 	}
@@ -28,7 +27,7 @@ void Particle::Update()
 void Particle::Draw(Vector2D loc) const
 {
 	DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2))
-				,  location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0, angle * 180 / M_PI, images[0][count], true);
+				,  location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 0.5, angle, images[0][count], true);
 }
 
 bool Particle::Getflg() const
@@ -44,7 +43,7 @@ int Particle::LoadImages()
 
 void Particle::SetAngle(Vector2D loc, Vector2D loc2)
 {
-	Vector2D temp = loc2 - loc;
+	Vector2D temp = loc - loc2;
 	angle = atan2(temp.y, temp.x);
 	printfDx("%f\n", angle * (180 / M_PI));
 }

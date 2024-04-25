@@ -31,7 +31,7 @@ void Player::Update()
 
 void Player::Draw(int camerashake) const
 {
-	DrawCircle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, (int)radius, 0xffff00, true, true);
+	DrawCircle(SCREEN_WIDTH / 2 + (camerashake), SCREEN_HEIGHT / 2 + (camerashake), (int)radius, 0xffff00, true, true);
 	if (hitflg == true) {
 		DrawString(10, 30, "Invincible", 0xffffff);
 	}

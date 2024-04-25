@@ -135,6 +135,7 @@ AbstractScene* GameMain::Update()
 
 
 		// 敵の数を見る
+		SE_HitFlg = false;
 		for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 
 			// 敵がnullptrじゃないなら
@@ -248,6 +249,7 @@ AbstractScene* GameMain::Update()
 
 					// 敵とプレイヤーの当たり判定
 					if (bomb[i]->HitSphere(player)) {
+						SE_HitFlg = true;
 						bomb[i]->SetExpFlg(true);
 						if (bomb[i]->GetMode() == 3) {
 							vvec = (bomb[i]->GetLocation() - player->GetLocation());
@@ -255,6 +257,8 @@ AbstractScene* GameMain::Update()
 							vvec /= length;
 							bomb[i]->SetKnockBack(vvec, 50);
 							SpawnParticle(0, bomb[i]->GetLocation(), player->GetLocation());
+							SetCameraShake(7);
+
 						}
 					}
 				}
@@ -343,6 +347,15 @@ AbstractScene* GameMain::Update()
 			}
 		}
 
+		if (SE_HitFlg) {
+			if (!SE_NewHitFlg) {
+				PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
+				SE_NewHitFlg = true;
+			}
+		}
+		else {
+			SE_NewHitFlg = false;
+		}
 
 		if (!ratioflg) {
 			ratio = 0;
