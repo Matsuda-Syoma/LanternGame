@@ -28,7 +28,7 @@ private:
 	float MapCloseSpeed = 1;
 	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
 
-	int life = 6;
+	int life = 1;
 	int lifeimage;
 	int lifematchimage;
 	bool hitmoment = false;

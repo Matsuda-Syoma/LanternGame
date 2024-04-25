@@ -7,6 +7,7 @@
 
 GameMain::GameMain()
 {
+	SetFontSize(32);
 	Sounds::LoadSounds();
 	BackGround::LoadImages();
 	Bomb::LoadImages();
@@ -536,22 +537,24 @@ void GameMain::Draw() const
 	}
 
 	if (resultflg == false) {
-		DrawFormatString(640, 10, 0xffffff, "%06d", hiscore);
-		DrawFormatString(640, 50, 0xffffff, "%06d", score);
+		DrawFormatString(560, 10, 0xffffff, "%06d", hiscore);
+		DrawFormatString(560, 40, 0xffffff, "%06d", score);
+		DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,game_frametime / 60);
 	}
 	else {
-		DrawBox(400, 250, 860, 490, 0xffffff, true);
-		DrawString(600, 280, "Result", 0x000000);
+		DrawBox(300, 250, 960, 490, 0xffffff, true);
+		DrawString(580, 280, "Result", 0x000000);
 		//DrawString(500, 460, "--- Restart with B button ---", 0x000000);
-		DrawString(500, 460, "--- Title with A button ---", 0x000000);
-		DrawFormatString(602, 380, 0x000000, "%06d", score);
+		DrawString(380, 460, "--- Title with A button ---", 0x000000);
+		DrawFormatString(582, 380, 0x000000, "%06d", score);
 	}
 	
+	int OldSize = GetFontSize();
 	if (ratioflg) {
-		SetFontSize(16 + ((1 + (ui_ratio_framecount)) + (ratio / 2)));
-		DrawFormatString(720, 10, GetColor(255, 255, 255 - (25 * ratio)), "%dx", ratio);
+		SetFontSize(OldSize + ((1 + (ui_ratio_framecount)) + (ratio / 2)));
+		DrawFormatString(720, 25, GetColor(255, 255, 255 - (25 * ratio)), "%dx", ratio);
 	}
-	SetFontSize(16);
+	SetFontSize(OldSize);
 
 	if (life > 0) {
 		DrawFormatString(10, 10, 0xffffff, "life : %d", life);
