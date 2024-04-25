@@ -101,8 +101,28 @@ AbstractScene* GameMain::Update()
 			}
 			else
 			{
+				/*soldier[i] = new Soldier;
+				Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+				if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+					powf((spawnloc.x - player->GetLocation().x), 2) +
+					powf((spawnloc.y - player->GetLocation().y), 2))))
+				{
+					soldier[i]->SetLocation(spawnloc);
+					break;
+				}*/
+
+				if ((game_frametime % 120) == 0)
+				{
 					soldier[i] = new Soldier;
-					soldier[i]->SetLocation(Vector2D((float)(100 + GetRand(200) * 2), (float)(100 + GetRand(200) * 2)));
+					Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+					if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+						powf((spawnloc.x - player->GetLocation().x), 2) +
+						powf((spawnloc.y - player->GetLocation().y), 2))))
+					{
+						soldier[i]->SetLocation(spawnloc);
+						break;
+					}
+				}
 			}
 		}
 
@@ -120,7 +140,7 @@ AbstractScene* GameMain::Update()
 				if (i != j)
 				{
 					// nullptrじゃないなら距離を見る
-					if (soldier[i] != nullptr) {
+					if (soldier[i] != nullptr && soldier[j] != nullptr) {
 
 						// 距離が短いなら変数を保存する
 						if (eel > soldier[i]->direction(soldier[j]->GetLocation())) {
