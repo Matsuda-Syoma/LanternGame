@@ -2,6 +2,7 @@
 #include "../Utility/LoadSounds.h"
 #include <math.h>
 #include "../Utility/InputControl.h"
+#include "../Utility/UserData.h"
 #include "Title.h"
 
 GameMain::GameMain()
@@ -11,6 +12,7 @@ GameMain::GameMain()
 	Bomb::LoadImages();
 	Explosion::LoadImages();
 	Particle::LoadImages();
+	hiscore = (int)UserData::LoadData(1);
 	player = new Player;
 
 	stage = new Stage * [GM_MAX_ICEFLOOR];
@@ -443,6 +445,13 @@ AbstractScene* GameMain::Update()
 		//	resultflg = false;
 
 		//}
+
+		if (!resultnewflg) {
+			if (score > hiscore) {
+				UserData::SaveData(1, (float)score);
+			}
+			resultnewflg = true;
+		}
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_A)) {
 			return new Title;
 
@@ -527,7 +536,8 @@ void GameMain::Draw() const
 	}
 
 	if (resultflg == false) {
-		DrawFormatString(640, 10, 0xffffff, "%06d", score);
+		DrawFormatString(640, 10, 0xffffff, "%06d", hiscore);
+		DrawFormatString(640, 50, 0xffffff, "%06d", score);
 	}
 	else {
 		DrawBox(400, 250, 860, 490, 0xffffff, true);
