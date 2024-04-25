@@ -45,5 +45,4 @@ void Particle::SetAngle(Vector2D loc, Vector2D loc2)
 {
 	Vector2D temp = loc - loc2;
 	angle = atan2(temp.y, temp.x);
-	printfDx("%f\n", angle * (180 / M_PI));
 }
