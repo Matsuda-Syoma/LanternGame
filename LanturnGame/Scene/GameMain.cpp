@@ -72,6 +72,7 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		particle[i] = nullptr;
 	}
+	SpawnParticle(1, player, true, player->GetLocation(), Vector2D(player->GetLocation().x - 1, player->GetLocation().y), 0.5);
 
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
@@ -173,7 +174,6 @@ AbstractScene* GameMain::Update()
 			// 敵がnullptrじゃないなら
 			if (particle[i] != nullptr) {
 				particle[i]->Update();
-
 				if (!particle[i]->Getflg()) {
 					particle[i] = nullptr;
 					delete particle[i];
@@ -304,7 +304,7 @@ AbstractScene* GameMain::Update()
 							length = bomb[i]->GetLength(player->GetLocation());
 							vvec /= length;
 							bomb[i]->SetKnockBack(vvec, 50);
-							SpawnParticle(0, bomb[i]->GetLocation(), player->GetLocation());
+							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f);
 							SetCameraShake(7);
 
 						}
@@ -539,7 +539,7 @@ void GameMain::Draw() const
 	if (resultflg == false) {
 		DrawFormatString(560, 10, 0xffffff, "%06d", hiscore);
 		DrawFormatString(560, 40, 0xffffff, "%06d", score);
-		DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,game_frametime / 60);
+		DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
 	}
 	else {
 		DrawBox(300, 250, 960, 490, 0xffffff, true);
@@ -609,10 +609,11 @@ void GameMain::SpawnExplosion(Vector2D loc) {
 	}
 }
 
-void GameMain::SpawnParticle(int i, Vector2D loc, Vector2D loc2) {
+void GameMain::SpawnParticle(int i, SphereCollider* obj, bool b2, Vector2D loc, Vector2D loc2, float f) {
 	for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
 		if (particle[j] == nullptr) {
-			particle[j] = new Particle;
+			particle[j] = new Particle();
+			particle[j]->Init(i, obj, b2, f);
 			particle[j]->SetLocation(loc);
 			particle[j]->SetAngle(loc, loc2);
 			break;

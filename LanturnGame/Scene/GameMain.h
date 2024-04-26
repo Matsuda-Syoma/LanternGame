@@ -28,7 +28,7 @@ private:
 	float MapCloseSpeed = 1;
 	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
 
-	int life = 1;
+	int life = 6;
 	int lifeimage;
 	int lifematchimage;
 	bool hitmoment = false;
@@ -52,9 +52,9 @@ public:
 
 	virtual AbstractScene* Update() override;
 	void Draw() const override;
-	void Game();	
+	void Game();
 	void SpawnExplosion(Vector2D loc);
-	void SpawnParticle(int i, Vector2D loc, Vector2D loc2);
+	void SpawnParticle(int i, SphereCollider* obj, bool b2, Vector2D loc, Vector2D loc2, float f);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
 	void SetMapSize(int i);
