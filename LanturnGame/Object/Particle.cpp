@@ -17,7 +17,7 @@ Particle::~Particle()
 void Particle::Update()
 {
 	if (root != nullptr) {
-		SetLocation(root->GetLocation());
+		SetLocation(root->GetLocation() + addloc);
 	}
 	if (flg) {
 		if (count >= 29) {
@@ -67,7 +67,7 @@ void Particle::Init(int _type, SphereCollider * _root, bool _loop, float _scale)
 	scale = _scale;
 }
 
-bool Particle::GetRootFlg()
+void Particle::SetRootLocation(Vector2D loc)
 {
-	return this->rootflg;
+	addloc = loc;
 }

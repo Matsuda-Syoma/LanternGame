@@ -72,7 +72,8 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_PARTICLE; i++) {
 		particle[i] = nullptr;
 	}
-	SpawnParticle(1, player, true, player->GetLocation(), Vector2D(player->GetLocation().x - 1, player->GetLocation().y), 0.5);
+	SpawnParticle(1, player, true, Vector2D(player->GetLocation().x + 5, player->GetLocation().y)
+								 , Vector2D(player->GetLocation().x + 5, player->GetLocation().y), 0.5);
 
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
@@ -648,6 +649,11 @@ void GameMain::SpawnParticle(int type, SphereCollider * root, bool loop, Vector2
 		if (particle[j] == nullptr) {
 			particle[j] = new Particle();
 			particle[j]->Init(type, root, loop, scale);
+			if (root != nullptr) {
+				particle[j]->SetRootLocation(loc);
+			}
+			else {
+			}
 			particle[j]->SetLocation(loc);
 			particle[j]->SetAngle(loc, loc2);
 			break;

@@ -23,7 +23,7 @@ private:
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
 	unsigned int hiscore = 0;
-	unsigned int ratio = 0;
+	unsigned int combo = 0;
 	float MapSize = GM_MAX_MAPSIZE;
 	float MapCloseSpeed = 1;
 	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
@@ -32,13 +32,13 @@ private:
 	int lifeimage;
 	int lifematchimage;
 	bool hitmoment = false;
-	bool ratioflg = false;
+	bool comboflg = false;
 	bool resultflg = false;
 	bool resultnewflg = false;
 	bool SE_HitFlg = false;
 	bool SE_NewHitFlg = false;
 
-	__int8 ui_ratio_framecount = 0;
+	__int8 ui_combo_framecount = 0;
 
 	int CamerashakeCount = 0;
 	int Camerashake = 0;

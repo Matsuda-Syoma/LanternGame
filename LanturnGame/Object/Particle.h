@@ -12,6 +12,7 @@ private:
 	bool rootflg = false;
 	bool loopflg = false;
 	float scale = 1.f;
+	Vector2D addloc = 0;
 public:
 	Particle();
 	~Particle();
@@ -22,6 +23,8 @@ public:
 	static int LoadImages();
 	void SetAngle(Vector2D loc, Vector2D loc2);
 	void Init(int _type, SphereCollider * _root, bool _loop, float _scale);
-	bool GetRootFlg();
+
+	void SetRootLocation(Vector2D loc);
+
 };
 
