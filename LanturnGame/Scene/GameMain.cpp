@@ -415,6 +415,7 @@ AbstractScene* GameMain::Update()
 						life--;
 						hitmoment = true;
 						player->SetFlg(true);
+						PlaySoundMem(Sounds::SE_CatchiPlayer, DX_PLAYTYPE_BACK);
 						soldier[i] = nullptr;
 						soldier[i]->finalize();
 					}

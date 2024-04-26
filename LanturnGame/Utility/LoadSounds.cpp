@@ -5,12 +5,15 @@ int Sounds::SE_Explosion;
 int Sounds::SE_Shoot;
 int Sounds::SE_Hit;
 int Sounds::SE_PlayerHit;
+int Sounds::SE_CatchiPlayer;
 void Sounds::LoadSounds() {
 	BGM_Game = LoadSoundMem("Resources/sounds/BGM_Trip.wav");
 	SE_Explosion = LoadSoundMem("Resources/sounds/explosion.wav");
 	SE_Shoot = LoadSoundMem("Resources/sounds/SE_Shoot.mp3");
 	SE_Hit = LoadSoundMem("Resources/sounds/hit.wav");
 	SE_PlayerHit = LoadSoundMem("Resources/sounds/SE_PlayerHit.mp3");
+	SE_CatchiPlayer = LoadSoundMem("Resources/sounds/SE_CatchiPlayer.mp3");
+
 }
 
 void Sounds::AllStop() {
