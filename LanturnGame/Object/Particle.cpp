@@ -59,12 +59,12 @@ void Particle::SetAngle(Vector2D loc, Vector2D loc2)
 	angle = atan2(temp.y, temp.x);
 }
 
-void Particle::Init(int i, SphereCollider* obj, bool b2, float f)
+void Particle::Init(int _type, SphereCollider * _root, bool _loop, float _scale)
 {
-	type = i;
-	root = obj;
-	loopflg = b2;
-	scale = f;
+	type = _type;
+	root = _root;
+	loopflg = _loop;
+	scale = _scale;
 }
 
 bool Particle::GetRootFlg()

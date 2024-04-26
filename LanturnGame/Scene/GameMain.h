@@ -54,7 +54,7 @@ public:
 	void Draw() const override;
 	void Game();
 	void SpawnExplosion(Vector2D loc);
-	void SpawnParticle(int i, SphereCollider* obj, bool b2, Vector2D loc, Vector2D loc2, float f);
+	void SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, Vector2D loc2, float scale);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
 	void SetMapSize(int i);
