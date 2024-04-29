@@ -91,7 +91,7 @@ AbstractScene* GameMain::Update()
 		/*soldier->GetMapSize(MapSize);
 		soldier->Upadate(player->GetLocation());*/
 		player->GetMapSize(MapSize);
-
+		player->Update();
 
 		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
@@ -166,9 +166,6 @@ AbstractScene* GameMain::Update()
 				}
 			}
 		}
-
-		player->Update();
-
 
 		for (int i = 0; i < GM_MAX_PARTICLE; i++) {
 

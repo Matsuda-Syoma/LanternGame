@@ -4,6 +4,7 @@ class Player : public CharaBase
 {
 private:
 	Vector2D velocity;
+	Vector2D lastinput = 0;
 	bool hitflg = false;
 	bool blinkingflg = false;	// 点滅フラグ
 	int cun = 0;				// 無敵時間カウント用
@@ -33,5 +34,8 @@ public:
 	bool GetFlg() const;
 	void SetFlg(bool b);
 	Vector2D GetVelocity();
+	void LineTrace();
+	bool HitSphereInLine(Vector2D loc, float radius);
+	float GetLength(Vector2D loc, Vector2D loc2);
 };
 
