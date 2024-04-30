@@ -8,6 +8,7 @@ public:
 	static int SE_Hit;
 	static int SE_PlayerHit;
 	static int SE_CatchiPlayer;
+	static int SE_DeleteSoldier;
 
 	static void LoadSounds();
 	static void AllStop();

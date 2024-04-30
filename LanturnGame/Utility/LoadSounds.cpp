@@ -6,6 +6,7 @@ int Sounds::SE_Shoot;
 int Sounds::SE_Hit;
 int Sounds::SE_PlayerHit;
 int Sounds::SE_CatchiPlayer;
+int Sounds::SE_DeleteSoldier;
 void Sounds::LoadSounds() {
 	BGM_Game = LoadSoundMem("Resources/sounds/BGM_Trip.wav");
 	SE_Explosion = LoadSoundMem("Resources/sounds/explosion.wav");
@@ -13,6 +14,7 @@ void Sounds::LoadSounds() {
 	SE_Hit = LoadSoundMem("Resources/sounds/hit.wav");
 	SE_PlayerHit = LoadSoundMem("Resources/sounds/SE_PlayerHit.mp3");
 	SE_CatchiPlayer = LoadSoundMem("Resources/sounds/SE_CatchiPlayer.mp3");
+	SE_DeleteSoldier = LoadSoundMem("Resources/sounds/SE_DeleteSoldier.mp3");
 
 }
 

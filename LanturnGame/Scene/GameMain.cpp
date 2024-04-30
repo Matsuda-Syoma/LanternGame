@@ -39,6 +39,7 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		soldier[i] = new Soldier;
+		soldier[i]->DMGflg(true);
 	}
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
@@ -101,16 +102,6 @@ AbstractScene* GameMain::Update()
 			}
 			else
 			{
-				/*soldier[i] = new Soldier;
-				Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-				if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
-					powf((spawnloc.x - player->GetLocation().x), 2) +
-					powf((spawnloc.y - player->GetLocation().y), 2))))
-				{
-					soldier[i]->SetLocation(spawnloc);
-					break;
-				}*/
-
 				if ((game_frametime % 120) == 0)
 				{
 					soldier[i] = new Soldier;
@@ -389,9 +380,14 @@ AbstractScene* GameMain::Update()
 					{
 						if (explosion[i]->HitSphere(soldier[j]))
 						{
-							soldier[j] = nullptr;
-							delete soldier[j];
-							break;
+							PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
+							soldier[j]->DMGflg(false);
+							if ((game_frametime % 120) == 0)
+							{
+								soldier[j] = nullptr;
+								delete soldier[j];
+								break;
+							}
 						}
 					}
 				}
