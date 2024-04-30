@@ -92,7 +92,13 @@ AbstractScene* GameMain::Update()
 		soldier->Upadate(player->GetLocation());*/
 		player->GetMapSize(MapSize);
 		player->Update();
-
+		//for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		//	if (bomb[i] != nullptr) {
+		//		if (player->HitSphereInLine(bomb[i]->GetLocation(), bomb[i]->GetRadius())) {
+		//			bomb[i]->SetExpFlg(true);
+		//		}
+		//	}
+		//}
 		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
 			if (soldier[i] != nullptr)
