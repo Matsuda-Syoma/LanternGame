@@ -114,7 +114,7 @@ void Soldier::PositionCheck()
 	}
 }
 
-void Soldier::DMGflg(bool i)
-{
-	dmgflg = i;
-}
+//void Soldier::DMGflg(bool i)
+//{
+//	dmgflg = i;
+//}
