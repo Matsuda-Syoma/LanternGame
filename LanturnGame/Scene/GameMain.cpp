@@ -205,11 +205,8 @@ AbstractScene* GameMain::Update()
 
 				// プレイヤーとの距離を見る
 				// プレイヤーと320離れていたら
-				if (240 < bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
-					//bomb[i]->SetMode(GetRand(4) + 1);
-				}
-				else if (240 >= bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
-					//bomb[i]->SetMode(2);
+				if (240 < bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() == 2) {
+					bomb[i]->SetMode(GetRand(4) + 1);
 				}
 				// 敵と敵の距離を見る
 				int temp = -1;
@@ -232,9 +229,11 @@ AbstractScene* GameMain::Update()
 							if (bomb[j] != nullptr) {
 
 								// 距離が短いなら変数を保存する
-								if (length > bomb[j]->GetLength(bomb[i]->GetLocation())) {
-									temp = j;
-									length = bomb[j]->GetLength(bomb[i]->GetLocation());
+								if(bomb[i]->GetMode() != 3) {
+									if (length > bomb[j]->GetLength(bomb[i]->GetLocation())) {
+										temp = j;
+										length = bomb[j]->GetLength(bomb[i]->GetLocation());
+									}
 								}
 							}
 						}
@@ -329,6 +328,50 @@ AbstractScene* GameMain::Update()
 						bomb[i]->SetMoveToLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 					}
 					break;
+
+					// プレイヤーと対称の動き
+				case 5:
+					for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
+
+						// 自分以外なら
+						if (j != i) {
+
+							// nullptrじゃないなら距離を見る
+							if (bomb[j] != nullptr) {
+
+								// 距離が短いなら変数を保存する
+								if (length > bomb[j]->GetLength(bomb[i]->GetLocation())) {
+									temp = j;
+									length = bomb[j]->GetLength(bomb[i]->GetLocation());
+								}
+							}
+						}
+						else if (bomb[j] == nullptr) {
+							temp = -1;
+							length = 65535;
+						}
+					}
+					if (temp != -1) {
+						// 距離が近いなら
+						if (length < 72) {
+							vvec = (bomb[i]->GetLocation() - bomb[temp]->GetLocation());
+							vvec /= length;
+							bomb[i]->SetVelocity(vvec);
+							break;
+						}
+					}
+					length = bomb[i]->GetLength(player->GetLocation() * -1);
+					if (length > 16) {
+						bomb[i]->SetMoveToLocation(player->GetLocation() * -1);
+						vvec = (bomb[i]->GetMoveToLocation() - bomb[i]->GetLocation());
+						vvec /= length;
+						bomb[i]->SetVelocity(vvec);
+
+					}
+					else {
+						bomb[i]->SetVelocity(NULL);
+					}
+					break;
 				}
 				// 敵の更新
 				bomb[i]->GetMapSize(MapSize);
@@ -398,8 +441,8 @@ AbstractScene* GameMain::Update()
 							{
 								bomb[i]->SetLocation(spawnloc);
 								bomb[i]->SetMoveToLocation(spawnloc);
-								bomb[i]->SetMode(GetRand(3) + 1);
-								//bomb[i]->SetMode(4);
+								//bomb[i]->SetMode(GetRand(4) + 1);
+								bomb[i]->SetMode(5);
 								break;
 							}
 						}
