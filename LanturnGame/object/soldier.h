@@ -24,6 +24,12 @@ public:
 	void Knockback(Vector2D V, float P);
 	void SetVelocity(Vector2D loc);
 
+	//壁より外側にいるなら内側に入れる
+	void PositionCheck();
+
+	//爆発に巻き込まれた動きが止まる
+	//void DMGflg(bool i);
+
 private:
 	int image;	//画像イメージ
 	Vector2D length = 0;
@@ -32,4 +38,5 @@ private:
 	Vector2D velocity = 0;
 	int CD;//中心点の距離
 	int soldierimg[12];//画像イメージ
+	bool dmgflg = false;
 };

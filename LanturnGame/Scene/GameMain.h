@@ -28,7 +28,8 @@ private:
 	float MapCloseSpeed = 1;
 	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
 
-	int life = 60;
+	int life = 4;
+
 	int lifeimage;
 	int lifematchimage;
 	bool hitmoment = false;
@@ -37,6 +38,7 @@ private:
 	bool resultnewflg = false;
 	bool SE_HitFlg = false;
 	bool SE_NewHitFlg = false;
+	bool Soldier_Hit_EX = false;
 
 	__int8 ui_combo_framecount = 0;
 

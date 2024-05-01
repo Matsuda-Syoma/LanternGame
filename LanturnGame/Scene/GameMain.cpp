@@ -39,6 +39,7 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		soldier[i] = new Soldier;
+		//soldier[i]->DMGflg(true);
 	}
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
@@ -109,8 +110,18 @@ AbstractScene* GameMain::Update()
 			}
 			else
 			{
+				if ((game_frametime % 120) == 0)
+				{
 					soldier[i] = new Soldier;
-					soldier[i]->SetLocation(Vector2D((float)(100 + GetRand(200) * 2), (float)(100 + GetRand(200) * 2)));
+					Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+					if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+						powf((spawnloc.x - player->GetLocation().x), 2) +
+						powf((spawnloc.y - player->GetLocation().y), 2))))
+					{
+						soldier[i]->SetLocation(spawnloc);
+						break;
+					}
+				}
 			}
 		}
 
@@ -128,7 +139,7 @@ AbstractScene* GameMain::Update()
 				if (i != j)
 				{
 					// nullptrじゃないなら距離を見る
-					if (soldier[i] != nullptr) {
+					if (soldier[i] != nullptr && soldier[j] != nullptr) {
 
 						// 距離が短いなら変数を保存する
 						if (eel > soldier[i]->direction(soldier[j]->GetLocation())) {
@@ -373,9 +384,11 @@ AbstractScene* GameMain::Update()
 					{
 						if (explosion[i]->HitSphere(soldier[j]))
 						{
-							soldier[j] = nullptr;
-							delete soldier[j];
-							break;
+							PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
+							//soldier[j]->DMGflg(false);
+								soldier[j] = nullptr;
+								delete soldier[j];
+								break;
 						}
 					}
 				}
@@ -399,6 +412,7 @@ AbstractScene* GameMain::Update()
 						life--;
 						hitmoment = true;
 						player->SetFlg(true);
+						PlaySoundMem(Sounds::SE_CatchiPlayer, DX_PLAYTYPE_BACK);
 						soldier[i] = nullptr;
 						soldier[i]->finalize();
 					}
