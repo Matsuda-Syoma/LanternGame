@@ -206,10 +206,10 @@ AbstractScene* GameMain::Update()
 				// プレイヤーとの距離を見る
 				// プレイヤーと320離れていたら
 				if (240 < bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
-					bomb[i]->SetMode(1);
+					//bomb[i]->SetMode(GetRand(4) + 1);
 				}
 				else if (240 >= bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() != 3) {
-					bomb[i]->SetMode(2);
+					//bomb[i]->SetMode(2);
 				}
 				// 敵と敵の距離を見る
 				int temp = -1;
@@ -274,6 +274,35 @@ AbstractScene* GameMain::Update()
 
 					// プレイヤーを追いかける
 				case 3:
+					for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
+
+						// 自分以外なら
+						if (j != i) {
+
+							// nullptrじゃないなら距離を見る
+							if (bomb[j] != nullptr) {
+
+								// 距離が短いなら変数を保存する
+								if (length > bomb[j]->GetLength(bomb[i]->GetLocation())) {
+									temp = j;
+									length = bomb[j]->GetLength(bomb[i]->GetLocation());
+								}
+							}
+						}
+						else if (bomb[j] == nullptr) {
+							temp = -1;
+							length = 65535;
+						}
+					}
+					if (temp != -1) {
+						// 距離が近いなら
+						if (length < 72) {
+							vvec = (bomb[i]->GetLocation() - bomb[temp]->GetLocation());
+							vvec /= length;
+							bomb[i]->SetVelocity(vvec);
+							break;
+						}
+					}
 					length = bomb[i]->GetLength(player->GetLocation());
 					if (length > 80) {
 						vvec = (player->GetLocation() - bomb[i]->GetLocation());
@@ -282,6 +311,22 @@ AbstractScene* GameMain::Update()
 					}
 					else {
 						bomb[i]->SetVelocity(NULL);
+					}
+					break;
+
+					// ランダム移動
+				case 4:
+					length = bomb[i]->GetLength(bomb[i]->GetMoveToLocation());
+					if (length > 16) {
+						vvec = (bomb[i]->GetMoveToLocation() - bomb[i]->GetLocation());
+						vvec /= length;
+						bomb[i]->SetVelocity(vvec);
+					}
+					else {
+						bomb[i]->SetMoveToLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+					}
+					if (fabsf(bomb[i]->GetMoveToLocation().x) - MapSize + 32 > 0 || fabsf(bomb[i]->GetMoveToLocation().y) - MapSize + 32 > 0) {
+						bomb[i]->SetMoveToLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 					}
 					break;
 				}
@@ -313,7 +358,7 @@ AbstractScene* GameMain::Update()
 					if (bomb[i]->HitSphere(player)) {
 						SE_HitFlg = true;
 						bomb[i]->SetExpFlg(true);
-						if (bomb[i]->GetMode() == 3) {
+						//if (bomb[i]->GetMode() == 3) {
 							vvec = (bomb[i]->GetLocation() - player->GetLocation());
 							length = bomb[i]->GetLength(player->GetLocation());
 							vvec /= length;
@@ -321,7 +366,7 @@ AbstractScene* GameMain::Update()
 							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f);
 							SetCameraShake(7);
 
-						}
+						//}
 					}
 				}
 				// 敵のフラグが0なら
@@ -352,6 +397,9 @@ AbstractScene* GameMain::Update()
 								powf((spawnloc.y - player->GetLocation().y), 2))))
 							{
 								bomb[i]->SetLocation(spawnloc);
+								bomb[i]->SetMoveToLocation(spawnloc);
+								bomb[i]->SetMode(GetRand(3) + 1);
+								//bomb[i]->SetMode(4);
 								break;
 							}
 						}
@@ -597,7 +645,7 @@ void GameMain::Draw() const
 	// コンボフラグがたっているなら描画
 	if (comboflg) {
 		SetFontSize(OldSize + ((1 + (ui_combo_framecount)) + (combo / 2)));
-		DrawFormatString(720, 25, GetColor(255, 255, 255 - (25 * combo)), "%dx", combo);
+		DrawFormatString(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GetColor(255, 255, 255 - (25 * combo)), "x%d", combo);
 	}
 	SetFontSize(OldSize);
 
