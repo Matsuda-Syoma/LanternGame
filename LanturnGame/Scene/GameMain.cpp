@@ -416,7 +416,7 @@ AbstractScene* GameMain::Update()
 				if (!bomb[i]->GetFlg()) {
 					// 爆発を発生して敵をnullptrにしてループを抜ける
 					SpawnExplosion(bomb[i]->GetLocation());
-					SpawnParticle(2, nullptr, false, bomb[i]->GetLocation(), bomb[i]->GetLocation(), 2.5f);
+					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), bomb[i]->GetLocation(), 1.5f);
 					PlaySoundMem(Sounds::SE_Explosion, DX_PLAYTYPE_BACK, true);
 					combo += 1;
 					ui_combo_framecount = 25;
