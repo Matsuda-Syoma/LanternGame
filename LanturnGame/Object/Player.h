@@ -5,6 +5,7 @@ class Player : public CharaBase
 private:
 	Vector2D velocity;
 	bool hitflg = false;
+	bool overice = false;
 	bool blinkingflg = false;	// 点滅フラグ
 	int cun = 0;				// 無敵時間カウント用
 	int blinkingcun = 0;		// 点滅カウント用
@@ -23,6 +24,7 @@ public:
 	void Movement();
 	void Invincible();	// 無敵時間
 	void Blinking();	// 点滅
+	void Icewalk();
 
 	// アニメーション
 	void MoveRight();	// 右移動
@@ -32,6 +34,8 @@ public:
 
 	bool GetFlg() const;
 	void SetFlg(bool b);
+	bool GetIceFlg() const;
+	void SetIceFlg(bool b);
 	Vector2D GetVelocity();
 };
 

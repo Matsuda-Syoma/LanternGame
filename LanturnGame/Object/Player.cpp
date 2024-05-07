@@ -30,6 +30,10 @@ void Player::Update()
 		Blinking();
 	}
 
+	if (overice == true) {
+       Icewalk();
+	}
+
 	// プレイヤーアニメーション
 	if (direction == 0) {	// 下移動
 		MoveDown();
@@ -358,7 +362,22 @@ void Player::SetFlg(bool b)
 	this->hitflg = b;
 }
 
+bool Player::GetIceFlg() const
+{
+	return overice;
+}
+
+void Player::SetIceFlg(bool b)
+{
+	this->overice = b;
+}
 Vector2D Player::GetVelocity()
 {
 	return this->velocity;
+}
+
+void Player::Icewalk()
+{
+	printfDx("HITしました\n");
+
 }

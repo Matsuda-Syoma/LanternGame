@@ -356,7 +356,15 @@ AbstractScene* GameMain::Update()
 			}
 		}
 
-
+		for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
+		{
+			if (stage[i]->HitSphere(player))
+			{
+				if (player->GetIceFlg() == false) {
+					player->SetIceFlg(true);
+				}
+			}
+		}
 		if (!ratioflg) {
 			ratio = 0;
 		}

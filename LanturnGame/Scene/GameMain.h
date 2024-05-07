@@ -31,6 +31,7 @@ private:
 	bool hitmoment = false;
 	bool ratioflg = false;
 	bool resultflg = false;
+	bool overice = false;
 
 	__int8 ui_ratio_framecount = 0;
 
