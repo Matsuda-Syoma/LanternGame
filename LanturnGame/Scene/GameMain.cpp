@@ -2,14 +2,18 @@
 #include "../Utility/LoadSounds.h"
 #include <math.h>
 #include "../Utility/InputControl.h"
+#include "../Utility/UserData.h"
 #include "Title.h"
 
 GameMain::GameMain()
 {
+	SetFontSize(32);
 	Sounds::LoadSounds();
 	BackGround::LoadImages();
 	Bomb::LoadImages();
 	Explosion::LoadImages();
+	Particle::LoadImages();
+	hiscore = (int)UserData::LoadData(1);
 	player = new Player;
 
 	stage = new Stage * [GM_MAX_ICEFLOOR];
@@ -27,16 +31,17 @@ GameMain::GameMain()
 	}
 	player->Init();
 
-	soldier = new Soldier * [STAGE_ENEMY_MAX];
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	soldier = new Soldier * [GM_MAX_ENEMY_SOLDIER];
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		soldier[i] = nullptr;
 	}
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		soldier[i] = new Soldier;
+		//soldier[i]->DMGflg(true);
 	}
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		soldier[i]->SetLocation(Vector2D((float)(100 + GetRand(200) * 2), (float)(100 + GetRand(200) * 2)));
 	}
@@ -63,6 +68,12 @@ GameMain::GameMain()
 			backnum++;
 		}
 	}
+
+	particle = new Particle * [GM_MAX_ENEMY_BOMB];
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+		particle[i] = nullptr;
+	}
+
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
 }
@@ -81,7 +92,7 @@ AbstractScene* GameMain::Update()
 		player->GetMapSize(MapSize);
 
 
-		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
 			if (soldier[i] != nullptr)
 			{
@@ -91,8 +102,18 @@ AbstractScene* GameMain::Update()
 			}
 			else
 			{
+				if ((game_frametime % 120) == 0)
+				{
 					soldier[i] = new Soldier;
-					soldier[i]->SetLocation(Vector2D((float)(100 + GetRand(200) * 2), (float)(100 + GetRand(200) * 2)));
+					Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+					if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+						powf((spawnloc.x - player->GetLocation().x), 2) +
+						powf((spawnloc.y - player->GetLocation().y), 2))))
+					{
+						soldier[i]->SetLocation(spawnloc);
+						break;
+					}
+				}
 			}
 		}
 
@@ -101,15 +122,16 @@ AbstractScene* GameMain::Update()
 		int chek = -1;
 
 
-		//兵隊同士の当たり判定
-		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+		
+		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
-			for (int j = 0; j < STAGE_ENEMY_MAX; j++)
+			//兵隊同士の当たり判定
+			for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
 			{
 				if (i != j)
 				{
 					// nullptrじゃないなら距離を見る
-					if (soldier[i] != nullptr) {
+					if (soldier[i] != nullptr && soldier[j] != nullptr) {
 
 						// 距離が短いなら変数を保存する
 						if (eel > soldier[i]->direction(soldier[j]->GetLocation())) {
@@ -129,9 +151,50 @@ AbstractScene* GameMain::Update()
 					break;
 				}
 			}
+			//兵隊と爆弾の当たり判定
+			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
+			{
+					// nullptrじゃないなら距離を見る
+					if (soldier[i] != nullptr && bomb[j] != nullptr) {
+
+						// 距離が短いなら変数を保存する
+						if (eel > soldier[i]->direction(bomb[j]->GetLocation())) {
+							chek = j;
+							eel = soldier[i]->direction(bomb[j]->GetLocation());
+						}
+					}
+			}
+			if (chek != -1)
+			{
+				if (eel < 80)
+				{
+						ee = (bomb[chek]->GetLocation() - soldier[i]->GetLocation());
+						ee /= eel;
+						soldier[i]->SetVelocity(ee);
+						break;
+				}
+			}
 		}
+
 		player->Update();
+
+
+		for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+
+			// 敵がnullptrじゃないなら
+			if (particle[i] != nullptr) {
+				particle[i]->Update();
+
+				if (!particle[i]->Getflg()) {
+					particle[i] = nullptr;
+					delete particle[i];
+				}
+			}
+		}
+
+
 		// 敵の数を見る
+		SE_HitFlg = false;
 		for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 
 			// 敵がnullptrじゃないなら
@@ -245,12 +308,16 @@ AbstractScene* GameMain::Update()
 
 					// 敵とプレイヤーの当たり判定
 					if (bomb[i]->HitSphere(player)) {
+						SE_HitFlg = true;
 						bomb[i]->SetExpFlg(true);
 						if (bomb[i]->GetMode() == 3) {
 							vvec = (bomb[i]->GetLocation() - player->GetLocation());
 							length = bomb[i]->GetLength(player->GetLocation());
 							vvec /= length;
 							bomb[i]->SetKnockBack(vvec, 50);
+							SpawnParticle(0, bomb[i]->GetLocation(), player->GetLocation());
+							SetCameraShake(7);
+
 						}
 					}
 				}
@@ -307,15 +374,17 @@ AbstractScene* GameMain::Update()
 					hitmoment = false;
 				}
 				//兵隊と爆発の当たり判定
-				for (int j = 0; j < STAGE_ENEMY_MAX; j++)
+				for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
 				{
 					if (soldier[j] != nullptr)
 					{
 						if (explosion[i]->HitSphere(soldier[j]))
 						{
-							soldier[j] = nullptr;
-							delete soldier[j];
-							break;
+							PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
+							//soldier[j]->DMGflg(false);
+								soldier[j] = nullptr;
+								delete soldier[j];
+								break;
 						}
 					}
 				}
@@ -329,7 +398,7 @@ AbstractScene* GameMain::Update()
 		}
 
 		// 兵隊とプレイヤーの当たり判定
-		for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
 			if (soldier[i] != nullptr)
 			{
@@ -339,6 +408,7 @@ AbstractScene* GameMain::Update()
 						life--;
 						hitmoment = true;
 						player->SetFlg(true);
+						PlaySoundMem(Sounds::SE_CatchiPlayer, DX_PLAYTYPE_BACK);
 						soldier[i] = nullptr;
 						soldier[i]->finalize();
 					}
@@ -365,6 +435,16 @@ AbstractScene* GameMain::Update()
 				}
 			}
 		}
+		if (SE_HitFlg) {
+			if (!SE_NewHitFlg) {
+				PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
+				SE_NewHitFlg = true;
+			}
+		}
+		else {
+			SE_NewHitFlg = false;
+		}
+
 		if (!ratioflg) {
 			ratio = 0;
 		}
@@ -389,6 +469,13 @@ AbstractScene* GameMain::Update()
 		//	resultflg = false;
 
 		//}
+
+		if (!resultnewflg) {
+			if (score > hiscore) {
+				UserData::SaveData(1, (float)score);
+			}
+			resultnewflg = true;
+		}
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_A)) {
 			return new Title;
 
@@ -415,7 +502,7 @@ void GameMain::Draw() const
 	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2))+ 16 , MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) + 16, 0x8844ff, true);
 	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16,-MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)),MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + 16, -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) - 16, 0x8844ff, true);
 
-	for (int i = 0; i < STAGE_ENEMY_MAX; i++)
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		if (soldier[i] != nullptr)
 		{
@@ -463,22 +550,34 @@ void GameMain::Draw() const
 
 	
 
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
+
+		// 敵がnullptrじゃないなら
+		if (particle[i] != nullptr) {
+			particle[i]->Draw(player->GetLocation());
+
+		}
+	}
+
 	if (resultflg == false) {
-		DrawFormatString(640, 10, 0xffffff, "%06d", score);
+		DrawFormatString(560, 10, 0xffffff, "%06d", hiscore);
+		DrawFormatString(560, 40, 0xffffff, "%06d", score);
+		DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,game_frametime / 60);
 	}
 	else {
-		DrawBox(400, 250, 860, 490, 0xffffff, true);
-		DrawString(600, 280, "Result", 0x000000);
+		DrawBox(300, 250, 960, 490, 0xffffff, true);
+		DrawString(580, 280, "Result", 0x000000);
 		//DrawString(500, 460, "--- Restart with B button ---", 0x000000);
-		DrawString(500, 460, "--- Title with A button ---", 0x000000);
-		DrawFormatString(602, 380, 0x000000, "%06d", score);
+		DrawString(380, 460, "--- Title with A button ---", 0x000000);
+		DrawFormatString(582, 380, 0x000000, "%06d", score);
 	}
 	
+	int OldSize = GetFontSize();
 	if (ratioflg) {
-		SetFontSize(16 + ((1 + (ui_ratio_framecount)) + (ratio / 2)));
-		DrawFormatString(720, 10, GetColor(255, 255, 255 - (25 * ratio)), "%dx", ratio);
+		SetFontSize(OldSize + ((1 + (ui_ratio_framecount)) + (ratio / 2)));
+		DrawFormatString(720, 25, GetColor(255, 255, 255 - (25 * ratio)), "%dx", ratio);
 	}
-	SetFontSize(16);
+	SetFontSize(OldSize);
 
 	if (life > 0) {
 		DrawFormatString(10, 10, 0xffffff, "life : %d", life);
@@ -499,9 +598,16 @@ void GameMain::Draw() const
 
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		if (bomb[i] != nullptr) {
-			DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0xff0000, true);
+			DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x7f2244, true);
 		}
 	}
+
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++) {
+		if (soldier[i] != nullptr) {
+			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
+		}
+	}
+
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++) {
 		if (bomb[i] != nullptr) {
 			DrawCircleAA(SCREEN_WIDTH - 128 + (stage[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (stage[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
@@ -521,6 +627,17 @@ void GameMain::SpawnExplosion(Vector2D loc) {
 		if (explosion[i] == nullptr) {
 			explosion[i] = new Explosion;
 			explosion[i]->SetLocation(loc);
+			break;
+		}
+	}
+}
+
+void GameMain::SpawnParticle(int i, Vector2D loc, Vector2D loc2) {
+	for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
+		if (particle[j] == nullptr) {
+			particle[j] = new Particle;
+			particle[j]->SetLocation(loc);
+			particle[j]->SetAngle(loc, loc2);
 			break;
 		}
 	}

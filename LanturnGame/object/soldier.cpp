@@ -21,23 +21,22 @@ void Soldier::Initialize()
 {
 	speed = 2;	//���x�̏�����
 
-	/*image = LoadGraph();
-
-	if (image == -1)
-	{
-		throw("���������܂���B\n");
-	}*/
+	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 64, soldierimg);
 }
 
 void Soldier::Upadate(Vector2D PL)
 {
-	Move(PL);
+	if (dmgflg != true)
+	{
+		Move(PL);
+	}
+	PositionCheck();
 }
 
 void Soldier::Draw(Vector2D PL)
 {
-	DrawCircleAA(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), radius, 16, 0xf14f5f, true, true);
-	/*DrawGraph(location.x, location.y, image, TRUE);*/
+	//兵隊イラストの描画
+	DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierimg[1], true);
 }
 
 void Soldier::Move(Vector2D PL)
@@ -71,6 +70,31 @@ void Soldier::Move(Vector2D PL)
 		move -= Vector2D(0.0f, EM);
 	}
 
+	
+}
+
+void Soldier::finalize()
+{
+	delete this;
+}
+
+float Soldier::direction(Vector2D L)
+{
+	return  sqrtf(powf((L.x - location.x), 2) + powf((L.y - location.y), 2));
+}
+
+void Soldier::Knockback(Vector2D V, float P)
+{
+	this->knockback = V * P;
+}
+
+void Soldier::SetVelocity(Vector2D loc)
+{
+	this->velocity = loc;
+}
+
+void Soldier::PositionCheck()
+{
 	//ステージの壁より外に行かない
 	if (location.x < -MapSize + radius)
 	{
@@ -90,22 +114,7 @@ void Soldier::Move(Vector2D PL)
 	}
 }
 
-void Soldier::finalize()
-{
-	/*printfDx("捕まえた");*/
-	delete this;
-}
-
-float Soldier::direction(Vector2D L)
-{
-	return  sqrtf(powf((L.x - location.x), 2) + powf((L.y - location.y), 2));
-}
-
-void Soldier::Knockback(Vector2D V, float P)
-{
-	this->knockback = V * P;
-}
-void Soldier::SetVelocity(Vector2D loc)
-{
-	this->velocity = loc;
-}
+//void Soldier::DMGflg(bool i)
+//{
+//	dmgflg = i;
+//}

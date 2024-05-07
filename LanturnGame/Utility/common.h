@@ -15,6 +15,5 @@
 #define GM_MIN_MAPSIZE 320
 
 
-#define STAGE_ENEMY_MAX 5
-#define CREATE_ENEMY_TIME 10
+#define GM_MAX_ENEMY_SOLDIER 5
 

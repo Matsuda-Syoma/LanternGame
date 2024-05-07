@@ -6,6 +6,7 @@
 #include "../Object/Player.h"
 #include "../Object/BackGround.h"
 #include "../Object/Soldier.h"
+#include "../Object/Particle.h"
 #include "../Utility/common.h"
 #include "../Object/stage.h"
 class GameMain : public AbstractScene
@@ -16,22 +17,28 @@ private:
 	Player* player;
 	Soldier** soldier;
 	BackGround** background;
+	Particle** particle;
 	Stage** stage;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
+	unsigned int hiscore = 0;
 	unsigned int ratio = 0;
 	float MapSize = GM_MAX_MAPSIZE;
 	float MapCloseSpeed = 1;
 	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
 
-	int life = 6;
+	int life = 4;
 	int lifeimage;
 	int lifematchimage;
 	bool hitmoment = false;
 	bool ratioflg = false;
 	bool resultflg = false;
 	bool overice = false;
+	bool resultnewflg = false;
+	bool SE_HitFlg = false;
+	bool SE_NewHitFlg = false;
+	bool Soldier_Hit_EX = false;
 
 	__int8 ui_ratio_framecount = 0;
 
@@ -49,6 +56,7 @@ public:
 	void Draw() const override;
 	void Game();	
 	void SpawnExplosion(Vector2D loc);
+	void SpawnParticle(int i, Vector2D loc, Vector2D loc2);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
 	void SetMapSize(int i);
