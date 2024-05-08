@@ -425,15 +425,16 @@ AbstractScene* GameMain::Update()
 				}
 			}
 		}
-
+		//氷の床の当たり判定
+		player->SetIceFlg(false);
 		for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
-		{
-			if (stage[i]->HitSphere(player))
-			{
-				if (player->GetIceFlg() == false) {
-					player->SetIceFlg(true);
+		{     
+				if (stage[i]->HitSphere(player))
+				{
+					if (player->GetIceFlg() == false) {
+						player->SetIceFlg(true);
+					}
 				}
-			}
 		}
 		if (SE_HitFlg) {
 			if (!SE_NewHitFlg) {

@@ -34,7 +34,6 @@ private:
 	bool hitmoment = false;
 	bool ratioflg = false;
 	bool resultflg = false;
-	bool overice = false;
 	bool resultnewflg = false;
 	bool SE_HitFlg = false;
 	bool SE_NewHitFlg = false;

@@ -4,7 +4,7 @@
 class Stage : public SphereCollider
 {
 private:
-    bool overflg = false;
+
 public:
     Stage();    //コンストラクタ
     ~Stage();   //デストラクタ

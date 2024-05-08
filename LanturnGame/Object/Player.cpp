@@ -30,10 +30,6 @@ void Player::Update()
 		Blinking();
 	}
 
-	if (overice == true) {
-       Icewalk();
-	}
-
 	// プレイヤーアニメーション
 	if (direction == 0) {	// 下移動
 		MoveDown();
@@ -60,6 +56,23 @@ void Player::Update()
 		imgnum = 10;
 	}
 
+	if (overice == true) {
+		++pointflg;
+		countflg = pointflg % 4;
+		if (countflg == 0) {
+			imgnum = 1;
+			}
+		if (countflg == 1) {
+			imgnum == 7;
+		}
+		if (countflg == 2) {
+			imgnum == 4;
+		}
+		if (countflg == 3) {
+			imgnum == 10;
+		}
+		
+	}
 }
 
 void Player::Draw(int camerashake) const
@@ -78,105 +91,108 @@ void Player::Draw(int camerashake) const
 
 void Player::Movement()
 {
-	// pad入力
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+	if (overice == false)
 	{
-		velocity += Vector2D(-0.5f, 0.0f);
-		direction = 1;
-		stopdirection = 5;
-	}
-	
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
-	{
-		velocity += Vector2D(0.5f, 0.0f);
-		direction = 2;
-		stopdirection = 6;
-	}
-	
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
-	{
-		velocity += Vector2D(0.0f, 0.5f);
-		direction = 0;
-		stopdirection = 4;
-	}
-	
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
-	{
-		velocity += Vector2D(0.0f, -0.5f);
-		direction = 3;
-		stopdirection = 7;
-	}
-	if (fabsf(InputControl::GetLeftStick().x) > deadzone)
-	{
-		if (InputControl::GetLeftStick().x < 0.f) {
-			velocity += Vector2D((InputControl::GetLeftStick().x + deadzone) * speed, 0);
-			direction = 1;
-			stopdirection = 5;
-		}
-		if (InputControl::GetLeftStick().x > 0.f) {
-			velocity += Vector2D((InputControl::GetLeftStick().x - deadzone) * speed, 0);
-			direction = 2;
-			stopdirection = 6;
-		}
-	}
-	if (fabsf(InputControl::GetLeftStick().y) > deadzone)
-	{
-		if (InputControl::GetLeftStick().y < 0.f) {
-			velocity += Vector2D(0, (-InputControl::GetLeftStick().y - deadzone) * speed);
-			direction = 0;
-			stopdirection = 4;
-		}
-		if (InputControl::GetLeftStick().y > 0.f) {
-			velocity += Vector2D(0, (-InputControl::GetLeftStick().y + deadzone) * speed);
-			direction = 3;
-			stopdirection = 7;
-		}
-	}
-	// 速度の制限(Y)
-	if (velocity.y > speed)
-	{
-		velocity.y = speed;
-	}
-	else if (velocity.y < -speed)
-	{
-		velocity.y = -speed;
-	}
+			// pad入力
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+			{
+				velocity += Vector2D(-0.5f, 0.0f);
+				direction = 1;
+				stopdirection = 5;
+			}
 
-	// 速度の制限(X)
-	if (velocity.x > speed)
-	{
-		velocity.x = speed;
-	}
-	else if (velocity.x < -speed)
-	{
-		velocity.x = -speed;
-	}
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+			{
+				velocity += Vector2D(0.5f, 0.0f);
+				direction = 2;
+				stopdirection = 6;
+			}
 
-	if (fabsf(velocity.x) == fabsf(velocity.y))
-	{
-		velocity *= 0.7071f;
-	}
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
+			{
+				velocity += Vector2D(0.0f, 0.5f);
+				direction = 0;
+				stopdirection = 4;
+			}
 
-	// 減速
-	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) &&
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && 
-		fabsf(InputControl::GetLeftStick().x) < deadzone) {
-		velocity.x /= 1.2f;
-	}
-	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) &&
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) && 
-		fabsf(InputControl::GetLeftStick().y) < deadzone) {
-		velocity.y /= 1.2f;
-	}
-	if (fabs(velocity.x) < 0.01)
-	{
-		velocity.x = 0;
-	}
-	if (fabs(velocity.y) < 0.01)
-	{
-		velocity.y = 0;
-	}
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
+			{
+				velocity += Vector2D(0.0f, -0.5f);
+				direction = 3;
+				stopdirection = 7;
+			}
+			if (fabsf(InputControl::GetLeftStick().x) > deadzone)
+			{
+				if (InputControl::GetLeftStick().x < 0.f) {
+					velocity += Vector2D((InputControl::GetLeftStick().x + deadzone) * speed, 0);
+					direction = 1;
+					stopdirection = 5;
+				}
+				if (InputControl::GetLeftStick().x > 0.f) {
+					velocity += Vector2D((InputControl::GetLeftStick().x - deadzone) * speed, 0);
+					direction = 2;
+					stopdirection = 6;
+				}
+			}
+			if (fabsf(InputControl::GetLeftStick().y) > deadzone)
+			{
+				if (InputControl::GetLeftStick().y < 0.f) {
+					velocity += Vector2D(0, (-InputControl::GetLeftStick().y - deadzone) * speed);
+					direction = 0;
+					stopdirection = 4;
+				}
+				if (InputControl::GetLeftStick().y > 0.f) {
+					velocity += Vector2D(0, (-InputControl::GetLeftStick().y + deadzone) * speed);
+					direction = 3;
+					stopdirection = 7;
+				}
+			}
+			// 速度の制限(Y)
+			if (velocity.y > speed)
+			{
+				velocity.y = speed;
+			}
+			else if (velocity.y < -speed)
+			{
+				velocity.y = -speed;
+			}
 
+			// 速度の制限(X)
+			if (velocity.x > speed)
+			{
+				velocity.x = speed;
+			}
+			else if (velocity.x < -speed)
+			{
+				velocity.x = -speed;
+			}
+
+			if (fabsf(velocity.x) == fabsf(velocity.y))
+			{
+				velocity *= 0.7071f;
+			}
+
+			// 減速
+			if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) &&
+				!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) &&
+				fabsf(InputControl::GetLeftStick().x) < deadzone) {
+				velocity.x /= 1.2f;
+			}
+			if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) &&
+				!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
+				fabsf(InputControl::GetLeftStick().y) < deadzone) {
+				velocity.y /= 1.2f;
+			}
+			if (fabs(velocity.x) < 0.01)
+			{
+				velocity.x = 0;
+			}
+			if (fabs(velocity.y) < 0.01)
+			{
+				velocity.y = 0;
+			}
+
+	}
 
 	// 画面外に出ないように
 	
@@ -209,7 +225,6 @@ void Player::Movement()
 		}
 		
 	}
-
 }
 
 // 無敵時間
@@ -374,10 +389,4 @@ void Player::SetIceFlg(bool b)
 Vector2D Player::GetVelocity()
 {
 	return this->velocity;
-}
-
-void Player::Icewalk()
-{
-	printfDx("HITしました\n");
-
 }

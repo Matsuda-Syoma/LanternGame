@@ -14,6 +14,8 @@ private:
 	int playerimg[12];			// プレイヤー画像
 	int direction = 4;			// 歩行中の向き（０：下　１：左　２：右　３：上）
 	int stopdirection = 4;		// 立ち止まった時の向き（４：下　５：左　６：右　７：上）
+	int pointflg;
+	int countflg;
 	float deadzone = 0.1;
 public:
 	Player();
@@ -24,7 +26,6 @@ public:
 	void Movement();
 	void Invincible();	// 無敵時間
 	void Blinking();	// 点滅
-	void Icewalk();
 
 	// アニメーション
 	void MoveRight();	// 右移動
