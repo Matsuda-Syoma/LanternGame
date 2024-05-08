@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-int Particle::images[1][30];
+int Particle::images[4][30];
 Particle::Particle()
 {
 }
@@ -16,9 +16,17 @@ Particle::~Particle()
 
 void Particle::Update()
 {
+	if (root != nullptr) {
+		SetLocation(root->GetLocation() + addloc);
+	}
 	if (flg) {
-		if (count > 30) {
-			flg = false;
+		if (count >= 29) {
+			if (!loopflg) {
+				flg = false;
+			}
+			else {
+				count = 0;
+			}
 		}
 		count++;
 	}
@@ -26,8 +34,11 @@ void Particle::Update()
 
 void Particle::Draw(Vector2D loc) const
 {
-	DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2))
-				,  location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 0.5, angle, images[0][count], true);
+	if (flg) {
+		DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2))
+					,  location.y + (-loc.y + (SCREEN_HEIGHT / 2)), scale, angle, images[type][count], true);
+	}
+
 }
 
 bool Particle::Getflg() const
@@ -38,6 +49,9 @@ bool Particle::Getflg() const
 int Particle::LoadImages()
 {
 	int ret = LoadDivGraph("Resources/images/impact.png", 30, 6, 5, 128, 128, images[0]);
+	ret = LoadDivGraph("Resources/images/fire.png", 30, 6, 5, 64, 64, images[1]);
+	ret = LoadDivGraph("Resources/images/explosion_2.png", 30, 6, 5, 128, 128, images[2]);
+	ret = LoadDivGraph("Resources/images/exp.png", 30, 6, 5, 256, 256, images[3]);
 	return ret;
 }
 
@@ -45,4 +59,17 @@ void Particle::SetAngle(Vector2D loc, Vector2D loc2)
 {
 	Vector2D temp = loc - loc2;
 	angle = atan2(temp.y, temp.x);
+}
+
+void Particle::Init(int _type, SphereCollider * _root, bool _loop, float _scale)
+{
+	type = _type;
+	root = _root;
+	loopflg = _loop;
+	scale = _scale;
+}
+
+void Particle::SetRootLocation(Vector2D loc)
+{
+	addloc = loc;
 }

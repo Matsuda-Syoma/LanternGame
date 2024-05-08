@@ -21,8 +21,15 @@ void Player::Init()
 
 void Player::Update()
 {
-	Movement();
-	location += velocity;
+	lastinput = 0;
+
+	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
+		Movement();
+		location += velocity;
+	//}
+	//else {
+	//	LineTrace();
+	//}
 
 	// 爆発に当たったら無敵時間
 	if (hitflg == true) {
@@ -86,6 +93,14 @@ void Player::Draw(int camerashake) const
 		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
+	// 元の描画を取得
+	int OldBlendMode;
+	int OldBlendParam;
+	GetDrawBlendMode(&OldBlendMode,&OldBlendParam);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, max(((180. / cun) * 6) - 48, 0));
+	DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xff0000, true);
+	SetDrawBlendMode(OldBlendMode, OldBlendParam);
 
 }
 
@@ -389,4 +404,26 @@ void Player::SetIceFlg(bool b)
 Vector2D Player::GetVelocity()
 {
 	return this->velocity;
+}
+
+void Player::SetLastInput()
+{
+	if (fabsf(InputControl::GetLeftStick().x) > deadzone)
+	{
+		if (InputControl::GetLeftStick().x < 0.f) {
+			lastinput.x = (InputControl::GetLeftStick().x + deadzone);
+		}
+		if (InputControl::GetLeftStick().x > 0.f) {
+			lastinput.x = (InputControl::GetLeftStick().x - deadzone);
+		}
+	}
+	if (fabsf(InputControl::GetLeftStick().y) > deadzone)
+	{
+		if (InputControl::GetLeftStick().y < 0.f) {
+			lastinput.y = (-InputControl::GetLeftStick().y - deadzone);
+		}
+		if (InputControl::GetLeftStick().y > 0.f) {
+			lastinput.y = (-InputControl::GetLeftStick().y + deadzone);
+		}
+	}
 }

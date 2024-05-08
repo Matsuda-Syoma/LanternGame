@@ -23,23 +23,25 @@ private:
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
 	unsigned int hiscore = 0;
-	unsigned int ratio = 0;
+	unsigned int combo = 0;
 	float MapSize = GM_MAX_MAPSIZE;
 	float MapCloseSpeed = 1;
 	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
 
-	int life = 4;
+	int life = GM_MAX_LIFE;
+
 	int lifeimage;
 	int lifematchimage;
+	int closemapimage;
 	bool hitmoment = false;
-	bool ratioflg = false;
+	bool comboflg = false;
 	bool resultflg = false;
 	bool resultnewflg = false;
 	bool SE_HitFlg = false;
 	bool SE_NewHitFlg = false;
 	bool Soldier_Hit_EX = false;
 
-	__int8 ui_ratio_framecount = 0;
+	__int8 ui_combo_framecount = 0;
 
 	int CamerashakeCount = 0;
 	int Camerashake = 0;
@@ -53,11 +55,14 @@ public:
 
 	virtual AbstractScene* Update() override;
 	void Draw() const override;
-	void Game();	
+	void Game();
 	void SpawnExplosion(Vector2D loc);
-	void SpawnParticle(int i, Vector2D loc, Vector2D loc2);
+	void SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, Vector2D loc2, float scale);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
 	void SetMapSize(int i);
+	void ChangeMapSize();
+	void DrawCombo()const;
+	void DrawCloseMap()const;
 };
 

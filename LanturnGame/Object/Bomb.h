@@ -12,6 +12,7 @@ private:
 	int expcnt = maxexpcnt;
 	Vector2D velocity = 0;
 	Vector2D knockback = 0;
+	Vector2D movetoloc = 0;
 public:
 	Bomb();
 	~Bomb();
@@ -30,5 +31,7 @@ public:
 	int GetMode();
 	void SetKnockBack(Vector2D vec, int i);
 	static void LoadImages();
+	Vector2D GetMoveToLocation();
+	void SetMoveToLocation(Vector2D loc);
 };
 
