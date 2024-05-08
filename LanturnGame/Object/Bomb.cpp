@@ -20,8 +20,6 @@ void Bomb::Update()
 			flg = false;
 		}
 	}
-	clsDx();
-	printfDx("%d", mode);
 	if (knockback != 0.0f) {
 		knockback /= 1.1f;
 	}
