@@ -76,6 +76,7 @@ GameMain::GameMain()
 
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
+	closemapimage = LoadGraph("Resources/images/warning.png", 0);
 }
 
 GameMain::~GameMain()
@@ -408,7 +409,7 @@ AbstractScene* GameMain::Update()
 				if (!bomb[i]->GetFlg()) {
 					// 爆発を発生して敵をnullptrにしてループを抜ける
 					SpawnExplosion(bomb[i]->GetLocation());
-					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), bomb[i]->GetLocation(), 1.5f);
+					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), Vector2D(bomb[i]->GetLocation().x + (GetRand(1) - 0.5), bomb[i]->GetLocation().y + (GetRand(1) - 0.5)), 1.5f);
 					PlaySoundMem(Sounds::SE_Explosion, DX_PLAYTYPE_BACK, true);
 					combo += 1;
 					ui_combo_framecount = 25;
@@ -686,6 +687,9 @@ void GameMain::Draw() const
 	// コンボ
 	DrawCombo();
 
+
+	DrawCloseMap();
+
 	// 残機が1以上なら
 	if (life > 0) {
 		DrawFormatString(10, 10, 0xffffff, "life : %d", life);
@@ -812,4 +816,32 @@ void GameMain::DrawCombo() const {
 		DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(255, 255, 255 - (25 * combo)), "%d", combo);
 	}
 	SetFontSize(OldSize);
+}
+
+void GameMain::DrawCloseMap() const
+{
+	//int OldSize = GetFontSize();
+	//if (game_frametime % 200 > 100) {
+	//SetFontSize(48 + (game_frametime % 100) /10);
+	//char buf[8] = {"Warning"};
+	//int StrLen = strlen(buf);
+	//int StrWidth = GetDrawStringWidth(buf, StrLen);
+	//int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+	//DrawFormatStringF(CenterX, (SCREEN_HEIGHT / 2) - 120, GetColor(255, 64, 64), "%s", buf);
+	//}
+	//SetFontSize(OldSize);
+	int OldDrawMode;
+	int OldDrawParam;
+	GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (game_frametime % 100) * 4);
+	if (MapSize > GM_MIN_MAPSIZE) {
+		if (game_frametime % 900 > 800) {
+			DrawRotaGraph((SCREEN_WIDTH / 2) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 1.0, 0.0, closemapimage, true);
+			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
+					  (SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);
+			DrawBoxAA((SCREEN_WIDTH / 2) - (game_frametime % 100) + 100, (SCREEN_HEIGHT / 2) - 80, 
+					  (SCREEN_WIDTH / 2) + (game_frametime % 100) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
+		}
+	}
+	SetDrawBlendMode(OldDrawMode, OldDrawParam);
 }

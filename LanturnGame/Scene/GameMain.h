@@ -32,6 +32,7 @@ private:
 
 	int lifeimage;
 	int lifematchimage;
+	int closemapimage;
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;
@@ -62,5 +63,6 @@ public:
 	void SetMapSize(int i);
 	void ChangeMapSize();
 	void DrawCombo()const;
+	void DrawCloseMap()const;
 };
 
