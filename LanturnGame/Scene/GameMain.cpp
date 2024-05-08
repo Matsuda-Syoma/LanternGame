@@ -91,13 +91,7 @@ AbstractScene* GameMain::Update()
 		soldier->Upadate(player->GetLocation());*/
 		player->GetMapSize(MapSize);
 		player->Update();
-		//for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
-		//	if (bomb[i] != nullptr) {
-		//		if (player->HitSphereInLine(bomb[i]->GetLocation(), bomb[i]->GetRadius())) {
-		//			bomb[i]->SetExpFlg(true);
-		//		}
-		//	}
-		//}
+
 		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
 			if (soldier[i] != nullptr)
@@ -439,8 +433,7 @@ AbstractScene* GameMain::Update()
 							{
 								bomb[i]->SetLocation(spawnloc);
 								bomb[i]->SetMoveToLocation(spawnloc);
-								//bomb[i]->SetMode(GetRand(4) + 1);
-								bomb[i]->SetMode(5);
+								bomb[i]->SetMode(GetRand(4) + 1);
 								break;
 							}
 						}
@@ -538,6 +531,10 @@ AbstractScene* GameMain::Update()
 
 		// コンボのフラグがたっていないならコンボ数を0する
 		if (!comboflg) {
+			if (combo != 0) {
+				SpawnParticle(2, player, false, Vector2D(50.f,0.f), Vector2D(50.f, 0.f), 2.f);
+				// 何か効果音
+			}
 			combo = 0;
 		}
 		// 0以上ならコンボ継続時間を下げる
@@ -545,9 +542,10 @@ AbstractScene* GameMain::Update()
 			ui_combo_framecount--;
 		}
 		// マップが最小サイズより大きいならマップを小さくする
-		if (MapSize > GM_MIN_MAPSIZE) {
-			MapSize -= MapCloseSpeed / 10;
-		}
+		//if (MapSize > GM_MIN_MAPSIZE) {
+		//	MapSize -= MapCloseSpeed / 10;
+		//}
+		ChangeMapSize();
 		// マップサイズで敵の最大スポーン数を変える
 		MaxEnemyBomb = (int)(GM_MAX_ENEMY_BOMB * (MapSize / GM_MAX_MAPSIZE));
 		// ゲームのフレームを増やす
@@ -686,13 +684,7 @@ void GameMain::Draw() const
 	}
 	
 	// コンボ
-	int OldSize = GetFontSize();
-	// コンボフラグがたっているなら描画
-	if (comboflg) {
-		SetFontSize(OldSize + ((1 + (ui_combo_framecount)) + (combo / 2)));
-		DrawFormatString(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, GetColor(255, 255, 255 - (25 * combo)), "x%d", combo);
-	}
-	SetFontSize(OldSize);
+	DrawCombo();
 
 	// 残機が1以上なら
 	if (life > 0) {
@@ -788,4 +780,36 @@ void GameMain::SetCameraShake(int _i) {
 
 void GameMain::SetMapSize(int i) {
 	MapSize = (float)i;
+}
+
+void GameMain::ChangeMapSize() {
+	if (game_frametime % 900 == 899) {
+
+		if (MapSize > GM_MIN_MAPSIZE) {
+
+			PlaySoundMem(Sounds::SE_MapClose, DX_PLAYTYPE_BACK);
+			SetMapSize(MapSize - (GM_MAX_MAPSIZE / 5));
+
+			if (MapSize < GM_MIN_MAPSIZE) {
+				SetMapSize(GM_MIN_MAPSIZE);
+			}
+		}
+		else {
+			SetMapSize(GM_MIN_MAPSIZE);
+		}
+	}
+}
+
+void GameMain::DrawCombo() const {
+	int OldSize = GetFontSize();
+	// コンボフラグがたっているなら描画
+	if (comboflg) {
+		SetFontSize(OldSize + ((1 + (ui_combo_framecount)) + (combo / 2)));
+		char buf[4];
+		int StrLen = snprintf(buf, 4, "%d", combo);
+		int StrWidth = GetDrawStringWidth(buf, StrLen);
+		int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+		DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(255, 255, 255 - (25 * combo)), "%d", combo);
+	}
+	SetFontSize(OldSize);
 }

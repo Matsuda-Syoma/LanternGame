@@ -28,7 +28,7 @@ private:
 	float MapCloseSpeed = 1;
 	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
 
-	int life = 4;
+	int life = GM_MAX_LIFE;
 
 	int lifeimage;
 	int lifematchimage;
@@ -60,5 +60,7 @@ public:
 	void CameraUpdate();
 	void SetCameraShake(int _i);
 	void SetMapSize(int i);
+	void ChangeMapSize();
+	void DrawCombo()const;
 };
 
