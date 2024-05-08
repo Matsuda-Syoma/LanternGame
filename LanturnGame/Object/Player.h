@@ -34,8 +34,6 @@ public:
 	bool GetFlg() const;
 	void SetFlg(bool b);
 	Vector2D GetVelocity();
-	void LineTrace();
-	bool HitSphereInLine(Vector2D loc, float radius);
-	float GetLength(Vector2D loc, Vector2D loc2);
+	void SetLastInput();
 };
 

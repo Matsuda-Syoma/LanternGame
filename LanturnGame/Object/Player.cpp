@@ -77,8 +77,6 @@ void Player::Draw(int camerashake) const
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
-	DrawLineAA(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, (SCREEN_WIDTH / 2) + lastinput.x, (SCREEN_HEIGHT / 2) + lastinput.y, 0x000000, 2.0f);
-
 }
 
 void Player::Movement()
@@ -372,53 +370,24 @@ Vector2D Player::GetVelocity()
 	return this->velocity;
 }
 
-void Player::LineTrace()
+void Player::SetLastInput()
 {
 	if (fabsf(InputControl::GetLeftStick().x) > deadzone)
 	{
 		if (InputControl::GetLeftStick().x < 0.f) {
-			lastinput.x = (InputControl::GetLeftStick().x + deadzone) * 500;
+			lastinput.x = (InputControl::GetLeftStick().x + deadzone);
 		}
 		if (InputControl::GetLeftStick().x > 0.f) {
-			lastinput.x = (InputControl::GetLeftStick().x - deadzone) * 500;
+			lastinput.x = (InputControl::GetLeftStick().x - deadzone);
 		}
 	}
 	if (fabsf(InputControl::GetLeftStick().y) > deadzone)
 	{
 		if (InputControl::GetLeftStick().y < 0.f) {
-			lastinput.y = (-InputControl::GetLeftStick().y - deadzone) * 500;
+			lastinput.y = (-InputControl::GetLeftStick().y - deadzone);
 		}
 		if (InputControl::GetLeftStick().y > 0.f) {
-			lastinput.y = (-InputControl::GetLeftStick().y + deadzone) * 500;
+			lastinput.y = (-InputControl::GetLeftStick().y + deadzone);
 		}
 	}
-}
-
-bool Player::HitSphereInLine(Vector2D loc, float radius)
-{
-	float linelength = GetLength(location, location + lastinput);
-	float linetospherestart = GetLength(loc, location);
-	float linetosphereend = GetLength(loc, location + lastinput);
-
-	if (linetospherestart <= linelength && linetosphereend <= linelength) {
-		float linevecx = (location + lastinput).x - location.x;
-		float linevecy = (location + lastinput).y - location.y;
-		float linedotprod = ((loc.x - location.x) * linevecx) + ((loc.y - location.y) * linevecy);
-		float lineparam = linedotprod / (linelength * linelength);
-
-		if (lineparam >= 0 && lineparam <= 1) {
- 			float linedistx = loc.x - (location.x + lineparam * linevecx);
-			float linedisty = loc.y - (location.y + lineparam * linevecy);
-			float linedist = sqrtf(linedistx * linedistx + linedisty * linedisty);
-			if (linedist <= radius) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-float Player::GetLength(Vector2D loc, Vector2D loc2)
-{
-	return sqrtf(powf((loc2.x - loc.x), 2) + powf((loc2.y - loc.y), 2));
 }
