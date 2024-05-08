@@ -28,7 +28,7 @@ public:
 	void PositionCheck();
 
 	//爆発に巻き込まれた動きが止まる
-	//void DMGflg(bool i);
+	void DMGflg(bool i);
 
 private:
 	int image;	//画像イメージ

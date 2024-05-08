@@ -20,13 +20,13 @@ Soldier::~Soldier()
 void Soldier::Initialize()
 {
 	speed = 2;	//���x�̏�����
-
+	dmgflg = true;
 	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 64, soldierimg);
 }
 
 void Soldier::Upadate(Vector2D PL)
 {
-	if (dmgflg != true)
+	if (dmgflg == true)
 	{
 		Move(PL);
 	}
@@ -75,7 +75,7 @@ void Soldier::Move(Vector2D PL)
 
 void Soldier::finalize()
 {
-	delete this;
+	
 }
 
 float Soldier::direction(Vector2D L)
@@ -114,7 +114,7 @@ void Soldier::PositionCheck()
 	}
 }
 
-//void Soldier::DMGflg(bool i)
-//{
-//	dmgflg = i;
-//}
+void Soldier::DMGflg(bool i)
+{
+	dmgflg = i;
+}
