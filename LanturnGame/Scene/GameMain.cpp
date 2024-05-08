@@ -533,7 +533,7 @@ AbstractScene* GameMain::Update()
 		// コンボのフラグがたっていないならコンボ数を0する
 		if (!comboflg) {
 			if (combo != 0) {
-				SpawnParticle(2, player, false, Vector2D(50.f,0.f), Vector2D(50.f, 0.f), 2.f);
+				SpawnParticle(2, player, false, Vector2D(0.f,10.f), Vector2D(0.f, 10.f), 2.f);
 				ui_combo_framecount = 60;
 				oldcombo = combo;
 				// 何か効果音
