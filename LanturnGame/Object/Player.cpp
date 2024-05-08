@@ -76,6 +76,14 @@ void Player::Draw(int camerashake) const
 		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
+	// 元の描画を取得
+	int OldBlendMode;
+	int OldBlendParam;
+	GetDrawBlendMode(&OldBlendMode,&OldBlendParam);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, max(((180. / cun) * 6) - 48, 0));
+	DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xff0000, true);
+	SetDrawBlendMode(OldBlendMode, OldBlendParam);
 
 }
 
