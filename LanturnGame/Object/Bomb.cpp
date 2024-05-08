@@ -52,11 +52,15 @@ void Bomb::Draw(Vector2D loc) const
 		SetDrawBright(255, 0, 0);// 赤以外を暗くする
 	}
 	//DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, images[mode - 1], true);
-	DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 + (double)(max(45 - expcnt , 0) / 45.0), 0.0, images[0], true);
-	SetDrawBright(255, 255, 255);// 全色暗くしない（デフォルト）
-	if (expflg) {
-		//DrawFormatString((int)((location.x - 4) + (-loc.x + (SCREEN_WIDTH / 2))), (int)((location.y - 8) + (-loc.y + (SCREEN_HEIGHT / 2))), GetColor(255 - (int)(expcnt * 1.5), 0, 0), "%d", expcnt / 60);
+	if (!expflg) {
+		DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 + (double)(max(45 - expcnt, 0) / 45.0), 0.0, images[0], true);
+
 	}
+	else {
+		DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 + (double)(max(45 - expcnt, 0) / 45.0), 0.0, images[2], true);
+	}
+	
+	SetDrawBright(255, 255, 255);// 全色暗くしない（デフォルト）
 }
 
 bool Bomb::GetFlg() const
