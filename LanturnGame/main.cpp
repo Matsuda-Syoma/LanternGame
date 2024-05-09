@@ -12,6 +12,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	//�^�C�g����ݒ�
 	SetMainWindowText("Lantern");
 
+	SetWindowIconID(333);
+
 	//�E�B���h�E���[�h�ŋN��
 	ChangeWindowMode(true);
 

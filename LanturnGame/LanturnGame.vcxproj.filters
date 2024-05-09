@@ -41,4 +41,10 @@
     <ClInclude Include="object\stage.h" />
     <ClInclude Include="Object\Particle.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
 </Project>
