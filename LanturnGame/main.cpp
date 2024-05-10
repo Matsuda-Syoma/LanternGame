@@ -6,7 +6,7 @@
 #include"Scene/Title.h"
 #include"Scene/Setting.h"
 #include"Utility/InputControl.h"
-
+#include"Utility/LoadSounds.h"
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
 
 	//�^�C�g����ݒ�
@@ -31,6 +31,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	FpsController FPSct(FRAMERATE, UPDATETIME);
 
+	Sounds::LoadSounds();
 	//�Q�[�����[�v
 	while (ProcessMessage() == 0 && scene.Update() != nullptr) {
 

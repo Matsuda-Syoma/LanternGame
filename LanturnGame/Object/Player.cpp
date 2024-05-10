@@ -12,6 +12,7 @@ deadzone = UserData::LoadData(0);
 
 Player::~Player()
 {
+	DeleteGraph(*playerimg);
 }
 
 void Player::Init()

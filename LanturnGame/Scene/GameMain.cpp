@@ -8,7 +8,6 @@
 GameMain::GameMain()
 {
 	SetFontSize(32);
-	Sounds::LoadSounds();
 	BackGround::LoadImages();
 	Bomb::LoadImages();
 	Particle::LoadImages();
@@ -81,6 +80,10 @@ GameMain::GameMain()
 
 GameMain::~GameMain()
 {
+	Bomb::DeleteImages();
+	Explosion::DeleteImages();
+	Particle::DeleteImages();
+	BackGround::DeleteImages();
 }
 
 AbstractScene* GameMain::Update()

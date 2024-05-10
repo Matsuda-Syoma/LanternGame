@@ -14,5 +14,6 @@ public:
 	void Draw(Vector2D loc) const;
 	bool Getflg()const;
 	static int LoadImages();
+	static void DeleteImages();
 };
 
