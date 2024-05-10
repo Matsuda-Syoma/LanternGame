@@ -6,12 +6,13 @@
 #include "../Utility/UserData.h"
 Player::Player()
 {
-	speed = 5;
+	speed = 0.5;
 deadzone = UserData::LoadData(0);
 }
 
 Player::~Player()
 {
+	DeleteGraph(*playerimg);
 }
 
 void Player::Init()

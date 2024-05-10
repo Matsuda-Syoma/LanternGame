@@ -29,3 +29,8 @@ void BackGround::LoadImages() {
 		printfDx("‰æ‘œƒGƒ‰[");
 	}
 }
+
+void BackGround::DeleteImages()
+{
+	DeleteGraph(*images);
+}
