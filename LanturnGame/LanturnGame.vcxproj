@@ -61,6 +61,12 @@
     <ClInclude Include="Utility\LoadSounds.h" />
     <ClInclude Include="Utility\Vector2D.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

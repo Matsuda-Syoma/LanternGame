@@ -43,4 +43,10 @@
     <ClInclude Include="Object\Particle.h" />
     <ClInclude Include="object\Conveyor.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
 </Project>

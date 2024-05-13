@@ -55,6 +55,11 @@ int Particle::LoadImages()
 	return ret;
 }
 
+void Particle::DeleteImages()
+{
+	DeleteGraph(**images);
+}
+
 void Particle::SetAngle(Vector2D loc, Vector2D loc2)
 {
 	Vector2D temp = loc - loc2;

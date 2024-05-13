@@ -11,5 +11,6 @@ public:
 	void Init(int i);
 	void Draw(Vector2D loc)const;
 	static void LoadImages();
+	static void DeleteImages();
 };
 
