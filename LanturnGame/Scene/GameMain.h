@@ -9,6 +9,7 @@
 #include "../Object/Particle.h"
 #include "../Utility/common.h"
 #include "../Object/stage.h"
+#include "../Object/Conveyor.h"
 class GameMain : public AbstractScene
 {
 private:
@@ -19,6 +20,7 @@ private:
 	BackGround** background;
 	Particle** particle;
 	Stage** stage;
+	Conveyor** Conveyor;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
