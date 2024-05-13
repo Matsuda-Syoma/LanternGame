@@ -3,8 +3,8 @@
 #include"../Utility/common.h"
 
 Stage::Stage() {
-	radius = 230;
-
+	radius = 150;
+	radias = 100;
 }
 
 Stage::~Stage() {

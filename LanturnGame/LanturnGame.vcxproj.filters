@@ -18,6 +18,7 @@
     <ClCompile Include="Utility\UserData.cpp" />
     <ClCompile Include="object\stage.cpp" />
     <ClCompile Include="Object\Particle.cpp" />
+    <ClCompile Include="object\Conveyor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object\soldier.h" />
@@ -40,5 +41,6 @@
     <ClInclude Include="Utility\UserData.h" />
     <ClInclude Include="object\stage.h" />
     <ClInclude Include="Object\Particle.h" />
+    <ClInclude Include="object\Conveyor.h" />
   </ItemGroup>
 </Project>
