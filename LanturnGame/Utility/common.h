@@ -21,5 +21,5 @@
 #define GM_MIN_MAPSIZE 320
 
 
-#define GM_MAX_ENEMY_SOLDIER 0
+#define GM_MAX_ENEMY_SOLDIER 3
 
