@@ -557,6 +557,7 @@ AbstractScene* GameMain::Update()
 				}
 		}
 
+		player->SetVelocity(NULL);
 		for (int i = 0; i < GM_MAX_TORNADO; i++) {
 			if (tornado[i] != nullptr) {
 				if (tornado[i]->HitSphere(player)) {
@@ -565,10 +566,6 @@ AbstractScene* GameMain::Update()
 					vvec /= length;
 					player->SetVelocity(vvec * 2);
 				}
-				else {
-					player->SetVelocity(NULL);
-				}
-
 			}
 		}
 		// 効果音のフラグがたっているなら
@@ -673,8 +670,31 @@ void GameMain::Draw() const
 		}
 	}
 
+	// ギミック(氷)
+    for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
+	{
+		// nullptrじゃないなら
+		if (stage[i] != nullptr)
+		{
+			stage[i]->Draw(player->GetLocation() + +(float)Camerashake);
+		}
+	}
+
+	for (int i = 0; i < GM_MAX_TORNADO; i++) {
+		// nullptrじゃないなら
+		if (tornado[i] != nullptr) {
+			// 画面中なら描画
+			if (1040 > fabsf(sqrtf(
+				powf((tornado[i]->GetLocation().x - player->GetLocation().x), 2) +
+				powf((tornado[i]->GetLocation().y - player->GetLocation().y), 2))))
+			{
+				tornado[i]->Draw(player->GetLocation() + (float)Camerashake);
+			}
+		}
+	}
+
 	// 爆弾
-	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++){
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++) {
 		// nullptrじゃないなら
 		if (bomb[i] != nullptr) {
 			// 画面中なら描画
@@ -696,30 +716,6 @@ void GameMain::Draw() const
 				powf((explosion[i]->GetLocation().y - player->GetLocation().y), 2))))
 			{
 				explosion[i]->Draw(player->GetLocation() + (float)Camerashake);
-			}
-		}
-	}
-
-	
-	// ギミック(氷)
-    for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
-	{
-		// nullptrじゃないなら
-		if (stage[i] != nullptr)
-		{
-			stage[i]->Draw(player->GetLocation() + +(float)Camerashake);
-		}
-	}
-
-	for (int i = 0; i < GM_MAX_TORNADO; i++) {
-		// nullptrじゃないなら
-		if (tornado[i] != nullptr) {
-			// 画面中なら描画
-			if (1040 > fabsf(sqrtf(
-				powf((tornado[i]->GetLocation().x - player->GetLocation().x), 2) +
-				powf((tornado[i]->GetLocation().y - player->GetLocation().y), 2))))
-			{
-				tornado[i]->Draw(player->GetLocation() + (float)Camerashake);
 			}
 		}
 	}
