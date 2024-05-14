@@ -7,7 +7,7 @@
 Player::Player()
 {
 	speed = 5;
-deadzone = UserData::LoadData(0);
+	deadzone = UserData::LoadData(0);
 }
 
 Player::~Player()
@@ -71,23 +71,6 @@ void Player::Update()
 		imgnum = 10;
 	}
 
-	if (overice == true) {
-		++pointflg;
-		countflg = pointflg % 4;
-		if (countflg == 0) {
-			imgnum = 1;
-			}
-		if (countflg == 1) {
-			imgnum == 7;
-		}
-		if (countflg == 2) {
-			imgnum == 4;
-		}
-		if (countflg == 3) {
-			imgnum == 10;
-		}
-		
-	}
 }
 
 void Player::Draw(int camerashake) const
@@ -118,6 +101,7 @@ void Player::Movement()
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
 	{
 		velocity += Vector2D(-0.5f, 0.0f);
+		// 左移動アニメーション
 		direction = 1;
 		stopdirection = 5;
 	}
@@ -125,6 +109,7 @@ void Player::Movement()
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
 	{
 		velocity += Vector2D(0.5f, 0.0f);
+		// 右移動アニメーション
 		direction = 2;
 		stopdirection = 6;
 	}
@@ -132,6 +117,7 @@ void Player::Movement()
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
 	{
 		velocity += Vector2D(0.0f, 0.5f);
+		// 下移動アニメーション
 		direction = 0;
 		stopdirection = 4;
 	}
@@ -139,6 +125,7 @@ void Player::Movement()
 	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
 	{
 		velocity += Vector2D(0.0f, -0.5f);
+		// 上移動アニメーション
 		direction = 3;
 		stopdirection = 7;
 	}
@@ -164,6 +151,7 @@ void Player::Movement()
 			
 		}
 	}
+
 	// 速度の制限(Y)
 	if (velocity.y > speed)
 	{
@@ -219,9 +207,7 @@ void Player::Movement()
 		velocity.y = 0;
 	}
 
-
 	// 画面外に出ないように
-	
 	if (location.x < -MapSize + radius)
 	{
 		location.x = -MapSize + radius;
@@ -240,61 +226,100 @@ void Player::Movement()
 	}
 
 
-	// 左右アニメーション
-	if (velocity.x == 0)
-	{
-		if (InputControl::GetLeftStick().x > 0.8)
+	// 氷の上に乗っていない時
+	if (overice == false) {
+		// 左右アニメーション
+		if (velocity.x == 0)
 		{
-			direction = 2;
-			stopdirection = 6;
+			// 右移動
+			if (InputControl::GetLeftStick().x > 0.8)
+			{
+				direction = 2;
+				stopdirection = 6;
+			}
+			// 左移動
+			if (InputControl::GetLeftStick().x < -0.8)
+			{
+				direction = 1;
+				stopdirection = 5;
+			}
 		}
-		if (InputControl::GetLeftStick().x < -0.8)
+		else {
+			// 右移動
+			if (InputControl::GetLeftStick().x > 0.2)
+			{
+				direction = 2;
+				stopdirection = 6;
+			}
+			// 左移動
+			if (InputControl::GetLeftStick().x < -0.2)
+			{
+				direction = 1;
+				stopdirection = 5;
+			}
+		}
+
+		// 前後アニメーション
+		if (velocity.y == 0)
 		{
-			direction = 1;
-			stopdirection = 5;
+			// 上移動
+			if (InputControl::GetLeftStick().y > 0.8)
+			{
+				direction = 3;
+				stopdirection = 7;
+			}
+			// 下移動
+			if (InputControl::GetLeftStick().y < -0.8)
+			{
+				direction = 0;
+				stopdirection = 4;
+			}
 		}
+		else {
+			// 上移動
+			if (InputControl::GetLeftStick().y > 0.2)
+			{
+				direction = 3;
+				stopdirection = 7;
+			}
+			// 下移動
+			if (InputControl::GetLeftStick().y < -0.2)
+			{
+				direction = 0;
+				stopdirection = 4;
+			}
+		}
+
 	}
+	// 氷に乗っているとき
 	else {
+
+		// 右移動
 		if (InputControl::GetLeftStick().x > 0.2)
 		{
 			direction = 2;
 			stopdirection = 6;
 		}
+		// 左移動
 		if (InputControl::GetLeftStick().x < -0.2)
 		{
 			direction = 1;
 			stopdirection = 5;
 		}
-	}
-	
-
-	// 前後アニメーション
-	if (velocity.y == 0)
-	{
-		if (InputControl::GetLeftStick().y > 0.8)
-		{
-			direction = 3;
-			stopdirection = 7;
-		}
-
-		if (InputControl::GetLeftStick().y < -0.8)
-		{
-			direction = 0;
-			stopdirection = 4;
-		}
-	}
-	else {
+		// 上移動
 		if (InputControl::GetLeftStick().y > 0.2)
 		{
 			direction = 3;
 			stopdirection = 7;
 		}
-
+		// 下移動
 		if (InputControl::GetLeftStick().y < -0.2)
 		{
 			direction = 0;
 			stopdirection = 4;
 		}
+
+		direction = stopdirection;
 	}
 
 	// 立ち止まっているとき（アニメーション）
