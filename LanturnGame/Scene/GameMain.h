@@ -9,6 +9,7 @@
 #include "../Object/Particle.h"
 #include "../Utility/common.h"
 #include "../Object/stage.h"
+#include "../Object/Conveyor.h"
 class GameMain : public AbstractScene
 {
 private:
@@ -19,11 +20,13 @@ private:
 	BackGround** background;
 	Particle** particle;
 	Stage** stage;
+	Conveyor** Conveyor;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
 	unsigned int hiscore = 0;
 	unsigned int combo = 0;
+	unsigned int oldcombo = 0;
 	float MapSize = GM_MAX_MAPSIZE;
 	float MapCloseSpeed = 1;
 	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
@@ -64,5 +67,6 @@ public:
 	void ChangeMapSize();
 	void DrawCombo()const;
 	void DrawCloseMap()const;
+	void DrawComboEnd() const;
 };
 

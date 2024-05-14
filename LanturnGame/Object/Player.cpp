@@ -6,12 +6,13 @@
 #include "../Utility/UserData.h"
 Player::Player()
 {
-	speed = 5;
+	speed = 0.5;
 deadzone = UserData::LoadData(0);
 }
 
 Player::~Player()
 {
+	DeleteGraph(*playerimg);
 }
 
 void Player::Init()
@@ -22,6 +23,13 @@ void Player::Init()
 void Player::Update()
 {
 	lastinput = 0;
+
+	if (overice == false)
+	{
+		speed = 5;
+	}else{
+		speed = 10;
+	}
 
 	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
 		Movement();
@@ -106,8 +114,6 @@ void Player::Draw(int camerashake) const
 
 void Player::Movement()
 {
-	if (overice == false)
-	{
 			// pad入力
 			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
 			{
@@ -191,12 +197,22 @@ void Player::Movement()
 			if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) &&
 				!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) &&
 				fabsf(InputControl::GetLeftStick().x) < deadzone) {
-				velocity.x /= 1.2f;
+				if(overice == true){
+					velocity.x /= 0.6f;
+				}
+				else {
+					velocity.x /= 1.2f;
+				}
 			}
 			if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) &&
 				!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
 				fabsf(InputControl::GetLeftStick().y) < deadzone) {
-				velocity.y /= 1.2f;
+				if (overice == true) {
+					velocity.y /= 0.6f;
+				}
+				else {
+					velocity.y /= 1.2f;
+				}
 			}
 			if (fabs(velocity.x) < 0.01)
 			{
@@ -207,7 +223,6 @@ void Player::Movement()
 				velocity.y = 0;
 			}
 
-	}
 
 	// 画面外に出ないように
 	

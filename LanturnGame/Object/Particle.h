@@ -21,6 +21,7 @@ public:
 	void Draw(Vector2D loc)const;
 	bool Getflg()const;
 	static int LoadImages();
+	static void DeleteImages();
 	void SetAngle(Vector2D loc, Vector2D loc2);
 	void Init(int _type, SphereCollider * _root, bool _loop, float _scale);
 

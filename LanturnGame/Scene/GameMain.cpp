@@ -8,7 +8,6 @@
 GameMain::GameMain()
 {
 	SetFontSize(32);
-	Sounds::LoadSounds();
 	BackGround::LoadImages();
 	Bomb::LoadImages();
 	Particle::LoadImages();
@@ -28,6 +27,7 @@ GameMain::GameMain()
 	{
 		stage[i]->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 	}
+
 	player->Init();
 
 	soldier = new Soldier * [GM_MAX_ENEMY_SOLDIER];
@@ -81,6 +81,10 @@ GameMain::GameMain()
 
 GameMain::~GameMain()
 {
+	Bomb::DeleteImages();
+	Explosion::DeleteImages();
+	Particle::DeleteImages();
+	BackGround::DeleteImages();
 }
 
 AbstractScene* GameMain::Update()
@@ -544,7 +548,9 @@ AbstractScene* GameMain::Update()
 		// コンボのフラグがたっていないならコンボ数を0する
 		if (!comboflg) {
 			if (combo != 0) {
-				SpawnParticle(2, player, false, Vector2D(50.f,0.f), Vector2D(50.f, 0.f), 2.f);
+				SpawnParticle(2, player, false, Vector2D(0.f,10.f), Vector2D(0.f, 10.f), 2.f);
+				ui_combo_framecount = 60;
+				oldcombo = combo;
 				// 何か効果音
 			}
 			combo = 0;
@@ -696,8 +702,9 @@ void GameMain::Draw() const
 	}
 	
 	// コンボ
-	DrawCombo();
 
+	DrawCombo();
+	DrawComboEnd();
 
 	DrawCloseMap();
 
@@ -739,6 +746,7 @@ void GameMain::Draw() const
 			DrawCircleAA(SCREEN_WIDTH - 128 + (stage[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (stage[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
 		}
 	}	
+
 	// ミニマップ(プレイヤー)
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -855,4 +863,31 @@ void GameMain::DrawCloseMap() const
 		}
 	}
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);
+}
+
+void GameMain::DrawComboEnd() const {
+	int OldSize = GetFontSize();
+	if (!comboflg) {
+		if (ui_combo_framecount > 0) {
+			SetFontSize(64);
+			char buf[] = { "SABC\0" };
+			int StrLen = strlen(" ");
+			int StrWidth = GetDrawStringWidth(" ", StrLen);
+			int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+			if (oldcombo < 10) {
+				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(255, 255, 255), "C");
+			} 
+			else if (oldcombo < 25) {
+				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(196, 255, 255), "B");
+			}
+			else if (oldcombo < 50) {
+				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(127, 255, 255), "A");
+			}
+			else if (oldcombo < GM_MAX_ENEMY_BOMB) {
+				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(48, 255, 255), "S");
+			}
+
+		}
+	}
+	SetFontSize(OldSize);
 }

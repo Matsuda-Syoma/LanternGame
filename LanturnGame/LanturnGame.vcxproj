@@ -23,6 +23,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\Bomb.cpp" />
     <ClCompile Include="Object\Explosion.cpp" />
+    <ClCompile Include="object\Conveyor.cpp" />
     <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="object\soldier.cpp" />
     <ClCompile Include="Object\Particle.cpp" />
@@ -42,6 +43,7 @@
     <ClInclude Include="Object\Bomb.h" />
     <ClInclude Include="Object\CharaBase.h" />
     <ClInclude Include="Object\Explosion.h" />
+    <ClInclude Include="object\Conveyor.h" />
     <ClInclude Include="Object\Player.h" />
     <ClInclude Include="object\soldier.h" />
     <ClInclude Include="Object\Particle.h" />
@@ -58,6 +60,12 @@
     <ClInclude Include="Utility\InputControl.h" />
     <ClInclude Include="Utility\LoadSounds.h" />
     <ClInclude Include="Utility\Vector2D.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

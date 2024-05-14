@@ -46,3 +46,8 @@ int Explosion::LoadImages() {
 	int ret = LoadDivGraph("Resources/images/explosion.png", 30, 6, 5, 128, 128, images);
 	return ret;
 }
+
+void Explosion::DeleteImages()
+{
+	DeleteGraph(*images);
+}
