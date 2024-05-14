@@ -27,7 +27,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	//�`����ʂ𗠂ɂ���i�_�u���o�b�t�@�����O�j
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	SceneManager scene = (dynamic_cast<AbstractScene*>(new GameMain()));
+	SceneManager scene = (dynamic_cast<AbstractScene*>(new Title()));
 
 	FpsController FPSct(FRAMERATE, UPDATETIME);
 

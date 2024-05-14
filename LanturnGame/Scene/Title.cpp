@@ -16,6 +16,7 @@ Title::Title()
 	LoadDivGraph("Resources/images/titlemenu_setting_fire.png", 63, 9, 7, 512, 512, menufireimage[1]);
 	LoadDivGraph("Resources/images/titlemenu_end_fire.png", 63, 9, 7, 512, 512, menufireimage[2]);
 	cursorimage = LoadGraph("Resources/images/match.png", 0);
+	titleimage = LoadGraph("Resources/images/Title.png", 0);
 }
 
 Title::~Title()
@@ -87,6 +88,7 @@ AbstractScene* Title::Update()
 
 void Title::Draw() const
 {
+	DrawGraph(0, 0, titleimage,true);
 	DrawString(580, 60, "‚±‚±‚Íƒ^ƒCƒgƒ‹‚Å‚·", 0xffffff);
 	int OldBlendMode, OldBlendParam;
 	GetDrawBlendMode(&OldBlendMode,&OldBlendParam);
