@@ -7,6 +7,7 @@ private:
 	Vector2D lastinput = 0;
 	bool hitflg = false;
 	bool overice = false;
+	bool onconveyor = false;
 	bool blinkingflg = false;	// 点滅フラグ
 	int cun = 0;				// 無敵時間カウント用
 	int blinkingcun = 0;		// 点滅カウント用
@@ -38,6 +39,8 @@ public:
 	void SetFlg(bool b);
 	bool GetIceFlg() const;
 	void SetIceFlg(bool b);
+	bool GetConFlg() const;
+	void SetConFlg(bool b);
 	Vector2D GetVelocity();
 	void SetLastInput();
 };

@@ -31,6 +31,14 @@ void Player::Update()
 		speed = 10;
 	}
 
+	if (onconveyor == false)
+	{
+		speed = 5;
+	}
+	else {
+		speed = 10;
+	}
+
 	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
 		Movement();
 		location += velocity;
@@ -415,6 +423,16 @@ bool Player::GetIceFlg() const
 void Player::SetIceFlg(bool b)
 {
 	this->overice = b;
+}
+
+bool Player::GetConFlg() const
+{
+	return onconveyor;
+}
+
+void Player::SetConFlg(bool b)
+{
+	this->onconveyor = b;
 }
 Vector2D Player::GetVelocity()
 {

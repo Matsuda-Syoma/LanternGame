@@ -28,6 +28,21 @@ GameMain::GameMain()
 		stage[i]->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 	}
 
+	conveyor = new Conveyor * [GM_MAX_CONVEYOR];
+	{
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			conveyor[i] = nullptr;
+		}
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			conveyor[i] = new Conveyor;
+		}
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			conveyor[i]->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+		}
+	}
 	player->Init();
 
 	soldier = new Soldier * [GM_MAX_ENEMY_SOLDIER];
@@ -532,6 +547,16 @@ AbstractScene* GameMain::Update()
 				}
 		}
 
+		player->SetConFlg(false);
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			if (conveyor[i]->HitSphere(player))
+			{
+				if (player->GetConFlg() == false) {
+					player->SetConFlg(true);
+				}
+			}
+		}
 		// 効果音のフラグがたっているなら
 		if (SE_HitFlg) {
 			// 一度もなっていないなら
@@ -634,6 +659,25 @@ void GameMain::Draw() const
 		}
 	}
 
+    // ギミック(氷)
+    for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
+	{
+		// nullptrじゃないなら
+		if (stage[i] != nullptr)
+		{
+			stage[i]->Draw(player->GetLocation() + +(float)Camerashake);
+		}
+	}
+
+	//ギミック(コンベア)
+    for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+	{
+		if (conveyor[i] != nullptr)
+		{
+			conveyor[i]->Draw(player->GetLocation() + +(float)Camerashake);
+		}
+	}
+
 	// 爆弾
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++){
 		// nullptrじゃないなら
@@ -660,18 +704,7 @@ void GameMain::Draw() const
 			}
 		}
 	}
-
 	
-	// ギミック(氷)
-    for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
-	{
-		// nullptrじゃないなら
-		if (stage[i] != nullptr)
-		{
-			stage[i]->Draw(player->GetLocation() + +(float)Camerashake);
-		}
-	}
-
 	// プレイヤー
 	player->Draw(Camerashake);
 
@@ -747,6 +780,12 @@ void GameMain::Draw() const
 		}
 	}	
 
+	/*//ミニマップ(ギミック(コンベア))
+	for (int i = 0; i < GM_MAX_CONVEYOR; i++) {
+		if (bomb[i] != nullptr) {
+			DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
+		}
+	}*/
 	// ミニマップ(プレイヤー)
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

@@ -20,7 +20,7 @@ private:
 	BackGround** background;
 	Particle** particle;
 	Stage** stage;
-	Conveyor** Conveyor;
+	Conveyor** conveyor;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
