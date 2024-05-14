@@ -28,7 +28,10 @@ public:
 	void PositionCheck();
 
 	//爆発に巻き込まれた動きが止まる
-	void DMGflg(bool i);
+	void SetDMGflg(bool i);
+	//フラグの確認
+	bool ChekDMGflg();
+
 
 private:
 	int image;	//画像イメージ
@@ -39,4 +42,5 @@ private:
 	int CD;//中心点の距離
 	int soldierimg[12];//画像イメージ
 	bool dmgflg = false;
+	int countNum;//再生成までの時間を測る
 };

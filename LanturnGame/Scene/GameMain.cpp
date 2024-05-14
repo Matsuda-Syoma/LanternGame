@@ -379,14 +379,14 @@ AbstractScene* GameMain::Update()
 						if (explosion[i]->HitSphere(soldier[j]))
 						{
 							PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
-							soldier[j]->DMGflg(false);
-							if ((game_frametime % 120) == 0)
-							{
+							soldier[j]->SetDMGflg(false);
 								soldier[j] = nullptr;
 								delete soldier[j];
 								break;
+							if (CheckSoundMem(Sounds::SE_DeleteSoldier) == 0)
+							{
+								StopSoundMem(Sounds::SE_DeleteSoldier);
 							}
-								
 						}
 					}
 				}
@@ -413,6 +413,10 @@ AbstractScene* GameMain::Update()
 						PlaySoundMem(Sounds::SE_CatchiPlayer, DX_PLAYTYPE_BACK);
 						soldier[i] = nullptr;
 						soldier[i]->finalize();
+						if (CheckSoundMem(Sounds::SE_CatchiPlayer) == 0)
+						{
+							StopSoundMem(Sounds::SE_CatchiPlayer);
+						}
 					}
 					else//無敵状態なら兵隊が反発する
 					{
