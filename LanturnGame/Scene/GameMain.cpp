@@ -98,6 +98,8 @@ GameMain::GameMain()
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
+	hukidasiimage = LoadGraph("Resources/images/hukidasi.png", 0);
+	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
 }
 
 GameMain::~GameMain()
@@ -951,24 +953,29 @@ void GameMain::DrawComboEnd() const {
 	int OldSize = GetFontSize();
 	if (!comboflg) {
 		if (ui_combo_framecount > 0) {
-			SetFontSize(64);
-			char buf[] = { "SABC\0" };
-			int StrLen = strlen(" ");
-			int StrWidth = GetDrawStringWidth(" ", StrLen);
-			int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			if (oldcombo < 10) {
-				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(255, 255, 255), "C");
-			} 
-			else if (oldcombo < 25) {
-				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(196, 255, 255), "B");
+			SetFontSize(128);
+			int bufcombo = oldcombo;
+			//char buf[4];
+			//int StrLen = snprintf(buf, 4, "%d", oldcombo);
+			//int StrWidth = GetDrawStringWidth(buf, StrLen);
+			//int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+			//if (oldcombo < 10) {
+			//	DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(255, 255, 255), "%d",oldcombo);
+			//} 
+			//else if (oldcombo < 25) {
+			//	DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(196, 255, 255), "%d", oldcombo);
+			//}
+			//else if (oldcombo < 50) {
+			//	DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(127, 255, 255), "%d", oldcombo);
+			//}
+			//else if (oldcombo < GM_MAX_ENEMY_BOMB) {
+			//	DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(48, 255, 255), "%d", oldcombo);
+			//}
+			DrawRotaGraph((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2) + 96, 1.5, 0.0, hukidasiimage, true);
+			for (int i = 0; i < 2; i++) {
+				DrawRotaGraph((SCREEN_WIDTH / 2) + 48 - (i * 96), (SCREEN_HEIGHT / 2) + 96, 2.0, 0.0, numimage[bufcombo % 10], true);
+				bufcombo /= 10;
 			}
-			else if (oldcombo < 50) {
-				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(127, 255, 255), "A");
-			}
-			else if (oldcombo < GM_MAX_ENEMY_BOMB) {
-				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(48, 255, 255), "S");
-			}
-
 		}
 	}
 	SetFontSize(OldSize);
