@@ -11,6 +11,7 @@ GameMain::GameMain()
 	BackGround::LoadImages();
 	Bomb::LoadImages();
 	Particle::LoadImages();
+	Tornado::LoadImages();
 	hiscore = (int)UserData::LoadData(1);
 	player = new Player;
 	stage = new Stage * [GM_MAX_ICEFLOOR];
@@ -83,7 +84,7 @@ GameMain::GameMain()
 		tornado[i] = new Tornado;
 		while (1) {
 			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-			if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+			if (240 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
 				powf((spawnloc.x - player->GetLocation().x), 2) +
 				powf((spawnloc.y - player->GetLocation().y), 2))))
 			{
@@ -116,6 +117,12 @@ AbstractScene* GameMain::Update()
 		soldier->Upadate(player->GetLocation());*/
 		player->GetMapSize(MapSize);
 		player->Update();
+
+		for (int i = 0; i < GM_MAX_TORNADO; i++) {
+			if (tornado[i] != nullptr) {
+				tornado[i]->Update();
+			}
+		}
 
 		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
@@ -557,14 +564,34 @@ AbstractScene* GameMain::Update()
 				}
 		}
 
+		// Velocity初期化
 		player->SetVelocity(NULL);
+		for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+		{
+			if (bomb[i] != nullptr) {
+				bomb[i]->SetEXVelocity(NULL);
+			}
+		}
+
+		// 吸い込みギミックの判定
 		for (int i = 0; i < GM_MAX_TORNADO; i++) {
 			if (tornado[i] != nullptr) {
+				// プレイヤーが当たっているなら
 				if (tornado[i]->HitSphere(player)) {
 					float length = GetLength(player->GetLocation(), tornado[i]->GetLocation());
 					Vector2D vvec = (tornado[i]->GetLocation() - player->GetLocation());
 					vvec /= length;
 					player->SetVelocity(vvec * 2);
+				}
+			}
+			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
+				if (bomb[j] != nullptr) {
+					if (tornado[i]->HitSphere(bomb[j])) {
+						float length = GetLength(bomb[j]->GetLocation(), tornado[i]->GetLocation());
+						Vector2D vvec = (tornado[i]->GetLocation() - bomb[j]->GetLocation());
+						vvec /= length;
+						bomb[j]->SetEXVelocity(vvec);
+					}
 				}
 			}
 		}
