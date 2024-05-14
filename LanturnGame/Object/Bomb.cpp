@@ -116,13 +116,3 @@ void Bomb::DeleteImages()
 {
 	DeleteGraph(*images);
 }
-
-Vector2D Bomb::GetMoveToLocation()
-{
-	return this->movetoloc;
-}
-
-void Bomb::SetMoveToLocation(Vector2D loc)
-{
-	this->movetoloc = loc;
-}

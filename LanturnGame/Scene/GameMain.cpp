@@ -552,6 +552,20 @@ AbstractScene* GameMain::Update()
 				}
 		}
 
+		for (int i = 0; i < GM_MAX_TORNADO; i++) {
+			if (tornado[i] != nullptr) {
+				if (tornado[i]->HitSphere(player)) {
+					float length = GetLength(player->GetLocation(), tornado[i]->GetLocation());
+					Vector2D vvec = (tornado[i]->GetLocation() - player->GetLocation());
+					vvec /= length;
+					player->SetVelocity(vvec * 2);
+				}
+				else {
+					player->SetVelocity(NULL);
+				}
+
+			}
+		}
 		// 効果音のフラグがたっているなら
 		if (SE_HitFlg) {
 			// 一度もなっていないなら

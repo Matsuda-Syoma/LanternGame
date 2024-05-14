@@ -32,7 +32,5 @@ public:
 	void SetKnockBack(Vector2D vec, int i);
 	static void LoadImages();
 	static void DeleteImages();
-	Vector2D GetMoveToLocation();
-	void SetMoveToLocation(Vector2D loc);
 };
 
