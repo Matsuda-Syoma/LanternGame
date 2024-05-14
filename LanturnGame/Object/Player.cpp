@@ -140,26 +140,26 @@ void Player::Movement()
 			{
 				if (InputControl::GetLeftStick().x < 0.f) {
 					velocity += Vector2D((InputControl::GetLeftStick().x + deadzone) * speed, 0);
-					direction = 1;
-					stopdirection = 5;
+					/*direction = 1;
+					stopdirection = 5;*/
 				}
 				if (InputControl::GetLeftStick().x > 0.f) {
 					velocity += Vector2D((InputControl::GetLeftStick().x - deadzone) * speed, 0);
-					direction = 2;
-					stopdirection = 6;
+					/*direction = 2;
+					stopdirection = 6;*/
 				}
 			}
 			if (fabsf(InputControl::GetLeftStick().y) > deadzone)
 			{
 				if (InputControl::GetLeftStick().y < 0.f) {
 					velocity += Vector2D(0, (-InputControl::GetLeftStick().y - deadzone) * speed);
-					direction = 0;
-					stopdirection = 4;
+					/*direction = 0;
+					stopdirection = 4;*/
 				}
 				if (InputControl::GetLeftStick().y > 0.f) {
 					velocity += Vector2D(0, (-InputControl::GetLeftStick().y + deadzone) * speed);
-					direction = 3;
-					stopdirection = 7;
+					/*direction = 3;
+					stopdirection = 7;*/
 				}
 			}
 			// 速度の制限(Y)
@@ -227,6 +227,84 @@ void Player::Movement()
 	{
 		location.y = MapSize - radius;
 	}
+
+
+	if (velocity.x == 0)
+	{
+		if (InputControl::GetLeftStick().x > 0.8)
+		{
+			direction = 2;
+			stopdirection = 6;
+		}
+		if (InputControl::GetLeftStick().x < -0.8)
+		{
+			direction = 1;
+			stopdirection = 5;
+		}
+	}
+	else {
+		if (InputControl::GetLeftStick().x > 0.2)
+		{
+			direction = 2;
+			stopdirection = 6;
+		}
+		if (InputControl::GetLeftStick().x < -0.2)
+		{
+			direction = 1;
+			stopdirection = 5;
+		}
+	}
+	
+	if (velocity.y == 0)
+	{
+		if (InputControl::GetLeftStick().y > 0.8)
+		{
+			direction = 3;
+			stopdirection = 7;
+		}
+
+		if (InputControl::GetLeftStick().y < -0.8)
+		{
+			direction = 0;
+			stopdirection = 4;
+		}
+	}
+	else {
+		if (InputControl::GetLeftStick().y > 0.2)
+		{
+			direction = 3;
+			stopdirection = 7;
+		}
+
+		if (InputControl::GetLeftStick().y < -0.2)
+		{
+			direction = 0;
+			stopdirection = 4;
+		}
+	}
+	
+
+	/*if (velocity.x > 0.1f)
+	{
+		if (InputControl::GetLeftStick().x < -0.8) {
+			direction = 1;
+			stopdirection = 5;
+		}
+		else if (InputControl::GetLeftStick().x > 0.8) {
+			direction = 2;
+			stopdirection = 6;
+		}
+	}
+	else if (InputControl::GetLeftStick().x > 0.8) {
+		direction = 2;
+		stopdirection = 6;
+	}
+	else if (InputControl::GetLeftStick().x < -0.8) {
+
+		direction = 1;
+		stopdirection = 5;
+	}*/
+
 
 	// 立ち止まっているとき（アニメーション）
 	// 左スティックが入力されていなかったら
