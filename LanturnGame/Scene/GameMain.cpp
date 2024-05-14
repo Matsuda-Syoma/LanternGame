@@ -73,6 +73,27 @@ GameMain::GameMain()
 	SpawnParticle(1, player, true, Vector2D(player->GetLocation().x + 5, player->GetLocation().y)
 								 , Vector2D(player->GetLocation().x + 5, player->GetLocation().y), 0.5);
 
+	// 吸い込むギミックの初期化
+	tornado = new Tornado * [GM_MAX_TORNADO];
+	for (int i = 0; i < GM_MAX_TORNADO; i++) {
+		tornado[i] = nullptr;
+	}
+	for (int i = 0; i < GM_MAX_TORNADO; i++) {
+	
+		tornado[i] = new Tornado;
+		while (1) {
+			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+			if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+				powf((spawnloc.x - player->GetLocation().x), 2) +
+				powf((spawnloc.y - player->GetLocation().y), 2))))
+			{
+				tornado[i]->SetLocation(spawnloc);
+				break;
+			}
+		}
+
+	}
+
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
@@ -671,6 +692,19 @@ void GameMain::Draw() const
 		}
 	}
 
+	for (int i = 0; i < GM_MAX_TORNADO; i++) {
+		// nullptrじゃないなら
+		if (tornado[i] != nullptr) {
+			// 画面中なら描画
+			if (1040 > fabsf(sqrtf(
+				powf((tornado[i]->GetLocation().x - player->GetLocation().x), 2) +
+				powf((tornado[i]->GetLocation().y - player->GetLocation().y), 2))))
+			{
+				tornado[i]->Draw(player->GetLocation() + (float)Camerashake);
+			}
+		}
+	}
+
 	// プレイヤー
 	player->Draw(Camerashake);
 
@@ -745,6 +779,13 @@ void GameMain::Draw() const
 			DrawCircleAA(SCREEN_WIDTH - 128 + (stage[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (stage[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
 		}
 	}	
+
+	// ミニマップ(ギミック(氷)
+	for (int i = 0; i < GM_MAX_TORNADO; i++) {
+		if (tornado[i] != nullptr) {
+			DrawCircleAA(SCREEN_WIDTH - 128 + (tornado[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (tornado[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 12, 8, 0x800000, true);
+		}
+	}
 
 	// ミニマップ(プレイヤー)
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);

@@ -15,6 +15,8 @@
 #define GM_MAX_ICEFLOOR 2
 #define GM_MAX_MUDFLOOR 3
 
+#define GM_MAX_TORNADO 3
+
 #define GM_MAX_MAPSIZE 1500
 #define GM_MIN_MAPSIZE 320
 
