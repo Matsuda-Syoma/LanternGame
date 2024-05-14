@@ -6,7 +6,7 @@
 #include "../Utility/UserData.h"
 Player::Player()
 {
-	speed = 0.5;
+	speed = 5;
 deadzone = UserData::LoadData(0);
 }
 
