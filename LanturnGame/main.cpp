@@ -32,6 +32,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	FpsController FPSct(FRAMERATE, UPDATETIME);
 
 	Sounds::LoadSounds();
+
 	//�Q�[�����[�v
 	while (ProcessMessage() == 0 && scene.Update() != nullptr) {
 

@@ -4,6 +4,8 @@
 #include "Title.h"
 #include "../Utility/InputControl.h"
 #include "../Utility/UserData.h"
+#include <string>
+using namespace std;
 Setting::Setting()
 {
 	deadzone = UserData::LoadData(0);

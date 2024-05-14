@@ -4,7 +4,6 @@
 #include "GameMain.h"
 #include "Setting.h"
 
-
 Title::Title()
 {
 	menuimage[0] = LoadGraph("Resources/images/titlemenu_start.png");
@@ -57,9 +56,9 @@ AbstractScene* Title::Update()
 			isCheck = true;
 		}
 	}
-	GetMousePoint(&MouseX,&MouseY);
-	clsDx();
-	printfDx("%d %d", MouseX, MouseY);
+	//GetMousePoint(&MouseX,&MouseY);
+	//clsDx();
+	//printfDx("%d %d", MouseX, MouseY);
 	if (fireanim < 62) {
 		if (isCheck) {
 			fireanim++;

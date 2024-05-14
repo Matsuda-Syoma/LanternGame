@@ -13,7 +13,6 @@ GameMain::GameMain()
 	Particle::LoadImages();
 	hiscore = (int)UserData::LoadData(1);
 	player = new Player;
-
 	stage = new Stage * [GM_MAX_ICEFLOOR];
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
 	{
