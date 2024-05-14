@@ -30,6 +30,16 @@ void Soldier::Upadate(Vector2D PL)
 	{
 		Move(PL);
 	}
+	else
+	{
+		countNum++;
+		if (120 <= countNum)
+		{
+			dmgflg = true;
+			countNum = 0;
+		}
+	}
+	
 	PositionCheck();
 }
 
@@ -114,7 +124,11 @@ void Soldier::PositionCheck()
 	}
 }
 
-void Soldier::DMGflg(bool i)
+ void Soldier::SetDMGflg(bool i)
 {
 	dmgflg = i;
+}
+bool Soldier::ChekDMGflg()
+{
+	return dmgflg;
 }
