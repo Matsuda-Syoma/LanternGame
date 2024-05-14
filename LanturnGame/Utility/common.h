@@ -23,3 +23,9 @@
 
 #define GM_MAX_ENEMY_SOLDIER 0
 
+#include "Vector2D.h"
+#include <math.h>
+static float GetLength(Vector2D loc, Vector2D loc2)
+{
+	return sqrtf(powf((loc2.x - loc.x), 2) + powf((loc2.y - loc.y), 2));
+}

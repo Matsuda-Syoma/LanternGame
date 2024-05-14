@@ -34,6 +34,7 @@ void Player::Update()
 	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
 		Movement();
 		location += velocity;
+		location += exvelocity;
 	//}
 	//else {
 	//	LineTrace();
@@ -498,6 +499,11 @@ void Player::SetIceFlg(bool b)
 Vector2D Player::GetVelocity()
 {
 	return this->velocity;
+}
+
+void Player::SetVelocity(Vector2D loc)
+{
+	this->exvelocity = loc;
 }
 
 void Player::SetLastInput()

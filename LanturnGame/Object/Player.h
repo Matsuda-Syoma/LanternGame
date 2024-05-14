@@ -4,6 +4,7 @@ class Player : public CharaBase
 {
 private:
 	Vector2D velocity;
+	Vector2D exvelocity;
 	Vector2D lastinput = 0;
 	bool hitflg = false;
 	bool overice = false;
@@ -39,6 +40,7 @@ public:
 	bool GetIceFlg() const;
 	void SetIceFlg(bool b);
 	Vector2D GetVelocity();
+	void SetVelocity(Vector2D loc);
 	void SetLastInput();
 };
 
