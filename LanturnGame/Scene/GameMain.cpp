@@ -380,6 +380,7 @@ AbstractScene* GameMain::Update()
 						{
 							PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
 							soldier[j]->SetDMGflg(false);
+							if(soldier[j]->ChekDMGflg)
 								soldier[j] = nullptr;
 								delete soldier[j];
 								break;
