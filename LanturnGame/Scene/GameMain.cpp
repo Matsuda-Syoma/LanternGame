@@ -623,7 +623,7 @@ AbstractScene* GameMain::Update()
 		{
 		case(0):
 			break;
-		case(180):
+		case(150):
 			resultflg = true;
 			break;
 		default:

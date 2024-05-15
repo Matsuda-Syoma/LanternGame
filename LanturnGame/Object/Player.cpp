@@ -19,7 +19,7 @@ Player::~Player()
 void Player::Init()
 {
 	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
-	d_playerimg = LoadGraph("Resources/images/player_Death.png");
+	d_playerimg = LoadGraph("Resources/images/player_death.png");
 }
 
 void Player::Update()
