@@ -12,6 +12,7 @@ GameMain::GameMain()
 	Bomb::LoadImages();
 	Particle::LoadImages();
 	Tornado::LoadImages();
+	ComboEnd::LoadImages();
 	hiscore = (int)UserData::LoadData(1);
 	player = new Player;
 	stage = new Stage * [GM_MAX_ICEFLOOR];
@@ -93,6 +94,12 @@ GameMain::GameMain()
 			}
 		}
 
+	}
+
+	// コンボ初期化
+	comboend = new ComboEnd * [GM_MAX_COMBOEND];
+	for (int i = 0; i < GM_MAX_COMBOEND; i++) {
+		comboend[i] = nullptr;
 	}
 
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
@@ -601,6 +608,18 @@ AbstractScene* GameMain::Update()
 				}
 			}
 		}
+
+
+		for (int i = 0; i < GM_MAX_COMBOEND; i++) {
+			if (comboend[i] != nullptr) {
+				comboend[i]->Update();
+				if (!comboend[i]->GetFlg()) {
+					comboend[i] = nullptr;
+					delete comboend[i];
+				}
+			}
+		}
+
 		// 効果音のフラグがたっているなら
 		if (SE_HitFlg) {
 			// 一度もなっていないなら
@@ -618,8 +637,16 @@ AbstractScene* GameMain::Update()
 		if (!comboflg) {
 			if (combo != 0) {
 				SpawnParticle(2, player, false, Vector2D(0.f,10.f), Vector2D(0.f, 10.f), 2.f);
-				ui_combo_framecount = 60;
+
+				// ここに効果音
+
 				oldcombo = combo;
+				for (int i = 0; i < GM_MAX_COMBOEND; i++) {
+					if (comboend[i] == nullptr) {
+						comboend[i] = new ComboEnd(oldcombo);
+						break;
+					}
+				}
 				// 何か効果音
 			}
 			combo = 0;
@@ -785,7 +812,13 @@ void GameMain::Draw() const
 	// コンボ
 
 	DrawCombo();
-	DrawComboEnd();
+	//DrawComboEnd();
+
+	for (int i = 0; i < GM_MAX_COMBOEND; i++) {
+		if (comboend[i] != nullptr) {
+			comboend[i]->Draw();
+		}
+	}
 
 	DrawCloseMap();
 
