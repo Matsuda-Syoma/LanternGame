@@ -11,6 +11,7 @@
 #include "../Object/stage.h"
 #include "../Object/Conveyor.h"
 #include "../Object/Tornado.h"
+#include "../Object/ComboEnd.h"
 class GameMain : public AbstractScene
 {
 private:
@@ -21,8 +22,9 @@ private:
 	BackGround** background;
 	Particle** particle;
 	Stage** stage;
-	Conveyor** Conveyor;
+	Conveyor** conveyor;
 	Tornado** tornado;
+	ComboEnd** comboend;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
@@ -38,6 +40,8 @@ private:
 	int lifeimage;
 	int lifematchimage;
 	int closemapimage;
+	int hukidasiimage;
+	int numimage[10];
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;
@@ -71,6 +75,5 @@ public:
 	void ChangeMapSize();
 	void DrawCombo()const;
 	void DrawCloseMap()const;
-	void DrawComboEnd() const;
 };
 

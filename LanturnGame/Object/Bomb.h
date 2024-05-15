@@ -11,6 +11,7 @@ private:
 	int maxexpcnt = 180;
 	int expcnt = maxexpcnt;
 	Vector2D velocity = 0;
+	Vector2D exvelocity = 0;
 	Vector2D knockback = 0;
 	Vector2D movetoloc = 0;
 public:
@@ -25,6 +26,7 @@ public:
 	float GetLength(Vector2D loc);
 
 	void SetVelocity(Vector2D loc);
+	void SetEXVelocity(Vector2D loc);
 
 	void SetMode(int i);
 

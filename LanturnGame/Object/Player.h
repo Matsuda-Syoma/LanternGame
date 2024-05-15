@@ -9,6 +9,7 @@ private:
 	bool pflg = true;			// 生存フラグ
 	bool hitflg = false;		// ヒットフラグ
 	bool overice = false;
+	bool onconveyor = false;
 	bool blinkingflg = false;	// 点滅フラグ
 	int cun = 0;				// 無敵時間カウント用
 	int blinkingcun = 0;		// 点滅カウント用
@@ -43,6 +44,8 @@ public:
 	void SetPFlg(bool b);
 	bool GetIceFlg() const;
 	void SetIceFlg(bool b);
+	bool GetConFlg() const;
+	void SetConFlg(bool b);
 	Vector2D GetVelocity();
 	void SetVelocity(Vector2D loc);
 	void SetLastInput();

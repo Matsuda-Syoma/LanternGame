@@ -25,6 +25,7 @@ void Bomb::Update()
 	}
 	location += velocity * speed;
 	location += knockback;
+	location += exvelocity;
 
 	// マップ外に出ないようにします
 
@@ -86,6 +87,11 @@ float Bomb::GetLength(Vector2D loc)
 void Bomb::SetVelocity(Vector2D loc)
 {
 	this->velocity = loc;
+}
+
+void Bomb::SetEXVelocity(Vector2D loc)
+{
+	this->exvelocity = loc;
 }
 
 void Bomb::SetMode(int i)

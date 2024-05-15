@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Object\ComboEnd.cpp" />
     <ClCompile Include="object\BackGround.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\Bomb.cpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="Utility\LoadSounds.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Object\ComboEnd.h" />
     <ClInclude Include="object\BackGround.h" />
     <ClInclude Include="Object\Bomb.h" />
     <ClInclude Include="Object\CharaBase.h" />
