@@ -598,18 +598,17 @@ AbstractScene* GameMain::Update()
 						{
 							PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
 							soldier[j]->SetDMGflg(false);
-							if (soldier[j]->ChekDMGflg())
-							{
-							if(soldier[j]->ChekDMGflg())
-								soldier[j] = nullptr;
-								delete soldier[j];
-								break;
-							}
 								
 							if (CheckSoundMem(Sounds::SE_DeleteSoldier) == 0)
 							{
 								StopSoundMem(Sounds::SE_DeleteSoldier);
 							}
+						}
+						if (soldier[j]->ChekDLflg() == true)
+						{
+							soldier[j] = nullptr;
+							delete soldier[j];
+							break;
 						}
 					}
 				}
@@ -635,8 +634,7 @@ AbstractScene* GameMain::Update()
 						hitmoment = true;
 						player->SetFlg(true);
 						PlaySoundMem(Sounds::SE_CatchiPlayer, DX_PLAYTYPE_BACK);
-						soldier[i] = nullptr;
-						soldier[i]->finalize();
+						soldier[i]->SetDMGflg(false);
 						if (CheckSoundMem(Sounds::SE_CatchiPlayer) == 0)
 						{
 							StopSoundMem(Sounds::SE_CatchiPlayer);
@@ -653,6 +651,12 @@ AbstractScene* GameMain::Update()
 				else if (!soldier[i]->HitSphere(player) && hitmoment == true)
 				{
 					hitmoment = false;
+				}
+				if (soldier[i]->ChekDLflg() == true)
+				{
+					soldier[i] = nullptr;
+					delete soldier[i];
+					break;
 				}
 			}
 		}
