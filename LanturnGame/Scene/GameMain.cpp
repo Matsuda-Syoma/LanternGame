@@ -871,7 +871,8 @@ void GameMain::Draw() const
 			conveyor[i]->Draw(player->GetLocation() + +(float)Camerashake);
 		}
 	}
-	for (int i = 0; i < GM_MAX_TORNADO; i++) {
+	for (int i = 0; i < GM_MAX_TORNADO; i++)
+	{
 		// nullptrじゃないなら
 		if (tornado[i] != nullptr)
 		{
