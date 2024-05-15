@@ -111,43 +111,29 @@ void Player::Movement()
 		// スティック入力
 		velocity += Vector2D(
 			InputControl::GetLeftStick().x * acceleration
-			, -InputControl::GetLeftStick().y * acceleration);
-
-		// 摩擦係数
+		 , -InputControl::GetLeftStick().y * acceleration);
+	}
+	// 摩擦係数
+	if (overice == true)
+	{
+		velocity *= 0.99;
+	}
+	else 
+	{
 		velocity *= friction;
-
-		// 移動ベクトルの大きさの計算
-		float movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
-
-		// 最大速度を超えないように
-		if (movelength > speed) {
-			float scale = speed / movelength;
-			velocity.x *= scale;
-			velocity.y *= scale;
-		}
 	}
 
-	// 減速
-	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) &&
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) &&
-		fabsf(InputControl::GetLeftStick().x) < deadzone) {
-		if(overice == true){
-			velocity.x /= 0.6f;
-		}
-		else {
-			velocity.x /= 1.2f;
-		}
+	// 移動ベクトルの大きさの計算
+	float movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
+
+	// 最大速度を超えないように
+	if (movelength > speed)
+	{
+		float scale = speed / movelength;
+		velocity.x *= scale;
+		velocity.y *= scale;
 	}
-	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) &&
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
-		fabsf(InputControl::GetLeftStick().y) < deadzone) {
-		if (overice == true) {
-			velocity.y /= 0.6f;
-		}
-		else {
-			velocity.y /= 1.2f;
-		}
-	}
+
 	if (fabs(velocity.x) < 0.01)
 	{
 		velocity.x = 0;
