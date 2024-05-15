@@ -20,6 +20,7 @@
     <ClCompile Include="Object\Particle.cpp" />
     <ClCompile Include="object\Conveyor.cpp" />
     <ClCompile Include="Object\Tornado.cpp" />
+    <ClCompile Include="Object\ComboEnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object\soldier.h" />
@@ -44,6 +45,7 @@
     <ClInclude Include="Object\Particle.h" />
     <ClInclude Include="object\Conveyor.h" />
     <ClInclude Include="Object\Tornado.h" />
+    <ClInclude Include="Object\ComboEnd.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico" />

@@ -38,6 +38,8 @@ private:
 	int lifeimage;
 	int lifematchimage;
 	int closemapimage;
+	int hukidasiimage;
+	int numimage[10];
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;
