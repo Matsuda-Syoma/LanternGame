@@ -110,7 +110,7 @@ GameMain::~GameMain()
 AbstractScene* GameMain::Update()
 {
 
-	if (resultflg == false) {
+	if (player->GetPFlg() == true) {
 
 		/*soldier->GetMapSize(MapSize);
 		soldier->Upadate(player->GetLocation());*/
@@ -612,12 +612,28 @@ AbstractScene* GameMain::Update()
 		CameraUpdate();
 		// 残機が0ならリザルトフラグを立てる
 		if (life == 0) {
-			resultflg = true;
+			player->SetPFlg(false);
 		}
 
 	}
+	// 残機が０になったら
+	else if(player->GetPFlg() == false && resultflg == false){
+		r_cun++;
+		switch (r_cun)
+		{
+		case(0):
+			break;
+		case(180):
+			resultflg = true;
+			break;
+		default:
+			break;
+		}
+	}
+
 	// リザルトフラグがたっているなら
-	else {
+	if (resultflg == true)
+	{
 		//if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
 		//	life = 3;
 		//	resultflg = false;

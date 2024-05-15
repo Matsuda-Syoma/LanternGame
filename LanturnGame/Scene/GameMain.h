@@ -51,6 +51,8 @@ private:
 	int CamerashakeCount = 0;
 	int Camerashake = 0;
 
+	int r_cun = 0;	// リザルト遷移カウント用
+
 	Vector2D ev;
 	float l;
 
