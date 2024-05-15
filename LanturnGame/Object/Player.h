@@ -20,6 +20,8 @@ private:
 	int pointflg;
 	int countflg;
 	float deadzone = 0.1;
+	float acceleration = 1.f;
+	float friction = .9f;
 public:
 	Player();
 	~Player();

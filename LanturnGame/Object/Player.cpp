@@ -106,84 +106,25 @@ void Player::Draw(int camerashake) const
 
 void Player::Movement()
 {
-	// pad入力
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+	if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
 	{
-		velocity += Vector2D(-0.5f, 0.0f);
-		// 左移動アニメーション
-		direction = 1;
-		stopdirection = 5;
-	}
+		// スティック入力
+		velocity += Vector2D(
+			InputControl::GetLeftStick().x * acceleration
+			, -InputControl::GetLeftStick().y * acceleration);
 
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
-	{
-		velocity += Vector2D(0.5f, 0.0f);
-		// 右移動アニメーション
-		direction = 2;
-		stopdirection = 6;
-	}
+		// 摩擦係数
+		velocity *= friction;
 
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
-	{
-		velocity += Vector2D(0.0f, 0.5f);
-		// 下移動アニメーション
-		direction = 0;
-		stopdirection = 4;
-	}
+		// 移動ベクトルの大きさの計算
+		float movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
 
-	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
-	{
-		velocity += Vector2D(0.0f, -0.5f);
-		// 上移動アニメーション
-		direction = 3;
-		stopdirection = 7;
-	}
-	if (fabsf(InputControl::GetLeftStick().x) > deadzone)
-	{
-		if (InputControl::GetLeftStick().x < 0.f) {
-			velocity += Vector2D((InputControl::GetLeftStick().x + deadzone) * speed, 0);
-			
+		// 最大速度を超えないように
+		if (movelength > speed) {
+			float scale = speed / movelength;
+			velocity.x *= scale;
+			velocity.y *= scale;
 		}
-		if (InputControl::GetLeftStick().x > 0.f) {
-			velocity += Vector2D((InputControl::GetLeftStick().x - deadzone) * speed, 0);
-			
-		}
-	}
-	if (fabsf(InputControl::GetLeftStick().y) > deadzone)
-	{
-		if (InputControl::GetLeftStick().y < 0.f) {
-			velocity += Vector2D(0, (-InputControl::GetLeftStick().y - deadzone) * speed);
-		
-		}
-		if (InputControl::GetLeftStick().y > 0.f) {
-			velocity += Vector2D(0, (-InputControl::GetLeftStick().y + deadzone) * speed);
-			
-		}
-	}
-
-	// 速度の制限(Y)
-	if (velocity.y > speed)
-	{
-		velocity.y = speed;
-	}
-	else if (velocity.y < -speed)
-	{
-		velocity.y = -speed;
-	}
-
-	// 速度の制限(X)
-	if (velocity.x > speed)
-	{
-		velocity.x = speed;
-	}
-	else if (velocity.x < -speed)
-	{
-		velocity.x = -speed;
-	}
-
-	if (fabsf(velocity.x) == fabsf(velocity.y))
-	{
-		velocity *= 0.7071f;
 	}
 
 	// 減速
