@@ -932,7 +932,7 @@ void GameMain::ChangeMapSize() {
 		if (MapSize > GM_MIN_MAPSIZE) {
 
 			PlaySoundMem(Sounds::SE_MapClose, DX_PLAYTYPE_BACK);
-			SetMapSize(MapSize - 1.5);
+			SetMapSize(MapSize - 0.75);
 
 			if (MapSize < GM_MIN_MAPSIZE) {
 				SetMapSize(GM_MIN_MAPSIZE);

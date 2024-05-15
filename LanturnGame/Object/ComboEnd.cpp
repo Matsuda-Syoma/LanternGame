@@ -33,9 +33,9 @@ void ComboEnd::Update()
 void ComboEnd::Draw() const
 {
 	int bufcombo = combo;
-	DrawRotaGraph((SCREEN_WIDTH / 2) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, 1.5, 0.0, hukidasiimg, true);
+	DrawRotaGraph((SCREEN_WIDTH / 2) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, .375, 0.0, hukidasiimg, true);
 	for (int i = 0; i < 2; i++) {
-		DrawRotaGraph((SCREEN_WIDTH / 2) + 48 - (i * 96) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, 2.0, 0.0, numimg[bufcombo % 10], true);
+		DrawRotaGraph((SCREEN_WIDTH / 2) + 16 - (i * 32) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, .5, 0.0, numimg[bufcombo % 10], true);
 		bufcombo /= 10;
 	}
 	//DrawRotaGraph((SCREEN_WIDTH / 2) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, 1.5 - ((cnt / 180.0) * 1.5), 0.0, hukidasiimg, true);
