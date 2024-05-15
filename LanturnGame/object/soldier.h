@@ -37,13 +37,14 @@ public:
 	bool ChekDLflg();
 
 private:
-	int image;	//画像イメージ
 	Vector2D length = 0;
 	Vector2D move = 0;
 	Vector2D knockback = 0;
 	Vector2D velocity = 0;
 	int CD;//中心点の距離
 	int soldierimg[12];//画像イメージ
+	int soldierDetimg[12];//画像イメージ
+	int Velimg;//画像の向き
 	bool dmgflg = false;
 	int countNum;//再生成までの時間を測る
 	bool deleteFlg = false;

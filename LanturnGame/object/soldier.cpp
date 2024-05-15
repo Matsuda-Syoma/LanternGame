@@ -23,6 +23,7 @@ void Soldier::Initialize()
 	dmgflg = true;
 	deleteFlg = false;
 	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 64, soldierimg);
+	LoadDivGraph("Resources/images/d_Soldier.png", 6, 3, 2, 64, 64, soldierDetimg);
 }
 
 void Soldier::Upadate(Vector2D PL)
@@ -34,7 +35,7 @@ void Soldier::Upadate(Vector2D PL)
 	else
 	{
 		countNum++;
-		if (720 <= countNum)
+		if (240 <= countNum)
 		{
 			dmgflg = true;
 			deleteFlg = true;
@@ -47,8 +48,27 @@ void Soldier::Upadate(Vector2D PL)
 
 void Soldier::Draw(Vector2D PL)
 {
-	//兵隊イラストの描画
-	DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierimg[1], true);
+	if (dmgflg == true)
+	{
+		int cnt;
+		cnt++;
+		int animcnt;
+		if ((cnt % 60) == 0)
+		{
+			animcnt++;
+		}
+		if (3 <= animcnt)
+		{
+			animcnt == 0;
+		}
+		//兵隊イラストの描画
+		DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierimg[Velimg + animcnt], true);
+	}
+	else
+	{
+
+		DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierDetimg[0], true);
+	}
 }
 
 void Soldier::Move(Vector2D PL)
@@ -68,10 +88,12 @@ void Soldier::Move(Vector2D PL)
 	if (length.x < 0 && move.x < EMMAX)
 	{
 		move += Vector2D(EM,0.0f);
+		Velimg = 6;
 	}
 	if (length.x > 0 && move.x > EMMIN)
 	{
 		move -= Vector2D(EM, 0.0f);
+		Velimg = 3;
 	}
 	if (length.y < 0 && move.y < EMMAX)
 	{
