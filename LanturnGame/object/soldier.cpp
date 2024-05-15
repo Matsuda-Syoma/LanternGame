@@ -21,6 +21,7 @@ void Soldier::Initialize()
 {
 	speed = 2;	//���x�̏�����
 	dmgflg = true;
+	deleteFlg = false;
 	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 64, soldierimg);
 }
 
@@ -33,9 +34,10 @@ void Soldier::Upadate(Vector2D PL)
 	else
 	{
 		countNum++;
-		if (120 <= countNum)
+		if (720 <= countNum)
 		{
 			dmgflg = true;
+			deleteFlg = true;
 			countNum = 0;
 		}
 	}
@@ -131,4 +133,8 @@ void Soldier::PositionCheck()
 bool Soldier::ChekDMGflg()
 {
 	return dmgflg;
+}
+bool Soldier::ChekDLflg()
+{
+	return deleteFlg;
 }
