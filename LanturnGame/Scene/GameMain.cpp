@@ -11,6 +11,7 @@ GameMain::GameMain()
 	BackGround::LoadImages();
 	Bomb::LoadImages();
 	Particle::LoadImages();
+	Tornado::LoadImages();
 	hiscore = (int)UserData::LoadData(1);
 	player = new Player;
 	stage = new Stage * [GM_MAX_ICEFLOOR];
@@ -27,6 +28,21 @@ GameMain::GameMain()
 		stage[i]->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 	}
 
+	conveyor = new Conveyor * [GM_MAX_CONVEYOR];
+	{
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			conveyor[i] = nullptr;
+		}
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			conveyor[i] = new Conveyor;
+		}
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			conveyor[i]->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+		}
+	}
 	player->Init();
 
 	soldier = new Soldier * [GM_MAX_ENEMY_SOLDIER];
@@ -83,7 +99,7 @@ GameMain::GameMain()
 		tornado[i] = new Tornado;
 		while (1) {
 			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-			if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+			if (240 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
 				powf((spawnloc.x - player->GetLocation().x), 2) +
 				powf((spawnloc.y - player->GetLocation().y), 2))))
 			{
@@ -97,6 +113,8 @@ GameMain::GameMain()
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
+	hukidasiimage = LoadGraph("Resources/images/hukidasi.png", 0);
+	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
 }
 
 GameMain::~GameMain()
@@ -116,6 +134,12 @@ AbstractScene* GameMain::Update()
 		soldier->Upadate(player->GetLocation());*/
 		player->GetMapSize(MapSize);
 		player->Update();
+
+		for (int i = 0; i < GM_MAX_TORNADO; i++) {
+			if (tornado[i] != nullptr) {
+				tornado[i]->Update();
+			}
+		}
 
 		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 		{
@@ -565,14 +589,44 @@ AbstractScene* GameMain::Update()
 				}
 		}
 
+		player->SetConFlg(false);
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			if (conveyor[i]->HitSphere(player))
+			{
+				if (player->GetConFlg() == false) {
+					player->SetConFlg(true);
+				}
+			}
+		}
+		// Velocity初期化
 		player->SetVelocity(NULL);
+		for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+		{
+			if (bomb[i] != nullptr) {
+				bomb[i]->SetEXVelocity(NULL);
+			}
+		}
+
+		// 吸い込みギミックの判定
 		for (int i = 0; i < GM_MAX_TORNADO; i++) {
 			if (tornado[i] != nullptr) {
+				// プレイヤーが当たっているなら
 				if (tornado[i]->HitSphere(player)) {
 					float length = GetLength(player->GetLocation(), tornado[i]->GetLocation());
 					Vector2D vvec = (tornado[i]->GetLocation() - player->GetLocation());
 					vvec /= length;
 					player->SetVelocity(vvec * 2);
+				}
+			}
+			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++) {
+				if (bomb[j] != nullptr) {
+					if (tornado[i]->HitSphere(bomb[j])) {
+						float length = GetLength(bomb[j]->GetLocation(), tornado[i]->GetLocation());
+						Vector2D vvec = (tornado[i]->GetLocation() - bomb[j]->GetLocation());
+						vvec /= length;
+						bomb[j]->SetEXVelocity(vvec);
+					}
 				}
 			}
 		}
@@ -678,7 +732,7 @@ void GameMain::Draw() const
 		}
 	}
 
-	// ギミック(氷)
+
     for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
 	{
 		// nullptrじゃないなら
@@ -688,6 +742,14 @@ void GameMain::Draw() const
 		}
 	}
 
+	//ギミック(コンベア)
+    for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+	{
+		if (conveyor[i] != nullptr)
+		{
+			conveyor[i]->Draw(player->GetLocation() + +(float)Camerashake);
+		}
+	}
 	for (int i = 0; i < GM_MAX_TORNADO; i++) {
 		// nullptrじゃないなら
 		if (tornado[i] != nullptr) {
@@ -727,6 +789,7 @@ void GameMain::Draw() const
 			}
 		}
 	}
+	
 
 	// プレイヤー
 	player->Draw(Camerashake);
@@ -803,6 +866,12 @@ void GameMain::Draw() const
 		}
 	}	
 
+	/*//ミニマップ(ギミック(コンベア))
+	for (int i = 0; i < GM_MAX_CONVEYOR; i++) {
+		if (bomb[i] != nullptr) {
+			DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
+		}
+	}*/
 	// ミニマップ(ギミック(氷)
 	for (int i = 0; i < GM_MAX_TORNADO; i++) {
 		if (tornado[i] != nullptr) {
@@ -932,24 +1001,29 @@ void GameMain::DrawComboEnd() const {
 	int OldSize = GetFontSize();
 	if (!comboflg) {
 		if (ui_combo_framecount > 0) {
-			SetFontSize(64);
-			char buf[] = { "SABC\0" };
-			int StrLen = strlen(" ");
-			int StrWidth = GetDrawStringWidth(" ", StrLen);
-			int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			if (oldcombo < 10) {
-				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(255, 255, 255), "C");
-			} 
-			else if (oldcombo < 25) {
-				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(196, 255, 255), "B");
+			SetFontSize(128);
+			int bufcombo = oldcombo;
+			//char buf[4];
+			//int StrLen = snprintf(buf, 4, "%d", oldcombo);
+			//int StrWidth = GetDrawStringWidth(buf, StrLen);
+			//int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+			//if (oldcombo < 10) {
+			//	DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(255, 255, 255), "%d",oldcombo);
+			//} 
+			//else if (oldcombo < 25) {
+			//	DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(196, 255, 255), "%d", oldcombo);
+			//}
+			//else if (oldcombo < 50) {
+			//	DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(127, 255, 255), "%d", oldcombo);
+			//}
+			//else if (oldcombo < GM_MAX_ENEMY_BOMB) {
+			//	DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(48, 255, 255), "%d", oldcombo);
+			//}
+			DrawRotaGraph((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2) + 96, 1.5, 0.0, hukidasiimage, true);
+			for (int i = 0; i < 2; i++) {
+				DrawRotaGraph((SCREEN_WIDTH / 2) + 48 - (i * 96), (SCREEN_HEIGHT / 2) + 96, 2.0, 0.0, numimage[bufcombo % 10], true);
+				bufcombo /= 10;
 			}
-			else if (oldcombo < 50) {
-				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(127, 255, 255), "A");
-			}
-			else if (oldcombo < GM_MAX_ENEMY_BOMB) {
-				DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(48, 255, 255), "S");
-			}
-
 		}
 	}
 	SetFontSize(OldSize);
