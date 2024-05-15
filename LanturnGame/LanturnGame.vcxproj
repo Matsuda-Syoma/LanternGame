@@ -33,6 +33,7 @@
     <ClCompile Include="Scene\GameMain.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
+    <ClCompile Include="Object\Tornado.cpp" />
     <ClCompile Include="Utility\UserData.cpp" />
     <ClCompile Include="Utility\FPSController.cpp" />
     <ClCompile Include="Utility\InputControl.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Scene\GameMain.h" />
     <ClInclude Include="Scene\SceneManager.h" />
     <ClInclude Include="Scene\Title.h" />
+    <ClInclude Include="Object\Tornado.h" />
     <ClInclude Include="Utility\UserData.h" />
     <ClInclude Include="Utility\common.h" />
     <ClInclude Include="Utility\FPSController.h" />

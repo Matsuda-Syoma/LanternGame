@@ -4,6 +4,7 @@ class Player : public CharaBase
 {
 private:
 	Vector2D velocity;
+	Vector2D exvelocity;
 	Vector2D lastinput = 0;
 	bool hitflg = false;
 	bool overice = false;
@@ -14,8 +15,8 @@ private:
 	int animcun = 0;			// アニメーションカウント用
 	int imgnum = 1;				// 画像描画用変数
 	int playerimg[12];			// プレイヤー画像
-	int direction = 4;			// 歩行中の向き（０：下　１：左　２：右　３：上）
-	int stopdirection = 4;		// 立ち止まった時の向き（４：下　５：左　６：右　７：上）
+	int direction = 4;			// 現在の向き（０：下　１：左　２：右　３：上）
+	int stopdirection = 4;		// 歩行中の向き（４：下　５：左　６：右　７：上）
 	int pointflg;
 	int countflg;
 	float deadzone = 0.1;
@@ -42,6 +43,7 @@ public:
 	bool GetConFlg() const;
 	void SetConFlg(bool b);
 	Vector2D GetVelocity();
+	void SetVelocity(Vector2D loc);
 	void SetLastInput();
 };
 

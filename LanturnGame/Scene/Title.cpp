@@ -4,7 +4,6 @@
 #include "GameMain.h"
 #include "Setting.h"
 
-
 Title::Title()
 {
 	menuimage[0] = LoadGraph("Resources/images/titlemenu_start.png");
@@ -27,31 +26,46 @@ AbstractScene* Title::Update()
 {
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
-		menu_cursor++;
+		cursor_menu++;
 		// 一番下に到達したら、一番上にする
-		if (menu_cursor > 3)
+		if (cursor_menu > 2)
 		{
-			menu_cursor = 0;
+			cursor_menu = 0;
 		}
 	}
 
 	// カーソル上移動
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 	{
-		menu_cursor--;
+		cursor_menu--;
 		// 一番上に到達したら、一番下にする
-		if (menu_cursor < 0)
+		if (cursor_menu < 0)
 		{
-			menu_cursor = 3;
+			cursor_menu = 2;
 		}
 	}
 
-
+	if (!isCheck) {
+		cursor_last = cursor_menu;
+	}
 
 	// カーソル決定
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 	{
-		switch (menu_cursor)
+		if (!isCheck) {
+			isCheck = true;
+		}
+	}
+	//GetMousePoint(&MouseX,&MouseY);
+	//clsDx();
+	//printfDx("%d %d", MouseX, MouseY);
+	if (fireanim < 62) {
+		if (isCheck) {
+			fireanim++;
+		}
+	}
+	else {
+		switch (cursor_last)
 		{
 		case 0:
 			return new GameMain;
@@ -67,15 +81,6 @@ AbstractScene* Title::Update()
 			break;
 		}
 	}
-	GetMousePoint(&MouseX,&MouseY);
-	clsDx();
-	printfDx("%d %d", MouseX, MouseY);
-	if (fireanim < 62) {
-		fireanim++;
-	}
-	else {
-		fireanim = 0;
-	}
 
 	return this;
 }
@@ -90,8 +95,8 @@ void Title::Draw() const
 		DrawRotaGraph(SCREEN_WIDTH / 2, 380 + (i * 65), 1.0, 0.0, menuimage[i], true);
 	}
 	SetDrawBlendMode(OldBlendMode, OldBlendParam);
-	DrawRotaGraph(SCREEN_WIDTH / 2, 380 + (menu_cursor * 65), 1.0, 0.0, menufireimage[menu_cursor][fireanim], true);
-	switch (menu_cursor)
+	DrawRotaGraph(SCREEN_WIDTH / 2, 380 + (cursor_last * 65), 1.0, 0.0, menufireimage[cursor_last][fireanim], true);
+	switch (cursor_last)
 	{
 	case 0:
 		DrawRotaGraph(380, 380, 1.0, 0.0, cursorimage, true);
