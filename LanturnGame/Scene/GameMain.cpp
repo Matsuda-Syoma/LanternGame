@@ -927,12 +927,12 @@ void GameMain::SetMapSize(int i) {
 }
 
 void GameMain::ChangeMapSize() {
-	if (game_frametime % 900 == 899) {
+	if (game_frametime % 900 > 550 && game_frametime % 900 <= 750) {
 
 		if (MapSize > GM_MIN_MAPSIZE) {
 
 			PlaySoundMem(Sounds::SE_MapClose, DX_PLAYTYPE_BACK);
-			SetMapSize(MapSize - (GM_MAX_MAPSIZE / 5));
+			SetMapSize(MapSize - 1.5);
 
 			if (MapSize < GM_MIN_MAPSIZE) {
 				SetMapSize(GM_MIN_MAPSIZE);
@@ -973,14 +973,14 @@ void GameMain::DrawCloseMap() const
 	int OldDrawMode;
 	int OldDrawParam;
 	GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (game_frametime % 100) * 4);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (game_frametime % 150) * 4);
 	if (MapSize > GM_MIN_MAPSIZE) {
-		if (game_frametime % 900 > 800) {
+		if (game_frametime % 900 > 450 && game_frametime % 900 <= 550) {
 			DrawRotaGraph((SCREEN_WIDTH / 2) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 1.0, 0.0, closemapimage, true);
 			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
 					  (SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);
-			DrawBoxAA((SCREEN_WIDTH / 2) - (game_frametime % 100) + 100, (SCREEN_HEIGHT / 2) - 80, 
-					  (SCREEN_WIDTH / 2) + (game_frametime % 100) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
+			DrawBoxAA((SCREEN_WIDTH / 2) - (game_frametime % 150) + 100, (SCREEN_HEIGHT / 2) - 80, 
+					  (SCREEN_WIDTH / 2) + (game_frametime % 150) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
 		}
 	}
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);
