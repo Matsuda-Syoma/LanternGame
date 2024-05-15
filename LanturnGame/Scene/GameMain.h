@@ -73,6 +73,5 @@ public:
 	void ChangeMapSize();
 	void DrawCombo()const;
 	void DrawCloseMap()const;
-	void DrawComboEnd() const;
 };
 
