@@ -6,10 +6,10 @@ class Title : public AbstractScene
 private:
 	int cursor_menu = 0;
 	int titleimage;
-	int menuimage[3];
+	int menuimage[4];
 	int cursorimage;
 	int cursorX, cursorY;
-	int menufireimage[3][63];
+	int menufireimage[4][63];
 	int MouseX, MouseY;
 	int fireanim = 0;
 	bool isCheck = false;
