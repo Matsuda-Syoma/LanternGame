@@ -48,4 +48,6 @@ private:
 	bool dmgflg = false;
 	int countNum;//再生成までの時間を測る
 	bool deleteFlg = false;
+	int cnt=0;
+	int animcnt=0;
 };

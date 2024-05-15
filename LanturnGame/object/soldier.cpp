@@ -42,7 +42,7 @@ void Soldier::Upadate(Vector2D PL)
 			countNum = 0;
 		}
 	}
-	
+
 	PositionCheck();
 }
 
@@ -50,9 +50,7 @@ void Soldier::Draw(Vector2D PL)
 {
 	if (dmgflg == true)
 	{
-		int cnt;
 		cnt++;
-		int animcnt;
 		if ((cnt % 60) == 0)
 		{
 			animcnt++;
@@ -87,7 +85,7 @@ void Soldier::Move(Vector2D PL)
 	//移動速度の処理
 	if (length.x < 0 && move.x < EMMAX)
 	{
-		move += Vector2D(EM,0.0f);
+		move += Vector2D(EM, 0.0f);
 		Velimg = 6;
 	}
 	if (length.x > 0 && move.x > EMMIN)
@@ -104,12 +102,12 @@ void Soldier::Move(Vector2D PL)
 		move -= Vector2D(0.0f, EM);
 	}
 
-	
+
 }
 
 void Soldier::finalize()
 {
-	
+
 }
 
 float Soldier::direction(Vector2D L)
@@ -148,7 +146,7 @@ void Soldier::PositionCheck()
 	}
 }
 
- void Soldier::SetDMGflg(bool i)
+void Soldier::SetDMGflg(bool i)
 {
 	dmgflg = i;
 }
