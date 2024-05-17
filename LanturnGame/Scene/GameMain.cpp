@@ -1133,9 +1133,12 @@ void GameMain::ChangeMapSize()
 {
 	if (game_frametime % 900 > 550 && game_frametime % 900 <= 750)
 	{
-		if (MapSize > GM_MIN_MAPSIZE)
+		if (game_frametime % 900 == 551)
 		{
 			PlaySoundMem(Sounds::SE_MapClose, DX_PLAYTYPE_BACK);
+		}
+		if (MapSize > GM_MIN_MAPSIZE)
+		{
 			SetMapSize(MapSize - 0.75);
 
 			if (MapSize < GM_MIN_MAPSIZE)
