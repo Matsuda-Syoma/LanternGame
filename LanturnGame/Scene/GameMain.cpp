@@ -813,6 +813,7 @@ AbstractScene* GameMain::Update()
 	}
 	// 残機が０になったら
 	else if(player->GetPFlg() == false && resultflg == false){
+		StopSoundMem(Sounds::BGM_GMain);
 		r_cun++;
 		switch (r_cun)
 		{
