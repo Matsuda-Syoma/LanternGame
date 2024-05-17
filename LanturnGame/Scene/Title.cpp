@@ -1,5 +1,6 @@
 #include "Title.h"
 #include "DxLib.h"
+#include "../Utility/LoadSounds.h"
 #include "../Utility/InputControl.h"
 #include "GameMain.h"
 #include "Setting.h"
@@ -31,8 +32,14 @@ Title::~Title()
 
 AbstractScene* Title::Update()
 {
+	if (CheckSoundMem(Sounds::BGM_Title) == 0)
+	{
+		PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
+	}
+	
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
+		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
 		cursor_menu++;
 		// 一番下に到達したら、一番上にする
 		if (cursor_menu > 3)
@@ -44,6 +51,7 @@ AbstractScene* Title::Update()
 	// カーソル上移動
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 	{
+		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
 		cursor_menu--;
 		// 一番上に到達したら、一番下にする
 		if (cursor_menu < 0)
@@ -69,6 +77,7 @@ AbstractScene* Title::Update()
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 	{
 		if (!isCheck) {
+			PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
 			isCheck = true;
 		}
 	}
@@ -84,6 +93,7 @@ AbstractScene* Title::Update()
 		switch (cursor_last)
 		{
 		case 0:
+			StopSoundMem(Sounds::BGM_Title);
 			return new GameMain;
 			break;
 		case 1:
@@ -101,13 +111,23 @@ AbstractScene* Title::Update()
 		}
 	}
 
+	if (CheckSoundMem(Sounds::SE_cursor) == 0)
+	{
+		StopSoundMem(Sounds::SE_cursor);
+	}
+
+	if (CheckSoundMem(Sounds::SE_transition) == 0)
+	{
+		StopSoundMem(Sounds::SE_transition);
+	}
+
 	return this;
 }
 
 void Title::Draw() const
 {
 	DrawGraph(0, 0, titleimage,true);
-	DrawString(580, 60, "ここはタイトルです", 0xffffff);
+	//DrawString(580, 60, "ここはタイトルです", 0xffffff);
 	int OldBlendMode, OldBlendParam;
 	GetDrawBlendMode(&OldBlendMode,&OldBlendParam);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - ((fireanim / 70.) * 511));

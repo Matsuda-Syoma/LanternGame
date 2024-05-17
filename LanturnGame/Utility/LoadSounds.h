@@ -11,6 +11,10 @@ public:
 	static int SE_DeleteSoldier;
 	static int SE_MapClose;
 
+	static int BGM_Title;
+	static int SE_transition;
+	static int SE_cursor;
+
 	static void LoadSounds();
 	static void AllStop();
 };

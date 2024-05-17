@@ -9,6 +9,10 @@ int Sounds::SE_CatchiPlayer;
 int Sounds::SE_DeleteSoldier;
 int Sounds::SE_MapClose;
 
+int Sounds::BGM_Title;
+int Sounds::SE_transition;
+int Sounds::SE_cursor;
+
 void Sounds::LoadSounds() {
 	BGM_Game = LoadSoundMem("Resources/sounds/BGM_Trip.wav");
 	for (int i = 0; i < 5; i++)
@@ -24,6 +28,10 @@ void Sounds::LoadSounds() {
 	SE_CatchiPlayer = LoadSoundMem("Resources/sounds/SE_CatchiPlayer.mp3");
 	SE_DeleteSoldier = LoadSoundMem("Resources/sounds/SE_DeleteSoldier.mp3");
 	SE_MapClose = LoadSoundMem("Resources/sounds/SE_MapClose.mp3");
+
+	BGM_Title = LoadSoundMem("Resources/sounds/BGM_Title.mp3");
+	SE_transition = LoadSoundMem("Resources/sounds/SE_transition.mp3");
+	SE_cursor = LoadSoundMem("Resources/sounds/SE_cursor.mp3");
 
 }
 
