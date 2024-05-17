@@ -3,6 +3,7 @@ class Sounds
 {
 public:
 	static int BGM_Game;
+	static int BGM_GMain;
 	static int SE_Explosion;
 	static int SE_Shoot;
 	static int SE_Hit;

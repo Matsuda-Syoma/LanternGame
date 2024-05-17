@@ -1,6 +1,7 @@
 #include "LoadSounds.h"
 #include "DxLib.h"
 int Sounds::BGM_Game;
+int Sounds::BGM_GMain;
 int Sounds::SE_Explosion;
 int Sounds::SE_Shoot;
 int Sounds::SE_Hit;
@@ -11,6 +12,7 @@ int Sounds::SE_MapClose;
 
 void Sounds::LoadSounds() {
 	BGM_Game = LoadSoundMem("Resources/sounds/BGM_Trip.wav");
+	BGM_GMain = LoadSoundMem("Resources/sounds/BGM_GMain.mp3");
 	SE_Explosion = LoadSoundMem("Resources/sounds/explosion_2.wav");
 	SE_Shoot = LoadSoundMem("Resources/sounds/SE_Shoot.mp3");
 	SE_Hit = LoadSoundMem("Resources/sounds/hit.wav");

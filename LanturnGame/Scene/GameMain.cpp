@@ -16,6 +16,9 @@ GameMain::GameMain()
 	ComboEnd::LoadImages();
 	hiscore = (int)UserData::LoadData(1);		// ハイスコア読み込み
 
+	//BGMをループしながら再生する
+	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
+
 /*******************初期化*******************/
 	player = new Player;
 	stage = new Stage * [GM_MAX_ICEFLOOR];
@@ -153,6 +156,8 @@ GameMain::GameMain()
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
 	hukidasiimage = LoadGraph("Resources/images/hukidasi.png", 0);
 	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
+
+	
 }
 
 // デストラクタ
@@ -167,10 +172,12 @@ GameMain::~GameMain()
 AbstractScene* GameMain::Update()
 {
 
-
 	if (player->GetPFlg() == true) {
 
-
+		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
+		{
+			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
+		}
 		player->GetMapSize(MapSize);
 		player->Update();
 
