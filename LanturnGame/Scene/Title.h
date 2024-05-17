@@ -10,8 +10,10 @@ private:
 	int cursorimage;
 	int cursorX, cursorY;
 	int menufireimage[4][63];
+	int cursorfireimage[16];
 	int MouseX, MouseY;
 	int fireanim = 0;
+	int cursor_fireanim = 0;
 	bool isCheck = false;
 	int cursor_last = 0;
 public:
