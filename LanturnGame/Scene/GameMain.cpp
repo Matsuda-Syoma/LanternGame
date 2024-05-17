@@ -1010,7 +1010,7 @@ void GameMain::Draw() const
 	{
 		DrawString(10, 10, "GameOver", 0xffffff);
 	}
-	DrawRotaGraph(128, 32, 1.0, 0.0, lifeimage, true);
+	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 	for (int i = 0; i < life; i++)
 	{
 		DrawRotaGraph(172 + (24 * i), 32, 1.0, 0.0, lifematchimage, true);
