@@ -5,7 +5,6 @@ public:
 	static int BGM_Game;
 	static int SE_Explosion[5];
 	static int BGM_GMain;
-	static int SE_Explosion;
 	static int SE_Shoot;
 	static int SE_Hit;
 	static int SE_PlayerHit;
