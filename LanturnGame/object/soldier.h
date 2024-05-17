@@ -44,7 +44,7 @@ private:
 	int CD;//中心点の距離
 	int soldierimg[12];//画像イメージ
 	int soldierDetimg[12];//画像イメージ
-	int Velimg;//画像の向き
+	int Velimg = 0;//画像の向き
 	bool dmgflg = false;
 	int countNum;//再生成までの時間を測る
 	bool deleteFlg = false;
