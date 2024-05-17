@@ -6,7 +6,8 @@ private:
 	Vector2D velocity;
 	Vector2D exvelocity;
 	Vector2D lastinput = 0;
-	bool hitflg = false;
+	bool pflg = true;			// 生存フラグ
+	bool hitflg = false;		// ヒットフラグ
 	bool overice = false;
 	bool onconveyor = false;
 	bool blinkingflg = false;	// 点滅フラグ
@@ -15,6 +16,7 @@ private:
 	int animcun = 0;			// アニメーションカウント用
 	int imgnum = 1;				// 画像描画用変数
 	int playerimg[12];			// プレイヤー画像
+	int d_playerimg;			// プレイヤー画像（死亡時）
 	int direction = 4;			// 現在の向き（０：下　１：左　２：右　３：上）
 	int stopdirection = 4;		// 歩行中の向き（４：下　５：左　６：右　７：上）
 	int pointflg;
@@ -38,6 +40,8 @@ public:
 
 	bool GetFlg() const;
 	void SetFlg(bool b);
+	bool GetPFlg() const;
+	void SetPFlg(bool b);
 	bool GetIceFlg() const;
 	void SetIceFlg(bool b);
 	bool GetConFlg() const;

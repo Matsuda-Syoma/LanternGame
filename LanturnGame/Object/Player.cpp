@@ -13,11 +13,13 @@ Player::Player()
 Player::~Player()
 {
 	DeleteGraph(*playerimg);
+	DeleteGraph(d_playerimg);
 }
 
 void Player::Init()
 {
 	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
+	d_playerimg = LoadGraph("Resources/images/player_death.png");
 }
 
 void Player::Update()
@@ -84,15 +86,21 @@ void Player::Update()
 
 void Player::Draw(int camerashake) const
 {
-	if (blinkingflg == false)
-	{
-		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
+	if (pflg == true) {
+		if (blinkingflg == false)
+		{
+			DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
+		}
+		else {
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+			DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
 	}
 	else {
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, d_playerimg, true);
 	}
+	
 	// 元の描画を取得
 	int OldBlendMode;
 	int OldBlendParam;
@@ -365,19 +373,24 @@ void Player::Invincible()
 // 点滅
 void Player::Blinking()
 {
-	blinkingcun++;
-	switch (blinkingcun)
-	{
-	case(1):
-		blinkingflg = true;
-		break;
-	case(10):
+	if (pflg == true) {
+		blinkingcun++;
+		switch (blinkingcun)
+		{
+		case(1):
+			blinkingflg = true;
+			break;
+		case(10):
+			blinkingflg = false;
+			break;
+		case(20):
+			blinkingcun = 0;
+		default:
+			break;
+		}
+	}
+	else {
 		blinkingflg = false;
-		break;
-	case(20):
-		blinkingcun = 0;
-	default:
-		break;
 	}
 }
 
@@ -493,6 +506,16 @@ bool Player::GetFlg() const
 void Player::SetFlg(bool b)
 {
 	this->hitflg = b;
+}
+
+bool Player::GetPFlg() const
+{
+	return pflg;
+}
+
+void Player::SetPFlg(bool b)
+{
+	this->pflg = b;
 }
 
 bool Player::GetIceFlg() const

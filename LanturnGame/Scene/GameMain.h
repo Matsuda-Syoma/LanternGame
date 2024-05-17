@@ -11,6 +11,7 @@
 #include "../Object/stage.h"
 #include "../Object/Conveyor.h"
 #include "../Object/Tornado.h"
+#include "../Object/ComboEnd.h"
 class GameMain : public AbstractScene
 {
 private:
@@ -23,6 +24,7 @@ private:
 	Stage** stage;
 	Conveyor** conveyor;
 	Tornado** tornado;
+	ComboEnd** comboend;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
@@ -38,6 +40,8 @@ private:
 	int lifeimage;
 	int lifematchimage;
 	int closemapimage;
+	int hukidasiimage;
+	int numimage[10];
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;
@@ -50,6 +54,8 @@ private:
 
 	int CamerashakeCount = 0;
 	int Camerashake = 0;
+
+	int r_cun = 0;	// リザルト遷移カウント用
 
 	Vector2D ev;
 	float l;
@@ -69,6 +75,5 @@ public:
 	void ChangeMapSize();
 	void DrawCombo()const;
 	void DrawCloseMap()const;
-	void DrawComboEnd() const;
 };
 

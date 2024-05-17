@@ -7,7 +7,7 @@
 #define FRAMERATE 60.0
 #define UPDATETIME 800
 
-#define GM_MAX_LIFE 5
+#define GM_MAX_LIFE 50
 
 #define GM_MAX_ENEMY_BOMB 100
 #define GM_MAX_EFFECT_EXPLOSION 100
@@ -16,6 +16,7 @@
 #define GM_MAX_CONVEYOR 3
 
 #define GM_MAX_TORNADO 3
+#define GM_MAX_COMBOEND 3
 
 #define GM_MAX_MAPSIZE 1500
 #define GM_MIN_MAPSIZE 320

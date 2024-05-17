@@ -21,7 +21,9 @@ void Soldier::Initialize()
 {
 	speed = 2;	//���x�̏�����
 	dmgflg = true;
+	deleteFlg = false;
 	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 64, soldierimg);
+	LoadDivGraph("Resources/images/d_Soldier.png", 6, 3, 2, 64, 64, soldierDetimg);
 }
 
 void Soldier::Upadate(Vector2D PL)
@@ -33,20 +35,38 @@ void Soldier::Upadate(Vector2D PL)
 	else
 	{
 		countNum++;
-		if (120 <= countNum)
+		if (240 <= countNum)
 		{
 			dmgflg = true;
+			deleteFlg = true;
 			countNum = 0;
 		}
 	}
-	
+
 	PositionCheck();
 }
 
 void Soldier::Draw(Vector2D PL)
 {
-	//兵隊イラストの描画
-	DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierimg[1], true);
+	if (dmgflg == true)
+	{
+		cnt++;
+		if ((cnt % 60) == 0)
+		{
+			animcnt++;
+		}
+		if (3 <= animcnt)
+		{
+			animcnt == 0;
+		}
+		//兵隊イラストの描画
+		DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierimg[Velimg + animcnt], true);
+	}
+	else
+	{
+
+		DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierDetimg[0], true);
+	}
 }
 
 void Soldier::Move(Vector2D PL)
@@ -65,11 +85,13 @@ void Soldier::Move(Vector2D PL)
 	//移動速度の処理
 	if (length.x < 0 && move.x < EMMAX)
 	{
-		move += Vector2D(EM,0.0f);
+		move += Vector2D(EM, 0.0f);
+		Velimg = 6;
 	}
 	if (length.x > 0 && move.x > EMMIN)
 	{
 		move -= Vector2D(EM, 0.0f);
+		Velimg = 3;
 	}
 	if (length.y < 0 && move.y < EMMAX)
 	{
@@ -80,12 +102,12 @@ void Soldier::Move(Vector2D PL)
 		move -= Vector2D(0.0f, EM);
 	}
 
-	
+
 }
 
 void Soldier::finalize()
 {
-	
+
 }
 
 float Soldier::direction(Vector2D L)
@@ -124,11 +146,15 @@ void Soldier::PositionCheck()
 	}
 }
 
- void Soldier::SetDMGflg(bool i)
+void Soldier::SetDMGflg(bool i)
 {
 	dmgflg = i;
 }
 bool Soldier::ChekDMGflg()
 {
 	return dmgflg;
+}
+bool Soldier::ChekDLflg()
+{
+	return deleteFlg;
 }
