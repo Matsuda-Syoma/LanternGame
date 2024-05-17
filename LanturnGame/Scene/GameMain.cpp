@@ -177,6 +177,7 @@ AbstractScene* GameMain::Update()
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
+			ChangeVolumeSoundMem(100, Sounds::BGM_GMain);
 		}
 		player->GetMapSize(MapSize);
 		player->Update();
