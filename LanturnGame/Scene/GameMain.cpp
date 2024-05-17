@@ -531,7 +531,7 @@ AbstractScene* GameMain::Update()
 					// 爆発を発生して敵をnullptrにしてループを抜ける
 					SpawnExplosion(bomb[i]->GetLocation());
 					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), Vector2D(bomb[i]->GetLocation().x + (GetRand(1) - 0.5), bomb[i]->GetLocation().y + (GetRand(1) - 0.5)), 1.5f);
-					PlaySoundMem(Sounds::SE_Explosion, DX_PLAYTYPE_BACK, true);
+					PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
 					combo += 1;
 					ui_combo_framecount = 25;
 					score += (combo * 100);
@@ -821,7 +821,7 @@ AbstractScene* GameMain::Update()
 
 void GameMain::Draw() const
 {
-
+	
 	// 背景
 	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2); i++)
 	{
@@ -937,7 +937,7 @@ void GameMain::Draw() const
 	{
 		DrawFormatString(560, 10, 0xffffff, "%06d", hiscore);
 		DrawFormatString(560, 40, 0xffffff, "%06d", score);
-		DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
+		//DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
 	}
 	// リザルトなら
 	else

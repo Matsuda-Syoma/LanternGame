@@ -10,13 +10,17 @@ Title::Title()
 	menuimage[1] = LoadGraph("Resources/images/titlemenu_setting.png");
 	menuimage[2] = LoadGraph("Resources/images/titlemenu_help.png");
 	menuimage[3] = LoadGraph("Resources/images/titlemenu_end.png");
-	if (menuimage[0] == -1) {
-		printfDx("err : menuimage\n");
+	for (int i = 0; i < 4; i++)
+	{
+		if (menuimage[i] == -1) {
+			printfDx("err : menuimage\n");
+		}
 	}
 	LoadDivGraph("Resources/images/titlemenu_game.png", 63, 9, 7, 512, 512, menufireimage[0]);
 	LoadDivGraph("Resources/images/titlemenu_setting_fire.png", 63, 9, 7, 512, 512, menufireimage[1]);
 	LoadDivGraph("Resources/images/titlemenu_help_fire.png", 63, 9, 7, 512, 512, menufireimage[2]);
 	LoadDivGraph("Resources/images/titlemenu_end_fire.png", 63, 9, 7, 512, 512, menufireimage[3]);
+	LoadDivGraph("Resources/images/cursor_fire.png", 16, 4, 4, 32, 32, cursorfireimage);
 	cursorimage = LoadGraph("Resources/images/match.png", 0);
 	titleimage = LoadGraph("Resources/images/Title.png", 0);
 }
@@ -50,6 +54,15 @@ AbstractScene* Title::Update()
 
 	if (!isCheck) {
 		cursor_last = cursor_menu;
+	}
+
+	if (cursor_fireanim < 15)
+	{
+		cursor_fireanim++;
+	}
+	else
+	{
+		cursor_fireanim = 0;
 	}
 
 	// カーソル決定
@@ -104,6 +117,7 @@ void Title::Draw() const
 	SetDrawBlendMode(OldBlendMode, OldBlendParam);
 	DrawRotaGraph(1040, 380 + (cursor_last * 65), 1.0, 0.0, menufireimage[cursor_last][fireanim], true);
 	DrawRotaGraph(800, 380 + (cursor_last * 65), 1.0, 0.0, cursorimage, true);
+	//DrawRotaGraph(800, 370 + (cursor_last * 65), 1.0, 0.0, cursorfireimage[cursor_fireanim], true);
 
 	//DrawCircle(560, 346 + menu_cursor * GetFontSize(), 8,0xffffff, TRUE);
 	//DrawString(580, 336 + (0 * GetFontSize()), "ゲームスタート", 0xffffff);
