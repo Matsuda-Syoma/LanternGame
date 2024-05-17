@@ -1,5 +1,6 @@
 #include"stage.h"
 #include"Dxlib.h"
+#include"math.h"
 #include"../Utility/common.h"
 
 Stage::Stage() {
@@ -21,7 +22,10 @@ void Stage::Draw(Vector2D loc) const {
 	DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 + (double)(max(45 - expcnt, 0) / 45.0), 0.0, images, true);
 }
 
-void Stage::LoadImages()
-{
-	//images[0] = LoadGraph("Resources/images/ice.png", 0);
-}
+//float Stage::direction(Vector2D L) {
+//	return  sqrtf(powf((L.x - location.x), 2) + powf((L.y - location.y), 2));
+//}
+//
+//void Stage::SetVelocity(Vector2D loc) {
+//	this->velocity = loc;
+//}

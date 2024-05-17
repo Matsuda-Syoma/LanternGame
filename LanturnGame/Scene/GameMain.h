@@ -22,7 +22,7 @@ private:
 	BackGround** background;
 	Particle** particle;
 	Stage** stage;
-	Conveyor** conveyor;
+	/*Conveyor** conveyor;*/
 	Tornado** tornado;
 	ComboEnd** comboend;
 

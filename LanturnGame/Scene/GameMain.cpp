@@ -34,7 +34,7 @@ GameMain::GameMain()
 				   , (float)GetRand((int)MapSize * 2) - MapSize));
 	}
 
-	conveyor = new Conveyor * [GM_MAX_CONVEYOR];
+	/*conveyor = new Conveyor * [GM_MAX_CONVEYOR];
 	{
 		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 		{
@@ -48,7 +48,7 @@ GameMain::GameMain()
 		{
 			conveyor[i]->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 		}
-	}
+	}*/
 	player->Init();
 
 	// 兵士の初期化
@@ -675,7 +675,39 @@ AbstractScene* GameMain::Update()
 			}
 		}
 
-		player->SetConFlg(false);
+		//Vector2D ff = 0;
+		//float mi = 65535;
+		//int cheek = -1;
+
+		//for (int i = 0; GM_MAX_ICEFLOOR; i++) {
+		//	for (int j = 0; GM_MAX_ICEFLOOR; i++) {
+		//		if (i != j)
+		//		{
+		//			if (stage[i] != nullptr && stage[j] != nullptr)
+		//			{
+
+		//				// 距離が短いなら変数を保存する
+		//				if (eel > stage[i]->direction(soldier[j]->GetLocation()))
+		//				{
+		//					chek = j;
+		//					eel = soldier[i]->direction(soldier[j]->GetLocation());
+		//				}
+		//			}
+		//		}
+		//	}
+		//	if (chek != -1)
+		//	{
+		//		if (eel < 80)
+		//		{
+		//			ee = (soldier[chek]->GetLocation() - soldier[i]->GetLocation());
+		//			ee /= eel;
+		//			soldier[i]->SetVelocity(ee);
+		//			break;
+		//		}
+		//	}
+		//}
+
+		/*player->SetConFlg(false);
 		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 		{
 			if (conveyor[i]->HitSphere(player))
@@ -684,7 +716,7 @@ AbstractScene* GameMain::Update()
 					player->SetConFlg(true);
 				}
 			}
-		}
+		}*/
 		// Velocity初期化
 		player->SetVelocity(NULL);
 		for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
@@ -894,14 +926,14 @@ void GameMain::Draw() const
 		}
 	}
 
-	//ギミック(コンベア)
-    for (int i = 0; i < GM_MAX_CONVEYOR; i++)
-	{
-		if (conveyor[i] != nullptr)
-		{
-			conveyor[i]->Draw(player->GetLocation() + +(float)Camerashake);
-		}
-	}
+	////ギミック(コンベア)
+ //   for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+	//{
+	//	if (conveyor[i] != nullptr)
+	//	{
+	//		conveyor[i]->Draw(player->GetLocation() + +(float)Camerashake);
+	//	}
+	//}
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
 	{
 		// nullptrじゃないなら
