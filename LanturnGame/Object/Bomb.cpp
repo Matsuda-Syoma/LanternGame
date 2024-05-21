@@ -49,7 +49,7 @@ void Bomb::Update()
 
 void Bomb::Draw(Vector2D loc) const
 {
-	if (expcnt % 60 > 30 && expflg) {
+	if (expcnt % 14 > 7 && expflg) {
 		SetDrawBright(255, 0, 0);// 赤以外を暗くする
 	}
 	//DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, images[mode - 1], true);
@@ -72,6 +72,11 @@ bool Bomb::GetFlg() const
 void Bomb::SetFlg(bool b)
 {
 	this->flg = b;
+}
+
+bool Bomb::GetExpFlg() const
+{
+	return this->expflg;
 }
 
 void Bomb::SetExpFlg(bool b)

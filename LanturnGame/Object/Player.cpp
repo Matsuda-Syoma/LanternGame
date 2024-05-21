@@ -26,21 +26,6 @@ void Player::Update()
 {
 	lastinput = 0;
 
-	if (overice == false)
-	{
-		speed = 5;
-	}else{
-		speed = 10;
-	}
-
-	if (onconveyor == false)
-	{
-		speed = 5;
-	}
-	else {
-		speed = 10;
-	}
-
 	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
 		Movement();
 		location += velocity;

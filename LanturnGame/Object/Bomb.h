@@ -21,6 +21,7 @@ public:
 	void Draw(Vector2D loc) const;
 	bool GetFlg() const;
 	void SetFlg(bool b);
+	bool GetExpFlg() const;
 	void SetExpFlg(bool b);
 
 	float GetLength(Vector2D loc);

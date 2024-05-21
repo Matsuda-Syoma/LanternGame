@@ -23,7 +23,7 @@ void Sounds::LoadSounds() {
 	}
 	SetCreateSoundPitchRate(0);
 
-	BGM_GMain = LoadSoundMem("Resources/sounds/BGM_GMain.mp3");
+	BGM_GMain = LoadSoundMem("Resources/sounds/BGM_GMain.wav");
 	SE_Shoot = LoadSoundMem("Resources/sounds/SE_Shoot.mp3");
 	SE_Hit = LoadSoundMem("Resources/sounds/hit.wav");
 	SE_PlayerHit = LoadSoundMem("Resources/sounds/SE_PlayerHit.mp3");
@@ -31,7 +31,7 @@ void Sounds::LoadSounds() {
 	SE_DeleteSoldier = LoadSoundMem("Resources/sounds/SE_DeleteSoldier.mp3");
 	SE_MapClose = LoadSoundMem("Resources/sounds/SE_MapClose.mp3");
 
-	BGM_Title = LoadSoundMem("Resources/sounds/BGM_Title.mp3");
+	BGM_Title = LoadSoundMem("Resources/sounds/BGM_Title.wav");
 	SE_transition = LoadSoundMem("Resources/sounds/SE_transition.mp3");
 	SE_cursor = LoadSoundMem("Resources/sounds/SE_cursor.mp3");
 

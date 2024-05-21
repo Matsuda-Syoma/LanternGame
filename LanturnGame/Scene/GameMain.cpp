@@ -32,9 +32,35 @@ GameMain::GameMain()
 	}
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
 	{
-		stage[i]->SetLocation(
-			Vector2D((float)GetRand((int)MapSize * 2) - MapSize
-				   , (float)GetRand((int)MapSize * 2) - MapSize));
+		while (1)
+		{
+			// 初期値
+			float length = 65535;
+			bool ret = false;
+			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+			
+			// 氷を見る
+			for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
+			{
+				// 自分以外なら
+				if (j != i)
+				{
+					// 距離を計算
+					length = GetLength(stage[j]->GetLocation(), spawnloc);
+					// 360より短いならだめ:フラグon
+					if (length < 360) {
+						ret = true;
+						break;
+					}
+				}
+			}
+			// フラグ0ffなら座標指定してるーぷぬける
+			if (!ret) 
+			{
+				stage[i]->SetLocation(spawnloc);
+				break;
+			}
+		}
 	}
 
 	conveyor = new Conveyor * [GM_MAX_CONVEYOR];
@@ -65,9 +91,17 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
 		soldier[i] = new Soldier;
-		soldier[i]->SetLocation(
-			Vector2D((float)(100 + GetRand(200) * 2),
-					 (float)(100 + GetRand(200) * 2)));
+		while (1)
+		{
+			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+			if (1080 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+				powf((spawnloc.x - player->GetLocation().x), 2) +
+				powf((spawnloc.y - player->GetLocation().y), 2))))
+			{
+				soldier[i]->SetLocation(spawnloc);
+				break;
+			}
+		}
 	}
 
 	// 爆弾の初期化
@@ -112,8 +146,8 @@ GameMain::GameMain()
 	}
 
 	// プレイヤーの位置に炎を出現
-	SpawnParticle(1, player, true, Vector2D(player->GetLocation().x + 5, player->GetLocation().y)
-								 , Vector2D(player->GetLocation().x + 5, player->GetLocation().y), 0.5);
+	SpawnParticle(1, player, true, Vector2D(player->GetLocation().x + 15, player->GetLocation().y)
+								 , Vector2D(player->GetLocation().x + 15, player->GetLocation().y), 1.0);
 
 	// 吸い込むギミックの初期化
 	tornado = new Tornado * [GM_MAX_TORNADO];
@@ -126,16 +160,43 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
 	{
 		tornado[i] = new Tornado;
+	}
+	for (int i = 0; i < GM_MAX_TORNADO; i++)
+	{
 		while (1)
 		{
-			// マップの範囲内にランダムで座標を決める
-			Vector2D spawnloc = (
-				Vector2D((float)GetRand((int)MapSize * 2) - MapSize
-					   , (float)GetRand((int)MapSize * 2) - MapSize));
-			// プレイヤーの近くじゃなかったら生成
-			if (240 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
-				powf((spawnloc.x - player->GetLocation().x), 2) +
-				powf((spawnloc.y - player->GetLocation().y), 2))))
+			// 初期値
+			float length = 65535;
+			bool ret = false;
+			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+
+			// 吸い込みを見る
+			for (int j = 0; j < GM_MAX_TORNADO; j++)
+			{
+				// 自分以外なら
+				if (j != i)
+				{
+					// 距離を計算
+					length = GetLength(tornado[j]->GetLocation(), spawnloc);
+					// 360より短いなら:フラグon
+					if (length < 420) {
+						ret = true;
+						break;
+					}
+				}
+			}
+			for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
+			{
+					// 距離を計算
+				length = GetLength(stage[j]->GetLocation(), spawnloc);
+				// 360より短いなら:フラグon
+				if (length < 420) {
+					ret = true;
+					break;
+				}
+			}
+			// フラグ0ffなら座標指定してるーぷぬける
+			if (!ret)
 			{
 				tornado[i]->SetLocation(spawnloc);
 				break;
@@ -524,12 +585,19 @@ AbstractScene* GameMain::Update()
 					// 敵とプレイヤーの当たり判定
 					if (bomb[i]->HitSphere(player))
 					{
-						SE_HitFlg = true;
-						bomb[i]->SetExpFlg(true);
 							vvec = (bomb[i]->GetLocation() - player->GetLocation());
 							length = bomb[i]->GetLength(player->GetLocation());
 							vvec /= length;
-							bomb[i]->SetKnockBack(vvec, 50);
+							if (!bomb[i]->GetExpFlg())
+							{
+								bomb[i]->SetKnockBack(vvec, 20);
+							}
+							else
+							{
+								bomb[i]->SetKnockBack(vvec, 50);
+							}
+							SE_HitFlg = true;
+							bomb[i]->SetExpFlg(true);
 							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f);
 							SetCameraShake(7);
 					}
@@ -563,7 +631,7 @@ AbstractScene* GameMain::Update()
 						while (1)
 						{
 							Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-							if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+							if (1080 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
 								powf((spawnloc.x - player->GetLocation().x), 2) +
 								powf((spawnloc.y - player->GetLocation().y), 2))))
 							{
@@ -870,12 +938,13 @@ void GameMain::Draw() const
 			background[i]->Draw(player->GetLocation() + +(float)Camerashake);
 		}
 	}
-
 	// マップの範囲
-	DrawBoxAA(MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)), -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + 16, MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), 0x8844ff, true);
-	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)), -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), -MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), 0x8844ff, true);
-	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2))+ 16 , MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) + 16, 0x8844ff, true);
-	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16,-MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)),MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + 16, -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) - 16, 0x8844ff, true);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 127);
+	DrawBoxAA(MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)), -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), GM_MAX_MAPSIZE + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + 16, MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)), -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
+	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)),-MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)),MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// 兵士
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
@@ -1001,15 +1070,6 @@ void GameMain::Draw() const
 
 	DrawCloseMap();
 
-	// 残機が1以上なら
-	if (life > 0)
-	{
-		DrawFormatString(10, 10, 0xffffff, "life : %d", life);
-	}
-	else
-	{
-		DrawString(10, 10, "GameOver", 0xffffff);
-	}
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 	for (int i = 0; i < life; i++)
 	{
