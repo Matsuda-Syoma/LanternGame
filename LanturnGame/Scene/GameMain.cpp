@@ -1013,7 +1013,7 @@ void GameMain::Draw() const
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 	for (int i = 0; i < life; i++)
 	{
-		DrawRotaGraph(172 + (24 * i), 32, 1.0, 0.0, lifematchimage, true);
+		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
 	}
 
 	// ミニマップ

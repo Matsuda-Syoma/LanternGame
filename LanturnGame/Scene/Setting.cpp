@@ -5,6 +5,7 @@
 #include "../Utility/InputControl.h"
 #include "../Utility/UserData.h"
 #include <string>
+#include "../Utility/LoadSounds.h"
 using namespace std;
 Setting::Setting()
 {
@@ -21,6 +22,7 @@ AbstractScene* Setting::Update()
 	// デッドゾーンの変更
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
 	{
+		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
 		deadzone += -0.1;
 		// 一番下に到達したら、一番上にする
 		if (deadzone < 0.f)
@@ -31,6 +33,7 @@ AbstractScene* Setting::Update()
 
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 	{
+		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
 		deadzone += 0.1;
 		// 一番下に到達したら、一番上にする
 		if (deadzone > 1.f)
@@ -43,6 +46,7 @@ AbstractScene* Setting::Update()
 
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
+		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
 		menu_cursor++;
 		// 一番下に到達したら、一番上にする
 		if (menu_cursor > 3)
@@ -54,6 +58,7 @@ AbstractScene* Setting::Update()
 	// カーソル上移動
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 	{
+		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
 		menu_cursor--;
 		// 一番上に到達したら、一番下にする
 		if (menu_cursor < 0)
@@ -66,6 +71,7 @@ AbstractScene* Setting::Update()
 	// カーソル決定
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 	{
+		PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
 		switch (menu_cursor)
 		{
 		case 0:
@@ -82,6 +88,7 @@ AbstractScene* Setting::Update()
 	}
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_B))
 	{
+		PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
 		UserData::SaveData(0, deadzone);
 		return new Title;
 	}

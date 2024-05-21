@@ -7,6 +7,7 @@
 
 Title::Title()
 {
+	SetUseASyncLoadFlag(true);
 	menuimage[0] = LoadGraph("Resources/images/titlemenu_start.png");
 	menuimage[1] = LoadGraph("Resources/images/titlemenu_setting.png");
 	menuimage[2] = LoadGraph("Resources/images/titlemenu_help.png");
@@ -24,6 +25,7 @@ Title::Title()
 	LoadDivGraph("Resources/images/cursor_fire.png", 16, 4, 4, 32, 32, cursorfireimage);
 	cursorimage = LoadGraph("Resources/images/match.png", 0);
 	titleimage = LoadGraph("Resources/images/Title.png", 0);
+	SetUseASyncLoadFlag(false);
 }
 
 Title::~Title()
@@ -39,7 +41,10 @@ AbstractScene* Title::Update()
 	
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
-		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+		if (!isCheck)
+		{
+			PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+		}
 		cursor_menu++;
 		// 一番下に到達したら、一番上にする
 		if (cursor_menu > 3)
@@ -51,7 +56,10 @@ AbstractScene* Title::Update()
 	// カーソル上移動
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 	{
-		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+		if (!isCheck)
+		{
+			PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+		}
 		cursor_menu--;
 		// 一番上に到達したら、一番下にする
 		if (cursor_menu < 0)
