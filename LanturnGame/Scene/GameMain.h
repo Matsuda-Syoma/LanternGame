@@ -45,6 +45,8 @@ private:
 	int closemapimage;
 	int hukidasiimage;
 	int numimage[10];
+	int alphabetimage[26];
+	int resultimage;
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;

@@ -236,7 +236,8 @@ GameMain::GameMain()
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
 	hukidasiimage = LoadGraph("Resources/images/hukidasi.png", 0);
 	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
-
+	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
+	resultimage = LoadGraph("Resources/images/result.png", 0);
 	
 }
 
@@ -1059,23 +1060,6 @@ void GameMain::Draw() const
 			particle[i]->Draw(player->GetLocation());
 		}
 	}
-
-	// リザルトじゃないなら
-	if (resultflg == false)
-	{
-		DrawFormatString(560, 10, 0xffffff, "%06d", hiscore);
-		DrawFormatString(560, 40, 0xffffff, "%06d", score);
-		//DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
-	}
-	// リザルトなら
-	else
-	{
-		DrawBox(300, 250, 960, 490, 0xffffff, true);
-		DrawString(580, 280, "Result", 0x000000);
-		//DrawString(500, 460, "--- Restart with B button ---", 0x000000);
-		DrawString(380, 460, "--- Title with A button ---", 0x000000);
-		DrawFormatString(582, 380, 0x000000, "%06d", score);
-	}
 	
 	// コンボ
 	DrawCombo();
@@ -1145,6 +1129,39 @@ void GameMain::Draw() const
 	// ミニマップ(プレイヤー)
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	// リザルトじゃないなら
+	if (resultflg == false)
+	{
+		DrawFormatString(560, 10, 0xffffff, "%06d", hiscore);
+		DrawFormatString(560, 40, 0xffffff, "%06d", score);
+		//DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
+	}
+	// リザルトなら
+	else
+	{
+
+		DrawGraph(0, 0, resultimage, true);
+		char res[] = "result\0";
+		for (int i = 0; i < sizeof(res); i++)
+		{
+			int chr = res[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 300, 1.0, 0.0, alphabetimage[chr], true);
+		}
+		char res_2[] = "title with a button\0";
+		for (int i = 0; i < sizeof(res_2); i++)
+		{
+			int chr = res_2[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 480) + 22 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
+		}
+
+		int bufscore = score;
+		for (int i = 0; i < 6; i++)
+		{
+			DrawRotaGraph((SCREEN_WIDTH - 180) - (40 * i), 380, 1.0, 0.0, numimage[bufscore % 10], true);
+			bufscore /= 10;
+		}
+	}
 
 	textdisp->Draw();
 
