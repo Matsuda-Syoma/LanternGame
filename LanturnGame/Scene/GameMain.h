@@ -12,6 +12,8 @@
 #include "../Object/Conveyor.h"
 #include "../Object/Tornado.h"
 #include "../Object/ComboEnd.h"
+#include "../Utility/TextDisp.h"
+
 class GameMain : public AbstractScene
 {
 private:
@@ -25,6 +27,7 @@ private:
 	Conveyor** conveyor;
 	Tornado** tornado;
 	ComboEnd** comboend;
+	TextDisp* textdisp;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;

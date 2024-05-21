@@ -15,11 +15,12 @@ GameMain::GameMain()
 	Tornado::LoadImages();
 	ComboEnd::LoadImages();
 	hiscore = (int)UserData::LoadData(1);		// ハイスコア読み込み
-
 	//BGMをループしながら再生する
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
 /*******************初期化*******************/
+	textdisp = new TextDisp;
+	textdisp->LoadText(0);
 	player = new Player;
 	stage = new Stage * [GM_MAX_ICEFLOOR];
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
@@ -109,6 +110,24 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
 	{
 		bomb[i] = nullptr;
+	}
+
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+	{
+		bomb[i] = new Bomb;
+		while (1)
+		{
+			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+			if (1080 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+				powf((spawnloc.x - player->GetLocation().x), 2) +
+				powf((spawnloc.y - player->GetLocation().y), 2))))
+			{
+				bomb[i]->SetLocation(spawnloc);
+				bomb[i]->SetMoveToLocation(spawnloc);
+				bomb[i]->SetMode(GetRand(4) + 1);
+				break;
+			}
+		}
 	}
 
 	// 爆発判定の初期化
@@ -232,8 +251,8 @@ GameMain::~GameMain()
 
 AbstractScene* GameMain::Update()
 {
-
-	if (player->GetPFlg() == true) {
+	textdisp->Update();
+	if (player->GetPFlg() == true && !textdisp->GetFlg()) {
 
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
@@ -1126,6 +1145,8 @@ void GameMain::Draw() const
 	// ミニマップ(プレイヤー)
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	textdisp->Draw();
 
 }
 
