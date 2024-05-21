@@ -38,7 +38,8 @@ void Player::Update()
 		speed = 5;
 	}
 	else {
-		speed = 15;
+
+		velocity.x++;
 	}
 
 	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
