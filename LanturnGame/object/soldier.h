@@ -34,8 +34,10 @@ public:
 	//消すフラグをセットする
 
 	//
+	void SetDLflg(bool i);
 	bool ChekDLflg();
-
+	
+	bool ChekhitFlg();
 private:
 	Vector2D length = 0;
 	Vector2D move = 0;
@@ -44,9 +46,10 @@ private:
 	int CD;//中心点の距離
 	int soldierimg[12];//画像イメージ
 	int soldierDetimg[12];//画像イメージ
-	int Velimg;//画像の向き
+	int Velimg = 0;//画像の向き
 	bool dmgflg = false;
-	int countNum;//再生成までの時間を測る
+	int countNum = 0;//再生成までの時間を測る
+	bool hitFlg = true;
 	bool deleteFlg = false;
 	int cnt=0;
 	int animcnt=0;
