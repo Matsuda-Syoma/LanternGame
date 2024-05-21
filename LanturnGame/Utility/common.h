@@ -7,9 +7,9 @@
 #define FRAMERATE 60.0
 #define UPDATETIME 800
 
-#define GM_MAX_LIFE 3
+#define GM_MAX_LIFE 7
 
-#define GM_MAX_ENEMY_BOMB 100
+#define GM_MAX_ENEMY_BOMB 2
 #define GM_MAX_EFFECT_EXPLOSION 100
 #define GM_MAX_PARTICLE 1000
 #define GM_MAX_ICEFLOOR 2
@@ -22,7 +22,7 @@
 #define GM_MIN_MAPSIZE 320
 
 
-#define GM_MAX_ENEMY_SOLDIER 3
+#define GM_MAX_ENEMY_SOLDIER 1
 
 #include "Vector2D.h"
 #include <math.h>

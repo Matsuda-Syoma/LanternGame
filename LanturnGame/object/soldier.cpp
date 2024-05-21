@@ -22,7 +22,8 @@ void Soldier::Initialize()
 	speed = 2;	//���x�̏�����
 	dmgflg = true;
 	deleteFlg = false;
-	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 64, soldierimg);
+	hitFlg = true;//当たり判定
+	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 66, soldierimg);
 	LoadDivGraph("Resources/images/d_Soldier.png", 6, 3, 2, 64, 64, soldierDetimg);
 }
 
@@ -34,6 +35,7 @@ void Soldier::Upadate(Vector2D PL)
 	}
 	else
 	{
+		hitFlg = false;
 		countNum++;
 		if (240 <= countNum)
 		{
@@ -57,14 +59,13 @@ void Soldier::Draw(Vector2D PL)
 		}
 		if (3 <= animcnt)
 		{
-			animcnt == 0;
+			animcnt = 0;
 		}
 		//兵隊イラストの描画
 		DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierimg[Velimg + animcnt], true);
 	}
 	else
 	{
-
 		DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierDetimg[0], true);
 	}
 }
@@ -154,7 +155,16 @@ bool Soldier::ChekDMGflg()
 {
 	return dmgflg;
 }
+void Soldier::SetDLflg(bool i)
+{
+	deleteFlg = i;
+}
 bool Soldier::ChekDLflg()
 {
 	return deleteFlg;
+}
+
+bool Soldier::ChekhitFlg()
+{
+	return hitFlg;
 }
