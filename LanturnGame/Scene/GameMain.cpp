@@ -333,7 +333,7 @@ AbstractScene* GameMain::Update()
 			{
 				if (eel < 80)
 				{
-						ee = (bomb[chek]->GetLocation() - soldier[i]->GetLocation());
+						ee = (soldier[i]->GetLocation() - bomb[chek]->GetLocation());
 						ee /= eel;
 						soldier[i]->SetVelocity(ee);
 						break;
@@ -674,13 +674,10 @@ AbstractScene* GameMain::Update()
 					{
 						if (explosion[i]->HitSphere(soldier[j]))
 						{
-							PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
+							//PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
 							soldier[j]->SetDMGflg(false);
-								
-							if (CheckSoundMem(Sounds::SE_DeleteSoldier) == 0)
-							{
-								StopSoundMem(Sounds::SE_DeleteSoldier);
-							}
+							//StopSoundMem(Sounds::SE_DeleteSoldier);
+							
 						}
 						if (soldier[j]->ChekDLflg() == true)
 						{
@@ -706,7 +703,7 @@ AbstractScene* GameMain::Update()
 			{
 				if (soldier[i]->HitSphere(player))
 				{
-					if (player->GetFlg() == false)
+					if (player->GetFlg() == false && soldier[i]->ChekhitFlg() == true)
 					{
 						life--;
 						hitmoment = true;
