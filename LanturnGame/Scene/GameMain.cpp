@@ -930,11 +930,7 @@ AbstractScene* GameMain::Update()
 		switch (c_cun)
 		{
 		case(1):
-			countdown = 3;
-			break;
 		case(60):
-			countdown--;
-			break;
 		case(120):
 			countdown--;
 			break;
