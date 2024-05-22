@@ -14,6 +14,7 @@ GameMain::GameMain()
 	Particle::LoadImages();
 	Tornado::LoadImages();
 	ComboEnd::LoadImages();
+	AddScore::LoadImages();
 	hiscore = (int)UserData::LoadData(1);		// ハイスコア読み込み
 	//BGMをループしながら再生する
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
@@ -255,11 +256,13 @@ GameMain::~GameMain()
 	Explosion::DeleteImages();
 	Particle::DeleteImages();
 	BackGround::DeleteImages();
+	AddScore::DeleteImages();
 }
 
 AbstractScene* GameMain::Update()
 {
 	textdisp->Update();
+
 	if (player->GetPFlg() == true && !textdisp->GetFlg()) {
 
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
@@ -267,8 +270,24 @@ AbstractScene* GameMain::Update()
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 			ChangeVolumeSoundMem(100, Sounds::BGM_GMain);
 		}
+
 		player->GetMapSize(MapSize);
 		player->Update();
+		
+		// スコア表示の更新
+		for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+		{
+			if (addscore[i] != nullptr)
+			{
+				addscore[i]->Update(player->GetLocation());
+				if (!addscore[i]->GetFlg())
+				{
+					addscore[i] = nullptr;
+					delete addscore[i];
+				}
+			}
+		}
+
 
 		// 吸い込むギミックの更新
 		for (int i = 0; i < GM_MAX_TORNADO; i++)
