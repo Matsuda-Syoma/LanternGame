@@ -245,6 +245,7 @@ GameMain::GameMain()
 	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
 	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
 	resultimage = LoadGraph("Resources/images/result.png", 0);
+	highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
 	
 }
 
@@ -972,6 +973,7 @@ AbstractScene* GameMain::Update()
 			if (score > hiscore)
 			{
 				UserData::SaveData(1, (float)score);
+				highscoreflg = true;
 			}
 			resultnewflg = true;
 		}
@@ -1190,8 +1192,14 @@ void GameMain::Draw() const
 	// リザルトなら
 	else
 	{
-
-		DrawGraph(0, 0, resultimage, true);
+		if (highscoreflg == true)
+		{
+			DrawGraph(0, 0, highscoreimage, true);
+		}
+		else {
+			DrawGraph(0, 0, resultimage, true);
+		}
+		
 		char res[] = "result\0";
 		for (int i = 0; i < sizeof(res); i++)
 		{

@@ -49,6 +49,7 @@ private:
 	int numimage[10];
 	int alphabetimage[26];
 	int resultimage;
+	int highscoreimage;
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;
@@ -57,6 +58,7 @@ private:
 	bool SE_NewHitFlg = false;
 	bool Soldier_Hit_EX = false;
 	bool countdownflg = true;
+	bool highscoreflg = false;
 
 	__int8 ui_combo_framecount = 0;
 
