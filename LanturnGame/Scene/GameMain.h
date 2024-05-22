@@ -67,6 +67,7 @@ private:
 
 	int r_cun = 0;	// リザルト遷移カウント用
 	int c_cun = 0;
+	int f_cun = 0;
 	int countdown = 4;
 
 	Vector2D ev;

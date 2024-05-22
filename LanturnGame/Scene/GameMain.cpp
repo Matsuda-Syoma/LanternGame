@@ -903,8 +903,15 @@ AbstractScene* GameMain::Update()
 
 		if (life == 0) 
 		{
-			player->SetPFlg(false);
-
+			f_cun++;
+			switch (f_cun)
+			{
+			case(16):
+				player->SetPFlg(false);
+				break;
+			default:
+				break;
+			}
 		}
 
 	}
