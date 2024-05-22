@@ -230,6 +230,13 @@ GameMain::GameMain()
 		comboend[i] = nullptr;
 	}
 
+	// スコア表示の初期化
+	addscore = new AddScore * [GM_MAX_ADDSCORE];
+	for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+	{
+		addscore[i] = nullptr;
+	}
+
 	/*******************画像読み込み*******************/
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
@@ -633,6 +640,7 @@ AbstractScene* GameMain::Update()
 					combo += 1;
 					ui_combo_framecount = 25;
 					score += (combo * 100);
+					SpawnAddScore(bomb[i]->GetLocation(), (combo * 100));
 					SetCameraShake(GetRand(8) + 4);
 					bomb[i] = nullptr;
 					delete bomb[i];
@@ -1061,6 +1069,15 @@ void GameMain::Draw() const
 		}
 	}
 	
+	for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+	{
+		// 敵がnullptrじゃないなら
+		if (addscore[i] != nullptr)
+		{
+			addscore[i]->Draw(player->GetLocation());
+		}
+	}
+
 	// コンボ
 	DrawCombo();
 	for (int i = 0; i < GM_MAX_COMBOEND; i++)
@@ -1297,4 +1314,17 @@ void GameMain::DrawCloseMap() const
 		}
 	}
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);
+}
+
+// 爆発のスポーン
+void GameMain::SpawnAddScore(Vector2D loc, int _score)
+{
+	for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+	{
+		if (addscore[i] == nullptr)
+		{
+			addscore[i] = new AddScore(loc, _score);
+			break;
+		}
+	}
 }

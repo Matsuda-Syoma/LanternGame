@@ -16,6 +16,7 @@
 #define GM_MAX_CONVEYOR 3
 
 #define GM_MAX_TORNADO 3
+#define GM_MAX_ADDSCORE 100
 #define GM_MAX_COMBOEND 3
 
 #define GM_MAX_MAPSIZE 1500

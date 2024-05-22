@@ -13,6 +13,7 @@
 #include "../Object/Tornado.h"
 #include "../Object/ComboEnd.h"
 #include "../Utility/TextDisp.h"
+#include "../Object/AddScore.h"
 
 class GameMain : public AbstractScene
 {
@@ -28,6 +29,7 @@ private:
 	Tornado** tornado;
 	ComboEnd** comboend;
 	TextDisp* textdisp;
+	AddScore** addscore;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
@@ -80,5 +82,6 @@ public:
 	void ChangeMapSize();
 	void DrawCombo()const;
 	void DrawCloseMap()const;
+	void SpawnAddScore(Vector2D loc, int _score);
 };
 
