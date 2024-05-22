@@ -260,7 +260,7 @@ GameMain::~GameMain()
 AbstractScene* GameMain::Update()
 {
 	textdisp->Update();
-	if (player->GetPFlg() == true && !textdisp->GetFlg()) {
+	if (player->GetPFlg() == true && !textdisp->GetFlg() && countdownflg == false) {
 
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
@@ -897,6 +897,7 @@ AbstractScene* GameMain::Update()
 		// カメラアップデート
 		CameraUpdate();
 
+
 		// 残機が0ならリザルトフラグを立てる
 
 		if (life == 0) 
@@ -918,6 +919,41 @@ AbstractScene* GameMain::Update()
 			resultflg = true;
 			break;
 		default:
+			break;
+		}
+	}
+
+	// カウントダウン（３秒）
+	if (countdownflg == true && !textdisp->GetFlg())
+	{
+		c_cun++;
+		switch (c_cun)
+		{
+		case(1):
+			countdown = 3;
+			break;
+		case(60):
+			countdown--;
+			break;
+		case(120):
+			countdown--;
+			break;
+		case(180):
+			countdown--;
+			countdownflg = false;
+			break;
+		default:
+			break;
+		}
+	}
+	// １秒間「START」表示
+	else if (countdown == 0)
+	{
+		c_cun++;
+		switch (c_cun)
+		{
+		case(240):
+			countdown = 4;
 			break;
 		}
 	}
@@ -1147,6 +1183,7 @@ void GameMain::Draw() const
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+
 	// リザルトじゃないなら
 	if (resultflg == false)
 	{
@@ -1177,6 +1214,22 @@ void GameMain::Draw() const
 		{
 			DrawRotaGraph((SCREEN_WIDTH - 180) - (40 * i), 380, 1.0, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
+		}
+	}
+
+	// カウントダウン（数字）
+	if (countdownflg == true && countdown < 4)
+	{
+		DrawRotaGraph(SCREEN_WIDTH / 2, 260, 2.0, 0.0, numimage[countdown], true);
+	}
+	// カウントダウン（START）
+	else if (countdown == 0)
+	{
+		char res3[] = "start\0";
+		for (int i = 0; i < sizeof(res3); i++)
+		{
+			int chr = res3[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 750) + 56 * i, 270, 1.5, 0.0, alphabetimage[chr], true);
 		}
 	}
 

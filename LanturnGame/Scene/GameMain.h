@@ -56,6 +56,7 @@ private:
 	bool SE_HitFlg = false;
 	bool SE_NewHitFlg = false;
 	bool Soldier_Hit_EX = false;
+	bool countdownflg = true;
 
 	__int8 ui_combo_framecount = 0;
 
@@ -63,6 +64,8 @@ private:
 	int Camerashake = 0;
 
 	int r_cun = 0;	// リザルト遷移カウント用
+	int c_cun = 0;
+	int countdown = 4;
 
 	Vector2D ev;
 	float l;
