@@ -259,27 +259,36 @@ GameMain::~GameMain()
 	AddScore::DeleteImages();
 }
 
+/********************ゲームの更新処理********************/
 AbstractScene* GameMain::Update()
 {
+	// 文字の表示
 	textdisp->Update();
 
+	// プレイヤーが生きているかつ文字のフラグがたっていないならゲームを動かす
 	if (player->GetPFlg() == true && !textdisp->GetFlg()) {
 
+		// 曲が鳴っていないなら鳴らす
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 			ChangeVolumeSoundMem(100, Sounds::BGM_GMain);
 		}
 
+		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
 		
 		// スコア表示の更新
 		for (int i = 0; i < GM_MAX_ADDSCORE; i++)
 		{
+			// nullptrじゃないなら見る
 			if (addscore[i] != nullptr)
 			{
+				// 更新処理
 				addscore[i]->Update(player->GetLocation());
+
+				// フラグがたっていないなら消す
 				if (!addscore[i]->GetFlg())
 				{
 					addscore[i] = nullptr;
