@@ -40,8 +40,23 @@ void Particle::Update()
 void Particle::Draw(Vector2D loc) const
 {
 	if (flg) {
+		int OldDrawMode;
+		int OldDrawParam;
+		GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
+		if (type == 3)
+		{
+
+			SetDrawBright(color[0], color[1], color[2]);
+			//SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
+
+		}
 		DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2))
 					,  location.y + (-loc.y + (SCREEN_HEIGHT / 2)), scale, imageangle, images[type][lifetime], true);
+		if (type == 3)
+		{
+			SetDrawBright(255, 255, 255);
+		}
+		SetDrawBlendMode(OldDrawMode, OldDrawParam);
 	}
 
 }
@@ -85,6 +100,24 @@ void Particle::Init(int _type, SphereCollider * _root, bool _loop, float _scale)
 	root = _root;
 	loopflg = _loop;
 	scale = _scale;
+	if (type == 3)
+	{
+		int rgb = GetRand(2);
+		for (int i = 0; i < 3; i++)
+		{
+			color[i] = 255;
+			if (i == rgb)
+			{
+				color[i] = GetRand(64) * 4;
+			}
+		}
+
+		//for (int i = 0; i < 3; i++)
+		//{
+		// 
+		//	color[i] = GetRand(20) + 235;
+		//}
+	}
 }
 
 void Particle::SetRootLocation(Vector2D loc)

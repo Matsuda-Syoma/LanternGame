@@ -15,6 +15,7 @@ private:
 	float scale = 1.f;
 	Vector2D addloc = 0;
 	Vector2D velocity = 0.f;
+	int color[3] = {};
 public:
 	Particle();
 	~Particle();

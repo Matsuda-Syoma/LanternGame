@@ -8,8 +8,8 @@
 
 #define GM_MAX_LIFE 5
 
-#define GM_MAX_ENEMY_BOMB 100
-#define GM_MAX_EFFECT_EXPLOSION 100
+#define GM_MAX_ENEMY_BOMB 200
+#define GM_MAX_EFFECT_EXPLOSION 200
 #define GM_MAX_PARTICLE 1000
 #define GM_MAX_ICEFLOOR 2
 #define GM_MAX_CONVEYOR 3
@@ -35,5 +35,5 @@ static float Normalize(Vector2D loc, Vector2D loc2)
 {
 	float rx = loc2.x - loc.x;
 	float ry = loc2.y - loc.y;
-	return atan2f(rx, ry) * 180.0f / 3.14159265359f;
+	return atan2f(rx, ry) * 180.0f / 3.14159265358979323846f;
 }

@@ -283,24 +283,6 @@ AbstractScene* GameMain::Update()
 			Vector2D(player->GetLocation().x + 15.f, player->GetLocation().y - 10.f), (float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
 
 
-		// スコア表示の更新
-		for (int i = 0; i < GM_MAX_ADDSCORE; i++)
-		{
-			// nullptrじゃないなら見る
-			if (addscore[i] != nullptr)
-			{
-				// 更新処理
-				addscore[i]->Update(player->GetLocation());
-
-				// フラグがたっていないなら消す
-				if (!addscore[i]->GetFlg())
-				{
-					addscore[i] = nullptr;
-					delete addscore[i];
-				}
-			}
-		}
-
 
 		// 吸い込むギミックの更新
 		for (int i = 0; i < GM_MAX_TORNADO; i++)
@@ -659,7 +641,7 @@ AbstractScene* GameMain::Update()
 							}
 							SE_HitFlg = true;
 							bomb[i]->SetExpFlg(true);
-							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), -90.f - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.5f, 0.f);
+							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.5f, 0.f);
 							//SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f, 0.f);
 							SetCameraShake(7);
 					}
@@ -863,6 +845,25 @@ AbstractScene* GameMain::Update()
 				}
 			}
 		}
+
+		// スコア表示の更新
+		for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+		{
+			// nullptrじゃないなら見る
+			if (addscore[i] != nullptr)
+			{
+				// 更新処理
+				addscore[i]->Update(player->GetLocation());
+
+				// フラグがたっていないなら消す
+				if (!addscore[i]->GetFlg())
+				{
+					addscore[i] = nullptr;
+					delete addscore[i];
+				}
+			}
+		}
+
 
 		for (int i = 0; i < GM_MAX_COMBOEND; i++)
 		{
@@ -1360,7 +1361,7 @@ void GameMain::DrawCloseMap() const
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);
 }
 
-// 爆発のスポーン
+// スコア増加画像のスポーン
 void GameMain::SpawnAddScore(Vector2D loc, int _score)
 {
 	for (int i = 0; i < GM_MAX_ADDSCORE; i++)
