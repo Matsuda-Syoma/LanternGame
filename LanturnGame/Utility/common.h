@@ -1,5 +1,4 @@
 #pragma once
-
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 #define SCREEN_COLORBIT 32
@@ -30,4 +29,11 @@
 static float GetLength(Vector2D loc, Vector2D loc2)
 {
 	return sqrtf(powf((loc2.x - loc.x), 2) + powf((loc2.y - loc.y), 2));
+}
+
+static float Normalize(Vector2D loc, Vector2D loc2)
+{
+	float rx = loc2.x - loc.x;
+	float ry = loc2.y - loc.y;
+	return atan2f(rx, ry) * 180.0f / 3.14159265359f;
 }

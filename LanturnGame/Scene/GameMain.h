@@ -36,6 +36,7 @@ private:
 	unsigned int hiscore = 0;
 	unsigned int combo = 0;
 	unsigned int oldcombo = 0;
+	unsigned int botime = 0;
 	float MapSize = GM_MAX_MAPSIZE;
 	float MapCloseSpeed = 1;
 	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
@@ -75,7 +76,7 @@ public:
 	void Draw() const override;
 	void Game();
 	void SpawnExplosion(Vector2D loc);
-	void SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, Vector2D loc2, float scale);
+	void SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, float angle, float scale, float speed);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
 	void SetMapSize(float f);
@@ -83,5 +84,7 @@ public:
 	void DrawCombo()const;
 	void DrawCloseMap()const;
 	void SpawnAddScore(Vector2D loc, int _score);
+	void BlackOut(int color, int time);
+	void BlackOutDraw()const;
 };
 
