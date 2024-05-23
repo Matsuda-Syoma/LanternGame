@@ -78,7 +78,7 @@ public:
 	void SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, Vector2D loc2, float scale);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
-	void SetMapSize(int i);
+	void SetMapSize(float f);
 	void ChangeMapSize();
 	void DrawCombo()const;
 	void DrawCloseMap()const;

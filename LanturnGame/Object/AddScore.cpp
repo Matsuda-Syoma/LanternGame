@@ -25,24 +25,24 @@ void AddScore::Update(Vector2D loc)
 	// 左に出ないように
 	viewlocation = location;
 
-	if (loc.x - viewlocation.x > SCREEN_WIDTH / 2)
+	if (loc.x - viewlocation.x > SCREEN_WIDTH / 2.f)
 	{
-		viewlocation.x = loc.x - SCREEN_WIDTH / 2;
+		viewlocation.x = loc.x - SCREEN_WIDTH / 2.f;
 	}
 	// 右に出ないように
-	if (loc.x - viewlocation.x < -SCREEN_WIDTH / 2)
+	if (loc.x - viewlocation.x < -SCREEN_WIDTH / 2.f)
 	{
-		viewlocation.x = loc.x - -SCREEN_WIDTH / 2;
+		viewlocation.x = loc.x - -SCREEN_WIDTH / 2.f;
 	}
 	// 上に出ないように
-	if (loc.y - viewlocation.y > SCREEN_HEIGHT / 2.1)
+	if (loc.y - viewlocation.y > SCREEN_HEIGHT / 2.1f)
 	{
-		viewlocation.y = loc.y - SCREEN_HEIGHT / 2.1;
+		viewlocation.y = loc.y - SCREEN_HEIGHT / 2.1f;
 	}
 	// 下に出ないように
-	if (loc.y - viewlocation.y < -SCREEN_HEIGHT / 2)
+	if (loc.y - viewlocation.y < -SCREEN_HEIGHT / 2.f)
 	{
-		viewlocation.y = loc.y - -SCREEN_HEIGHT / 2;
+		viewlocation.y = loc.y - -SCREEN_HEIGHT / 2.f;
 	}
 
 	if (cnt < 7)
@@ -67,8 +67,8 @@ void AddScore::Draw(Vector2D loc) const
 
 	int bufscore = score;
 	for (int i = 0; i < digit; i++) {
-		//DrawRotaGraph((SCREEN_WIDTH / 2) + 16 - (i * 32) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, .5, 0.0, numimg[bufcombo % 10], true);
-		DrawRotaGraph(viewlocation.x + (-loc.x + (SCREEN_WIDTH / 2)) + (20 * (digit - 2)) - (i * 20), viewlocation.y + (-loc.y + (SCREEN_HEIGHT / 2)) + addy, .5, 0.0, numimg[bufscore % 10], true);
+		//DrawRotaGraphF((SCREEN_WIDTH / 2) + 16 - (i * 32) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, .5, 0.0, numimg[bufcombo % 10], true);
+		DrawRotaGraphF(viewlocation.x + (-loc.x + (SCREEN_WIDTH / 2)) + (20 * (digit - 2)) - (i * 20), viewlocation.y + (-loc.y + (SCREEN_HEIGHT / 2)) + addy, .5, 0.0, numimg[bufscore % 10], true);
 		bufscore /= 10;
 	}
 

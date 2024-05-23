@@ -1,4 +1,4 @@
-#include "soldier.h"
+﻿#include "soldier.h"
 #include "../Utility/common.h"
 #include "DxLib.h"
 #include "math.h"
@@ -62,11 +62,11 @@ void Soldier::Draw(Vector2D PL)
 			animcnt = 0;
 		}
 		//兵隊イラストの描画
-		DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierimg[Velimg + animcnt], true);
+		DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierimg[Velimg + animcnt], true);
 	}
 	else
 	{
-		DrawRotaGraph(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierDetimg[0], true);
+		DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierDetimg[0], true);
 	}
 }
 
