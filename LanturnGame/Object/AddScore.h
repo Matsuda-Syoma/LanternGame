@@ -3,9 +3,14 @@
 class AddScore
 {
 private:
+	bool flg = true;
+	int cnt = 0;
+	int addy = 0;
 	int score = 0;
-	int numimg[10];
+	int digit = 0;
+	static int numimg[10];
 	Vector2D location;
+	Vector2D viewlocation;
 public:
 
 	//AddScore(int _score);
@@ -14,7 +19,8 @@ public:
 	void Update(Vector2D loc);
 	//void Update();
 	void Draw(Vector2D loc)const;
-	void LoadImages();
-	void DeleteImages();
+	static void LoadImages();
+	static void DeleteImages();
+	bool GetFlg()const;
 };
 

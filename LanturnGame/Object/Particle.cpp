@@ -63,7 +63,7 @@ void Particle::DeleteImages()
 void Particle::SetAngle(Vector2D loc, Vector2D loc2)
 {
 	Vector2D temp = loc - loc2;
-	angle = atan2(temp.y, temp.x);
+	angle = atan2f(temp.y, temp.x);
 }
 
 void Particle::Init(int _type, SphereCollider * _root, bool _loop, float _scale)

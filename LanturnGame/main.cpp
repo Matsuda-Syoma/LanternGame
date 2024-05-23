@@ -1,4 +1,4 @@
-#include"DxLib.h"
+﻿#include"DxLib.h"
 #include"Utility/common.h"
 #include"Utility/FPSController.h"
 #include"Scene/SceneManager.h"
@@ -9,22 +9,22 @@
 #include"Utility/LoadSounds.h"
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
 
-	//�^�C�g����ݒ�
+	// タイトルを設定
 	SetMainWindowText("Lantern");
 
 	SetWindowIconID(333);
 
-	//�E�B���h�E���[�h�ŋN��
+	// ウィンドウモードで起動
 	ChangeWindowMode(true);
 
-	//�E�B���h�E�T�C�Y�̐ݒ�
+	// ウィンドウサイズの設定
 	SetGraphMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_COLORBIT);
 	SetWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	//DX���C�u�����̏���������
+	// DXライブラリの初期化処理
 	if (DxLib_Init() == -1)return -1;
 
-	//�`����ʂ𗠂ɂ���i�_�u���o�b�t�@�����O�j
+	// 描画先画面を裏にする（ダブルバッファリング）
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	SceneManager scene = (dynamic_cast<AbstractScene*>(new Title()));
@@ -33,20 +33,23 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	Sounds::LoadSounds();
 
-	//�Q�[�����[�v
+	// ゲームループ
 	while (ProcessMessage() == 0 && scene.Update() != nullptr) {
 
-		//��ʂ̏�����
+
 		InputControl::Update();
+		// 画面の初期化
 		ClearDrawScreen();
+		// 描画処理
 		scene.Draw();
+		// 裏画面の内容を表に表示する
 		FPSct.All();
 
-		//����ʂ̓�e��\�ɕ\������
+		// 裏画面の内容を表に表示する
 		ScreenFlip();
 	}
 
-	//DX���C�u�����̏I������
+	// DXライブラリの終了処理
 	DxLib_End();
 
 	return 0;

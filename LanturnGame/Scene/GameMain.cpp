@@ -1,4 +1,4 @@
-#include "GameMain.h"
+﻿#include "GameMain.h"
 #include "../Utility/LoadSounds.h"
 #include <math.h>
 #include "../Utility/InputControl.h"
@@ -14,6 +14,7 @@ GameMain::GameMain()
 	Particle::LoadImages();
 	Tornado::LoadImages();
 	ComboEnd::LoadImages();
+	AddScore::LoadImages();
 	hiscore = (int)UserData::LoadData(1);		// ハイスコア読み込み
 	//BGMをループしながら再生する
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
@@ -256,20 +257,45 @@ GameMain::~GameMain()
 	Explosion::DeleteImages();
 	Particle::DeleteImages();
 	BackGround::DeleteImages();
+	AddScore::DeleteImages();
 }
 
+/********************ゲームの更新処理********************/
 AbstractScene* GameMain::Update()
 {
+	// 文字の表示
 	textdisp->Update();
 	if (player->GetPFlg() == true && !textdisp->GetFlg() && countdownflg == false) {
 
+		// 曲が鳴っていないなら鳴らす
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 			ChangeVolumeSoundMem(100, Sounds::BGM_GMain);
 		}
+
+		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
+		
+		// スコア表示の更新
+		for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+		{
+			// nullptrじゃないなら見る
+			if (addscore[i] != nullptr)
+			{
+				// 更新処理
+				addscore[i]->Update(player->GetLocation());
+
+				// フラグがたっていないなら消す
+				if (!addscore[i]->GetFlg())
+				{
+					addscore[i] = nullptr;
+					delete addscore[i];
+				}
+			}
+		}
+
 
 		// 吸い込むギミックの更新
 		for (int i = 0; i < GM_MAX_TORNADO; i++)
@@ -277,6 +303,7 @@ AbstractScene* GameMain::Update()
 			// nullptrじゃないなら見る
 			if (tornado[i] != nullptr)
 			{
+				// 更新処理
 				tornado[i]->Update();
 			}
 		}
@@ -287,13 +314,14 @@ AbstractScene* GameMain::Update()
 			// nullptrじゃないなら見る
 			if (soldier[i] != nullptr)
 			{
+				// 更新処理
 				soldier[i]->Upadate(player->GetLocation());
 				soldier[i]->GetMapSize(MapSize);
 				soldier[i]->SetVelocity(1);
 			}
 			else
 			{
-				
+				// 兵士のスポーン
 					soldier[i] = new Soldier;
 					Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 					if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
@@ -636,7 +664,7 @@ AbstractScene* GameMain::Update()
 				{
 					// 爆発を発生して敵をnullptrにしてループを抜ける
 					SpawnExplosion(bomb[i]->GetLocation());
-					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), Vector2D(bomb[i]->GetLocation().x + (GetRand(1) - 0.5), bomb[i]->GetLocation().y + (GetRand(1) - 0.5)), 1.5f);
+					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), Vector2D(bomb[i]->GetLocation().x + (GetRand(1) - 0.5f), bomb[i]->GetLocation().y + (GetRand(1) - 0.5f)), 1.5f);
 					PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
 					combo += 1;
 					ui_combo_framecount = 25;
@@ -901,7 +929,7 @@ AbstractScene* GameMain::Update()
 
 		// 残機が0ならリザルトフラグを立てる
 
-		if (life == 0) 
+		if (life == 0)
 		{
 			f_cun++;
 			switch (f_cun)
@@ -1305,9 +1333,9 @@ void GameMain::SetCameraShake(int _i)
 	CamerashakeCount = _i;
 }
 
-void GameMain::SetMapSize(int i)
+void GameMain::SetMapSize(float f)
 {
-	MapSize = (float)i;
+	MapSize = f;
 }
 
 void GameMain::ChangeMapSize()
@@ -1320,7 +1348,7 @@ void GameMain::ChangeMapSize()
 		}
 		if (MapSize > GM_MIN_MAPSIZE)
 		{
-			SetMapSize(MapSize - 0.75);
+			SetMapSize(MapSize - 0.75f);
 
 			if (MapSize < GM_MIN_MAPSIZE)
 			{
@@ -1373,8 +1401,8 @@ void GameMain::DrawCloseMap() const
 			DrawRotaGraph((SCREEN_WIDTH / 2) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 1.0, 0.0, closemapimage, true);
 			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
 					  (SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);
-			DrawBoxAA((SCREEN_WIDTH / 2) - (game_frametime % 150) + 100, (SCREEN_HEIGHT / 2) - 80, 
-					  (SCREEN_WIDTH / 2) + (game_frametime % 150) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
+			DrawBoxAA((SCREEN_WIDTH / 2) - (float)(game_frametime % 150) + 100, (SCREEN_HEIGHT / 2) - 80, 
+					  (SCREEN_WIDTH / 2) + (float)(game_frametime % 150) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
 		}
 	}
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);

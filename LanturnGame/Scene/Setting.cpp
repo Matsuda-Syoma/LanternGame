@@ -23,7 +23,7 @@ AbstractScene* Setting::Update()
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
 	{
 		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
-		deadzone += -0.1;
+		deadzone += -0.1f;
 		// 一番下に到達したら、一番上にする
 		if (deadzone < 0.f)
 		{
@@ -34,7 +34,7 @@ AbstractScene* Setting::Update()
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 	{
 		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
-		deadzone += 0.1;
+		deadzone += 0.1f;
 		// 一番下に到達したら、一番上にする
 		if (deadzone > 1.f)
 		{

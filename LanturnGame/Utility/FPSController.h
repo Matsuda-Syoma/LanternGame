@@ -1,22 +1,22 @@
-#pragma once
+﻿#pragma once
 #include"DxLib.h"
 #include "common.h"
 
 class FpsController {
 private:
-    int FrameTime;                              // 1�t���[���̎���(�~���b)
-    int WaitTime;                               // �҂�����
-    int LastTime, NowTime;                      // �Ō�Ɏ擾�������ԂƁC���̎���
-    float Count;                                // �t���[���̃J�E���g
-    float Fps;                                  // �\�����邵��FPS�l
-    int UpdateTime;                             // �\���l��X�V���鎞��
-    int LastUpdate;                             // �Ō�ɕ\���l��X�V��������
+    int FrameTime;                              // 1フレームの時間(ミリ秒)
+    int WaitTime;                               // 待ち時間
+    int LastTime, NowTime;                      // 最後に取得した時間と，今の時間
+    float Count;                                // フレームのカウント
+    float Fps;                                  // 表示するしたFPS値
+    int UpdateTime;                             // 表示値を更新する時間
+    int LastUpdate;                             // 最後に表示値を更新した時間
 
-    // ������
+    // 初期化
     void Init(float RefreshRate, int UpdateTime);
 public:
 
-    // �R���X�g���N�^
+    // コンストラクタ
     FpsController(float RefreshRate, int UpdateTime) {
         Init(RefreshRate, UpdateTime);
     }
@@ -24,19 +24,18 @@ public:
         Init(FRAMERATE, UPDATETIME);
     }
 
-    
-    void Wait();        // �҂����Ԃ̌v�Z
 
-   
-    float Get();        //FPS�l�̌v�Z
+    void Wait();        // 待ち時間の計算
 
-    // �`�揈��
+    float Get();        // FPS値の計算
+
+    // 描画処理
     void Disp() {
         SetFontSize(10);
         DrawFormatString(10, 10, 0xffffff, "fps:%0.1f", Fps);
         SetFontSize(24);
     }
-    // ������܂Ƃ߂����
+    // 処理をまとめたもの
     float All() {
         Get();
         Wait();
@@ -44,6 +43,3 @@ public:
     }
 
 };
-
-
-
