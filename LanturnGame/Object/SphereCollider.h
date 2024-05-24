@@ -11,7 +11,7 @@ public:
 	SphereCollider();
 	float GetRadius() const;
 	bool HitSphere(SphereCollider* spherecollider)const;
-//	bool HitBox(class BoxCollider boxCollider) const;
+	bool HitBox(class BoxCollider boxCollider) const;
 
 	Vector2D GetLocation() const;
 	void SetLocation(Vector2D loc);
