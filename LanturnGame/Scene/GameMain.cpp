@@ -755,9 +755,11 @@ AbstractScene* GameMain::Update()
 		{
 			if (conveyor[i]->HitSphere(player))
 			{
-				if (player->GetConFlg() == false) {
+				printf("こんべあー\n");
+				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y));
+				/*if (player->GetConFlg() == false) {
 					player->SetConFlg(true);
-				}
+				}*/
 			}
 		}
 		// Velocity初期化
