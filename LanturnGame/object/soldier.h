@@ -53,4 +53,5 @@ private:
 	bool deleteFlg = false;
 	int cnt=0;
 	int animcnt=0;
+	bool Muflg = 0;
 };

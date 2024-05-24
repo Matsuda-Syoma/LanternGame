@@ -1,5 +1,6 @@
 ﻿#include "soldier.h"
 #include "../Utility/common.h"
+#include "../Utility/LoadSounds.h"
 #include "DxLib.h"
 #include "math.h"
 
@@ -35,7 +36,14 @@ void Soldier::Upadate(Vector2D PL)
 	}
 	else
 	{
+	
 		hitFlg = false;
+		if (Muflg == 0)
+		{
+			PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
+			Muflg = 1;
+		}
+		
 		countNum++;
 		if (240 <= countNum)
 		{
