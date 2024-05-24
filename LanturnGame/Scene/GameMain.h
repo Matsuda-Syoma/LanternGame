@@ -12,6 +12,9 @@
 #include "../Object/Conveyor.h"
 #include "../Object/Tornado.h"
 #include "../Object/ComboEnd.h"
+#include "../Utility/TextDisp.h"
+#include "../Object/AddScore.h"
+
 class GameMain : public AbstractScene
 {
 private:
@@ -25,6 +28,8 @@ private:
 	Conveyor** conveyor;
 	Tornado** tornado;
 	ComboEnd** comboend;
+	TextDisp* textdisp;
+	AddScore** addscore;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
@@ -42,6 +47,9 @@ private:
 	int closemapimage;
 	int hukidasiimage;
 	int numimage[10];
+	int alphabetimage[26];
+	int resultimage;
+	int highscoreimage;
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;
@@ -49,6 +57,8 @@ private:
 	bool SE_HitFlg = false;
 	bool SE_NewHitFlg = false;
 	bool Soldier_Hit_EX = false;
+	bool countdownflg = true;
+	bool highscoreflg = false;
 
 	__int8 ui_combo_framecount = 0;
 
@@ -56,6 +66,9 @@ private:
 	int Camerashake = 0;
 
 	int r_cun = 0;	// リザルト遷移カウント用
+	int c_cun = 0;
+	int f_cun = 0;
+	int countdown = 4;
 
 	Vector2D ev;
 	float l;
@@ -71,9 +84,10 @@ public:
 	void SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, Vector2D loc2, float scale);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
-	void SetMapSize(int i);
+	void SetMapSize(float f);
 	void ChangeMapSize();
 	void DrawCombo()const;
 	void DrawCloseMap()const;
+	void SpawnAddScore(Vector2D loc, int _score);
 };
 

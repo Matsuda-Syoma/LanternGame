@@ -138,7 +138,7 @@ void Title::Draw() const
 	//DrawString(580, 60, "‚±‚±‚Íƒ^ƒCƒgƒ‹‚Å‚·", 0xffffff);
 	int OldBlendMode, OldBlendParam;
 	GetDrawBlendMode(&OldBlendMode,&OldBlendParam);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - ((fireanim / 70.) * 511));
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - ((int)(fireanim / 70.) * 511));
 	for (int i = 0; i < 4; i++) {
 		DrawRotaGraph(1040, 380 + (i * 65), 1.0, 0.0, menuimage[i], true);
 	}

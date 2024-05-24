@@ -60,4 +60,5 @@ int UserData::SaveData(int i, float data)
 	}
 	fprintf(fp, "%f,\n", data);
 	fclose(fp);
+	return 0;
 }

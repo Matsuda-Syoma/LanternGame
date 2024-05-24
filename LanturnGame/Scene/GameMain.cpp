@@ -1,4 +1,4 @@
-#include "GameMain.h"
+﻿#include "GameMain.h"
 #include "../Utility/LoadSounds.h"
 #include <math.h>
 #include "../Utility/InputControl.h"
@@ -14,12 +14,14 @@ GameMain::GameMain()
 	Particle::LoadImages();
 	Tornado::LoadImages();
 	ComboEnd::LoadImages();
+	AddScore::LoadImages();
 	hiscore = (int)UserData::LoadData(1);		// ハイスコア読み込み
-
 	//BGMをループしながら再生する
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
 /*******************初期化*******************/
+	textdisp = new TextDisp;
+	textdisp->LoadText(0);
 	player = new Player;
 	stage = new Stage * [GM_MAX_ICEFLOOR];
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
@@ -109,6 +111,24 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
 	{
 		bomb[i] = nullptr;
+	}
+
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+	{
+		bomb[i] = new Bomb;
+		while (1)
+		{
+			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+			if (1080 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
+				powf((spawnloc.x - player->GetLocation().x), 2) +
+				powf((spawnloc.y - player->GetLocation().y), 2))))
+			{
+				bomb[i]->SetLocation(spawnloc);
+				bomb[i]->SetMoveToLocation(spawnloc);
+				bomb[i]->SetMode(GetRand(4) + 1);
+				break;
+			}
+		}
 	}
 
 	// 爆発判定の初期化
@@ -211,13 +231,22 @@ GameMain::GameMain()
 		comboend[i] = nullptr;
 	}
 
+	// スコア表示の初期化
+	addscore = new AddScore * [GM_MAX_ADDSCORE];
+	for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+	{
+		addscore[i] = nullptr;
+	}
+
 	/*******************画像読み込み*******************/
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
 	hukidasiimage = LoadGraph("Resources/images/hukidasi.png", 0);
 	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
-
+	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
+	resultimage = LoadGraph("Resources/images/result.png", 0);
+	highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
 	
 }
 
@@ -228,20 +257,45 @@ GameMain::~GameMain()
 	Explosion::DeleteImages();
 	Particle::DeleteImages();
 	BackGround::DeleteImages();
+	AddScore::DeleteImages();
 }
 
+/********************ゲームの更新処理********************/
 AbstractScene* GameMain::Update()
 {
+	// 文字の表示
+	textdisp->Update();
+	if (player->GetPFlg() == true && !textdisp->GetFlg() && countdownflg == false) {
 
-	if (player->GetPFlg() == true) {
-
+		// 曲が鳴っていないなら鳴らす
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 			ChangeVolumeSoundMem(100, Sounds::BGM_GMain);
 		}
+
+		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
+		
+		// スコア表示の更新
+		for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+		{
+			// nullptrじゃないなら見る
+			if (addscore[i] != nullptr)
+			{
+				// 更新処理
+				addscore[i]->Update(player->GetLocation());
+
+				// フラグがたっていないなら消す
+				if (!addscore[i]->GetFlg())
+				{
+					addscore[i] = nullptr;
+					delete addscore[i];
+				}
+			}
+		}
+
 
 		// 吸い込むギミックの更新
 		for (int i = 0; i < GM_MAX_TORNADO; i++)
@@ -249,6 +303,7 @@ AbstractScene* GameMain::Update()
 			// nullptrじゃないなら見る
 			if (tornado[i] != nullptr)
 			{
+				// 更新処理
 				tornado[i]->Update();
 			}
 		}
@@ -259,13 +314,14 @@ AbstractScene* GameMain::Update()
 			// nullptrじゃないなら見る
 			if (soldier[i] != nullptr)
 			{
+				// 更新処理
 				soldier[i]->Upadate(player->GetLocation());
 				soldier[i]->GetMapSize(MapSize);
 				soldier[i]->SetVelocity(1);
 			}
 			else
 			{
-				
+				// 兵士のスポーン
 					soldier[i] = new Soldier;
 					Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 					if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
@@ -608,11 +664,12 @@ AbstractScene* GameMain::Update()
 				{
 					// 爆発を発生して敵をnullptrにしてループを抜ける
 					SpawnExplosion(bomb[i]->GetLocation());
-					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), Vector2D(bomb[i]->GetLocation().x + (GetRand(1) - 0.5), bomb[i]->GetLocation().y + (GetRand(1) - 0.5)), 1.5f);
+					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), Vector2D(bomb[i]->GetLocation().x + (GetRand(1) - 0.5f), bomb[i]->GetLocation().y + (GetRand(1) - 0.5f)), 1.5f);
 					PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
 					combo += 1;
 					ui_combo_framecount = 25;
 					score += (combo * 100);
+					SpawnAddScore(bomb[i]->GetLocation(), (combo * 100));
 					SetCameraShake(GetRand(8) + 4);
 					bomb[i] = nullptr;
 					delete bomb[i];
@@ -871,12 +928,20 @@ AbstractScene* GameMain::Update()
 		// カメラアップデート
 		CameraUpdate();
 
+
 		// 残機が0ならリザルトフラグを立てる
 
-		if (life == 0) 
+		if (life == 0)
 		{
-			player->SetPFlg(false);
-
+			f_cun++;
+			switch (f_cun)
+			{
+			case(16):
+				player->SetPFlg(false);
+				break;
+			default:
+				break;
+			}
 		}
 
 	}
@@ -892,6 +957,37 @@ AbstractScene* GameMain::Update()
 			resultflg = true;
 			break;
 		default:
+			break;
+		}
+	}
+
+	// カウントダウン（３秒）
+	if (countdownflg == true && !textdisp->GetFlg())
+	{
+		c_cun++;
+		switch (c_cun)
+		{
+		case(1):
+		case(60):
+		case(120):
+			countdown--;
+			break;
+		case(180):
+			countdown--;
+			countdownflg = false;
+			break;
+		default:
+			break;
+		}
+	}
+	// １秒間「START」表示
+	else if (countdown == 0)
+	{
+		c_cun++;
+		switch (c_cun)
+		{
+		case(240):
+			countdown = 4;
 			break;
 		}
 	}
@@ -914,6 +1010,7 @@ AbstractScene* GameMain::Update()
 			if (score > hiscore)
 			{
 				UserData::SaveData(1, (float)score);
+				highscoreflg = true;
 			}
 			resultnewflg = true;
 		}
@@ -1042,24 +1139,16 @@ void GameMain::Draw() const
 			particle[i]->Draw(player->GetLocation());
 		}
 	}
-
-	// リザルトじゃないなら
-	if (resultflg == false)
-	{
-		DrawFormatString(560, 10, 0xffffff, "%06d", hiscore);
-		DrawFormatString(560, 40, 0xffffff, "%06d", score);
-		//DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
-	}
-	// リザルトなら
-	else
-	{
-		DrawBox(300, 250, 960, 490, 0xffffff, true);
-		DrawString(580, 280, "Result", 0x000000);
-		//DrawString(500, 460, "--- Restart with B button ---", 0x000000);
-		DrawString(380, 460, "--- Title with A button ---", 0x000000);
-		DrawFormatString(582, 380, 0x000000, "%06d", score);
-	}
 	
+	for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+	{
+		// 敵がnullptrじゃないなら
+		if (addscore[i] != nullptr)
+		{
+			addscore[i]->Draw(player->GetLocation());
+		}
+	}
+
 	// コンボ
 	DrawCombo();
 	for (int i = 0; i < GM_MAX_COMBOEND; i++)
@@ -1129,6 +1218,64 @@ void GameMain::Draw() const
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+
+	// リザルトじゃないなら
+	if (resultflg == false)
+	{
+		DrawFormatString(560, 10, 0xffffff, "%06d", hiscore);
+		DrawFormatString(560, 40, 0xffffff, "%06d", score);
+		//DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
+	}
+	// リザルトなら
+	else
+	{
+		if (highscoreflg == true)
+		{
+			DrawGraph(0, 0, highscoreimage, true);
+		}
+		else {
+			DrawGraph(0, 0, resultimage, true);
+		}
+		
+		char res[] = "result\0";
+		for (int i = 0; i < sizeof(res); i++)
+		{
+			int chr = res[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 300, 1.0, 0.0, alphabetimage[chr], true);
+		}
+		char res_2[] = "title with a button\0";
+		for (int i = 0; i < sizeof(res_2); i++)
+		{
+			int chr = res_2[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 480) + 22 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
+		}
+
+		int bufscore = score;
+		for (int i = 0; i < 6; i++)
+		{
+			DrawRotaGraph((SCREEN_WIDTH - 180) - (40 * i), 380, 1.0, 0.0, numimage[bufscore % 10], true);
+			bufscore /= 10;
+		}
+	}
+
+	// カウントダウン（数字）
+	if (countdownflg == true && countdown < 4)
+	{
+		DrawRotaGraph(SCREEN_WIDTH / 2, 260, 2.0, 0.0, numimage[countdown], true);
+	}
+	// カウントダウン（START）
+	else if (countdown == 0)
+	{
+		char res3[] = "start\0";
+		for (int i = 0; i < sizeof(res3); i++)
+		{
+			int chr = res3[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 750) + 56 * i, 270, 1.5, 0.0, alphabetimage[chr], true);
+		}
+	}
+
+	textdisp->Draw();
+
 }
 
 void GameMain::Game()
@@ -1188,9 +1335,9 @@ void GameMain::SetCameraShake(int _i)
 	CamerashakeCount = _i;
 }
 
-void GameMain::SetMapSize(int i)
+void GameMain::SetMapSize(float f)
 {
-	MapSize = (float)i;
+	MapSize = f;
 }
 
 void GameMain::ChangeMapSize()
@@ -1203,7 +1350,7 @@ void GameMain::ChangeMapSize()
 		}
 		if (MapSize > GM_MIN_MAPSIZE)
 		{
-			SetMapSize(MapSize - 0.75);
+			SetMapSize(MapSize - 0.75f);
 
 			if (MapSize < GM_MIN_MAPSIZE)
 			{
@@ -1256,9 +1403,22 @@ void GameMain::DrawCloseMap() const
 			DrawRotaGraph((SCREEN_WIDTH / 2) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 1.0, 0.0, closemapimage, true);
 			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
 					  (SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);
-			DrawBoxAA((SCREEN_WIDTH / 2) - (game_frametime % 150) + 100, (SCREEN_HEIGHT / 2) - 80, 
-					  (SCREEN_WIDTH / 2) + (game_frametime % 150) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
+			DrawBoxAA((SCREEN_WIDTH / 2) - (float)(game_frametime % 150) + 100, (SCREEN_HEIGHT / 2) - 80, 
+					  (SCREEN_WIDTH / 2) + (float)(game_frametime % 150) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
 		}
 	}
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);
+}
+
+// 爆発のスポーン
+void GameMain::SpawnAddScore(Vector2D loc, int _score)
+{
+	for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+	{
+		if (addscore[i] == nullptr)
+		{
+			addscore[i] = new AddScore(loc, _score);
+			break;
+		}
+	}
 }

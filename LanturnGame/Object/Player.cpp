@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 #include "DxLib.h"
 #include <math.h>
 #include "../Utility/InputControl.h"
@@ -106,7 +106,7 @@ void Player::Draw(int camerashake) const
 	int OldBlendParam;
 	GetDrawBlendMode(&OldBlendMode,&OldBlendParam);
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, max(((180. / cun) * 6) - 48, 0));
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)max(((180. / cun) * 6) - 48, 0));
 	DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xff0000, true);
 	SetDrawBlendMode(OldBlendMode, OldBlendParam);
 
@@ -124,7 +124,7 @@ void Player::Movement()
 	// 摩擦係数
 	if (overice == true)
 	{
-		velocity *= 0.99;
+		velocity *= 0.99f;
 	}
 	else 
 	{
