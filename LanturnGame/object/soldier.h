@@ -32,12 +32,14 @@ public:
 	//
 	bool ChekDMGflg();
 	//消すフラグをセットする
-
-	//
 	void SetDLflg(bool i);
-	bool ChekDLflg();
 	
+	bool ChekDLflg();
 	bool ChekhitFlg();
+
+	//動きが止まる
+	void SetmoveFlg(bool i);
+	bool ChekmoveFlg();
 private:
 	Vector2D length = 0;
 	Vector2D move = 0;
@@ -47,11 +49,15 @@ private:
 	int soldierimg[12];//画像イメージ
 	int soldierDetimg;//画像イメージ
 	int Velimg = 0;//画像の向き
-	bool dmgflg = false;
 	int countNum = 0;//再生成までの時間を測る
+
+	bool dmgflg = false;
 	bool hitFlg = true;
 	bool deleteFlg = false;
+	bool Musicflg = false;
+	bool moveFlg = true;
+
 	int cnt=0;
 	int animcnt=0;
-	bool Muflg = 0;
+
 };

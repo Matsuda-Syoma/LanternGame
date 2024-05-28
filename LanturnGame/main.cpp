@@ -28,6 +28,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// 描画先画面を裏にする（ダブルバッファリング）
 	SetDrawScreen(DX_SCREEN_BACK);
 
+
 	Sounds::LoadSounds();
 	Sounds::SetSoundVolume(Sounds::BGM, UserData::LoadData(UserData::SOUNDS, 0));
 	Sounds::SetSoundVolume(Sounds::SE, UserData::LoadData(UserData::SOUNDS, 1));

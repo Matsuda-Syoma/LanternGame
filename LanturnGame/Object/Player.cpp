@@ -20,6 +20,7 @@ void Player::Init()
 {
 	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
 	d_playerimg = LoadGraph("Resources/images/player_death.png");
+	angryimg = LoadGraph("Resources/images/angry.png");
 }
 
 void Player::Update()
@@ -39,15 +40,29 @@ void Player::Update()
 	}
 	else {
 
-		velocity.x++;
 	}
 
 	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
-	if (pflg == true)
+	if (pflg == true && hit_soldier == false)
 	{
 		Movement();
 		location += velocity;
 		location += exvelocity;
+
+	}
+	else if (hit_soldier == true)
+	{
+
+		if (stan <= 90)
+		{
+			stan++;
+		}
+		else
+		{
+			hit_soldier = false;
+			stan = 0;
+		}
+
 
 	}
 	//}
@@ -61,37 +76,42 @@ void Player::Update()
 		Blinking();
 	}
 
-	// プレイヤーアニメーション
-	if (direction == 0) {	// 下移動
-		MoveDown();
+	if (hit_soldier == false)
+	{
+		// プレイヤーアニメーション
+		if (direction == 0) {	// 下移動
+			MoveDown();
+		}
+		else if (direction == 2) {	// 右移動
+			MoveRight();
+		}
+		else if (direction == 1) {	// 左移動
+			MoveLeft();
+		}
+		else if (direction == 3) {	// 上移動
+			MoveUp();
+		}
+		else if (direction == 4) {	// 下停止
+			imgnum = 1;
+		}
+		else if (direction == 6) {	// 右停止
+			imgnum = 7;
+		}
+		else if (direction == 5) {	// 左停止
+			imgnum = 4;
+		}
+		else if (direction == 7) {	// 上停止
+			imgnum = 10;
+		}
 	}
-	else if (direction == 2) {	// 右移動
-		MoveRight();
-	}
-	else if (direction == 1) {	// 左移動
-		MoveLeft();
-	}
-	else if (direction == 3) {	// 上移動
-		MoveUp();
-	}
-	else if (direction == 4) {	// 下停止
-		imgnum = 1;
-	}
-	else if (direction == 6) {	// 右停止
-		imgnum = 7;
-	}
-	else if (direction == 5) {	// 左停止
-		imgnum = 4;
-	}
-	else if (direction == 7) {	// 上停止
-		imgnum = 10;
-	}
+
+	
 
 }
 
 void Player::Draw(int camerashake) const
 {
-	if (pflg == true) {
+	if (pflg == true && hit_soldier == false) {
 		if (blinkingflg == false)
 		{
 			DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
@@ -102,8 +122,12 @@ void Player::Draw(int camerashake) const
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 	}
-	else {
+	else if(pflg == false) {
 		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, d_playerimg, true);
+	}
+	else if (pflg == true && hit_soldier == true)
+	{
+		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, angryimg, true);
 	}
 	
 	// 元の描画を取得
@@ -176,7 +200,7 @@ void Player::Movement()
 
 
 	// 氷の上に乗っていない時
-	if (overice == false) {
+	if (hit_soldier == false) {
 		// 左右アニメーション
 		if (velocity.x == 0)
 		{
@@ -241,35 +265,35 @@ void Player::Movement()
 
 	}
 	// 氷に乗っているとき
-	else {
+	//else {
 
-		// 右移動
-		if (InputControl::GetLeftStick().x > 0.2)
-		{
-			direction = 2;
-			stopdirection = 6;
-		}
-		// 左移動
-		if (InputControl::GetLeftStick().x < -0.2)
-		{
-			direction = 1;
-			stopdirection = 5;
-		}
-		// 上移動
-		if (InputControl::GetLeftStick().y > 0.2)
-		{
-			direction = 3;
-			stopdirection = 7;
-		}
-		// 下移動
-		if (InputControl::GetLeftStick().y < -0.2)
-		{
-			direction = 0;
-			stopdirection = 4;
-		}
+	//	// 右移動
+	//	if (InputControl::GetLeftStick().x > 0.2)
+	//	{
+	//		direction = 2;
+	//		stopdirection = 6;
+	//	}
+	//	// 左移動
+	//	if (InputControl::GetLeftStick().x < -0.2)
+	//	{
+	//		direction = 1;
+	//		stopdirection = 5;
+	//	}
+	//	// 上移動
+	//	if (InputControl::GetLeftStick().y > 0.2)
+	//	{
+	//		direction = 3;
+	//		stopdirection = 7;
+	//	}
+	//	// 下移動
+	//	if (InputControl::GetLeftStick().y < -0.2)
+	//	{
+	//		direction = 0;
+	//		stopdirection = 4;
+	//	}
 
-		direction = stopdirection;
-	}
+	//	direction = stopdirection;
+	//}
 
 	// 立ち止まっているとき（アニメーション）
 	// 左スティックが入力されていなかったら
@@ -469,6 +493,12 @@ void Player::SetConFlg(bool b)
 {
 	this->onconveyor = b;
 }
+
+void Player::SetHitSoldier(bool b)
+{
+	this->hit_soldier = b;
+}
+
 Vector2D Player::GetVelocity()
 {
 	return this->velocity;
