@@ -770,7 +770,8 @@ AbstractScene* GameMain::Update()
 					{
 						/*life--;*/
 						hitmoment = true;
-						player->SetFlg(true);
+						//player->SetFlg(true);
+						player->SetHitSoldier(true);
 						soldier[i]->SetDMGflg(false);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
 						{
