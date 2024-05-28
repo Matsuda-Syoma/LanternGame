@@ -14,6 +14,8 @@ int Sounds::BGM_Title;
 int Sounds::SE_transition;
 int Sounds::SE_cursor;
 
+int Sounds::SE_CntDown;
+
 void Sounds::LoadSounds() {
 	BGM_Game = LoadSoundMem("Resources/sounds/BGM_Trip.wav");
 	for (int i = 0; i < 5; i++)
@@ -35,6 +37,9 @@ void Sounds::LoadSounds() {
 	SE_transition = LoadSoundMem("Resources/sounds/SE_transition.mp3");
 	SE_cursor = LoadSoundMem("Resources/sounds/SE_cursor.mp3");
 
+	SE_CntDown = LoadSoundMem("Resources/sounds/SE_CountDwon.mp3");
+
+	SE_NextText = LoadSoundMem("Resources/sounds/SE_NextText.mp3");
 }
 
 void Sounds::AllStop() {

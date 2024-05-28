@@ -271,7 +271,7 @@ AbstractScene* GameMain::Update()
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
-			ChangeVolumeSoundMem(100, Sounds::BGM_GMain);
+			ChangeVolumeSoundMem(150, Sounds::BGM_GMain);
 		}
 
 		// プレイヤーの更新
@@ -969,6 +969,7 @@ AbstractScene* GameMain::Update()
 		case(60):
 		case(120):
 			countdown--;
+			PlaySoundMem(Sounds::SE_CntDown, DX_PLAYTYPE_BACK);
 			break;
 		case(180):
 			countdown--;

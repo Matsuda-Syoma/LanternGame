@@ -25,7 +25,7 @@ void Soldier::Initialize()
 	deleteFlg = false;
 	hitFlg = true;//当たり判定
 	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 66, soldierimg);
-	LoadDivGraph("Resources/images/d_Soldier.png", 6, 3, 2, 64, 64, soldierDetimg);
+	soldierDetimg = LoadGraph("Resources/images/d_Soldier.png");
 }
 
 void Soldier::Upadate(Vector2D PL)
@@ -74,7 +74,7 @@ void Soldier::Draw(Vector2D PL)
 	}
 	else
 	{
-		DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierDetimg[0], true);
+		DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierDetimg, true);
 	}
 }
 

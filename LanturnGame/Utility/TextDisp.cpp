@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "common.h"
 #include "InputControl.h"
+#include "../Utility/LoadSounds.h"
 
 char TextDisp::temp[16][64];
 TextDisp::TextDisp()
@@ -46,6 +47,7 @@ void TextDisp::Update()
 	CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 	{
+		PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
 		if (textnum - 1 > textorder)
 		{
 			CenterX = 0;
