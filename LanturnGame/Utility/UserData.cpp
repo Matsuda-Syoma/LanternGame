@@ -16,6 +16,10 @@ float UserData::LoadData(int i)
 		strcpy_s(name, "Resources/hiscore.csv");
 		strcat_s(name, "\0");
 		break;
+	case 2:
+		strcpy_s(name, "Resources/sounds.csv");
+		strcat_s(name, "\0");
+		break;
 	}
 
 	// ファイルオープン
@@ -45,6 +49,10 @@ int UserData::SaveData(int i, float data)
 		break;
 	case 1:
 		strcpy_s(name, "Resources/hiscore.csv");
+		strcat_s(name, "\0");
+		break;
+	case 2:
+		strcpy_s(name, "Resources/sounds.csv");
 		strcat_s(name, "\0");
 		break;
 	}

@@ -17,6 +17,7 @@ GameMain::GameMain()
 	AddScore::LoadImages();
 	hiscore = (int)UserData::LoadData(1);		// ハイスコア読み込み
 	//BGMをループしながら再生する
+	//SetVolumeSoundMem(255 * 39.216, Sounds::BGM_GMain);
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
 /*******************初期化*******************/
@@ -638,7 +639,6 @@ AbstractScene* GameMain::Update()
 							else
 							{
 								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 50));
-								printfDx("%f ", player->GetNormalSpeed());
 							}
 							SE_HitFlg = true;
 							bomb[i]->SetExpFlg(true);
