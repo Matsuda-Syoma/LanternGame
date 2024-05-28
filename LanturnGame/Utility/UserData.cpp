@@ -7,77 +7,7 @@
 char UserData::buf[1024];
 char UserData::c;
 
-
-float UserData::LoadData(int i)
-{
-	float temp = 0;
-	FILE* fp = nullptr;
-	char name[64] = { "\0" };
-	switch (i) {
-	case 0:
-		strcpy_s(name, "Resources/setting.csv");
-		strcat_s(name,"\0");
-		break;
-	case 1:
-		strcpy_s(name, "Resources/hiscore.csv");
-		strcat_s(name, "\0");
-		break;
-	case 2:
-		strcpy_s(name, "Resources/sounds.csv");
-		strcat_s(name, "\0");
-		break;
-	}
-
-	// ファイルオープン
-	int result = fopen_s(&fp, name, "r");
-
-	// エラーチェック
-	if (result != 0) {
-		printf("err : LoadData");
-		return -1.f;
-	}
-
-	fscanf_s(fp, "%f,\n", &temp);
-
-	//ファイルクローズ
-	fclose(fp);
-	return temp;
-}
-
-int UserData::SaveData(int i, float data)
-{
-	FILE* fp = nullptr;
-	char name[64] = { "\0" };
-	switch (i) {
-	case 0:
-		strcpy_s(name, "Resources/setting.csv");
-		strcat_s(name, "\0");
-		break;
-	case 1:
-		strcpy_s(name, "Resources/hiscore.csv");
-		strcat_s(name, "\0");
-		break;
-	case 2:
-		strcpy_s(name, "Resources/sounds.csv");
-		strcat_s(name, "\0");
-		break;
-	}
-
-	// ファイルオープン
-	int result = fopen_s(&fp, name, "w");
-
-	//エラーチェック
-	if (result != 0)
-	{
-		printf("err : SaveData");
-		return -1;
-	}
-	fprintf(fp, "%f,\n", data);
-	fclose(fp);
-	return 0;
-}
-
-float UserData::Test(int filenum, int num)
+float UserData::LoadData(int filenum, int num)
 {
 	float temp = 0;
 	FILE* fp = nullptr;
@@ -161,13 +91,37 @@ float UserData::Test(int filenum, int num)
 	return temp;
 }
 
-float UserData::Test2(int filenum, int num, float data)
+float UserData::LoadData(int filenum)
 {
-	// ファイル読み込み
+	return LoadData(filenum, 0);
+}
+
+float UserData::SaveData(int filenum, int num, float data)
+{
 	FILE* fp = nullptr;
-	fopen_s(&fp, "Resources/sounds.csv", "r");
-	if (fp == NULL)
+	char name[64] = { "\0" };
+	switch (filenum) {
+	case 0:
+		strcpy_s(name, "Resources/setting.csv");
+		strcat_s(name, "\0");
+		break;
+	case 1:
+		strcpy_s(name, "Resources/hiscore.csv");
+		strcat_s(name, "\0");
+		break;
+	case 2:
+		strcpy_s(name, "Resources/sounds.csv");
+		strcat_s(name, "\0");
+		break;
+	}
+
+	// ファイルオープン
+	int result = fopen_s(&fp, name, "w");
+
+	//エラーチェック
+	if (result != 0)
 	{
+		printf("err : SaveData");
 		return -1;
 	}
 
@@ -236,10 +190,12 @@ float UserData::Test2(int filenum, int num, float data)
 	strcat_s(charbuf[0], 128, charbuf[1]);
 
 	// ファイルを開く
-	fopen_s(&fp, "Resources/sounds.csv", "w");
+	result = fopen_s(&fp, name, "w");
 
-	if (fp == NULL)
+	//エラーチェック
+	if (result != 0)
 	{
+		printf("err : SaveData");
 		return -1;
 	}
 

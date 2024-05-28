@@ -13,9 +13,8 @@ public:
 	};
 	UserData(){}
 	~UserData(){}
-	static float LoadData(int i);
-	static int SaveData(int i, float data);
-	static float Test(int filenum, int num);
-	static float Test2(int filenum, int num, float data);
+	static float LoadData(int filenum, int num);
+	static float LoadData(int filenum);
+	static float SaveData(int filenum, int num, float data);
 };
 

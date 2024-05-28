@@ -15,9 +15,7 @@ GameMain::GameMain()
 	Tornado::LoadImages();
 	ComboEnd::LoadImages();
 	AddScore::LoadImages();
-	hiscore = (int)UserData::LoadData(1);		// ハイスコア読み込み
-
-	float a = UserData::Test2(UserData::Type::SOUNDS, 0, 0.75);
+	hiscore = (int)UserData::LoadData(UserData::Type::HISCORE);		// ハイスコア読み込み
 
 	//BGMをループしながら再生する
 	//SetVolumeSoundMem(255 * 39.216, Sounds::BGM_GMain);
@@ -1039,7 +1037,7 @@ AbstractScene* GameMain::Update()
 			// 最大スコアよりスコアが大きいなら保存する
 			if (score > hiscore)
 			{
-				UserData::SaveData(1, (float)score);
+				UserData::SaveData(UserData::Type::SETTING, 0, (float)score);
 				highscoreflg = true;
 			}
 			resultnewflg = true;

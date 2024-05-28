@@ -9,7 +9,7 @@
 using namespace std;
 Setting::Setting()
 {
-	deadzone = UserData::LoadData(0);
+	deadzone = UserData::LoadData(UserData::Type::SETTING);
 
 }
 
@@ -81,7 +81,7 @@ AbstractScene* Setting::Update()
 		case 2:
 			break;
 		case 3:
-			UserData::SaveData(0, deadzone);
+			UserData::SaveData(UserData::Type::SETTING, 0, deadzone);
 			return new Title;
 			break;
 		}
@@ -89,7 +89,7 @@ AbstractScene* Setting::Update()
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_B))
 	{
 		PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
-		UserData::SaveData(0, deadzone);
+		UserData::SaveData(UserData::Type::SETTING, 0, deadzone);
 		return new Title;
 	}
 	return this;
