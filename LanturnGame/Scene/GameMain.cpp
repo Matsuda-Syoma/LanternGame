@@ -369,6 +369,10 @@ AbstractScene* GameMain::Update()
 				soldier[i]->Upadate(player->GetLocation());
 				soldier[i]->GetMapSize(MapSize);
 				soldier[i]->SetVelocity(1);
+				if (soldier[i]->ChekmoveFlg() == false)
+				{
+						//soldier[i]->SetmoveFlg(true);
+				}
 			}
 			else
 			{
@@ -813,15 +817,18 @@ AbstractScene* GameMain::Update()
 				{
 					if (player->GetFlg() == false && soldier[i]->ChekhitFlg() == true)
 					{
-						life--;
+						/*life--;*/
 						hitmoment = true;
 						player->SetFlg(true);
-						PlaySoundMem(Sounds::SE_CatchiPlayer, DX_PLAYTYPE_BACK);
 						soldier[i]->SetDMGflg(false);
-						if (CheckSoundMem(Sounds::SE_CatchiPlayer) == 0)
+						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
 						{
-							StopSoundMem(Sounds::SE_CatchiPlayer);
+							if (soldier[i] != soldier[c])
+							{
+								soldier[c]->SetmoveFlg(false);
+							}
 						}
+
 					}
 					else//無敵状態なら兵隊が反発する
 					{
@@ -1294,6 +1301,8 @@ void GameMain::Draw() const
 	// リザルトなら
 	else
 	{
+		DrawGraph(0, 0, blackimage, false);
+
 		if (highscoreflg == true)
 		{
 			DrawGraph(0, 0, highscoreimage, true);

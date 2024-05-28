@@ -8,6 +8,7 @@ private:
 	Vector2D lastinput = 0;
 	bool pflg = true;			// 生存フラグ
 	bool hitflg = false;		// ヒットフラグ
+	bool hit_soldier = false;
 	bool overice = false;
 	bool onconveyor = false;
 	bool blinkingflg = false;	// 点滅フラグ
@@ -21,6 +22,7 @@ private:
 	int stopdirection = 4;		// 歩行中の向き（４：下　５：左　６：右　７：上）
 	int pointflg = 0;
 	int countflg = 0;
+	int stan = 0;
 	float deadzone = 0.1f;
 	float acceleration = 1.f;
 	float friction = .8f;
@@ -48,6 +50,7 @@ public:
 	void SetIceFlg(bool b);
 	bool GetConFlg() const;
 	void SetConFlg(bool b);
+	void SetHitSoldier(bool b);
 	Vector2D GetVelocity();
 	void SetVelocity(Vector2D loc);
 	void SetLastInput();
