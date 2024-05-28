@@ -39,7 +39,6 @@ void Player::Update()
 	}
 	else {
 
-		velocity.x++;
 	}
 
 	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
