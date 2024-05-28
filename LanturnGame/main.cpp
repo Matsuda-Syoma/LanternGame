@@ -27,7 +27,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// 描画先画面を裏にする（ダブルバッファリング）
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	SceneManager scene = (dynamic_cast<AbstractScene*>(new Title()));
+	SceneManager scene = (dynamic_cast<AbstractScene*>(new GameMain()));
 
 	FpsController FPSct(FRAMERATE, UPDATETIME);
 

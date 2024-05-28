@@ -35,5 +35,9 @@ static float Normalize(Vector2D loc, Vector2D loc2)
 {
 	float rx = loc2.x - loc.x;
 	float ry = loc2.y - loc.y;
-	return atan2f(rx, ry) * 180.0f / 3.14159265358979323846f;
+	return atan2f(rx, ry) * -180.0f / 3.14159265358979323846f;
 }
+
+//Vector2D temp = loc - loc2;
+//angle = atan2f(temp.y, temp.x);
+//imageangle = atan2f(temp.y, temp.x);

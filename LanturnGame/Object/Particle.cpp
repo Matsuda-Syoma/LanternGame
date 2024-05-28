@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-int Particle::images[5][30];
+int Particle::images[6][30];
 Particle::Particle()
 {
 }
@@ -73,6 +73,10 @@ int Particle::LoadImages()
 	ret = LoadDivGraph("Resources/images/explosion_2.png", 30, 6, 5, 128, 128, images[2]);
 	ret = LoadDivGraph("Resources/images/exp.png", 30, 6, 5, 256, 256, images[3]);
 	ret = LoadDivGraph("Resources/images/smoke.png", 30, 6, 5, 32, 32, images[4]);
+	for (int i = 0; i < 30; i++)
+	{
+		images[5][i] = LoadGraph("Resources/images/ci-export.png");
+	}
 	return ret;
 }
 
@@ -90,8 +94,8 @@ void Particle::SetAngle(Vector2D loc, Vector2D loc2)
 
 void Particle::SetAngle(float _angle)
 {
-	angle = ((-90 - _angle) * (float)M_PI * 2) / 360;
-	imageangle = -(_angle * (float)M_PI * 2) / 360;
+	angle = ((-90 - _angle) * (float)M_PI) / 180;
+	imageangle = -(_angle * (float)M_PI) / 180;
 }
 
 void Particle::Init(int _type, SphereCollider * _root, bool _loop, float _scale)

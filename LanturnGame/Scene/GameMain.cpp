@@ -641,7 +641,11 @@ AbstractScene* GameMain::Update()
 							}
 							SE_HitFlg = true;
 							bomb[i]->SetExpFlg(true);
-							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.5f, 0.f);
+							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
+							for (int j = 0; j < 7; j++)
+							{
+								SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(),(GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
+							}
 							//SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f, 0.f);
 							SetCameraShake(7);
 					}
