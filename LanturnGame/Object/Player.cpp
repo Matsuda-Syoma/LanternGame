@@ -75,31 +75,36 @@ void Player::Update()
 		Blinking();
 	}
 
-	// プレイヤーアニメーション
-	if (direction == 0) {	// 下移動
-		MoveDown();
+	if (hit_soldier == false)
+	{
+		// プレイヤーアニメーション
+		if (direction == 0) {	// 下移動
+			MoveDown();
+		}
+		else if (direction == 2) {	// 右移動
+			MoveRight();
+		}
+		else if (direction == 1) {	// 左移動
+			MoveLeft();
+		}
+		else if (direction == 3) {	// 上移動
+			MoveUp();
+		}
+		else if (direction == 4) {	// 下停止
+			imgnum = 1;
+		}
+		else if (direction == 6) {	// 右停止
+			imgnum = 7;
+		}
+		else if (direction == 5) {	// 左停止
+			imgnum = 4;
+		}
+		else if (direction == 7) {	// 上停止
+			imgnum = 10;
+		}
 	}
-	else if (direction == 2) {	// 右移動
-		MoveRight();
-	}
-	else if (direction == 1) {	// 左移動
-		MoveLeft();
-	}
-	else if (direction == 3) {	// 上移動
-		MoveUp();
-	}
-	else if (direction == 4) {	// 下停止
-		imgnum = 1;
-	}
-	else if (direction == 6) {	// 右停止
-		imgnum = 7;
-	}
-	else if (direction == 5) {	// 左停止
-		imgnum = 4;
-	}
-	else if (direction == 7) {	// 上停止
-		imgnum = 10;
-	}
+
+	
 
 }
 
@@ -255,35 +260,35 @@ void Player::Movement()
 
 	}
 	// 氷に乗っているとき
-	else {
+	//else {
 
-		// 右移動
-		if (InputControl::GetLeftStick().x > 0.2)
-		{
-			direction = 2;
-			stopdirection = 6;
-		}
-		// 左移動
-		if (InputControl::GetLeftStick().x < -0.2)
-		{
-			direction = 1;
-			stopdirection = 5;
-		}
-		// 上移動
-		if (InputControl::GetLeftStick().y > 0.2)
-		{
-			direction = 3;
-			stopdirection = 7;
-		}
-		// 下移動
-		if (InputControl::GetLeftStick().y < -0.2)
-		{
-			direction = 0;
-			stopdirection = 4;
-		}
+	//	// 右移動
+	//	if (InputControl::GetLeftStick().x > 0.2)
+	//	{
+	//		direction = 2;
+	//		stopdirection = 6;
+	//	}
+	//	// 左移動
+	//	if (InputControl::GetLeftStick().x < -0.2)
+	//	{
+	//		direction = 1;
+	//		stopdirection = 5;
+	//	}
+	//	// 上移動
+	//	if (InputControl::GetLeftStick().y > 0.2)
+	//	{
+	//		direction = 3;
+	//		stopdirection = 7;
+	//	}
+	//	// 下移動
+	//	if (InputControl::GetLeftStick().y < -0.2)
+	//	{
+	//		direction = 0;
+	//		stopdirection = 4;
+	//	}
 
-		direction = stopdirection;
-	}
+	//	direction = stopdirection;
+	//}
 
 	// 立ち止まっているとき（アニメーション）
 	// 左スティックが入力されていなかったら
