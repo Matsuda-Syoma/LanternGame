@@ -50,6 +50,7 @@ private:
 	int alphabetimage[26];
 	int resultimage;
 	int highscoreimage;
+	int blackimage;
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;
@@ -69,6 +70,8 @@ private:
 	int c_cun = 0;
 	int f_cun = 0;
 	int countdown = 4;
+	int alpha = 0;
+	double countsize = 3.0;
 
 	Vector2D ev;
 	float l;
