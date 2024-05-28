@@ -246,6 +246,8 @@ GameMain::GameMain()
 	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
 	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
 	resultimage = LoadGraph("Resources/images/result.png", 0);
+	highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
+	blackimage = LoadGraph("Resources/images/black.png", 0);
 	
 }
 
@@ -264,15 +266,13 @@ AbstractScene* GameMain::Update()
 {
 	// 文字の表示
 	textdisp->Update();
-
-	// プレイヤーが生きているかつ文字のフラグがたっていないならゲームを動かす
-	if (player->GetPFlg() == true && !textdisp->GetFlg()) {
+	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
 		// 曲が鳴っていないなら鳴らす
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
-			ChangeVolumeSoundMem(100, Sounds::BGM_GMain);
+			ChangeVolumeSoundMem(150, Sounds::BGM_GMain);
 		}
 
 		// プレイヤーの更新
@@ -943,24 +943,27 @@ AbstractScene* GameMain::Update()
 		// カメラアップデート
 		CameraUpdate();
 
+
 		// 残機が0ならリザルトフラグを立てる
 
 		if (life == 0)
 		{
-			player->SetPFlg(false);
-
+			
+				player->SetPFlg(false);
 		}
 
 	}
 	// 残機が０になったら
-	else if(player->GetPFlg() == false && resultflg == false){
+	if(player->GetPFlg() == false && resultflg == false){
 		StopSoundMem(Sounds::BGM_GMain);
 		r_cun++;
+		alpha += 3;
+
 		switch (r_cun)
 		{
 		case(0):
 			break;
-		case(150):
+		case(130):
 			resultflg = true;
 			break;
 		default:
@@ -968,16 +971,63 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	// リザルトフラグがたっているなら
+	// カウントダウン（３秒）
+	if (countdownflg == true && !textdisp->GetFlg())
+	{
+		c_cun++;
+		switch (c_cun)
+		{
+		case(1):
+		case(60):
+		case(120):
+			countdown--;
+			countsize = 3.0;
+			PlaySoundMem(Sounds::SE_CntDown, DX_PLAYTYPE_BACK);
+			break;
+		case(180):
+			countdown--;
+			countsize = 2.5;
+			countdownflg = false;
+			break;
+		default:
+			break;
+		}
 
+		if (countsize >= 2.0)
+		{
+			countsize -= 0.1;
+		}
+
+	}
+	// １秒間「START」表示
+	else if (countdown == 0)
+	{
+		c_cun++;
+		switch (c_cun)
+		{
+		case(240):
+			countdown = 4;
+			break;
+		}
+
+		if (countsize >= 1.5)
+		{
+			countsize -= 0.1;
+		}
+	}
+
+	// フェードアウト
+	if (alpha > 0 && resultflg == true)
+	{
+		alpha -= 10;
+	}
+
+	// リザルトフラグがたっているなら
 	if (resultflg == true)
 	{
 		//if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
 		//	life = 3;
 		//	resultflg = false;
-
-		//}
-
 
 		// 一回だけ動く
 		if (!resultnewflg)
@@ -986,6 +1036,7 @@ AbstractScene* GameMain::Update()
 			if (score > hiscore)
 			{
 				UserData::SaveData(1, (float)score);
+				highscoreflg = true;
 			}
 			resultnewflg = true;
 		}
@@ -1002,7 +1053,7 @@ AbstractScene* GameMain::Update()
 
 void GameMain::Draw() const
 {
-	
+
 	// 背景
 	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2); i++)
 	{
@@ -1195,6 +1246,7 @@ void GameMain::Draw() const
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+
 	// リザルトじゃないなら
 	if (resultflg == false)
 	{
@@ -1205,8 +1257,14 @@ void GameMain::Draw() const
 	// リザルトなら
 	else
 	{
-
-		DrawGraph(0, 0, resultimage, true);
+		if (highscoreflg == true)
+		{
+			DrawGraph(0, 0, highscoreimage, true);
+		}
+		else {
+			DrawGraph(0, 0, resultimage, true);
+		}
+		
 		char res[] = "result\0";
 		for (int i = 0; i < sizeof(res); i++)
 		{
@@ -1228,7 +1286,29 @@ void GameMain::Draw() const
 		}
 	}
 
+	// カウントダウン（数字）
+	if (countdownflg == true && countdown < 4)
+	{
+		DrawRotaGraph(SCREEN_WIDTH / 2, 260, countsize, 0.0, numimage[countdown], true);
+	}
+	// カウントダウン（START）
+	else if (countdown == 0)
+	{
+		char res3[] = "start\0";
+		for (int i = 0; i < sizeof(res3); i++)
+		{
+			int chr = res3[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 750) + 56 * i, 270, countsize, 0.0, alphabetimage[chr], true);
+		}
+	}
+
 	textdisp->Draw();
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+	DrawGraph(0, 0, blackimage, false);
+	//画像透かし終わり
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 
 }
 
