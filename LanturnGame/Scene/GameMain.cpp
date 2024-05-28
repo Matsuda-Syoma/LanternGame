@@ -763,9 +763,10 @@ AbstractScene* GameMain::Update()
 				{
 					if (player->GetFlg() == false && soldier[i]->ChekhitFlg() == true)
 					{
-						life--;
+						/*life--;*/
 						hitmoment = true;
-						player->SetFlg(true);
+						//player->SetFlg(true);
+						player->SetHitSoldier(true);
 						PlaySoundMem(Sounds::SE_CatchiPlayer, DX_PLAYTYPE_BACK);
 						soldier[i]->SetDMGflg(false);
 						if (CheckSoundMem(Sounds::SE_CatchiPlayer) == 0)

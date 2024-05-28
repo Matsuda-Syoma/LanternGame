@@ -43,11 +43,26 @@ void Player::Update()
 	}
 
 	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
-	if (pflg == true)
+	if (pflg == true && hit_soldier == false)
 	{
 		Movement();
 		location += velocity;
 		location += exvelocity;
+
+	}
+	else if (hit_soldier == true)
+	{
+
+		if (stan <= 90)
+		{
+			stan++;
+		}
+		else
+		{
+			hit_soldier = false;
+			stan = 0;
+		}
+
 
 	}
 	//}
@@ -176,7 +191,7 @@ void Player::Movement()
 
 
 	// 氷の上に乗っていない時
-	if (overice == false) {
+	if (hit_soldier == false) {
 		// 左右アニメーション
 		if (velocity.x == 0)
 		{
@@ -469,6 +484,12 @@ void Player::SetConFlg(bool b)
 {
 	this->onconveyor = b;
 }
+
+void Player::SetHitSoldier(bool b)
+{
+	this->hit_soldier = b;
+}
+
 Vector2D Player::GetVelocity()
 {
 	return this->velocity;
