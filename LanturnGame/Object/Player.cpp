@@ -137,7 +137,7 @@ void Player::Movement()
 	}
 
 	// 移動ベクトルの大きさの計算
-	float movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
+	movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
 
 	// 最大速度を超えないように
 	if (movelength > speed)
@@ -499,4 +499,9 @@ void Player::SetLastInput()
 			lastinput.y = (-InputControl::GetLeftStick().y + deadzone);
 		}
 	}
+}
+
+float Player::GetNormalSpeed()
+{
+	return this->movelength / speed;
 }

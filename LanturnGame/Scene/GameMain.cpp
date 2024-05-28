@@ -633,11 +633,12 @@ AbstractScene* GameMain::Update()
 							vvec /= length;
 							if (!bomb[i]->GetExpFlg())
 							{
-								bomb[i]->SetKnockBack(vvec, 20);
+								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 20));
 							}
 							else
 							{
-								bomb[i]->SetKnockBack(vvec, 50);
+								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 50));
+								printfDx("%f ", player->GetNormalSpeed());
 							}
 							SE_HitFlg = true;
 							bomb[i]->SetExpFlg(true);
@@ -831,7 +832,7 @@ AbstractScene* GameMain::Update()
 					float length = GetLength(player->GetLocation(), tornado[i]->GetLocation());
 					Vector2D vvec = (tornado[i]->GetLocation() - player->GetLocation());
 					vvec /= length;
-					player->SetVelocity(vvec * 2);
+					player->SetVelocity(vvec * 2.5);
 				}
 			}
 
