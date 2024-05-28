@@ -320,6 +320,10 @@ AbstractScene* GameMain::Update()
 				soldier[i]->Upadate(player->GetLocation());
 				soldier[i]->GetMapSize(MapSize);
 				soldier[i]->SetVelocity(1);
+				if (soldier[i]->ChekmoveFlg() == false)
+				{
+						//soldier[i]->SetmoveFlg(true);
+				}
 			}
 			else
 			{
@@ -773,13 +777,6 @@ AbstractScene* GameMain::Update()
 							if (soldier[i] != soldier[c])
 							{
 								soldier[c]->SetmoveFlg(false);
-								int Count=0;
-								Count++;
-								if (180 <= Count)
-								{
-									soldier[c]->SetmoveFlg(true);
-								}
-								
 							}
 						}
 

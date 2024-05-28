@@ -93,6 +93,15 @@ void Soldier::Move(Vector2D PL)
 		location += knockback;
 		location += velocity * move;
 	}
+	else
+	{
+		countNum++;
+		if (240 <= countNum)
+		{
+			moveFlg = true;
+			countNum = 0;
+		}
+	}
 	//移動速度の処理
 	if (length.x < 0 && move.x < EMMAX)
 	{
