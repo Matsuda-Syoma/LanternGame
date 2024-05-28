@@ -766,14 +766,23 @@ AbstractScene* GameMain::Update()
 					{
 						/*life--;*/
 						hitmoment = true;
-						//player->SetFlg(true);
-						player->SetHitSoldier(true);
-						PlaySoundMem(Sounds::SE_CatchiPlayer, DX_PLAYTYPE_BACK);
+						player->SetFlg(true);
 						soldier[i]->SetDMGflg(false);
-						if (CheckSoundMem(Sounds::SE_CatchiPlayer) == 0)
+						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
 						{
-							StopSoundMem(Sounds::SE_CatchiPlayer);
+							if (soldier[i] != soldier[c])
+							{
+								soldier[c]->SetmoveFlg(false);
+								int Count=0;
+								Count++;
+								if (180 <= Count)
+								{
+									soldier[c]->SetmoveFlg(true);
+								}
+								
+							}
 						}
+
 					}
 					else//無敵状態なら兵隊が反発する
 					{
