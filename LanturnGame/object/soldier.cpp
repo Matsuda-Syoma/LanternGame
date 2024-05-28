@@ -38,10 +38,10 @@ void Soldier::Upadate(Vector2D PL)
 	{
 	
 		hitFlg = false;
-		if (Muflg == 0)
+		if (Musicflg == 0)
 		{
 			PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
-			Muflg = 1;
+			Musicflg = 1;
 		}
 		
 		countNum++;
@@ -88,9 +88,11 @@ void Soldier::Move(Vector2D PL)
 		knockback /= 1.1f;
 	}
 
-	location += knockback;
-	location += velocity * move;
-
+	if (moveFlg == true)
+	{
+		location += knockback;
+		location += velocity * move;
+	}
 	//移動速度の処理
 	if (length.x < 0 && move.x < EMMAX)
 	{
@@ -175,4 +177,13 @@ bool Soldier::ChekDLflg()
 bool Soldier::ChekhitFlg()
 {
 	return hitFlg;
+}
+
+void Soldier::SetmoveFlg(bool i)
+{
+	moveFlg = i;
+}
+bool Soldier::ChekmoveFlg()
+{
+	return moveFlg;
 }
