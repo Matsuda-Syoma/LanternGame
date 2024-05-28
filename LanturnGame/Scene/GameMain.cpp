@@ -1243,6 +1243,8 @@ void GameMain::Draw() const
 	// リザルトなら
 	else
 	{
+		DrawGraph(0, 0, blackimage, false);
+
 		if (highscoreflg == true)
 		{
 			DrawGraph(0, 0, highscoreimage, true);
