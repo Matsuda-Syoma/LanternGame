@@ -42,9 +42,13 @@ void Player::Update()
 	}
 
 	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
+	if (pflg == true)
+	{
 		Movement();
 		location += velocity;
 		location += exvelocity;
+
+	}
 	//}
 	//else {
 	//	LineTrace();

@@ -248,6 +248,7 @@ GameMain::GameMain()
 	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
 	resultimage = LoadGraph("Resources/images/result.png", 0);
 	highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
+	blackimage = LoadGraph("Resources/images/black.png", 0);
 	
 }
 
@@ -266,13 +267,13 @@ AbstractScene* GameMain::Update()
 {
 	// 文字の表示
 	textdisp->Update();
-	if (player->GetPFlg() == true && !textdisp->GetFlg() && countdownflg == false) {
+	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
 		// 曲が鳴っていないなら鳴らす
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
-			ChangeVolumeSoundMem(100, Sounds::BGM_GMain);
+			ChangeVolumeSoundMem(150, Sounds::BGM_GMain);
 		}
 
 		// プレイヤーの更新
@@ -934,27 +935,22 @@ AbstractScene* GameMain::Update()
 
 		if (life == 0)
 		{
-			f_cun++;
-			switch (f_cun)
-			{
-			case(16):
+			
 				player->SetPFlg(false);
-				break;
-			default:
-				break;
-			}
 		}
 
 	}
 	// 残機が０になったら
-	else if(player->GetPFlg() == false && resultflg == false){
+	if(player->GetPFlg() == false && resultflg == false){
 		StopSoundMem(Sounds::BGM_GMain);
 		r_cun++;
+		alpha += 3;
+
 		switch (r_cun)
 		{
 		case(0):
 			break;
-		case(150):
+		case(130):
 			resultflg = true;
 			break;
 		default:
@@ -972,14 +968,23 @@ AbstractScene* GameMain::Update()
 		case(60):
 		case(120):
 			countdown--;
+			countsize = 3.0;
+			PlaySoundMem(Sounds::SE_CntDown, DX_PLAYTYPE_BACK);
 			break;
 		case(180):
 			countdown--;
+			countsize = 2.5;
 			countdownflg = false;
 			break;
 		default:
 			break;
 		}
+
+		if (countsize >= 2.0)
+		{
+			countsize -= 0.1;
+		}
+
 	}
 	// １秒間「START」表示
 	else if (countdown == 0)
@@ -991,18 +996,25 @@ AbstractScene* GameMain::Update()
 			countdown = 4;
 			break;
 		}
+
+		if (countsize >= 1.5)
+		{
+			countsize -= 0.1;
+		}
+	}
+
+	// フェードアウト
+	if (alpha > 0 && resultflg == true)
+	{
+		alpha -= 10;
 	}
 
 	// リザルトフラグがたっているなら
-
 	if (resultflg == true)
 	{
 		//if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
 		//	life = 3;
 		//	resultflg = false;
-
-		//}
-
 
 		// 一回だけ動く
 		if (!resultnewflg)
@@ -1028,7 +1040,7 @@ AbstractScene* GameMain::Update()
 
 void GameMain::Draw() const
 {
-	
+
 	// 背景
 	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2); i++)
 	{
@@ -1262,7 +1274,7 @@ void GameMain::Draw() const
 	// カウントダウン（数字）
 	if (countdownflg == true && countdown < 4)
 	{
-		DrawRotaGraph(SCREEN_WIDTH / 2, 260, 2.0, 0.0, numimage[countdown], true);
+		DrawRotaGraph(SCREEN_WIDTH / 2, 260, countsize, 0.0, numimage[countdown], true);
 	}
 	// カウントダウン（START）
 	else if (countdown == 0)
@@ -1271,11 +1283,17 @@ void GameMain::Draw() const
 		for (int i = 0; i < sizeof(res3); i++)
 		{
 			int chr = res3[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 750) + 56 * i, 270, 1.5, 0.0, alphabetimage[chr], true);
+			DrawRotaGraph((SCREEN_WIDTH - 750) + 56 * i, 270, countsize, 0.0, alphabetimage[chr], true);
 		}
 	}
 
 	textdisp->Draw();
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+	DrawGraph(0, 0, blackimage, false);
+	//画像透かし終わり
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 
 }
 

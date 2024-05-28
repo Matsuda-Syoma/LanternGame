@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "common.h"
 #include "InputControl.h"
+#include "../Utility/LoadSounds.h"
 
 char TextDisp::temp[16][64];
 TextDisp::TextDisp()
@@ -51,6 +52,7 @@ void TextDisp::Update()
 			CenterX = 0;
 			memset(buf, 0, sizeof(buf));
 			p = temp[++textorder];
+			PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
 		}
 		else
 		{
