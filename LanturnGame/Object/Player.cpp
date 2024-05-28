@@ -14,6 +14,7 @@ Player::~Player()
 {
 	DeleteGraph(*playerimg);
 	DeleteGraph(d_playerimg);
+	DeleteGraph(angryimg);
 }
 
 void Player::Init()
@@ -127,7 +128,7 @@ void Player::Draw(int camerashake) const
 	}
 	else if (pflg == true && hit_soldier == true)
 	{
-		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, angryimg, true);
+		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.1, 0.0, angryimg, true);
 	}
 	
 	// 元の描画を取得
