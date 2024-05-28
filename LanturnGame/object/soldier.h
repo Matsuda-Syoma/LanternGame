@@ -45,7 +45,7 @@ private:
 	Vector2D velocity = 0;
 	int CD;//中心点の距離
 	int soldierimg[12];//画像イメージ
-	int soldierDetimg[12];//画像イメージ
+	int soldierDetimg;//画像イメージ
 	int Velimg = 0;//画像の向き
 	bool dmgflg = false;
 	int countNum = 0;//再生成までの時間を測る
