@@ -78,6 +78,7 @@ GameMain::GameMain()
 		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 		{
 			conveyor[i]->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+			conveyor[i]->Update();
 		}
 	}
 	player->Init();
@@ -810,10 +811,10 @@ AbstractScene* GameMain::Update()
 		player->SetConFlg(false);
 		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 		{
-			if (conveyor[i]->HitSphere(player))
+			conveyor[i]->Update();
+			if (conveyor[i]->HitSphere(*player))
 			{
-				printf("こんべあー\n");
-				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y));
+				player->SetLocation(Vector2D(player->GetLocation().x + 2, player->GetLocation().y));
 				/*if (player->GetConFlg() == false) {
 					player->SetConFlg(true);
 				}*/
@@ -1060,7 +1061,7 @@ void GameMain::Draw() const
 		}
 	}
 
-
+	//ギミック(氷)
     for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
 	{
 		// nullptrじゃないなら
