@@ -16,6 +16,9 @@ GameMain::GameMain()
 	ComboEnd::LoadImages();
 	AddScore::LoadImages();
 	hiscore = (int)UserData::LoadData(1);		// ハイスコア読み込み
+
+	float a = UserData::Test2(UserData::Type::SOUNDS, 0, 0.75);
+
 	//BGMをループしながら再生する
 	//SetVolumeSoundMem(255 * 39.216, Sounds::BGM_GMain);
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
