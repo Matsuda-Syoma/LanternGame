@@ -39,7 +39,7 @@ void Sounds::LoadSounds() {
 
 	SE_CntDown = LoadSoundMem("Resources/sounds/SE_CountDwon.mp3");
 
-	SE_NextText = LoadSoundMem("Resources/sounds/SE_NextText.mp3");
+	//SE_NextText = LoadSoundMem("Resources/sounds/SE_NextText.mp3");
 }
 
 void Sounds::AllStop() {
