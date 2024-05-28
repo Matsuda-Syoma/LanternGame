@@ -13,4 +13,5 @@ public:
     void Update();      //•`‰æˆÈŠO‚Ìˆ—
     void Draw(Vector2D loc)const;   //•`‰æˆ—
     void SetLocation(Vector2D loc);
+    Vector2D GetLocation() const;
 };

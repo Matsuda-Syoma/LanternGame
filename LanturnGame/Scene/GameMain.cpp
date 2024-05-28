@@ -77,8 +77,47 @@ GameMain::GameMain()
 		}
 		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 		{
-			conveyor[i]->SetLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-			conveyor[i]->Update();
+			while (1)
+			{
+				// 初期値
+				float length = 65535;
+				bool ret = false;
+				Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+
+				// コンベアを見る
+				for (int j = 0; j < GM_MAX_CONVEYOR; j++)
+				{
+					// 自分以外なら
+					if (j != i)
+					{
+						// 距離を計算
+						length = GetLength(conveyor[j]->GetLocation(), spawnloc);
+						// 360より短いならだめ:フラグon
+						if (length < 360) {
+							ret = true;
+							break;
+						}
+					}
+				}
+				for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
+				{
+						// 距離を計算
+						length = GetLength(stage[j]->GetLocation(), spawnloc);
+						// 360より短いならだめ:フラグon
+						if (length < 500) {
+							ret = true;
+							break;
+						}
+				}
+				// フラグ0ffなら座標指定してるーぷぬける
+				if (!ret)
+				{
+					conveyor[i]->SetLocation(spawnloc);
+					conveyor[i]->Update();
+					break;
+				}
+			}
+			
 		}
 	}
 	player->Init();
@@ -212,6 +251,16 @@ GameMain::GameMain()
 				length = GetLength(stage[j]->GetLocation(), spawnloc);
 				// 360より短いなら:フラグon
 				if (length < 420) {
+					ret = true;
+					break;
+				}
+			}
+			for (int j = 0; j < GM_MAX_CONVEYOR; j++)
+			{
+				// 距離を計算
+				length = GetLength(conveyor[j]->GetLocation(), spawnloc);
+				// 360より短いなら:フラグon
+				if (length < 500) {
 					ret = true;
 					break;
 				}
@@ -1206,18 +1255,21 @@ void GameMain::Draw() const
 	// ミニマップ(ギミック(氷)
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
 	{
-		if (bomb[i] != nullptr)
+		if (stage[i] != nullptr)
 		{
 			DrawCircleAA(SCREEN_WIDTH - 128 + (stage[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (stage[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
 		}
 	}	
 
-	/*//ミニマップ(ギミック(コンベア))
-	for (int i = 0; i < GM_MAX_CONVEYOR; i++) {
-		if (bomb[i] != nullptr) {
-			DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
-		}
-	}*/
+	////ミニマップ(ギミック(コンベア))
+	//for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+	//{
+	//	if (conveyor[i] != nullptr) 
+	//	{
+	//		DrawBoxAA(SCREEN_WIDTH - 128 - (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 - (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 0x004488, true);
+	//		//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
+	//	}
+	//}
 	// ミニマップ(ギミック(氷)
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
 	{
