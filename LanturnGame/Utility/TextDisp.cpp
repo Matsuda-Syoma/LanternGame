@@ -47,12 +47,12 @@ void TextDisp::Update()
 	CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 	{
-		PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
 		if (textnum - 1 > textorder)
 		{
 			CenterX = 0;
 			memset(buf, 0, sizeof(buf));
 			p = temp[++textorder];
+			PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
 		}
 		else
 		{
