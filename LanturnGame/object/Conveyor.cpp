@@ -29,3 +29,8 @@ void Conveyor::SetLocation(Vector2D loc)
 {
 	this->location = loc;
 }
+
+Vector2D Conveyor::GetLocation() const
+{
+	return location;
+}
