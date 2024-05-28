@@ -20,6 +20,7 @@ void Player::Init()
 {
 	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
 	d_playerimg = LoadGraph("Resources/images/player_death.png");
+	angryimg = LoadGraph("Resources/images/angry.png");
 }
 
 void Player::Update()
@@ -110,7 +111,7 @@ void Player::Update()
 
 void Player::Draw(int camerashake) const
 {
-	if (pflg == true) {
+	if (pflg == true && hit_soldier == false) {
 		if (blinkingflg == false)
 		{
 			DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
@@ -121,8 +122,12 @@ void Player::Draw(int camerashake) const
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 	}
-	else {
+	else if(pflg == false) {
 		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, d_playerimg, true);
+	}
+	else if (pflg == true && hit_soldier == true)
+	{
+		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, angryimg, true);
 	}
 	
 	// 元の描画を取得
