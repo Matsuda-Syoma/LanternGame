@@ -1131,21 +1131,7 @@ void GameMain::Draw() const
 	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)),-MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)),MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	// 兵士
-	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	{
-		// nullptrじゃないなら
-		if (soldier[i] != nullptr)
-		{
-			// 画面中なら描画
-			if (720 > fabsf(sqrtf(
-				powf((soldier[i]->GetLocation().x - player->GetLocation().x), 2) +
-				powf((soldier[i]->GetLocation().y - player->GetLocation().y), 2))))
-			{
-				soldier[i]->Draw(player->GetLocation() + +(float)Camerashake);
-			}
-		}
-	}
+	
 
 	//ギミック(氷)
     for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
@@ -1216,6 +1202,21 @@ void GameMain::Draw() const
 	// プレイヤー
 	player->Draw(Camerashake);
 
+	// 兵士
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
+	{
+		// nullptrじゃないなら
+		if (soldier[i] != nullptr)
+		{
+			// 画面中なら描画
+			if (720 > fabsf(sqrtf(
+				powf((soldier[i]->GetLocation().x - player->GetLocation().x), 2) +
+				powf((soldier[i]->GetLocation().y - player->GetLocation().y), 2))))
+			{
+				soldier[i]->Draw(player->GetLocation() + +(float)Camerashake);
+			}
+		}
+	}
 	
 	// パーティクル
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)
@@ -1259,23 +1260,7 @@ void GameMain::Draw() const
 	DrawBox(SCREEN_WIDTH - 128 - (GM_MAX_MAPSIZE / 16), 128 - (GM_MAX_MAPSIZE / 16), SCREEN_WIDTH - 128 + (GM_MAX_MAPSIZE / 16), 128 + (GM_MAX_MAPSIZE / 16), 0x8844ff, true);
 	DrawBoxAA(SCREEN_WIDTH - 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 0x88ff88, true);
 
-	// ミニマップ(爆弾)
-	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
-	{
-		if (bomb[i] != nullptr)
-		{
-			DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x7f2244, true);
-		}
-	}
-
-	// ミニマップ(兵士)
-	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	{
-		if (soldier[i] != nullptr)
-		{
-			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
-		}
-	}
+	
 
 	// ミニマップ(ギミック(氷)
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
@@ -1295,7 +1280,7 @@ void GameMain::Draw() const
 	//		//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
 	//	}
 	//}
-	// ミニマップ(ギミック(氷)
+	// ミニマップ(ギミック(台風)
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
 	{
 		if (tornado[i] != nullptr)
@@ -1310,7 +1295,23 @@ void GameMain::Draw() const
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+	// ミニマップ(爆弾)
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+	{
+		if (bomb[i] != nullptr)
+		{
+			DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x7f2244, true);
+		}
+	}
 
+	// ミニマップ(兵士)
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
+	{
+		if (soldier[i] != nullptr)
+		{
+			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
+		}
+	}
 	// リザルトじゃないなら
 	if (resultflg == false)
 	{
