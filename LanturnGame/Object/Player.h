@@ -27,6 +27,7 @@ private:
 	float deadzone = 0.1f;
 	float acceleration = 1.f;
 	float friction = .8f;
+	float movelength = 0.0f;
 public:
 	Player();
 	~Player();
@@ -55,5 +56,6 @@ public:
 	Vector2D GetVelocity();
 	void SetVelocity(Vector2D loc);
 	void SetLastInput();
+	float GetNormalSpeed();
 };
 

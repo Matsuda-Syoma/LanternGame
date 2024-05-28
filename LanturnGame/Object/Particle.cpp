@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-int Particle::images[4][30];
+int Particle::images[6][30];
 Particle::Particle()
 {
 }
@@ -16,27 +16,47 @@ Particle::~Particle()
 
 void Particle::Update()
 {
+	velocity.x = (speed * cosf(angle));
+	velocity.y = (speed * sinf(angle));
+	location += velocity;
+
 	if (root != nullptr) {
 		SetLocation(root->GetLocation() + addloc);
 	}
 	if (flg) {
-		if (count >= 29) {
+		if (lifetime >= 29) {
 			if (!loopflg) {
 				flg = false;
 			}
 			else {
-				count = 0;
+				lifetime = 0;
 			}
 		}
-		count++;
+		lifetime++;
 	}
+
 }
 
 void Particle::Draw(Vector2D loc) const
 {
 	if (flg) {
+		int OldDrawMode;
+		int OldDrawParam;
+		GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
+		if (type == 3)
+		{
+
+			SetDrawBright(color[0], color[1], color[2]);
+			//SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
+
+		}
 		DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2))
-					,  location.y + (-loc.y + (SCREEN_HEIGHT / 2)), scale, angle, images[type][count], true);
+					,  location.y + (-loc.y + (SCREEN_HEIGHT / 2)), scale, imageangle, images[type][lifetime], true);
+		if (type == 3)
+		{
+			SetDrawBright(255, 255, 255);
+		}
+		SetDrawBlendMode(OldDrawMode, OldDrawParam);
 	}
 
 }
@@ -52,6 +72,11 @@ int Particle::LoadImages()
 	ret = LoadDivGraph("Resources/images/fire.png", 30, 6, 5, 64, 64, images[1]);
 	ret = LoadDivGraph("Resources/images/explosion_2.png", 30, 6, 5, 128, 128, images[2]);
 	ret = LoadDivGraph("Resources/images/exp.png", 30, 6, 5, 256, 256, images[3]);
+	ret = LoadDivGraph("Resources/images/smoke.png", 30, 6, 5, 32, 32, images[4]);
+	for (int i = 0; i < 30; i++)
+	{
+		images[5][i] = LoadGraph("Resources/images/ci-export.png");
+	}
 	return ret;
 }
 
@@ -64,6 +89,13 @@ void Particle::SetAngle(Vector2D loc, Vector2D loc2)
 {
 	Vector2D temp = loc - loc2;
 	angle = atan2f(temp.y, temp.x);
+	imageangle = atan2f(temp.y, temp.x);
+}
+
+void Particle::SetAngle(float _angle)
+{
+	angle = ((-90 - _angle) * (float)M_PI) / 180;
+	imageangle = -(_angle * (float)M_PI) / 180;
 }
 
 void Particle::Init(int _type, SphereCollider * _root, bool _loop, float _scale)
@@ -72,9 +104,32 @@ void Particle::Init(int _type, SphereCollider * _root, bool _loop, float _scale)
 	root = _root;
 	loopflg = _loop;
 	scale = _scale;
+	if (type == 3)
+	{
+		int rgb = GetRand(2);
+		for (int i = 0; i < 3; i++)
+		{
+			color[i] = 255;
+			if (i == rgb)
+			{
+				color[i] = GetRand(64) * 4;
+			}
+		}
+
+		//for (int i = 0; i < 3; i++)
+		//{
+		// 
+		//	color[i] = GetRand(20) + 235;
+		//}
+	}
 }
 
 void Particle::SetRootLocation(Vector2D loc)
 {
 	addloc = loc;
+}
+
+void Particle::SetSpeed(float _speed)
+{
+	speed = _speed;
 }
