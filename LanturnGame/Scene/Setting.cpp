@@ -19,29 +19,41 @@ Setting::~Setting()
 
 AbstractScene* Setting::Update()
 {
-	// デッドゾーンの変更
-	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
-	{
-		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
-		deadzone += -0.1f;
-		// 一番下に到達したら、一番上にする
-		if (deadzone < 0.f)
-		{
-			deadzone = 0.f;
-		}
-	}
 
-	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
-	{
-		PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
-		deadzone += 0.1f;
-		// 一番下に到達したら、一番上にする
-		if (deadzone > 1.f)
-		{
-			deadzone = 1.f;
-		}
-	}
 
+	switch (menu_cursor)
+	{
+	case 0:
+		// デッドゾーンの変更
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_LEFT))
+		{
+			PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+			deadzone += -0.1f;
+			// 一番下に到達したら、一番上にする
+			if (deadzone < 0.f)
+			{
+				deadzone = 0.f;
+			}
+		}
+
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
+		{
+			PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+			deadzone += 0.1f;
+			// 一番下に到達したら、一番上にする
+			if (deadzone > 1.f)
+			{
+				deadzone = 1.f;
+			}
+		}
+		break;
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	}
 
 
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
@@ -102,23 +114,31 @@ void Setting::Draw() const
 
 	DrawBox( 120, 120, SCREEN_WIDTH - 120, SCREEN_HEIGHT - 120, 0xffffff, true);
 	DrawBox( 128, 128, SCREEN_WIDTH - 128, SCREEN_HEIGHT - 128, 0x888888, true);
-
-	DrawCircleAA( 320.f, 400.f, 136.f, 24, 0x4444ff, true);
-	DrawCircleAA( 320.f, 400.f, 128.f, 24, 0x000044, true);
-	DrawCircleAA( 320.f, 400.f, deadzone * 128.f, 24, 0xff00ff, true);
-	if (fabsf(InputControl::GetLeftStick().x) > deadzone ||
-		fabsf(InputControl::GetLeftStick().y) > deadzone) {
-		DrawCircleAA(320.f + (InputControl::GetLeftStick().x * 128.f)
-			, 400.f + (-InputControl::GetLeftStick().y * 128.f), 8.f, 24, 0xff0000, true);
+	switch (menu_cursor)
+	{
+	case 0:
+		DrawCircleAA(320.f, 400.f, 136.f, 24, 0x4444ff, true);
+		DrawCircleAA(320.f, 400.f, 128.f, 24, 0x000044, true);
+		DrawCircleAA(320.f, 400.f, deadzone * 128.f, 24, 0xff00ff, true);
+		if (fabsf(InputControl::GetLeftStick().x) > deadzone ||
+			fabsf(InputControl::GetLeftStick().y) > deadzone) {
+			DrawCircleAA(320.f + (InputControl::GetLeftStick().x * 128.f)
+				, 400.f + (-InputControl::GetLeftStick().y * 128.f), 8.f, 24, 0xff0000, true);
+		}
+		else {
+			DrawCircleAA(320.f + (InputControl::GetLeftStick().x * 128.f)
+				, 400.f + (-InputControl::GetLeftStick().y * 128.f), 8.f, 24, 0x00ffff, true);
+		}
+		DrawString(220, 192, "デッドゾーン", 0xffffff);
+		break;
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
 	}
-	else {
-		DrawCircleAA(320.f + (InputControl::GetLeftStick().x * 128.f)
-			, 400.f + (-InputControl::GetLeftStick().y * 128.f), 8.f, 24, 0x00ffff, true);
-	}
-
 	
-
-	DrawString(220, 192, "デッドゾーン", 0xffffff);
 
 	switch (menu_cursor) {
 	case 0:

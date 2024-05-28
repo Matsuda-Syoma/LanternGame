@@ -25,6 +25,6 @@ public:
 
 	static void LoadSounds();
 	static void AllStop();
-	void PSound(int _SoundHandle, int _PlayType, int _Type);
+	static void SetSoundVolume(int _Type, int _Volume);
 };
 

@@ -80,7 +80,7 @@ float UserData::LoadData(int filenum, int num)
 		}
 
 		// “Ç‚İ‚ñ‚¾•¶š—ñ‚ğ”’l‚É‚·‚é
-		temp = atof(buf);
+		temp = (float)atof(buf);
 		cnt = 0;
 		memset(buf, 0, sizeof(buf));
 		break;

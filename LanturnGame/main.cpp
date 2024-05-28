@@ -7,6 +7,7 @@
 #include"Scene/Setting.h"
 #include"Utility/InputControl.h"
 #include"Utility/LoadSounds.h"
+#include"Utility/UserData.h"
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
 
 	// タイトルを設定
@@ -27,11 +28,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// 描画先画面を裏にする（ダブルバッファリング）
 	SetDrawScreen(DX_SCREEN_BACK);
 
+	Sounds::LoadSounds();
+	Sounds::SetSoundVolume(Sounds::BGM, UserData::LoadData(UserData::SOUNDS, 0));
+	Sounds::SetSoundVolume(Sounds::SE, UserData::LoadData(UserData::SOUNDS, 1));
+
 	SceneManager scene = (dynamic_cast<AbstractScene*>(new Title()));
 
 	FpsController FPSct(FRAMERATE, UPDATETIME);
-
-	Sounds::LoadSounds();
 
 	// ゲームループ
 	while (ProcessMessage() == 0 && scene.Update() != nullptr) {
