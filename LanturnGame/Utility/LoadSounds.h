@@ -2,6 +2,11 @@
 class Sounds
 {
 public:
+	enum Type
+	{
+		BGM = 0,
+		SE
+	};
 	static int BGM_Game;
 	static int SE_Explosion[5];
 	static int BGM_GMain;
@@ -20,5 +25,6 @@ public:
 
 	static void LoadSounds();
 	static void AllStop();
+	static void SetSoundVolume(int _Type, int _Volume);
 };
 

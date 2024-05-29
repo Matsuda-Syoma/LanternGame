@@ -7,19 +7,21 @@
 Player::Player()
 {
 	speed = 5;
-	deadzone = UserData::LoadData(0);
+	deadzone = UserData::LoadData(UserData::Type::SETTING);
 }
 
 Player::~Player()
 {
 	DeleteGraph(*playerimg);
 	DeleteGraph(d_playerimg);
+	DeleteGraph(angryimg);
 }
 
 void Player::Init()
 {
 	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
 	d_playerimg = LoadGraph("Resources/images/player_death.png");
+	angryimg = LoadGraph("Resources/images/angry.png");
 }
 
 void Player::Update()
@@ -110,19 +112,23 @@ void Player::Update()
 
 void Player::Draw(int camerashake) const
 {
-	if (pflg == true) {
+	if (pflg == true && hit_soldier == false) {
 		if (blinkingflg == false)
 		{
-			DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
+			DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, playerimg[imgnum], true);
 		}
 		else {
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-			DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
+			DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, playerimg[imgnum], true);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 	}
-	else {
-		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, d_playerimg, true);
+	else if(pflg == false) {
+		DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, d_playerimg, true);
+	}
+	else if (pflg == true && hit_soldier == true)
+	{
+		DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, angryimg, true);
 	}
 	
 	// 元の描画を取得
@@ -156,7 +162,7 @@ void Player::Movement()
 	}
 
 	// 移動ベクトルの大きさの計算
-	float movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
+	movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
 
 	// 最大速度を超えないように
 	if (movelength > speed)
@@ -524,4 +530,9 @@ void Player::SetLastInput()
 			lastinput.y = (-InputControl::GetLeftStick().y + deadzone);
 		}
 	}
+}
+
+float Player::GetNormalSpeed()
+{
+	return this->movelength / speed;
 }

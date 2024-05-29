@@ -15,7 +15,8 @@ GameMain::GameMain()
 	Tornado::LoadImages();
 	ComboEnd::LoadImages();
 	AddScore::LoadImages();
-	hiscore = (int)UserData::LoadData(1);		// ハイスコア読み込み
+	hiscore = (int)UserData::LoadData(UserData::Type::HISCORE);		// ハイスコア読み込み
+
 	//BGMをループしながら再生する
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
@@ -206,8 +207,8 @@ GameMain::GameMain()
 	}
 
 	// プレイヤーの位置に炎を出現
-	SpawnParticle(1, player, true, Vector2D(player->GetLocation().x + 15, player->GetLocation().y)
-								 , Vector2D(player->GetLocation().x + 15, player->GetLocation().y), 1.0);
+	SpawnParticle(1, player, true, 
+		Vector2D(player->GetLocation().x + 15, player->GetLocation().y), 0.f, 1.0, 0.f);
 
 	// 吸い込むギミックの初期化
 	tornado = new Tornado * [GM_MAX_TORNADO];
@@ -328,24 +329,10 @@ AbstractScene* GameMain::Update()
 		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
-		
-		// スコア表示の更新
-		for (int i = 0; i < GM_MAX_ADDSCORE; i++)
-		{
-			// nullptrじゃないなら見る
-			if (addscore[i] != nullptr)
-			{
-				// 更新処理
-				addscore[i]->Update(player->GetLocation());
+		// プレイヤーの位置に煙を出現
+		SpawnParticle(4, nullptr, false,
+			Vector2D(player->GetLocation().x + 15.f, player->GetLocation().y - 10.f), (float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
 
-				// フラグがたっていないなら消す
-				if (!addscore[i]->GetFlg())
-				{
-					addscore[i] = nullptr;
-					delete addscore[i];
-				}
-			}
-		}
 
 
 		// 吸い込むギミックの更新
@@ -701,15 +688,20 @@ AbstractScene* GameMain::Update()
 							vvec /= length;
 							if (!bomb[i]->GetExpFlg())
 							{
-								bomb[i]->SetKnockBack(vvec, 20);
+								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 20.));
 							}
 							else
 							{
-								bomb[i]->SetKnockBack(vvec, 50);
+								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 50.));
 							}
 							SE_HitFlg = true;
 							bomb[i]->SetExpFlg(true);
-							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f);
+							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
+							for (int j = 0; j < 7; j++)
+							{
+								SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(),(GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
+							}
+							//SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f, 0.f);
 							SetCameraShake(7);
 					}
 				}
@@ -719,7 +711,8 @@ AbstractScene* GameMain::Update()
 				{
 					// 爆発を発生して敵をnullptrにしてループを抜ける
 					SpawnExplosion(bomb[i]->GetLocation());
-					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), Vector2D(bomb[i]->GetLocation().x + (GetRand(1) - 0.5f), bomb[i]->GetLocation().y + (GetRand(1) - 0.5f)), 1.5f);
+					botime = 8;
+					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), (float)GetRand(360), 1.5f, 0.f);
 					PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
 					combo += 1;
 					ui_combo_framecount = 25;
@@ -819,7 +812,8 @@ AbstractScene* GameMain::Update()
 					{
 						/*life--;*/
 						hitmoment = true;
-						player->SetFlg(true);
+						//player->SetFlg(true);
+						player->SetHitSoldier(true);
 						soldier[i]->SetDMGflg(false);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
 						{
@@ -898,7 +892,7 @@ AbstractScene* GameMain::Update()
 					float length = GetLength(player->GetLocation(), tornado[i]->GetLocation());
 					Vector2D vvec = (tornado[i]->GetLocation() - player->GetLocation());
 					vvec /= length;
-					player->SetVelocity(vvec * 2);
+					player->SetVelocity(vvec * 2.5);
 				}
 			}
 
@@ -916,6 +910,25 @@ AbstractScene* GameMain::Update()
 				}
 			}
 		}
+
+		// スコア表示の更新
+		for (int i = 0; i < GM_MAX_ADDSCORE; i++)
+		{
+			// nullptrじゃないなら見る
+			if (addscore[i] != nullptr)
+			{
+				// 更新処理
+				addscore[i]->Update(player->GetLocation());
+
+				// フラグがたっていないなら消す
+				if (!addscore[i]->GetFlg())
+				{
+					addscore[i] = nullptr;
+					delete addscore[i];
+				}
+			}
+		}
+
 
 		for (int i = 0; i < GM_MAX_COMBOEND; i++)
 		{
@@ -950,7 +963,7 @@ AbstractScene* GameMain::Update()
 		{
 			if (combo != 0)
 			{
-				SpawnParticle(2, player, false, Vector2D(0.f,10.f), Vector2D(0.f, 10.f), 2.f);
+				SpawnParticle(2, player, false, Vector2D(0.f,10.f), 0.f, 2.f, 0.f);
 
 				// ここに効果音
 
@@ -972,6 +985,11 @@ AbstractScene* GameMain::Update()
 		if (ui_combo_framecount > 0)
 		{
 			ui_combo_framecount--;
+		}
+
+		if (botime > 0)
+		{
+			botime--;
 		}
 
 		// マップサイズの変更
@@ -1000,18 +1018,23 @@ AbstractScene* GameMain::Update()
 	if(player->GetPFlg() == false && resultflg == false){
 		StopSoundMem(Sounds::BGM_GMain);
 		r_cun++;
-		alpha += 3;
 
 		switch (r_cun)
 		{
 		case(0):
 			break;
-		case(130):
+		case(200):
 			resultflg = true;
 			break;
 		default:
 			break;
 		}
+
+		if (r_cun > 100)
+		{
+			alpha += 3;
+		}
+
 	}
 
 	// カウントダウン（３秒）
@@ -1078,7 +1101,7 @@ AbstractScene* GameMain::Update()
 			// 最大スコアよりスコアが大きいなら保存する
 			if (score > hiscore)
 			{
-				UserData::SaveData(1, (float)score);
+				UserData::SaveData(UserData::Type::SETTING, 0, (float)score);
 				highscoreflg = true;
 			}
 			resultnewflg = true;
@@ -1113,21 +1136,7 @@ void GameMain::Draw() const
 	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)),-MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)),MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	// 兵士
-	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	{
-		// nullptrじゃないなら
-		if (soldier[i] != nullptr)
-		{
-			// 画面中なら描画
-			if (720 > fabsf(sqrtf(
-				powf((soldier[i]->GetLocation().x - player->GetLocation().x), 2) +
-				powf((soldier[i]->GetLocation().y - player->GetLocation().y), 2))))
-			{
-				soldier[i]->Draw(player->GetLocation() + +(float)Camerashake);
-			}
-		}
-	}
+	
 
 	//ギミック(氷)
     for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
@@ -1198,6 +1207,21 @@ void GameMain::Draw() const
 	// プレイヤー
 	player->Draw(Camerashake);
 
+	// 兵士
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
+	{
+		// nullptrじゃないなら
+		if (soldier[i] != nullptr)
+		{
+			// 画面中なら描画
+			if (720 > fabsf(sqrtf(
+				powf((soldier[i]->GetLocation().x - player->GetLocation().x), 2) +
+				powf((soldier[i]->GetLocation().y - player->GetLocation().y), 2))))
+			{
+				soldier[i]->Draw(player->GetLocation() + +(float)Camerashake);
+			}
+		}
+	}
 	
 	// パーティクル
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)
@@ -1227,7 +1251,6 @@ void GameMain::Draw() const
 			comboend[i]->Draw();
 		}
 	}
-
 	DrawCloseMap();
 
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
@@ -1241,23 +1264,7 @@ void GameMain::Draw() const
 	DrawBox(SCREEN_WIDTH - 128 - (GM_MAX_MAPSIZE / 16), 128 - (GM_MAX_MAPSIZE / 16), SCREEN_WIDTH - 128 + (GM_MAX_MAPSIZE / 16), 128 + (GM_MAX_MAPSIZE / 16), 0x8844ff, true);
 	DrawBoxAA(SCREEN_WIDTH - 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 0x88ff88, true);
 
-	// ミニマップ(爆弾)
-	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
-	{
-		if (bomb[i] != nullptr)
-		{
-			DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x7f2244, true);
-		}
-	}
-
-	// ミニマップ(兵士)
-	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	{
-		if (soldier[i] != nullptr)
-		{
-			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
-		}
-	}
+	
 
 	// ミニマップ(ギミック(氷)
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
@@ -1286,11 +1293,29 @@ void GameMain::Draw() const
 		}
 	}
 
+	BlackOutDraw();
+
 	// ミニマップ(プレイヤー)
 	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+	// ミニマップ(爆弾)
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+	{
+		if (bomb[i] != nullptr)
+		{
+			DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x7f2244, true);
+		}
+	}
 
+	// ミニマップ(兵士)
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
+	{
+		if (soldier[i] != nullptr)
+		{
+			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
+		}
+	}
 	// リザルトじゃないなら
 	if (resultflg == false)
 	{
@@ -1377,9 +1402,9 @@ void GameMain::SpawnExplosion(Vector2D loc)
 }
 
 // パーティクルのスポーン(種類、親、ループ可か、スポーン座標、向く座標、大きさ
-void GameMain::SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, Vector2D loc2, float scale)
+void GameMain::SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, float angle, float scale, float speed)
 {
-	for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
+	for (int j = 0; j < GM_MAX_PARTICLE; j++)
 	{
 		if (particle[j] == nullptr)
 		{
@@ -1390,7 +1415,8 @@ void GameMain::SpawnParticle(int type, SphereCollider * root, bool loop, Vector2
 				particle[j]->SetRootLocation(loc);
 			}
 			particle[j]->SetLocation(loc);
-			particle[j]->SetAngle(loc, loc2);
+			particle[j]->SetAngle(angle);
+			particle[j]->SetSpeed(speed);
 			break;
 		}
 	}
@@ -1490,7 +1516,7 @@ void GameMain::DrawCloseMap() const
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);
 }
 
-// 爆発のスポーン
+// スコア増加画像のスポーン
 void GameMain::SpawnAddScore(Vector2D loc, int _score)
 {
 	for (int i = 0; i < GM_MAX_ADDSCORE; i++)
@@ -1501,4 +1527,14 @@ void GameMain::SpawnAddScore(Vector2D loc, int _score)
 			break;
 		}
 	}
+}
+
+void GameMain::BlackOutDraw() const
+{
+	int OldDrawMode;
+	int OldDrawParam;
+	GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)max(((botime / 8.) * 63.), 0));
+	DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xffffff, true);
+	SetDrawBlendMode(OldDrawMode, OldDrawParam);
 }
