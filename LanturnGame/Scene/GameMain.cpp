@@ -15,9 +15,9 @@ GameMain::GameMain()
 	Tornado::LoadImages();
 	ComboEnd::LoadImages();
 	AddScore::LoadImages();
-	hiscore = (int)UserData::LoadData(1);		// ハイスコア読み込み
+	hiscore = (int)UserData::LoadData(UserData::Type::HISCORE);		// ハイスコア読み込み
+
 	//BGMをループしながら再生する
-	//SetVolumeSoundMem(255 * 39.216, Sounds::BGM_GMain);
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
 /*******************初期化*******************/
@@ -688,11 +688,11 @@ AbstractScene* GameMain::Update()
 							vvec /= length;
 							if (!bomb[i]->GetExpFlg())
 							{
-								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 20));
+								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 20.));
 							}
 							else
 							{
-								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 50));
+								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 50.));
 							}
 							SE_HitFlg = true;
 							bomb[i]->SetExpFlg(true);
@@ -1096,7 +1096,7 @@ AbstractScene* GameMain::Update()
 			// 最大スコアよりスコアが大きいなら保存する
 			if (score > hiscore)
 			{
-				UserData::SaveData(1, (float)score);
+				UserData::SaveData(UserData::Type::SETTING, 0, (float)score);
 				highscoreflg = true;
 			}
 			resultnewflg = true;

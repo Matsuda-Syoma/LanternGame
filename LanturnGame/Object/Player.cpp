@@ -7,7 +7,7 @@
 Player::Player()
 {
 	speed = 5;
-	deadzone = UserData::LoadData(0);
+	deadzone = UserData::LoadData(UserData::Type::SETTING);
 }
 
 Player::~Player()
