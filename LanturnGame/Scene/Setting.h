@@ -4,9 +4,9 @@ class Setting : public AbstractScene
 {
 private:
 	int settingimage;
-	float deadzone;
 	float bgm;
 	float se;
+	float config[4] = {};
 	int menu_cursor = 0;
 	int sound_cursor = 0;
 	int config_cursor = 0;

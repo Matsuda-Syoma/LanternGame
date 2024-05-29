@@ -10,9 +10,13 @@ using namespace std;
 Setting::Setting()
 {
 	settingimage = LoadGraph("Resources/images/brick.png", 0);
-	deadzone = UserData::LoadData(UserData::Type::SETTING);
 	bgm = UserData::LoadData(UserData::Type::SOUNDS, 0);
 	se = UserData::LoadData(UserData::Type::SOUNDS, 1);
+	for (int i = 0; i < 4; i++)
+	{
+		config[i] = UserData::LoadData(UserData::Type::SETTING, i);
+	}
+
 
 }
 
@@ -33,11 +37,11 @@ AbstractScene* Setting::Update()
 			if (isActive)
 			{
 				PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
-				deadzone += -0.1f;
+				config[0] += -0.1f;
 				// 下限に到達したら固定する
-				if (deadzone < 0.f)
+				if (config[0] < 0.f)
 				{
-					deadzone = 0.f;
+					config[0] = 0.f;
 				}
 			}
 
@@ -86,11 +90,11 @@ AbstractScene* Setting::Update()
 			if (isActive)
 			{
 				PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
-				deadzone += 0.1f;
+				config[0] += 0.1f;
 				// 上限に到達したら固定する
-				if (deadzone > 1.f)
+				if (config[0] > 1.f)
 				{
-					deadzone = 1.f;
+					config[0] = 1.f;
 				}
 			}
 			break;
@@ -236,7 +240,7 @@ AbstractScene* Setting::Update()
 			case 2:
 				break;
 			case 3:
-				UserData::SaveData(UserData::Type::SETTING, 0, deadzone);
+				UserData::SaveData(UserData::Type::SETTING, 0, config[0]);
 				UserData::SaveData(UserData::Type::SOUNDS, 0, bgm);
 				UserData::SaveData(UserData::Type::SOUNDS, 1, se);
 				Sounds::SetSoundVolume(Sounds::BGM, bgm);
@@ -253,7 +257,7 @@ AbstractScene* Setting::Update()
 		if (!isActive)
 		{
 			PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
-			UserData::SaveData(UserData::Type::SETTING, 0, deadzone);
+			UserData::SaveData(UserData::Type::SETTING, 0, config[0]);
 			UserData::SaveData(UserData::Type::SOUNDS, 0, bgm);
 			UserData::SaveData(UserData::Type::SOUNDS, 1, se);
 			Sounds::SetSoundVolume(Sounds::BGM, bgm);
@@ -284,9 +288,9 @@ void Setting::Draw() const
 	case 0:
 		DrawCircleAA(320.f, 400.f, 136.f, 24, 0x4444ff, true);
 		DrawCircleAA(320.f, 400.f, 128.f, 24, 0x000044, true);
-		DrawCircleAA(320.f, 400.f, deadzone * 128.f, 24, 0xff00ff, true);
-		if (fabsf(InputControl::GetLeftStick().x) > deadzone ||
-			fabsf(InputControl::GetLeftStick().y) > deadzone) {
+		DrawCircleAA(320.f, 400.f, config[0] * 128.f, 24, 0xff00ff, true);
+		if (fabsf(InputControl::GetLeftStick().x) > config[0] ||
+			fabsf(InputControl::GetLeftStick().y) > config[0]) {
 			DrawCircleAA(320.f + (InputControl::GetLeftStick().x * 128.f)
 				, 400.f + (-InputControl::GetLeftStick().y * 128.f), 8.f, 24, 0xff0000, true);
 		}
@@ -337,12 +341,11 @@ void Setting::Draw() const
 		DrawString(220, 300, "爆弾の数", 0xffffff);
 		DrawString(220, 400, "爆発サイズ", 0xffffff);
 		DrawString(220, 500, "兵士の数", 0xffffff);
-		DrawBox(220, 358, 604, 378, 0x444444, true);
-		DrawBox(220 + 8, 358 + 8, 220 + 8 + ((bgm / 255.) * 368.), 378 - 8, 0xffffff, true);
-		DrawBox(220, 458, 604, 478, 0x444444, true);
-		DrawBox(220 + 8, 458 + 8, 220 + 8 + ((se / 255.) * 368.), 478 - 8, 0xffffff, true);
-		DrawBox(220, 558, 604, 578, 0x444444, true);
-		DrawBox(220 + 8, 558 + 8, 220 + 8 + ((se / 255.) * 368.), 578 - 8, 0xffffff, true);
+		for (int i = 0; i < 3; i++)
+		{
+			DrawBox(220, 358 + (100 * i), 604, 378 + (100 * i), 0x444444, true);
+			DrawBox(220 + 8, 358 + 8 + (100 * i), 220 + 8 + ((config[i + 1] / 255.) * 368.), 378 - 8 + (100 * i), 0xffffff, true);
+		}
 		break;
 	case 3:
 		break;

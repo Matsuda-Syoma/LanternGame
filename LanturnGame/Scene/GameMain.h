@@ -14,7 +14,7 @@
 #include "../Object/ComboEnd.h"
 #include "../Utility/TextDisp.h"
 #include "../Object/AddScore.h"
-
+#include "../Utility/UserData.h"
 class GameMain : public AbstractScene
 {
 private:
