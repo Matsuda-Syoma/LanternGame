@@ -1246,7 +1246,6 @@ void GameMain::Draw() const
 			comboend[i]->Draw();
 		}
 	}
-
 	DrawCloseMap();
 
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
