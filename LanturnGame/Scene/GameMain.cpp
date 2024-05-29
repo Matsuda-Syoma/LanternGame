@@ -871,7 +871,7 @@ AbstractScene* GameMain::Update()
 			conveyor[i]->Update();
 			if (conveyor[i]->HitSphere(*player))
 			{
-				player->SetLocation(Vector2D(player->GetLocation().x + 2, player->GetLocation().y));
+				player->SetLocation(Vector2D(player->GetLocation().x + 3, player->GetLocation().y));
 				/*if (player->GetConFlg() == false) {
 					player->SetConFlg(true);
 				}*/
@@ -1268,15 +1268,15 @@ void GameMain::Draw() const
 		}
 	}	
 
-	////ミニマップ(ギミック(コンベア))
-	//for (int i = 0; i < GM_MAX_CONVEYOR; i++)
-	//{
-	//	if (conveyor[i] != nullptr) 
-	//	{
-	//		DrawBoxAA(SCREEN_WIDTH - 128 - (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 - (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 0x004488, true);
-	//		//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
-	//	}
-	//}
+	//ミニマップ(ギミック(コンベア))
+	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+	{
+		if (conveyor[i] != nullptr) 
+		{
+			DrawBoxAA(SCREEN_WIDTH - 128 - (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 - (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 0x004488, true);
+			//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
+		}
+	}
 	// ミニマップ(ギミック(氷)
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
 	{
