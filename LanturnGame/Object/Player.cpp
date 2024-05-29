@@ -115,20 +115,20 @@ void Player::Draw(int camerashake) const
 	if (pflg == true && hit_soldier == false) {
 		if (blinkingflg == false)
 		{
-			DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
+			DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, playerimg[imgnum], true);
 		}
 		else {
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-			DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, playerimg[imgnum], true);
+			DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, playerimg[imgnum], true);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 	}
 	else if(pflg == false) {
-		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.0, 0.0, d_playerimg, true);
+		DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, d_playerimg, true);
 	}
 	else if (pflg == true && hit_soldier == true)
 	{
-		DrawRotaGraph(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 1.1, 0.0, angryimg, true);
+		DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, angryimg, true);
 	}
 	
 	// 元の描画を取得

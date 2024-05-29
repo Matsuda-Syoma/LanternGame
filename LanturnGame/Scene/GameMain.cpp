@@ -1018,18 +1018,23 @@ AbstractScene* GameMain::Update()
 	if(player->GetPFlg() == false && resultflg == false){
 		StopSoundMem(Sounds::BGM_GMain);
 		r_cun++;
-		alpha += 3;
 
 		switch (r_cun)
 		{
 		case(0):
 			break;
-		case(130):
+		case(200):
 			resultflg = true;
 			break;
 		default:
 			break;
 		}
+
+		if (r_cun > 100)
+		{
+			alpha += 3;
+		}
+
 	}
 
 	// カウントダウン（３秒）
@@ -1246,7 +1251,6 @@ void GameMain::Draw() const
 			comboend[i]->Draw();
 		}
 	}
-
 	DrawCloseMap();
 
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);

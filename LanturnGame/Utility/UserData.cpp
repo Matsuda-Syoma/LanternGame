@@ -116,7 +116,7 @@ float UserData::SaveData(int filenum, int num, float data)
 	}
 
 	// ファイルオープン
-	int result = fopen_s(&fp, name, "w");
+	int result = fopen_s(&fp, name, "r");
 
 	//エラーチェック
 	if (result != 0)
