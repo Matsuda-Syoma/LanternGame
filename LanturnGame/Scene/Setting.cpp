@@ -34,7 +34,7 @@ AbstractScene* Setting::Update()
 			{
 				PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
 				deadzone += -0.1f;
-				// 一番下に到達したら、一番上にする
+				// 下限に到達したら固定する
 				if (deadzone < 0.f)
 				{
 					deadzone = 0.f;
@@ -50,7 +50,7 @@ AbstractScene* Setting::Update()
 				{
 				case 0:
 					bgm += -25.5f;
-					// 一番下に到達したら、一番上にする
+					// 下限に到達したら固定する
 					if (bgm < 0.f)
 					{
 						bgm = 0.f;
@@ -58,7 +58,7 @@ AbstractScene* Setting::Update()
 					break;
 				case 1:
 					se += -25.5f;
-					// 一番下に到達したら、一番上にする
+					// 下限に到達したら固定する
 					if (se < 0.f)
 					{
 						se = 0.f;
@@ -75,22 +75,27 @@ AbstractScene* Setting::Update()
 
 	}
 
+	// 右入力
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 	{
 		switch (menu_cursor)
 		{
+
+			// デッドゾーンの変更
 		case 0:
 			if (isActive)
 			{
 				PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
 				deadzone += 0.1f;
-				// 一番下に到達したら、一番上にする
+				// 上限に到達したら固定する
 				if (deadzone > 1.f)
 				{
 					deadzone = 1.f;
 				}
 			}
 			break;
+
+			// サウンドの変更
 		case 1:
 			if (isActive)
 			{
@@ -99,7 +104,7 @@ AbstractScene* Setting::Update()
 				{
 				case 0:
 					bgm += 25.5f;
-					// 一番下に到達したら、一番上にする
+					// 上限に到達したら固定する
 					if (bgm > 255.f)
 					{
 						bgm = 255.f;
@@ -107,7 +112,7 @@ AbstractScene* Setting::Update()
 					break;
 				case 1:
 					se += 25.5f;
-					// 一番下に到達したら、一番上にする
+					// 上限に到達したら固定する
 					if (se > 255.f)
 					{
 						se = 255.f;
@@ -116,16 +121,18 @@ AbstractScene* Setting::Update()
 				}
 			}
 			break;
+
+			// ゲームの変更
 		case 2:
-			break;
-		case 3:
 			break;
 		}
 	}
 
+	// 決定していないなら
 	if (!isActive)
 	{
-		active_menu_cursor = menu_cursor;
+		//active_menu_cursor = menu_cursor;
+		// 下入力
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 		{
 			PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
@@ -137,7 +144,7 @@ AbstractScene* Setting::Update()
 			}
 		}
 
-		// カーソル上移動
+		// 上入力
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 		{
 			PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
@@ -149,29 +156,69 @@ AbstractScene* Setting::Update()
 			}
 		}
 	}
+	// 決定を押しているなら
 	else
 	{
-		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
+		switch (menu_cursor)
 		{
-			PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
-			sound_cursor++;
-			// 一番下に到達したら、一番上にする
-			if (sound_cursor > 1)
-			{
-				sound_cursor = 0;
-			}
-		}
+			// デッドゾーンの変更
+		case 0:
+			break;
 
-		// カーソル上移動
-		if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
-		{
-			PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
-			sound_cursor--;
-			// 一番上に到達したら、一番下にする
-			if (sound_cursor < 0)
+			// サウンドの変更
+		case 1:
+			if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 			{
-				sound_cursor = 1;
+				PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+				sound_cursor++;
+				// 一番下に到達したら、一番上にする
+				if (sound_cursor > 1)
+				{
+					sound_cursor = 0;
+				}
 			}
+
+			// カーソル上移動
+			if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
+			{
+				PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+				sound_cursor--;
+				// 一番上に到達したら、一番下にする
+				if (sound_cursor < 0)
+				{
+					sound_cursor = 1;
+				}
+			}
+			break;
+
+			// ゲームの変更
+		case 2:
+			if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
+			{
+				PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+				config_cursor++;
+				// 一番下に到達したら、一番上にする
+				if (config_cursor > 2)
+				{
+					config_cursor = 0;
+				}
+			}
+
+			// カーソル上移動
+			if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
+			{
+				PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+				config_cursor--;
+				// 一番上に到達したら、一番下にする
+				if (config_cursor < 0)
+				{
+					config_cursor = 2;
+				}
+			}
+			break;
+
+		case 3:
+			break;
 		}
 	}
 	// カーソル決定
@@ -271,6 +318,31 @@ void Setting::Draw() const
 		DrawBox(220 + 8, 458 + 8, 220 + 8 + ((se / 255.) * 368.), 478 - 8, 0xffffff, true);
 		break;
 	case 2:
+		DrawString(220, 192, "ゲーム設定", 0xffffff);
+		if (isActive)
+		{
+			switch (config_cursor)
+			{
+			case 0:
+				DrawBox(220, 300 - 4, 220 + (32 + 4) * 4, 300 + (32 + 4), 0xff4444, true);
+				break;
+			case 1:
+				DrawBox(220, 400 - 4, 220 + (32 + 4) * 5, 400 + (32 + 4), 0xff4444, true);
+				break;
+			case 2:
+				DrawBox(220, 500 - 4, 220 + (32 + 4) * 4, 500 + (32 + 4), 0xff4444, true);
+				break;
+			}
+		}
+		DrawString(220, 300, "爆弾の数", 0xffffff);
+		DrawString(220, 400, "爆発サイズ", 0xffffff);
+		DrawString(220, 500, "兵士の数", 0xffffff);
+		DrawBox(220, 358, 604, 378, 0x444444, true);
+		DrawBox(220 + 8, 358 + 8, 220 + 8 + ((bgm / 255.) * 368.), 378 - 8, 0xffffff, true);
+		DrawBox(220, 458, 604, 478, 0x444444, true);
+		DrawBox(220 + 8, 458 + 8, 220 + 8 + ((se / 255.) * 368.), 478 - 8, 0xffffff, true);
+		DrawBox(220, 558, 604, 578, 0x444444, true);
+		DrawBox(220 + 8, 558 + 8, 220 + 8 + ((se / 255.) * 368.), 578 - 8, 0xffffff, true);
 		break;
 	case 3:
 		break;

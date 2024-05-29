@@ -9,6 +9,7 @@ private:
 	float se;
 	int menu_cursor = 0;
 	int sound_cursor = 0;
+	int config_cursor = 0;
 	int active_menu_cursor = 0;
 	bool isActive = false;
 public:
