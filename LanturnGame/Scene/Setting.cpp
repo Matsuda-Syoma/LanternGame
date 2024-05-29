@@ -71,13 +71,45 @@ AbstractScene* Setting::Update()
 			}
 			break;
 		case 2:
+			if (isActive)
+			{
+				PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+				for (int i = 0; i < 3; i++)
+				{
+					if (i == config_cursor)
+					{
+						int min = 0;
+						int minus = -1;
+						switch (config_cursor)
+						{
+						case 0:
+							min = 50;
+							minus = -10;
+							break;
+						case 1:
+							min = 8;
+							minus = -1;
+							break;
+						case 2:
+							min = 3;
+							minus = -1;
+							break;
+						}
+						config[i + 1] += minus;
+
+						if (config[i + 1] < min)
+						{
+							config[i + 1] = min;
+						}
+					}
+				}
+			}
 			break;
 		case 3:
 			break;
 		}
 
 	}
-
 	// 右入力
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_RIGHT))
 	{
@@ -127,6 +159,39 @@ AbstractScene* Setting::Update()
 
 			// ゲームの変更
 		case 2:
+			if (isActive)
+			{
+				PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
+				for (int i = 0; i < 3; i++)
+				{
+					if (i == config_cursor)
+					{
+						int max = 100;
+						int plus = 1;
+						switch (config_cursor)
+						{
+						case 0:
+							max = 200;
+							plus = 10;
+							break;
+						case 1:
+							max = 16;
+							plus = 1;
+							break;
+						case 2:
+							max = 10;
+							plus = 1;
+							break;
+						}
+						config[i + 1] += plus;
+						
+						if (config[i + 1] > max)
+						{
+							config[i + 1] = max;
+						}
+					}
+				}
+			}
 			break;
 		}
 	}
@@ -267,6 +332,8 @@ AbstractScene* Setting::Update()
 		{
 			isActive = false;
 			PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
+			sound_cursor = 0;
+			config_cursor = 0;
 		}
 
 	}
@@ -297,10 +364,13 @@ void Setting::Draw() const
 			DrawCircleAA(320.f + (InputControl::GetLeftStick().x * 128.f)
 				, 400.f + (-InputControl::GetLeftStick().y * 128.f), 8.f, 24, 0x00ffff, true);
 		}
-		DrawString(220, 192, "デッドゾーン", 0xffffff);
+		DrawString(220, 170, "デッドゾーン", 0xffffff);
+		DrawFormatString(220, 210, 0xffffff, "%.1f", config[0]);
 		break;
 	case 1:
-		DrawString(220, 192, "音量設定", 0xffffff);
+		DrawString(220, 170, "サウンドの設定", 0xffffff);
+		DrawFormatString(220, 210, 0xffffff, "%.1f", (bgm / 255.));
+		DrawFormatString(320, 210, 0xffffff, "%.1f", (se / 255.));
 		if (isActive)
 		{
 			switch (sound_cursor)
@@ -321,7 +391,10 @@ void Setting::Draw() const
 		DrawBox(220 + 8, 458 + 8, 220 + 8 + ((se / 255.) * 368.), 478 - 8, 0xffffff, true);
 		break;
 	case 2:
-		DrawString(220, 192, "ゲーム設定", 0xffffff);
+		DrawString(220, 170, "ゲームの設定", 0xffffff);
+		DrawFormatString(220, 210, 0xffffff, "%d", (int)config[1]);
+		DrawFormatString(320, 210, 0xffffff, "%d", (int)config[2]);
+		DrawFormatString(420, 210, 0xffffff, "%d", (int)config[3]);
 		if (isActive)
 		{
 			switch (config_cursor)
@@ -341,11 +414,11 @@ void Setting::Draw() const
 		DrawString(220, 400, "爆発サイズ", 0xffffff);
 		DrawString(220, 500, "兵士の数", 0xffffff);
 		DrawBox(220, 358, 604, 378, 0x444444, true);
-		DrawBox(220 + 8, 358 + 8, 220 + 8 + ((config[1] / 200.) * 368.), 378 - 8, 0xffffff, true);
+		DrawBox(220 + 8, 358 + 8, 220 + 8 + max(4, (((config[1] - 50) / 150.) * 368.)), 378 - 8, 0xffffff, true);
 		DrawBox(220, 458, 604, 478, 0x444444, true);
-		DrawBox(220 + 8, 458 + 8, 220 + 8 + ((config[2] / 16.) * 368.), 478 - 8, 0xffffff, true);
+		DrawBox(220 + 8, 458 + 8, 220 + 8 + max(4, (((config[2] - 8) / 8.) * 368.)), 478 - 8, 0xffffff, true);
 		DrawBox(220, 558, 604, 578, 0x444444, true);
-		DrawBox(220 + 8, 558 + 8, 220 + 8 + ((config[3] / 10.) * 368.), 578 - 8, 0xffffff, true);
+		DrawBox(220 + 8, 558 + 8, 220 + 8 + max(4, (((config[3] - 3) / 7.) * 368.)), 578 - 8, 0xffffff, true);
 		break;
 	case 3:
 		break;
@@ -364,7 +437,7 @@ void Setting::Draw() const
 		DrawBox(640, 300 - 4, 640 + (32 + 4) * 7, 300 + (32 + 4), color, true);
 		break;
 	case 2:
-		DrawBox(640, 400 - 4, 640 + (32 + 4) * 7, 400 + (32 + 4), color, true);
+		DrawBox(640, 400 - 4, 640 + (32 + 4) * 6, 400 + (32 + 4), color, true);
 		break;
 	case 3:
 		DrawBox(640, 500 - 4, 640 + (32 + 4) * 7, 500 + (32 + 4), color, true);
@@ -375,7 +448,7 @@ void Setting::Draw() const
 
 	DrawString(640, 200, "デッドゾーンの設定", 0xffffff);
 	DrawString(640, 300, "サウンドの設定", 0xffffff);
-	DrawString(640, 400, "タイトルに戻る", 0xffffff);
+	DrawString(640, 400, "ゲームの設定", 0xffffff);
 	DrawString(640, 500, "タイトルに戻る", 0xffffff);
 
 	DrawString(640, 60, "ここは設定画面です", 0xffffff);
