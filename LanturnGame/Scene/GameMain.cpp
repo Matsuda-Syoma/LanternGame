@@ -812,6 +812,7 @@ AbstractScene* GameMain::Update()
 					{
 						/*life--;*/
 						hitmoment = true;
+						soldier[i]->SetcatchFlg(true);
 						//player->SetFlg(true);
 						player->SetHitSoldier(true);
 						soldier[i]->SetDMGflg(false);
