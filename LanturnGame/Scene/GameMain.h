@@ -43,6 +43,8 @@ private:
 
 	int life = GM_MAX_LIFE;
 
+	int expsize = UserData::LoadData(UserData::SETTING, 3);
+
 	int lifeimage;
 	int lifematchimage;
 	int closemapimage;
