@@ -1344,11 +1344,11 @@ void GameMain::Draw() const
 			int chr = res[i] - 'a';
 			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 300, 1.0, 0.0, alphabetimage[chr], true);
 		}
-		char res_2[] = "title with a button\0";
+		char res_2[] = "press a\0";
 		for (int i = 0; i < sizeof(res_2); i++)
 		{
 			int chr = res_2[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 480) + 22 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
+			DrawRotaGraph((SCREEN_WIDTH - 350) + 22 * i, 500, 0.6, 0.0, alphabetimage[chr], true);
 		}
 
 		int bufscore = score;
