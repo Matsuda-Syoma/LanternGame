@@ -190,6 +190,10 @@ AbstractScene* Setting::Update()
 				break;
 			case 3:
 				UserData::SaveData(UserData::Type::SETTING, 0, deadzone);
+				UserData::SaveData(UserData::Type::SOUNDS, 0, bgm);
+				UserData::SaveData(UserData::Type::SOUNDS, 1, se);
+				Sounds::SetSoundVolume(Sounds::BGM, bgm);
+				Sounds::SetSoundVolume(Sounds::SE, se);
 				return new Title;
 				break;
 			}
@@ -203,6 +207,10 @@ AbstractScene* Setting::Update()
 		{
 			PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
 			UserData::SaveData(UserData::Type::SETTING, 0, deadzone);
+			UserData::SaveData(UserData::Type::SOUNDS, 0, bgm);
+			UserData::SaveData(UserData::Type::SOUNDS, 1, se);
+			Sounds::SetSoundVolume(Sounds::BGM, bgm);
+			Sounds::SetSoundVolume(Sounds::SE, se);
 			return new Title;
 		}
 		else
