@@ -10,14 +10,13 @@ using namespace std;
 Setting::Setting()
 {
 	settingimage = LoadGraph("Resources/images/brick.png", 0);
+	
 	bgm = UserData::LoadData(UserData::Type::SOUNDS, 0);
 	se = UserData::LoadData(UserData::Type::SOUNDS, 1);
 	for (int i = 0; i < 4; i++)
 	{
 		config[i] = UserData::LoadData(UserData::Type::SETTING, i);
 	}
-
-
 }
 
 Setting::~Setting()
@@ -341,11 +340,12 @@ void Setting::Draw() const
 		DrawString(220, 300, "”š’e‚Ì”", 0xffffff);
 		DrawString(220, 400, "”š”­ƒTƒCƒY", 0xffffff);
 		DrawString(220, 500, "•ºŽm‚Ì”", 0xffffff);
-		for (int i = 0; i < 3; i++)
-		{
-			DrawBox(220, 358 + (100 * i), 604, 378 + (100 * i), 0x444444, true);
-			DrawBox(220 + 8, 358 + 8 + (100 * i), 220 + 8 + ((config[i + 1] / 255.) * 368.), 378 - 8 + (100 * i), 0xffffff, true);
-		}
+		DrawBox(220, 358, 604, 378, 0x444444, true);
+		DrawBox(220 + 8, 358 + 8, 220 + 8 + ((config[1] / 200.) * 368.), 378 - 8, 0xffffff, true);
+		DrawBox(220, 458, 604, 478, 0x444444, true);
+		DrawBox(220 + 8, 458 + 8, 220 + 8 + ((config[2] / 16.) * 368.), 478 - 8, 0xffffff, true);
+		DrawBox(220, 558, 604, 578, 0x444444, true);
+		DrawBox(220 + 8, 558 + 8, 220 + 8 + ((config[3] / 10.) * 368.), 578 - 8, 0xffffff, true);
 		break;
 	case 3:
 		break;

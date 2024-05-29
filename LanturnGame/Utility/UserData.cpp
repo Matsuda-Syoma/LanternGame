@@ -48,8 +48,9 @@ float UserData::LoadData(int filenum, int num)
 		if (col == num) {
 			break;
 		}
+		c = fgetc(fp);
 		// Žw’è‚µ‚½—ñ‚¶‚á‚È‚¢‚È‚çcol++‚·‚é
-		if (fgetc(fp) == ',' || fgetc(fp) == EOF)
+		if (c == ',' || c == EOF)
 		{
 			col++;
 		}
