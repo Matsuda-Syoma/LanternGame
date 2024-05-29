@@ -716,8 +716,9 @@ AbstractScene* GameMain::Update()
 					PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
 					combo += 1;
 					ui_combo_framecount = 25;
-					score += (combo * 100);
-					SpawnAddScore(bomb[i]->GetLocation(), (combo * 100));
+					// スコア加算
+					score += ((10 * 10) * combo);
+					SpawnAddScore(bomb[i]->GetLocation(), ((10 * 10)* combo));
 					SetCameraShake(GetRand(8) + 4);
 					bomb[i] = nullptr;
 					delete bomb[i];
@@ -1102,7 +1103,7 @@ AbstractScene* GameMain::Update()
 			// 最大スコアよりスコアが大きいなら保存する
 			if (score > hiscore)
 			{
-				UserData::SaveData(UserData::Type::SETTING, 0, (float)score);
+				UserData::SaveData(UserData::Type::HISCORE, 0, (float)score);
 				highscoreflg = true;
 			}
 			resultnewflg = true;

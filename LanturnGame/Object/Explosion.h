@@ -4,6 +4,7 @@ class Explosion : public SphereCollider
 {
 private:
 	bool flg = true;
+	int size = 16 - 2;
 	unsigned int count = 0;
 	static int images[];
 	int RGB[3] = { 0 };
