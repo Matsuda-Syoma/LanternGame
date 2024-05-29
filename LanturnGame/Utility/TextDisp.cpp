@@ -25,6 +25,8 @@ void TextDisp::Update()
 	char one[3] = {};
 	if (*p != '\0')
 	{
+		nextflg = false;
+		cnt = 0;
 		switch (_mbclen((BYTE*)p))
 		{
 		case 1:
@@ -40,6 +42,10 @@ void TextDisp::Update()
 			break;
 		}
 		strcat_sDx(buf, 128, one);
+	}
+	else
+	{
+		nextflg = true;
 	}
 	
 	StrLen = (int)strlen(buf);
@@ -60,6 +66,14 @@ void TextDisp::Update()
 			flg = false;
 		}
 	}
+	if (nextflg)
+	{
+		cnt++;
+		if (cnt > 60)
+		{
+			cnt = 0;
+		}
+	}
 }
 
 void TextDisp::Draw() const
@@ -68,6 +82,13 @@ void TextDisp::Draw() const
 	{
 		DrawRotaGraph(SCREEN_WIDTH / 2, 480 + (GetFontSize() / 2), 1.0, 0.0, boximg, true);
 		DrawFormatString(CenterX, 480, 0xffffff, "%s", buf);
+		if (nextflg)
+		{
+			if (cnt < 30)
+			{
+				DrawFormatString(920, 520, 0xffffff, "Бе");
+			}
+		}
 	}
 }
 	

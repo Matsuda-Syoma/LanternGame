@@ -4,7 +4,9 @@ class TextDisp
 {
 private:
 	int boximg;
+	int cnt = 0;
 	bool flg = true;
+	bool nextflg = false;
 	int StrLen, StrWidth, CenterX, textnum;
 	int textorder = 0;
 	int textmaxorder = 0;
