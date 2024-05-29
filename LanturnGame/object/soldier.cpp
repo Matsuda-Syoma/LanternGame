@@ -24,6 +24,8 @@ void Soldier::Initialize()
 	dmgflg = true;
 	deleteFlg = false;
 	hitFlg = true;//当たり判定
+	catchFlg = false;
+	a = 0;
 	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 66, soldierimg);
 	soldierDetimg = LoadGraph("Resources/images/d_Soldier.png");
 }
@@ -36,7 +38,6 @@ void Soldier::Upadate(Vector2D PL)
 	}
 	else
 	{
-	
 		hitFlg = false;
 		if (Musicflg == 0)
 		{
@@ -74,7 +75,10 @@ void Soldier::Draw(Vector2D PL)
 	}
 	else
 	{
-		DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierDetimg, true);
+		if (catchFlg == false)
+		{
+			DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierDetimg, true);
+		}
 	}
 }
 
@@ -188,6 +192,10 @@ bool Soldier::ChekhitFlg()
 	return hitFlg;
 }
 
+void Soldier::SetcatchFlg(bool i)
+{
+	catchFlg = i;
+}
 void Soldier::SetmoveFlg(bool i)
 {
 	moveFlg = i;

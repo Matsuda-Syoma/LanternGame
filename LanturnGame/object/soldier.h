@@ -40,6 +40,10 @@ public:
 	//動きが止まる
 	void SetmoveFlg(bool i);
 	bool ChekmoveFlg();
+
+	//プレイヤーに振られたときにフラグを立てる
+	void SetcatchFlg(bool i);
+
 private:
 	Vector2D length = 0;
 	Vector2D move = 0;
@@ -50,12 +54,14 @@ private:
 	int soldierDetimg;//画像イメージ
 	int Velimg = 0;//画像の向き
 	int countNum = 0;//再生成までの時間を測る
+	int a = 0;
 
 	bool dmgflg = false;
 	bool hitFlg = true;
 	bool deleteFlg = false;
 	bool Musicflg = false;
 	bool moveFlg = true;
+	bool catchFlg = true;
 
 	int cnt=0;
 	int animcnt=0;
