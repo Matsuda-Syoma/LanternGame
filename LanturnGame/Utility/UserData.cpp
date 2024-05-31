@@ -179,7 +179,7 @@ float UserData::SaveData(int filenum, int num, float data)
 	memset(buf, 0, sizeof(buf));
 
 	// char”z—ñì¬
-	char databuf[16] = "\0";
+	char databuf[32] = "\0";
 
 	// char”z—ñ‚Éˆø”‚Ì”’l‚ğ“ü‚ê‚é
 	sprintf_s(databuf, "%f,", data);
