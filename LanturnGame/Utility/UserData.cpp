@@ -48,8 +48,9 @@ float UserData::LoadData(int filenum, int num)
 		if (col == num) {
 			break;
 		}
+		c = fgetc(fp);
 		// 指定した列じゃないならcol++する
-		if (fgetc(fp) == ',' || fgetc(fp) == EOF)
+		if (c == ',' || c == EOF)
 		{
 			col++;
 		}
@@ -178,7 +179,7 @@ float UserData::SaveData(int filenum, int num, float data)
 	memset(buf, 0, sizeof(buf));
 
 	// char配列作成
-	char databuf[16] = "\0";
+	char databuf[32] = "\0";
 
 	// char配列に引数の数値を入れる
 	sprintf_s(databuf, "%f,", data);

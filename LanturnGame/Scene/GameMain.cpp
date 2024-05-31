@@ -717,8 +717,8 @@ AbstractScene* GameMain::Update()
 					combo += 1;
 					ui_combo_framecount = 25;
 					// スコア加算
-					score += ((10 * 10) * combo);
-					SpawnAddScore(bomb[i]->GetLocation(), ((10 * 10)* combo));
+					score += ((10 * expsize) * combo);
+					SpawnAddScore(bomb[i]->GetLocation(), ((10 * expsize)* combo));
 					SetCameraShake(GetRand(8) + 4);
 					bomb[i] = nullptr;
 					delete bomb[i];

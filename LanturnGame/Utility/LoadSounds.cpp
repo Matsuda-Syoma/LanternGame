@@ -21,7 +21,7 @@ void Sounds::LoadSounds() {
 	for (int i = 0; i < 5; i++)
 	{
 		SetCreateSoundPitchRate(500.0f * (i - 2));
-		SE_Explosion[i] = LoadSoundMem("Resources/sounds/explosion_2.wav");
+		SE_Explosion[i] = LoadSoundMem("Resources/sounds/explosion_2.wav", 4);
 	}
 	SetCreateSoundPitchRate(0);
 
