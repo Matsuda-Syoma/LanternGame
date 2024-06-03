@@ -304,7 +304,10 @@ AbstractScene* Setting::Update()
 			case 2:
 				break;
 			case 3:
-				UserData::SaveData(UserData::Type::SETTING, 0, config[0]);
+				for (int i = 0; i < 4; i++)
+				{
+					UserData::SaveData(UserData::Type::SETTING, i, config[i]);
+				}
 				UserData::SaveData(UserData::Type::SOUNDS, 0, bgm);
 				UserData::SaveData(UserData::Type::SOUNDS, 1, se);
 				Sounds::SetSoundVolume(Sounds::BGM, bgm);
@@ -321,7 +324,10 @@ AbstractScene* Setting::Update()
 		if (!isActive)
 		{
 			PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
-			UserData::SaveData(UserData::Type::SETTING, 0, config[0]);
+			for (int i = 0; i < 4; i++)
+			{
+				UserData::SaveData(UserData::Type::SETTING, i, config[i]);
+			}
 			UserData::SaveData(UserData::Type::SOUNDS, 0, bgm);
 			UserData::SaveData(UserData::Type::SOUNDS, 1, se);
 			Sounds::SetSoundVolume(Sounds::BGM, bgm);

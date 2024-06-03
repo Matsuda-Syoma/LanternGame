@@ -10,6 +10,7 @@ private:
 	bool expflg = false;
 	int maxexpcnt = 180;
 	int expcnt = maxexpcnt;
+	int expsize = 10;
 	Vector2D velocity = 0;
 	Vector2D exvelocity = 0;
 	Vector2D knockback = 0;
@@ -17,6 +18,7 @@ private:
 public:
 	Bomb();
 	~Bomb();
+	void Init(int _expsize);
 	void Update();
 	void Draw(Vector2D loc) const;
 	bool GetFlg() const;

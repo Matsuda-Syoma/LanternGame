@@ -39,11 +39,12 @@ private:
 	unsigned int botime = 0;
 	float MapSize = GM_MAX_MAPSIZE;
 	float MapCloseSpeed = 1;
-	int MaxEnemyBomb = GM_MAX_ENEMY_BOMB;
+	int MaxSpawnEnemyBomb = C_MaxEnemyBomb;
+	int C_MaxEnemyBomb = UserData::LoadData(UserData::SETTING, 1);
+	int C_ExpSize = UserData::LoadData(UserData::SETTING, 2);
+	int C_MaxSoldier = UserData::LoadData(UserData::SETTING, 3);
 
 	int life = GM_MAX_LIFE;
-
-	int expsize = UserData::LoadData(UserData::SETTING, 3);
 
 	int lifeimage;
 	int lifematchimage;
