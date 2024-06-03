@@ -16,6 +16,11 @@ Explosion::~Explosion()
 {
 }
 
+void Explosion::Init(int _size)
+{
+	size = _size - 2;
+}
+
 void Explosion::Update()
 {
 	if (flg) {

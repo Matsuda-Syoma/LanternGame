@@ -11,6 +11,7 @@ private:
 public:
 	Explosion();
 	~Explosion();
+	void Init(int _size);
 	void Update();
 	void Draw(Vector2D loc) const;
 	bool Getflg()const;
