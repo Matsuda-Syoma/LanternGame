@@ -71,13 +71,13 @@ void Soldier::Draw(Vector2D PL)
 			animcnt = 0;
 		}
 		//兵隊イラストの描画
-		DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierimg[Velimg + animcnt], true);
+		DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)),1.4, 0.0, soldierimg[Velimg + animcnt], true);
 	}
 	else
 	{
 		if (catchFlg == false)
 		{
-			DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, soldierDetimg, true);
+			DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.4, 0.0, soldierDetimg, true);
 		}
 	}
 }
