@@ -15,6 +15,8 @@
 #include "../Utility/TextDisp.h"
 #include "../Object/AddScore.h"
 #include "../Utility/UserData.h"
+#include "../Scene/Setting.h"
+
 class GameMain : public AbstractScene
 {
 private:
@@ -30,6 +32,7 @@ private:
 	ComboEnd** comboend;
 	TextDisp* textdisp;
 	AddScore** addscore;
+	Setting* setting;
 
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;

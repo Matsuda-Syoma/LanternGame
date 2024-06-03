@@ -752,6 +752,7 @@ AbstractScene* GameMain::Update()
 			}
 		}
 
+		printfDx("%d\n", life);
 		comboflg = false;
 		for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++)
 		{
@@ -764,7 +765,7 @@ AbstractScene* GameMain::Update()
 				{
 					if (player->GetFlg() == false)
 					{
-						life--;
+						life = life - expsize;
 						hitmoment = true;
 						player->SetFlg(true);
 					}
@@ -1009,7 +1010,7 @@ AbstractScene* GameMain::Update()
 
 		// 残機が0ならリザルトフラグを立てる
 
-		if (life == 0)
+		if (life <= 0)
 		{
 			
 				player->SetPFlg(false);
@@ -1254,11 +1255,15 @@ void GameMain::Draw() const
 	}
 	DrawCloseMap();
 
-	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
+	//残り体力の表示
+	/*DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 	for (int i = 0; i < life; i++)
 	{
 		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
-	}
+	}*/
+
+	DrawBox(SCREEN_WIDTH - 235, 328, SCREEN_WIDTH - 16, 378, 0x444444, true);
+	DrawBox(SCREEN_WIDTH - 230, 358, (SCREEN_WIDTH -230) + life, 368, 0xffffff, true);
 
 	// ミニマップ
 	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
