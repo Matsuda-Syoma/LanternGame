@@ -7,6 +7,7 @@
 
 GameMain::GameMain()
 {
+	printfDx("%d", C_ExpSize);
 	SetFontSize(32);
 /*******************画像読み込み*******************/
 	BackGround::LoadImages();
@@ -157,6 +158,7 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
 	{
 		bomb[i] = new Bomb;
+		bomb[i]->Init(C_ExpSize);
 		while (1)
 		{
 			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
@@ -712,13 +714,13 @@ AbstractScene* GameMain::Update()
 					// 爆発を発生して敵をnullptrにしてループを抜ける
 					SpawnExplosion(bomb[i]->GetLocation());
 					botime = 8;
-					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), (float)GetRand(360), 1.5f, 0.f);
+					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), (float)GetRand(360),C_ExpSize / 6.6667f, 0.f);
 					PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
 					combo += 1;
 					ui_combo_framecount = 25;
 					// スコア加算
-					score += ((10 * expsize) * combo);
-					SpawnAddScore(bomb[i]->GetLocation(), ((10 * expsize)* combo));
+					score += ((10 * C_ExpSize) * combo);
+					SpawnAddScore(bomb[i]->GetLocation(), ((10 * C_ExpSize)* combo));
 					SetCameraShake(GetRand(8) + 4);
 					bomb[i] = nullptr;
 					delete bomb[i];
@@ -731,9 +733,10 @@ AbstractScene* GameMain::Update()
 			{
 				if (!comboflg)
 				{
-					if (i < MaxEnemyBomb)
+					if (i < MaxSpawnEnemyBomb)
 					{
 						bomb[i] = new Bomb;
+						bomb[i]->Init(C_ExpSize);
 						while (1)
 						{
 							Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
@@ -998,7 +1001,7 @@ AbstractScene* GameMain::Update()
 		ChangeMapSize();
 
 		// マップサイズで敵の最大スポーン数を変える
-		MaxEnemyBomb = (int)(GM_MAX_ENEMY_BOMB * (MapSize / GM_MAX_MAPSIZE));
+		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * (MapSize / GM_MAX_MAPSIZE));
 
 		// ゲームのフレームを増やす
 		game_frametime++;
@@ -1396,6 +1399,7 @@ void GameMain::SpawnExplosion(Vector2D loc)
 		if (explosion[i] == nullptr)
 		{
 			explosion[i] = new Explosion;
+			explosion[i]->Init(C_ExpSize);
 			explosion[i]->SetLocation(loc);
 			break;
 		}
