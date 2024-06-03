@@ -128,7 +128,7 @@ void Player::Draw(int camerashake) const
 	}
 	else if (pflg == true && hit_soldier == true)
 	{
-		DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, angryimg, true);
+		DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.2, 0.0, angryimg, true);
 	}
 	
 	// 元の描画を取得
