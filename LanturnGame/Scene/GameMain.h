@@ -32,7 +32,7 @@ private:
 	AddScore** addscore;
 
 	unsigned int game_frametime = 0;
-	unsigned int score = 0;
+	unsigned int score = 100;
 	unsigned int hiscore = 0;
 	unsigned int combo = 0;
 	unsigned int oldcombo = 0;

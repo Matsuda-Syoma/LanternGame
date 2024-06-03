@@ -7,7 +7,6 @@
 
 GameMain::GameMain()
 {
-	printfDx("%d", C_ExpSize);
 	SetFontSize(32);
 /*******************画像読み込み*******************/
 	BackGround::LoadImages();
@@ -155,7 +154,7 @@ GameMain::GameMain()
 		bomb[i] = nullptr;
 	}
 
-	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+	for (int i = 0; i < MaxSpawnEnemyBomb; i++)
 	{
 		bomb[i] = new Bomb;
 		bomb[i]->Init(C_ExpSize);
@@ -168,7 +167,7 @@ GameMain::GameMain()
 			{
 				bomb[i]->SetLocation(spawnloc);
 				bomb[i]->SetMoveToLocation(spawnloc);
-				bomb[i]->SetMode(GetRand(4) + 1);
+				bomb[i]->SetMode(RandType(GetRand(99)) + 1);
 				break;
 			}
 		}
@@ -331,11 +330,52 @@ AbstractScene* GameMain::Update()
 		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
-		// プレイヤーの位置に煙を出現
-		SpawnParticle(4, nullptr, false,
-			Vector2D(player->GetLocation().x + 15.f, player->GetLocation().y - 10.f), (float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
-
-
+		if (player->GetPFlg() && !player->GetHitSoldier())
+		{
+			particle[0]->SetVisible(true);
+			switch (player->GetDirection())
+			{
+			case 0:
+			case 4:
+				// プレイヤーの位置に煙を出現
+				SpawnParticle(4, nullptr, false,
+					Vector2D(player->GetLocation().x + 15.f, player->GetLocation().y - 10.f),
+					(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
+				particle[0]->SetRootLocation(Vector2D(15, -15));
+				break;
+			case 1:
+			case 5:
+				// プレイヤーの位置に煙を出現
+				SpawnParticle(4, nullptr, false,
+					Vector2D(player->GetLocation().x - 15.f, player->GetLocation().y - 10.f),
+					(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
+				particle[0]->SetRootLocation(Vector2D(-15, -15));
+				break;
+			case 2:
+			case 6:
+				// プレイヤーの位置に煙を出現
+				SpawnParticle(4, nullptr, false,
+					Vector2D(player->GetLocation().x + 15.f, player->GetLocation().y - 10.f),
+					(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
+				particle[0]->SetRootLocation(Vector2D(15, -15));
+				break;
+			case 3:
+			case 7:
+				// プレイヤーの位置に煙を出現
+				SpawnParticle(4, nullptr, false,
+					Vector2D(player->GetLocation().x - 15.f, player->GetLocation().y - 10.f),
+					(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
+				particle[0]->SetRootLocation(Vector2D(-15, -15));
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			particle[0]->SetVisible(false);
+		}
+		
 
 		// 吸い込むギミックの更新
 		for (int i = 0; i < GM_MAX_TORNADO; i++)
@@ -463,12 +503,6 @@ AbstractScene* GameMain::Update()
 			// 敵がnullptrじゃないなら
 			if (bomb[i] != nullptr)
 			{
-				// プレイヤーとの距離を見る
-				// プレイヤーと320離れていたら
-				if (240 < bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() == 2)
-				{
-					bomb[i]->SetMode(GetRand(4) + 1);
-				}
 				// 敵と敵の距離を見る
 				int temp = -1;
 				float length = 65535;
@@ -746,7 +780,7 @@ AbstractScene* GameMain::Update()
 							{
 								bomb[i]->SetLocation(spawnloc);
 								bomb[i]->SetMoveToLocation(spawnloc);
-								bomb[i]->SetMode(GetRand(4) + 1);
+								bomb[i]->SetMode(RandType(GetRand(99)) + 1);
 								break;
 							}
 						}
@@ -1354,9 +1388,17 @@ void GameMain::Draw() const
 		}
 
 		int bufscore = score;
-		for (int i = 0; i < 6; i++)
+		int num = 0;
+		while (bufscore > 0)
 		{
-			DrawRotaGraph((SCREEN_WIDTH - 180) - (40 * i), 380, 1.0, 0.0, numimage[bufscore % 10], true);
+			num++;
+			bufscore /= 10;
+		}
+		bufscore = score;
+		for (int i = 0; i < num; i++)
+		{
+			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * i), 380, 1.0, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 	}
