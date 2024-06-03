@@ -54,6 +54,7 @@ private:
 	int resultimage;
 	int highscoreimage;
 	int blackimage;
+	int crackimage;
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;
@@ -69,11 +70,14 @@ private:
 	int CamerashakeCount = 0;
 	int Camerashake = 0;
 
+	int cun = 0;
 	int r_cun = 0;	// リザルト遷移カウント用
 	int c_cun = 0;
 	int f_cun = 0;
+	int d_cun = 0;
 	int countdown = 4;
 	int alpha = 0;
+	int alpha2 = 180;
 	double countsize = 3.0;
 
 	Vector2D ev;

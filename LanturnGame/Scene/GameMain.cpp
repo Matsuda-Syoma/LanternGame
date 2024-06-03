@@ -299,6 +299,7 @@ GameMain::GameMain()
 	resultimage = LoadGraph("Resources/images/result.png", 0);
 	highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
 	blackimage = LoadGraph("Resources/images/black.png", 0);
+	crackimage = LoadGraph("Resources/images/crack.png", 0);
 	
 }
 
@@ -1023,7 +1024,8 @@ AbstractScene* GameMain::Update()
 
 		switch (r_cun)
 		{
-		case(0):
+		case(1):
+			alpha2 = 255;
 			break;
 		case(200):
 			resultflg = true;
@@ -1082,6 +1084,14 @@ AbstractScene* GameMain::Update()
 		{
 			countsize -= 0.1;
 		}
+	}
+
+	if (player->GetFlg() == true && player->GetPFlg() == true)
+	{
+		alpha2 -= 1;
+	}
+	else if (player->GetFlg() == false && player->GetPFlg() == true){
+		alpha2 = 180;
 	}
 
 	// フェードアウト
@@ -1253,6 +1263,16 @@ void GameMain::Draw() const
 		}
 	}
 	DrawCloseMap();
+
+	if (player->GetFlg() == true)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
+		DrawGraph(0, 0, crackimage, true);
+		//画像透かし終わり
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	}
+
 
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 	for (int i = 0; i < life; i++)
