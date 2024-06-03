@@ -10,6 +10,10 @@ Bomb::Bomb()
 Bomb::~Bomb()
 {
 }
+void Bomb::Init(int _expsize)
+{
+	expsize = _expsize;
+}
 void Bomb::Update()
 {
 	if (expflg) {
@@ -58,6 +62,13 @@ void Bomb::Draw(Vector2D loc) const
 
 	}
 	else {
+		int OldDrawMode;
+		int OldDrawParam;
+		GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 63);
+		DrawCircleAA(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 15 * (expsize - 2), 16, 0xffffff, false, 10);
+
+		SetDrawBlendMode(OldDrawMode, OldDrawParam);
 		DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 + (double)(max(45 - expcnt, 0) / 45.0), 0.0, images[2], true);
 	}
 	

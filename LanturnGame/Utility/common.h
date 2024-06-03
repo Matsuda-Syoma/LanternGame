@@ -38,6 +38,22 @@ static float Normalize(Vector2D loc, Vector2D loc2)
 	return atan2f(rx, ry) * -180.0f / 3.14159265358979323846f;
 }
 
+static int RandType(int rnd)
+{
+	// 3,1,1,3,2
+	int percent = 0;
+	int addpercent[5] = { 10,10,10,40,30 };
+	for (int i = 0; i < 5; i++)
+	{
+		percent += addpercent[i];
+		if (rnd < percent)
+		{
+			return i;
+		}
+	}
+	return 0;
+}
+
 //Vector2D temp = loc - loc2;
 //angle = atan2f(temp.y, temp.x);
 //imageangle = atan2f(temp.y, temp.x);

@@ -154,9 +154,10 @@ GameMain::GameMain()
 		bomb[i] = nullptr;
 	}
 
-	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+	for (int i = 0; i < MaxSpawnEnemyBomb; i++)
 	{
 		bomb[i] = new Bomb;
+		bomb[i]->Init(C_ExpSize);
 		while (1)
 		{
 			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
@@ -166,7 +167,7 @@ GameMain::GameMain()
 			{
 				bomb[i]->SetLocation(spawnloc);
 				bomb[i]->SetMoveToLocation(spawnloc);
-				bomb[i]->SetMode(GetRand(4) + 1);
+				bomb[i]->SetMode(RandType(GetRand(99)) + 1);
 				break;
 			}
 		}
@@ -329,11 +330,52 @@ AbstractScene* GameMain::Update()
 		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
-		// プレイヤーの位置に煙を出現
-		SpawnParticle(4, nullptr, false,
-			Vector2D(player->GetLocation().x + 15.f, player->GetLocation().y - 10.f), (float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
-
-
+		if (player->GetPFlg() && !player->GetHitSoldier())
+		{
+			particle[0]->SetVisible(true);
+			switch (player->GetDirection())
+			{
+			case 0:
+			case 4:
+				// プレイヤーの位置に煙を出現
+				SpawnParticle(4, nullptr, false,
+					Vector2D(player->GetLocation().x + 15.f, player->GetLocation().y - 10.f),
+					(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
+				particle[0]->SetRootLocation(Vector2D(15, -15));
+				break;
+			case 1:
+			case 5:
+				// プレイヤーの位置に煙を出現
+				SpawnParticle(4, nullptr, false,
+					Vector2D(player->GetLocation().x - 15.f, player->GetLocation().y - 10.f),
+					(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
+				particle[0]->SetRootLocation(Vector2D(-15, -15));
+				break;
+			case 2:
+			case 6:
+				// プレイヤーの位置に煙を出現
+				SpawnParticle(4, nullptr, false,
+					Vector2D(player->GetLocation().x + 15.f, player->GetLocation().y - 10.f),
+					(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
+				particle[0]->SetRootLocation(Vector2D(15, -15));
+				break;
+			case 3:
+			case 7:
+				// プレイヤーの位置に煙を出現
+				SpawnParticle(4, nullptr, false,
+					Vector2D(player->GetLocation().x - 15.f, player->GetLocation().y - 10.f),
+					(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
+				particle[0]->SetRootLocation(Vector2D(-15, -15));
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			particle[0]->SetVisible(false);
+		}
+		
 
 		// 吸い込むギミックの更新
 		for (int i = 0; i < GM_MAX_TORNADO; i++)
@@ -461,12 +503,6 @@ AbstractScene* GameMain::Update()
 			// 敵がnullptrじゃないなら
 			if (bomb[i] != nullptr)
 			{
-				// プレイヤーとの距離を見る
-				// プレイヤーと320離れていたら
-				if (240 < bomb[i]->GetLength(player->GetLocation()) && bomb[i]->GetMode() == 2)
-				{
-					bomb[i]->SetMode(GetRand(4) + 1);
-				}
 				// 敵と敵の距離を見る
 				int temp = -1;
 				float length = 65535;
@@ -712,13 +748,13 @@ AbstractScene* GameMain::Update()
 					// 爆発を発生して敵をnullptrにしてループを抜ける
 					SpawnExplosion(bomb[i]->GetLocation());
 					botime = 8;
-					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), (float)GetRand(360), 1.5f, 0.f);
+					SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), (float)GetRand(360),C_ExpSize / 6.6667f, 0.f);
 					PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
 					combo += 1;
 					ui_combo_framecount = 25;
 					// スコア加算
-					score += ((10 * expsize) * combo);
-					SpawnAddScore(bomb[i]->GetLocation(), ((10 * expsize)* combo));
+					score += ((10 * C_ExpSize) * combo);
+					SpawnAddScore(bomb[i]->GetLocation(), ((10 * C_ExpSize)* combo));
 					SetCameraShake(GetRand(8) + 4);
 					bomb[i] = nullptr;
 					delete bomb[i];
@@ -731,9 +767,10 @@ AbstractScene* GameMain::Update()
 			{
 				if (!comboflg)
 				{
-					if (i < MaxEnemyBomb)
+					if (i < MaxSpawnEnemyBomb)
 					{
 						bomb[i] = new Bomb;
+						bomb[i]->Init(C_ExpSize);
 						while (1)
 						{
 							Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
@@ -743,7 +780,7 @@ AbstractScene* GameMain::Update()
 							{
 								bomb[i]->SetLocation(spawnloc);
 								bomb[i]->SetMoveToLocation(spawnloc);
-								bomb[i]->SetMode(GetRand(4) + 1);
+								bomb[i]->SetMode(RandType(GetRand(99)) + 1);
 								break;
 							}
 						}
@@ -999,7 +1036,7 @@ AbstractScene* GameMain::Update()
 		ChangeMapSize();
 
 		// マップサイズで敵の最大スポーン数を変える
-		MaxEnemyBomb = (int)(GM_MAX_ENEMY_BOMB * (MapSize / GM_MAX_MAPSIZE));
+		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * (MapSize / GM_MAX_MAPSIZE));
 
 		// ゲームのフレームを増やす
 		game_frametime++;
@@ -1356,9 +1393,17 @@ void GameMain::Draw() const
 		}
 
 		int bufscore = score;
-		for (int i = 0; i < 6; i++)
+		int num = 0;
+		while (bufscore > 0)
 		{
-			DrawRotaGraph((SCREEN_WIDTH - 180) - (40 * i), 380, 1.0, 0.0, numimage[bufscore % 10], true);
+			num++;
+			bufscore /= 10;
+		}
+		bufscore = score;
+		for (int i = 0; i < num; i++)
+		{
+			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * i), 380, 1.0, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 	}
@@ -1401,6 +1446,7 @@ void GameMain::SpawnExplosion(Vector2D loc)
 		if (explosion[i] == nullptr)
 		{
 			explosion[i] = new Explosion;
+			explosion[i]->Init(C_ExpSize);
 			explosion[i]->SetLocation(loc);
 			break;
 		}

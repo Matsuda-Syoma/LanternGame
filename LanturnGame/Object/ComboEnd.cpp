@@ -32,10 +32,18 @@ void ComboEnd::Update()
 
 void ComboEnd::Draw() const
 {
+	//DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * i), 380, 1.0, 0.0, numimage[bufscore % 10], true);
 	int bufcombo = combo;
+	int num = 0;
+	while (bufcombo > 0)
+	{
+		num++;
+		bufcombo /= 10;
+	}
+	bufcombo = combo;
 	DrawRotaGraphF((SCREEN_WIDTH / 2) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, 0.375, 0.0, hukidasiimg, true);
-	for (int i = 0; i < 2; i++) {
-		DrawRotaGraphF((SCREEN_WIDTH / 2) + 16 - (i * 32) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, 0.5, 0.0, numimg[bufcombo % 10], true);
+	for (int i = 0; i < num; i++) {
+		DrawRotaGraphF(((SCREEN_WIDTH / 2) - 16 + (24 * num) / 2) - (i * 24) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, 0.5, 0.0, numimg[bufcombo % 10], true);
 		bufcombo /= 10;
 	}
 	//DrawRotaGraph((SCREEN_WIDTH / 2) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, 1.5 - ((cnt / 180.0) * 1.5), 0.0, hukidasiimg, true);
