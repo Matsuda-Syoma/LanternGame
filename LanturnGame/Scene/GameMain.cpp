@@ -330,6 +330,13 @@ AbstractScene* GameMain::Update()
 		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
+		//体力を徐々に減らす
+		if (Displaylife > life)
+		{
+			if ((game_frametime % 2) == 0) {
+				Displaylife = Displaylife  - 1;
+			}
+		}
 		if (player->GetPFlg() && !player->GetHitSoldier())
 		{
 			particle[0]->SetVisible(true);
@@ -788,8 +795,6 @@ AbstractScene* GameMain::Update()
 				}
 			}
 		}
-
-		printfDx("%d\n", life);
 		comboflg = false;
 		for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++)
 		{
@@ -802,7 +807,11 @@ AbstractScene* GameMain::Update()
 				{
 					if (player->GetFlg() == false)
 					{
-						life = life - expsize;
+						life = life - C_ExpSize;
+						if (life <= 0)
+						{
+							life = 0;
+						}
 						hitmoment = true;
 						player->SetFlg(true);
 					}
@@ -1299,8 +1308,10 @@ void GameMain::Draw() const
 		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
 	}*/
 
+	
 	DrawBox(SCREEN_WIDTH - 235, 328, SCREEN_WIDTH - 16, 378, 0x444444, true);
-	DrawBox(SCREEN_WIDTH - 230, 358, (SCREEN_WIDTH -230) + life, 368, 0xffffff, true);
+	DrawFormatString(SCREEN_WIDTH - 215, 328, 0xffffff, "%d / 100", Displaylife);
+	DrawBox(SCREEN_WIDTH - 230, 358, (SCREEN_WIDTH -230) + (Displaylife * 2), 368, 0xffffff, true);
 
 	// ミニマップ
 	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);

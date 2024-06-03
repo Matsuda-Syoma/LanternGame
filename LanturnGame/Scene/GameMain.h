@@ -48,6 +48,7 @@ private:
 	int C_MaxSoldier = UserData::LoadData(UserData::SETTING, 3);
 
 	int life = GM_MAX_LIFE;
+	int Displaylife = life;
 
 	int lifeimage;
 	int lifematchimage;
