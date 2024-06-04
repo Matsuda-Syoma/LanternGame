@@ -25,12 +25,12 @@ void Conveyor::Draw(Vector2D loc) const {
 	DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2),(box.right + (-loc.x + SCREEN_WIDTH / 2)),(box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
 }
 
-void Conveyor::SetLocation(Vector2D loc)
-{
-	this->location = loc;
-}
-
 Vector2D Conveyor::GetLocation() const
 {
 	return location;
+}
+
+void Conveyor::SetLocation(Vector2D loc)
+{
+	this->location = loc;
 }

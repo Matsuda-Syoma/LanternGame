@@ -20,5 +20,6 @@ public:
 	bool HitBox(BoxCollider boxCollider) const;
 	bool HitSphere(SphereCollider sphereCollider) const;
 	void DrawCollider() const;
+	float GetSize(int i);
 };
 
