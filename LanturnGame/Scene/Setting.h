@@ -12,6 +12,7 @@ private:
 	int config_cursor = 0;
 	int active_menu_cursor = 0;
 	bool isActive = false;
+	int charHeight = 250;
 public:
 	Setting();
 	~Setting();
