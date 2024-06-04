@@ -65,6 +65,7 @@ private:
 	bool Soldier_Hit_EX = false;
 	bool countdownflg = true;
 	bool highscoreflg = false;
+	bool crackflg = false;
 
 	__int8 ui_combo_framecount = 0;
 
@@ -78,7 +79,7 @@ private:
 	int d_cun = 0;
 	int countdown = 4;
 	int alpha = 0;
-	int alpha2 = 180;
+	int alpha2 = 200;
 	double countsize = 3.0;
 
 	Vector2D ev;

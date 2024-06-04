@@ -1089,12 +1089,25 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	if (player->GetFlg() == true && player->GetPFlg() == true)
+	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false)
 	{
-		alpha2 -= 1;
+		alpha2 = 200;
+		crackflg = true;
+
 	}
-	else if (player->GetFlg() == false && player->GetPFlg() == true){
-		alpha2 = 180;
+
+	if (crackflg == true && player->GetPFlg() == true)
+	{
+		if (alpha2 > 0)
+		{
+			alpha2 -= 1;
+		}
+
+		if (alpha2 == 0)
+		{
+			crackflg = false;
+		}
+
 	}
 
 	// フェードアウト
@@ -1267,7 +1280,7 @@ void GameMain::Draw() const
 	}
 	DrawCloseMap();
 
-	if (player->GetFlg() == true)
+	if (crackflg == true || life == 0)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
 		DrawGraph(0, 0, crackimage, true);
