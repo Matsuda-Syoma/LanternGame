@@ -495,6 +495,11 @@ void Player::SetConFlg(bool b)
 	this->onconveyor = b;
 }
 
+bool Player::GetHitSoldier()const
+{
+	return this->hit_soldier;
+}
+
 void Player::SetHitSoldier(bool b)
 {
 	this->hit_soldier = b;
@@ -535,4 +540,9 @@ void Player::SetLastInput()
 float Player::GetNormalSpeed()
 {
 	return this->movelength / speed;
+}
+
+int Player::GetDirection()
+{
+	return this->direction;
 }

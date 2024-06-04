@@ -50,8 +50,11 @@ void Particle::Draw(Vector2D loc) const
 			//SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
 
 		}
-		DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2))
-					,  location.y + (-loc.y + (SCREEN_HEIGHT / 2)), scale, imageangle, images[type][lifetime], true);
+		if (visible)
+		{
+			DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2))
+				, location.y + (-loc.y + (SCREEN_HEIGHT / 2)), scale, imageangle, images[type][lifetime], true);
+		}
 		if (type == 3)
 		{
 			SetDrawBright(255, 255, 255);
@@ -132,4 +135,9 @@ void Particle::SetRootLocation(Vector2D loc)
 void Particle::SetSpeed(float _speed)
 {
 	speed = _speed;
+}
+
+void Particle::SetVisible(bool b)
+{
+	visible = b;
 }

@@ -52,10 +52,12 @@ public:
 	void SetIceFlg(bool b);
 	bool GetConFlg() const;
 	void SetConFlg(bool b);
+	bool GetHitSoldier() const;
 	void SetHitSoldier(bool b);
 	Vector2D GetVelocity();
 	void SetVelocity(Vector2D loc);
 	void SetLastInput();
 	float GetNormalSpeed();
+	int GetDirection();
 };
 

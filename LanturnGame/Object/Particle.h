@@ -4,6 +4,7 @@ class Particle : public SphereCollider
 {
 private:
 	bool flg = true;
+	bool visible = true;
 	unsigned int type = 0;
 	static int images[][30];
 	unsigned int lifetime = 0;
@@ -32,6 +33,8 @@ public:
 	void SetRootLocation(Vector2D loc);
 
 	void SetSpeed(float _speed);
+
+	void SetVisible(bool b);
 
 };
 

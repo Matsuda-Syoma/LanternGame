@@ -6,7 +6,7 @@
 #define FRAMERATE 60.0
 #define UPDATETIME 800
 
-#define GM_MAX_LIFE 5
+#define GM_MAX_LIFE 100
 
 #define GM_MAX_ENEMY_BOMB 200
 #define GM_MAX_EFFECT_EXPLOSION 200
@@ -36,6 +36,22 @@ static float Normalize(Vector2D loc, Vector2D loc2)
 	float rx = loc2.x - loc.x;
 	float ry = loc2.y - loc.y;
 	return atan2f(rx, ry) * -180.0f / 3.14159265358979323846f;
+}
+
+static int RandType(int rnd)
+{
+	// 3,1,1,3,2
+	int percent = 0;
+	int addpercent[5] = { 10,10,10,40,30 };
+	for (int i = 0; i < 5; i++)
+	{
+		percent += addpercent[i];
+		if (rnd < percent)
+		{
+			return i;
+		}
+	}
+	return 0;
 }
 
 //Vector2D temp = loc - loc2;
