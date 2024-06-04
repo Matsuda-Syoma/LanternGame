@@ -325,7 +325,6 @@ AbstractScene* GameMain::Update()
 		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
-			ChangeVolumeSoundMem(150, Sounds::BGM_GMain);
 		}
 
 		// プレイヤーの更新
@@ -1075,6 +1074,11 @@ AbstractScene* GameMain::Update()
 		{
 			
 				player->SetPFlg(false);
+
+				if (CheckSoundMem(Sounds::BGM_Title) == 0)
+				{
+					PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
+				}
 		}
 
 	}
@@ -1113,7 +1117,7 @@ AbstractScene* GameMain::Update()
 		case(120):
 			countdown--;
 			countsize = 3.0;
-			PlaySoundMem(Sounds::SE_CntDown, DX_PLAYTYPE_BACK);
+			//PlaySoundMem(Sounds::SE_CntDown, DX_PLAYTYPE_BACK);
 			break;
 		case(180):
 			countdown--;
@@ -1426,8 +1430,9 @@ void GameMain::Draw() const
 	// リザルトじゃないなら
 	if (resultflg == false)
 	{
-		DrawFormatString(560, 10, 0xffffff, "%06d", hiscore);
-		DrawFormatString(560, 40, 0xffffff, "%06d", score);
+		DrawBox(1060, 410, 1060 + 200, 410 + 74, 0x123456, true);
+		DrawFormatString(1060, 410, 0xffffff, "%06d", hiscore);
+		DrawFormatString(1060, 450, 0xffffff, "%06d", score);
 		//DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
 	}
 	// リザルトなら

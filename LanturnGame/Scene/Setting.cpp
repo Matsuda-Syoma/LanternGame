@@ -206,7 +206,7 @@ AbstractScene* Setting::Update()
 			PlaySoundMem(Sounds::SE_cursor, DX_PLAYTYPE_BACK);
 			menu_cursor++;
 			// 一番下に到達したら、一番上にする
-			if (menu_cursor > 3)
+			if (menu_cursor > 2)
 			{
 				menu_cursor = 0;
 			}
@@ -220,7 +220,7 @@ AbstractScene* Setting::Update()
 			// 一番上に到達したら、一番下にする
 			if (menu_cursor < 0)
 			{
-				menu_cursor = 3;
+				menu_cursor = 2;
 			}
 		}
 	}
@@ -370,61 +370,61 @@ void Setting::Draw() const
 			DrawCircleAA(320.f + (InputControl::GetLeftStick().x * 128.f)
 				, 400.f + (-InputControl::GetLeftStick().y * 128.f), 8.f, 24, 0x00ffff, true);
 		}
-		DrawString(220, 170, "デッドゾーン", 0xffffff);
+		//DrawString(220, 170, "デッドゾーン", 0xffffff);
 		DrawFormatString(220, 210, 0xffffff, "%.1f", config[0]);
 		break;
 	case 1:
-		DrawString(220, 170, "サウンドの設定", 0xffffff);
-		DrawFormatString(220, 210, 0xffffff, "%.1f", (bgm / 255.));
-		DrawFormatString(320, 210, 0xffffff, "%.1f", (se / 255.));
+		//DrawString(220, 170, "サウンドの設定", 0xffffff);
+		//DrawFormatString(320, 300, 0xffffff, "%.1f", (bgm / 255.));
+		//DrawFormatString(320, 400, 0xffffff, "%.1f", (se / 255.));
 		if (isActive)
 		{
 			switch (sound_cursor)
 			{
 			case 0:
-				DrawBox(220, 300 - 4, 220 + (16 + 4) * 3, 300 + (32 + 4), 0xff4444, true);
+				DrawBox(220, 250 - 4, 220 + (16 + 4) * 3, 250 + (32 + 4), 0xff4444, true);
 				break;
 			case 1:
-				DrawBox(220, 400 - 4, 220 + (16 + 4) * 2, 400 + (32 + 4), 0xff4444, true);
+				DrawBox(220, 350 - 4, 220 + (16 + 4) * 2, 350 + (32 + 4), 0xff4444, true);
 				break;
 			}
 		}
-		DrawString(220, 300, "BGM", 0xffffff);
-		DrawString(220, 400, "SE", 0xffffff);
-		DrawBox(220, 358, 604, 378, 0x444444, true);
-		DrawBox(220 + 8, 358 + 8, 220 + 8 + ((bgm / 255.) * 368.), 378 - 8, 0xffffff, true);
-		DrawBox(220, 458, 604, 478, 0x444444, true);
-		DrawBox(220 + 8, 458 + 8, 220 + 8 + ((se / 255.) * 368.), 478 - 8, 0xffffff, true);
+		DrawString(220, 250, "BGM", 0xffffff);
+		DrawString(220, 350, "SE", 0xffffff);
+		DrawBox(220, 308, 604, 328, 0x444444, true);
+		DrawBox(220 + 8, 308 + 8, 220 + 8 + ((bgm / 255.) * 368.), 328 - 8, 0xffffff, true);
+		DrawBox(220, 408, 604, 428, 0x444444, true);
+		DrawBox(220 + 8, 408 + 8, 220 + 8 + ((se / 255.) * 368.), 428 - 8, 0xffffff, true);
 		break;
 	case 2:
-		DrawString(220, 170, "ゲームの設定", 0xffffff);
-		DrawFormatString(220, 210, 0xffffff, "%d", (int)config[1]);
-		DrawFormatString(320, 210, 0xffffff, "%d", (int)config[2]);
-		DrawFormatString(420, 210, 0xffffff, "%d", (int)config[3]);
+		//DrawString(220, 170, "ゲームの設定", 0xffffff);
+		DrawFormatString(450, 200, 0xffffff, "%d", (int)config[1]);
+		DrawFormatString(450, 300, 0xffffff, "%d", (int)config[2]);
+		DrawFormatString(450, 400, 0xffffff, "%d", (int)config[3]);
 		if (isActive)
 		{
 			switch (config_cursor)
 			{
 			case 0:
-				DrawBox(220, 300 - 4, 220 + (32 + 4) * 4, 300 + (32 + 4), 0xff4444, true);
+				DrawBox(220, 200 - 4, 220 + (32 + 4) * 4, 200 + (32 + 4), 0xff4444, true);
 				break;
 			case 1:
-				DrawBox(220, 400 - 4, 220 + (32 + 4) * 5, 400 + (32 + 4), 0xff4444, true);
+				DrawBox(220, 300 - 4, 220 + (32 + 4) * 5, 300 + (32 + 4), 0xff4444, true);
 				break;
 			case 2:
-				DrawBox(220, 500 - 4, 220 + (32 + 4) * 4, 500 + (32 + 4), 0xff4444, true);
+				DrawBox(220, 400 - 4, 220 + (32 + 4) * 4, 400 + (32 + 4), 0xff4444, true);
 				break;
 			}
 		}
-		DrawString(220, 300, "爆弾の数", 0xffffff);
-		DrawString(220, 400, "爆発サイズ", 0xffffff);
-		DrawString(220, 500, "兵士の数", 0xffffff);
+		DrawString(220, 200, "爆弾の数", 0xffffff);
+		DrawString(220, 300, "爆発サイズ", 0xffffff);
+		DrawString(220, 400, "兵士の数", 0xffffff);
+		DrawBox(220, 258, 604, 278, 0x444444, true);
+		DrawBox(220 + 8, 258 + 8, 220 + 8 + max(4, (((config[1] - 50) / 150.) * 368.)), 278 - 8, 0xffffff, true);
 		DrawBox(220, 358, 604, 378, 0x444444, true);
-		DrawBox(220 + 8, 358 + 8, 220 + 8 + max(4, (((config[1] - 50) / 150.) * 368.)), 378 - 8, 0xffffff, true);
+		DrawBox(220 + 8, 358 + 8, 220 + 8 + max(4, (((config[2] - 8) / 8.) * 368.)), 378 - 8, 0xffffff, true);
 		DrawBox(220, 458, 604, 478, 0x444444, true);
-		DrawBox(220 + 8, 458 + 8, 220 + 8 + max(4, (((config[2] - 8) / 8.) * 368.)), 478 - 8, 0xffffff, true);
-		DrawBox(220, 558, 604, 578, 0x444444, true);
-		DrawBox(220 + 8, 558 + 8, 220 + 8 + max(4, (((config[3] - 3) / 7.) * 368.)), 578 - 8, 0xffffff, true);
+		DrawBox(220 + 8, 458 + 8, 220 + 8 + max(4, (((config[3] - 3) / 7.) * 368.)), 478 - 8, 0xffffff, true);
 		break;
 	case 3:
 		break;
@@ -437,26 +437,27 @@ void Setting::Draw() const
 	}
 	switch (menu_cursor) {
 	case 0:
-		DrawBox(640, 200 - 4, 640 + (32 + 4) * 9, 200 + (32 + 4), color, true);
+		DrawBox(640, charHeight - 4, 640 + (32 + 4) * 9, charHeight + (32 + 4), color, true);
 		break;
 	case 1:
-		DrawBox(640, 300 - 4, 640 + (32 + 4) * 7, 300 + (32 + 4), color, true);
+		DrawBox(640, charHeight+100 - 4, 640 + (32 + 4) * 7, charHeight + 100 + (32 + 4), color, true);
 		break;
 	case 2:
-		DrawBox(640, 400 - 4, 640 + (32 + 4) * 6, 400 + (32 + 4), color, true);
+		DrawBox(640, charHeight + 200 - 4, 640 + (32 + 4) * 6, charHeight + 200 + (32 + 4), color, true);
 		break;
-	case 3:
-		DrawBox(640, 500 - 4, 640 + (32 + 4) * 7, 500 + (32 + 4), color, true);
-		break;
+	//case 3:
+	//	DrawBox(640, charHeight + 300 - 4, 640 + (32 + 4) * 7, charHeight + 300 + (32 + 4), color, true);
+	//	break;
 	default:
 		break;
 	}
 
-	DrawString(640, 200, "デッドゾーンの設定", 0xffffff);
-	DrawString(640, 300, "サウンドの設定", 0xffffff);
-	DrawString(640, 400, "ゲームの設定", 0xffffff);
-	DrawString(640, 500, "タイトルに戻る", 0xffffff);
+	DrawString(640, charHeight, "デッドゾーンの設定", 0xffffff);
+	DrawString(640, charHeight + 100, "サウンドの設定", 0xffffff);
+	DrawString(640, charHeight + 200, "ゲームの設定", 0xffffff);
+	/*DrawBox(640, 500, 640 + 256, 500+76, color, false);
+	DrawString(660, 520, "A:決定 B:戻る", 0xffffff);*/
 
-	DrawString(640, 60, "ここは設定画面です", 0xffffff);
+	DrawString(740, charHeight-70, "SETTING", 0xffffff);
 	SetFontSize(OldSize);
 }
