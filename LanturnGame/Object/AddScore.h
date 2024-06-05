@@ -18,7 +18,7 @@ public:
 	~AddScore();
 	void Update(Vector2D loc);
 	//void Update();
-	void Draw(Vector2D loc)const;
+	void Draw(Vector2D loc, float _distance)const;
 	static void LoadImages();
 	static void DeleteImages();
 	bool GetFlg()const;

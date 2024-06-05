@@ -25,7 +25,7 @@ private:
 	int countflg = 0;
 	int stan = 0;
 	float deadzone = 0.1f;
-	float acceleration = 1.f;
+	float acceleration = 11.f;
 	float friction = .8f;
 	float movelength = 0.0f;
 public:
@@ -33,7 +33,7 @@ public:
 	~Player();
 	void Init();
 	void Update();
-	void Draw(int camerashake)const;
+	void Draw(Vector2D loc, float _distance)const;
 	void Movement();
 	void Invincible();	// –³“GŽžŠÔ
 	void Blinking();	// “_–Å

@@ -57,7 +57,7 @@ void Soldier::Upadate(Vector2D PL)
 	PositionCheck();
 }
 
-void Soldier::Draw(Vector2D PL)
+void Soldier::Draw(Vector2D PL, float _distance)
 {
 	if (dmgflg == true)
 	{
@@ -71,13 +71,17 @@ void Soldier::Draw(Vector2D PL)
 			animcnt = 0;
 		}
 		//兵隊イラストの描画
-		DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)),1.4, 0.0, soldierimg[Velimg + animcnt], true);
+		DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
+			, DrawFromCameraY(location, _distance, PL)
+			, 1.4 * ScaleFromCamera(_distance), 0.0, soldierimg[Velimg + animcnt], true);
 	}
 	else
 	{
 		if (catchFlg == false)
 		{
-			DrawRotaGraphF(location.x + (-PL.x + (SCREEN_WIDTH / 2)), location.y + (-PL.y + (SCREEN_HEIGHT / 2)), 1.4, 0.0, soldierDetimg, true);
+			DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
+				, DrawFromCameraY(location, _distance, PL)
+				, 1.4 * ScaleFromCamera(_distance), 0.0, soldierDetimg, true);
 		}
 	}
 }

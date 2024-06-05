@@ -194,8 +194,8 @@ GameMain::GameMain()
 		for (int j = 1; j < (int)ceil(GM_MAX_MAPSIZE / 64.f) * 2; j++)
 		{
 			background[backnum] = new BackGround(
-				Vector2D((i - (float)ceil(GM_MAX_MAPSIZE / 64.f)) * 64
-					   , (j - (float)ceil(GM_MAX_MAPSIZE / 64.f)) * 64));
+				Vector2D((i - (float)ceil(GM_MAX_MAPSIZE / 64.f))
+					   , (j - (float)ceil(GM_MAX_MAPSIZE / 64.f))));
 			backnum++;
 		}
 	}
@@ -337,10 +337,32 @@ AbstractScene* GameMain::Update()
 		}
 		if (!ffff)
 		{
-			Camera = player->GetLocation();
-			Camera += Camerashake;
+			if (CameraDistance > 0.0f)
+			{
+				CameraDistance += -0.05f;
+				Camera = player->GetLocation() * (1 - (CameraDistance / DISTANCE_MAX));
+			}
+			else
+			{
+				CameraDistance = 0.0f;
+				Camera = player->GetLocation();
+			}
 		}
+		else
+		{
+			if (CameraDistance < DISTANCE_MAX)
+			{
+				CameraDistance += 0.05f;
+				Camera = player->GetLocation() * (1 - (CameraDistance / DISTANCE_MAX));
+			}
+			else
+			{
+				CameraDistance = DISTANCE_MAX;
+				Camera = 0;
+			}
 
+		}
+		Camera += Camerashake;
 		//体力を徐々に減らす
 		if (Displaylife > life)
 		{
@@ -992,7 +1014,7 @@ AbstractScene* GameMain::Update()
 			if (addscore[i] != nullptr)
 			{
 				// 更新処理
-				addscore[i]->Update(player->GetLocation());
+				addscore[i]->Update(Camera);
 
 				// フラグがたっていないなら消す
 				if (!addscore[i]->GetFlg())
@@ -1226,7 +1248,7 @@ void GameMain::Draw() const
 	{
 		if (background[i] != nullptr)
 		{
-			background[i]->Draw(Camera +(float)Camerashake);
+			background[i]->Draw(Camera, CameraDistance);
 		}
 	}
 
@@ -1236,7 +1258,7 @@ void GameMain::Draw() const
 		// nullptrじゃないなら
 		if (stage[i] != nullptr)
 		{
-			stage[i]->Draw(player->GetLocation() + +(float)Camerashake);
+			stage[i]->Draw(Camera, CameraDistance);
 		}
 	}
 
@@ -1245,7 +1267,7 @@ void GameMain::Draw() const
 	{
 		if (conveyor[i] != nullptr)
 		{
-			conveyor[i]->Draw(player->GetLocation() + +(float)Camerashake);
+			conveyor[i]->Draw(Camera, CameraDistance);
 		}
 	}
 
@@ -1259,17 +1281,17 @@ void GameMain::Draw() const
 				powf((tornado[i]->GetLocation().x - player->GetLocation().x), 2) +
 				powf((tornado[i]->GetLocation().y - player->GetLocation().y), 2))))
 			{
-				tornado[i]->Draw(player->GetLocation() + (float)Camerashake);
+				tornado[i]->Draw(Camera, CameraDistance);
 			}
 		}
 	}
 
 	// マップの範囲
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 127);
-	DrawBoxAA(MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)), -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), GM_MAX_MAPSIZE + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + 16, MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)), -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
-	DrawBoxAA(-MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -MapSize + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)), MapSize + (-player->GetLocation().x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-player->GetLocation().y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
+	DrawBoxAA((MapSize - (CameraDistance * 675)) + (-Camera.x + (SCREEN_WIDTH / 2)), -(MapSize - (CameraDistance * 675)) + (-Camera.y + (SCREEN_HEIGHT / 2)), (GM_MAX_MAPSIZE - (CameraDistance * 675)) + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, (MapSize - (CameraDistance * 675)) + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
+	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// 爆弾
@@ -1281,9 +1303,9 @@ void GameMain::Draw() const
 			// 画面中なら描画
 			if (720 > fabsf(sqrtf(
 				powf((bomb[i]->GetLocation().x - player->GetLocation().x), 2) +
-				powf((bomb[i]->GetLocation().y - player->GetLocation().y), 2))))
+				powf((bomb[i]->GetLocation().y - player->GetLocation().y), 2))) || ffff)
 			{
-				bomb[i]->Draw(player->GetLocation() + +(float)Camerashake);
+				bomb[i]->Draw(Camera, CameraDistance);
 			}
 		}
 	}
@@ -1298,14 +1320,14 @@ void GameMain::Draw() const
 				powf((explosion[i]->GetLocation().x - player->GetLocation().x), 2) +
 				powf((explosion[i]->GetLocation().y - player->GetLocation().y), 2))))
 			{
-				explosion[i]->Draw(player->GetLocation() + (float)Camerashake);
+				explosion[i]->Draw(Camera, CameraDistance);
 			}
 		}
 	}
 	
 
 	// プレイヤー
-	player->Draw(Camerashake);
+	player->Draw(Camera, CameraDistance);
 
 	// 兵士
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
@@ -1318,7 +1340,7 @@ void GameMain::Draw() const
 				powf((soldier[i]->GetLocation().x - player->GetLocation().x), 2) +
 				powf((soldier[i]->GetLocation().y - player->GetLocation().y), 2))))
 			{
-				soldier[i]->Draw(player->GetLocation() + +(float)Camerashake);
+				soldier[i]->Draw(Camera, CameraDistance);
 			}
 		}
 	}
@@ -1329,7 +1351,7 @@ void GameMain::Draw() const
 		// 敵がnullptrじゃないなら
 		if (particle[i] != nullptr)
 		{
-			particle[i]->Draw(player->GetLocation());
+			particle[i]->Draw(Camera, CameraDistance);
 		}
 	}
 	
@@ -1338,7 +1360,7 @@ void GameMain::Draw() const
 		// 敵がnullptrじゃないなら
 		if (addscore[i] != nullptr)
 		{
-			addscore[i]->Draw(player->GetLocation());
+			addscore[i]->Draw(Camera, CameraDistance);
 		}
 	}
 

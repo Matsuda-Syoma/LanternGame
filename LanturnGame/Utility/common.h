@@ -24,6 +24,9 @@
 
 #define GM_MAX_ENEMY_SOLDIER 3
 
+#define DISTANCE_MAX 1.5
+#define DISTANCE_NUM 1.333333
+
 #include "Vector2D.h"
 #include <math.h>
 static float GetLength(Vector2D loc, Vector2D loc2)
@@ -57,3 +60,18 @@ static int RandType(int rnd)
 //Vector2D temp = loc - loc2;
 //angle = atan2f(temp.y, temp.x);
 //imageangle = atan2f(temp.y, temp.x);
+
+static float DrawFromCameraX(Vector2D location, float _distance, Vector2D loc)
+{
+	return (location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2));
+}
+
+static float DrawFromCameraY(Vector2D location, float _distance, Vector2D loc)
+{
+	return (location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2));
+}
+
+static float ScaleFromCamera(float _distance)
+{
+	return (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM));
+}

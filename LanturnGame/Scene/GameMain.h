@@ -50,6 +50,8 @@ private:
 
 	bool ffff = false;
 
+	float CameraDistance = 0.0f;
+
 	int life = GM_MAX_LIFE;
 	int Displaylife = life;
 

@@ -13,7 +13,7 @@ public:
 	~Explosion();
 	void Init(int _size);
 	void Update();
-	void Draw(Vector2D loc) const;
+	void Draw(Vector2D loc, float _distance) const;
 	bool Getflg()const;
 	static int LoadImages();
 	static void DeleteImages();

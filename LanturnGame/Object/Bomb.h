@@ -20,7 +20,7 @@ public:
 	~Bomb();
 	void Init(int _expsize);
 	void Update();
-	void Draw(Vector2D loc) const;
+	void Draw(Vector2D loc, float _distance) const;
 	bool GetFlg() const;
 	void SetFlg(bool b);
 	bool GetExpFlg() const;

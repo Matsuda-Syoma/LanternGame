@@ -21,10 +21,12 @@ void Tornado::Update()
 	cnt++;
 }
 
-void Tornado::Draw(Vector2D loc) const
+void Tornado::Draw(Vector2D loc, float _distance) const
 {
 	//DrawCircleAA(location.x + (-loc.x + SCREEN_WIDTH / 2), location.y + (-loc.y + SCREEN_HEIGHT / 2), radius, 16, GetColor(80, 0, 0), 0);
-	DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.5, (((DX_PI) / 180) * (cnt * 3)), images, true);
+	DrawRotaGraphF(DrawFromCameraX(location, _distance, loc)
+				 , DrawFromCameraY(location, _distance, loc)
+				 , 1.5 * ScaleFromCamera(_distance), (((DX_PI) / 180) * (cnt * 3)), images, true);
 }
 
 int Tornado::LoadImages() {
