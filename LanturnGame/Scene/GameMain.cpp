@@ -330,6 +330,17 @@ AbstractScene* GameMain::Update()
 		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
+
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_B))
+		{
+			ffff = !ffff;
+		}
+		if (!ffff)
+		{
+			Camera = player->GetLocation();
+			Camera += Camerashake;
+		}
+
 		//体力を徐々に減らす
 		if (Displaylife > life)
 		{
@@ -1215,7 +1226,7 @@ void GameMain::Draw() const
 	{
 		if (background[i] != nullptr)
 		{
-			background[i]->Draw(player->GetLocation() + +(float)Camerashake);
+			background[i]->Draw(Camera +(float)Camerashake);
 		}
 	}
 

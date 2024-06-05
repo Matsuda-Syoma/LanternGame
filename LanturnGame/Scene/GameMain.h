@@ -46,6 +46,9 @@ private:
 	int C_MaxEnemyBomb = UserData::LoadData(UserData::SETTING, 1);
 	int C_ExpSize = UserData::LoadData(UserData::SETTING, 2);
 	int C_MaxSoldier = UserData::LoadData(UserData::SETTING, 3);
+	Vector2D Camera;
+
+	bool ffff = false;
 
 	int life = GM_MAX_LIFE;
 	int Displaylife = life;
