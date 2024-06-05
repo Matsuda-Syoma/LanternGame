@@ -1288,10 +1288,11 @@ void GameMain::Draw() const
 
 	// マップの範囲
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 127);
-	DrawBoxAA((MapSize - (CameraDistance * 675)) + (-Camera.x + (SCREEN_WIDTH / 2)), -(MapSize - (CameraDistance * 675)) + (-Camera.y + (SCREEN_HEIGHT / 2)), (GM_MAX_MAPSIZE - (CameraDistance * 675)) + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, (MapSize - (CameraDistance * 675)) + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
-	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
+	//DrawBoxAA((MapSize - (CameraDistance * 675)) + (-Camera.x + (SCREEN_WIDTH / 2)), -(MapSize - (CameraDistance * 675)) + (-Camera.y + (SCREEN_HEIGHT / 2)), (GM_MAX_MAPSIZE - (CameraDistance * 675)) + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, (MapSize - (CameraDistance * 675)) + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	DrawBoxAA(MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
+	DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// 爆弾
