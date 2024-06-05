@@ -55,6 +55,10 @@ void Sounds::SetSoundVolume(int _Type, int _Volume)
 		SetVolumeSoundMem(_Volume * 39.216, Sounds::BGM_Title);
 		break;
 	case 1:
+		for (int i = 0; i < 5; i++)
+		{
+			SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_Explosion[i]);
+		}
 		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_Shoot);
 		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_Hit);
 		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_PlayerHit);
