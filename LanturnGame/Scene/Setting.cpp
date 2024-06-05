@@ -61,14 +61,18 @@ AbstractScene* Setting::Update()
 					break;
 				case 1:
 					se += -25.5f;
+					PlaySoundMem(Sounds::SE_Explosion[2], DX_PLAYTYPE_BACK);
 					// 下限に到達したら固定する
 					if (se < 0.f)
 					{
 						se = 0.f;
+						
 					}
 					break;
 				}
 			}
+			Sounds::SetSoundVolume(Sounds::BGM, bgm);
+			Sounds::SetSoundVolume(Sounds::SE, se);
 			break;
 		case 2:
 			if (isActive)
@@ -147,6 +151,7 @@ AbstractScene* Setting::Update()
 					break;
 				case 1:
 					se += 25.5f;
+					PlaySoundMem(Sounds::SE_Explosion[2], DX_PLAYTYPE_BACK);
 					// 上限に到達したら固定する
 					if (se > 255.f)
 					{
@@ -155,6 +160,8 @@ AbstractScene* Setting::Update()
 					break;
 				}
 			}
+			Sounds::SetSoundVolume(Sounds::BGM, bgm);
+			Sounds::SetSoundVolume(Sounds::SE, se);
 			break;
 
 			// ゲームの変更
