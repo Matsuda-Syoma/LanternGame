@@ -25,7 +25,7 @@ private:
 	int countflg = 0;
 	int stan = 0;
 	float deadzone = 0.1f;
-	float acceleration = 11.f;
+	float acceleration = 1.f;
 	float friction = .8f;
 	float movelength = 0.0f;
 public:

@@ -330,38 +330,7 @@ AbstractScene* GameMain::Update()
 		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
-
-		if (InputControl::GetButtonDown(XINPUT_BUTTON_B))
-		{
-			ffff = !ffff;
-		}
-		if (!ffff)
-		{
-			if (CameraDistance > 0.0f)
-			{
-				CameraDistance += -0.05f;
-				Camera = player->GetLocation() * (1 - (CameraDistance / DISTANCE_MAX));
-			}
-			else
-			{
-				CameraDistance = 0.0f;
-				Camera = player->GetLocation();
-			}
-		}
-		else
-		{
-			if (CameraDistance < DISTANCE_MAX)
-			{
-				CameraDistance += 0.05f;
-				Camera = player->GetLocation() * (1 - (CameraDistance / DISTANCE_MAX));
-			}
-			else
-			{
-				CameraDistance = DISTANCE_MAX;
-				Camera = 0;
-			}
-
-		}
+		Camera = player->GetLocation();
 		Camera += Camerashake;
 		//体力を徐々に減らす
 		if (Displaylife > life)
@@ -1097,6 +1066,56 @@ AbstractScene* GameMain::Update()
 		// ゲームのフレームを増やす
 		game_frametime++;
 
+		Vector2D cDistance;
+
+		for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+		{
+			if (bomb[i] != nullptr)
+			{
+				if (bomb[i]->GetExpFlg())
+				{
+					ffff = 60;
+					cDistance = Vector2D(bomb[i]->GetLocation().x - Camera.x, bomb[i]->GetLocation().y - Camera.y);
+					if (cDistance.x < cMin.x)
+					{
+						cMin.x = cDistance.x;
+					}
+					if(cDistance.x >= cMax.x)
+					{
+						cMax.x = cDistance.x;
+					}
+					if (cDistance.y < cMin.y)
+					{
+						cMin.y = cDistance.y;
+					}
+					if (cDistance.y >= cMax.y)
+					{
+						cMax.y = cDistance.y;
+					}
+				}
+			}
+		}
+
+		if (ffff > 0)
+		{
+			if (cMin.x != 0.0)
+			{
+				Camera.x += cMin.x / 2;
+			}
+			if (cMin.y != 0.0)
+			{
+				Camera.y += cMin.y / 2;
+			}
+			if (cMax.x != 0.0)
+			{
+				Camera.x += cMax.x / 2;
+			}
+			if (cMax.y != 0.0)
+			{
+				Camera.y += cMax.y / 2;
+			}
+			ffff--;
+		}
 		// カメラアップデート
 		CameraUpdate();
 
@@ -1113,7 +1132,6 @@ AbstractScene* GameMain::Update()
 					PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
 				}
 		}
-
 	}
 	// 残機が０になったら
 	if(player->GetPFlg() == false && resultflg == false){

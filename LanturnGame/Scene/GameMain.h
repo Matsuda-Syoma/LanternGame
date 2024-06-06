@@ -46,9 +46,9 @@ private:
 	int C_MaxEnemyBomb = UserData::LoadData(UserData::SETTING, 1);
 	int C_ExpSize = UserData::LoadData(UserData::SETTING, 2);
 	int C_MaxSoldier = UserData::LoadData(UserData::SETTING, 3);
-	Vector2D Camera;
+	Vector2D Camera, cMin, cMax;
 
-	bool ffff = false;
+	int ffff = 0;
 
 	float CameraDistance = 0.0f;
 
