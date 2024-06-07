@@ -58,7 +58,7 @@ void TextDisp::Update()
 			CenterX = 0;
 			memset(buf, 0, sizeof(buf));
 			p = temp[++textorder];
-			//PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
+			PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
 		}
 		else
 		{

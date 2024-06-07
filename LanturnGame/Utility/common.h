@@ -14,7 +14,7 @@
 #define GM_MAX_ICEFLOOR 2
 #define GM_MAX_CONVEYOR 3
 
-#define GM_MAX_TORNADO 3
+#define GM_MAX_TORNADO 7
 #define GM_MAX_ADDSCORE 100
 #define GM_MAX_COMBOEND 3
 

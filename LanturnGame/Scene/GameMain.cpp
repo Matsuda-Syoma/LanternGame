@@ -742,7 +742,11 @@ AbstractScene* GameMain::Update()
 							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
 							for (int j = 0; j < 7; j++)
 							{
-								SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(),(GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
+								if (bomb[i]->hitchek() == true)
+								{
+									SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(), (GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
+									bomb[i]->hitset();
+								}
 							}
 							//SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f, 0.f);
 							SetCameraShake(7);
@@ -858,10 +862,10 @@ AbstractScene* GameMain::Update()
 				{
 					if (player->GetFlg() == false && soldier[i]->ChekhitFlg() == true)
 					{
-						/*life--;*/
+						life = life - 10;
 						hitmoment = true;
 						soldier[i]->SetcatchFlg(true);
-						//player->SetFlg(true);
+						player->SetFlg(true);
 						player->SetHitSoldier(true);
 						soldier[i]->SetDMGflg(false);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
@@ -955,7 +959,7 @@ AbstractScene* GameMain::Update()
 					float length = GetLength(player->GetLocation(), tornado[i]->GetLocation());
 					Vector2D vvec = (tornado[i]->GetLocation() - player->GetLocation());
 					vvec /= length;
-					player->SetVelocity(vvec * 2.5);
+					player->SetVelocity(vvec);
 				}
 			}
 
@@ -968,7 +972,7 @@ AbstractScene* GameMain::Update()
 						float length = GetLength(bomb[j]->GetLocation(), tornado[i]->GetLocation());
 						Vector2D vvec = (tornado[i]->GetLocation() - bomb[j]->GetLocation());
 						vvec /= length;
-						bomb[j]->SetEXVelocity(vvec);
+						bomb[j]->SetEXVelocity(vvec * 1.2);
 					}
 				}
 			}
@@ -1199,6 +1203,7 @@ AbstractScene* GameMain::Update()
 		// Aボタンでタイトルに戻る
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 		{
+			PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
 			return new Title;
 		}
 	}
@@ -1395,7 +1400,7 @@ void GameMain::Draw() const
 			//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
 		}
 	}
-	// ミニマップ(ギミック(氷)
+	// ミニマップ(ギミック(竜巻)
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
 	{
 		if (tornado[i] != nullptr)
@@ -1577,7 +1582,7 @@ void GameMain::ChangeMapSize()
 		}
 		if (MapSize > GM_MIN_MAPSIZE)
 		{
-			SetMapSize(MapSize - 0.75f);
+			SetMapSize(MapSize - 0.5f);
 
 			if (MapSize < GM_MIN_MAPSIZE)
 			{

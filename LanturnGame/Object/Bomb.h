@@ -15,6 +15,10 @@ private:
 	Vector2D exvelocity = 0;
 	Vector2D knockback = 0;
 	Vector2D movetoloc = 0;
+
+	//パーティクルを一度だけ表示
+	bool HitChek;
+
 public:
 	Bomb();
 	~Bomb();
@@ -37,5 +41,9 @@ public:
 	void SetKnockBack(Vector2D vec, int i);
 	static void LoadImages();
 	static void DeleteImages();
+
+	//パーティクルを一度だけ表示
+	bool hitchek();
+	void hitset();
 };
 
