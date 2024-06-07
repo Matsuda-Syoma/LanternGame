@@ -142,9 +142,9 @@ void Bomb::DeleteImages()
 
 void Bomb::hitset()
 {
-	HitChek = false;
+	HitChek++;
 }
-bool Bomb::hitchek()
+int Bomb::hitchek()
 {
 	return HitChek;
 }

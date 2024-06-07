@@ -742,7 +742,7 @@ AbstractScene* GameMain::Update()
 							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
 							for (int j = 0; j < 7; j++)
 							{
-								if (bomb[i]->hitchek() == true)
+								if (10 >= bomb[i]->hitchek())
 								{
 									SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(), (GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
 									bomb[i]->hitset();

@@ -17,7 +17,7 @@ private:
 	Vector2D movetoloc = 0;
 
 	//パーティクルを一度だけ表示
-	bool HitChek;
+	int HitChek;
 
 public:
 	Bomb();
@@ -43,7 +43,7 @@ public:
 	static void DeleteImages();
 
 	//パーティクルを一度だけ表示
-	bool hitchek();
+	int hitchek();
 	void hitset();
 };
 
