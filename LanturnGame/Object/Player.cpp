@@ -118,9 +118,11 @@ void Player::Draw(int camerashake) const
 			DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, playerimg[imgnum], true);
 		}
 		else {
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+			//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+			SetIgnoreDrawGraphColor(TRUE);
 			DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, playerimg[imgnum], true);
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			SetIgnoreDrawGraphColor(FALSE);
 		}
 	}
 	else if(pflg == false) {
