@@ -1457,13 +1457,28 @@ void GameMain::Draw() const
 		for (int i = 0; i < sizeof(res); i++)
 		{
 			int chr = res[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 300, 1.0, 0.0, alphabetimage[chr], true);
+			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 150, 1.0, 0.0, alphabetimage[chr], true);
 		}
 		char res_2[] = "press a\0";
 		for (int i = 0; i < sizeof(res_2); i++)
 		{
 			int chr = res_2[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 350) + 22 * i, 500, 0.6, 0.0, alphabetimage[chr], true);
+			DrawRotaGraph((SCREEN_WIDTH - 350) + 22 * i, 550, 0.6, 0.0, alphabetimage[chr], true);
+		}
+
+		int bufhiscore = hiscore;
+		int hi_num = 0;
+		while (bufhiscore > 0)
+		{
+			hi_num++;
+			bufhiscore /= 10;
+		}
+		bufhiscore = hiscore;
+		for (int i = 0; i < hi_num; i++)
+		{
+			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * hi_num) / 2) - (40 * i), 280, 1.0, 0.0, numimage[bufhiscore % 10], true);
+			bufhiscore /= 10;
 		}
 
 		int bufscore = score;
