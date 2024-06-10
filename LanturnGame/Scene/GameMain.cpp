@@ -300,7 +300,8 @@ GameMain::GameMain()
 	resultimage = LoadGraph("Resources/images/result.png", 0);
 	highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
 	blackimage = LoadGraph("Resources/images/black.png", 0);
-	crackimage = LoadGraph("Resources/images/crack.png", 0);
+	crackimage = LoadGraph("Resources/images/crack1.png", 0);
+	sootimage = LoadGraph("Resources/images/soot.png", 0);
 	
 }
 
@@ -1095,6 +1096,7 @@ AbstractScene* GameMain::Update()
 		{
 		case(1):
 			alpha2 = 255;
+			alpha3 = 255;
 			break;
 		case(200):
 			resultflg = true;
@@ -1158,6 +1160,7 @@ AbstractScene* GameMain::Update()
 	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false)
 	{
 		alpha2 = 200;
+		alpha3 = 255 - life / 20 * 51;
 		crackflg = true;
 
 	}
@@ -1167,6 +1170,11 @@ AbstractScene* GameMain::Update()
 		if (alpha2 > 0)
 		{
 			alpha2 -= 1;
+		}
+
+		if (alpha3 > 0 && alpha2 <= alpha3)
+		{
+			alpha3 -= 1;
 		}
 
 		if (alpha2 == 0)
@@ -1352,6 +1360,8 @@ void GameMain::Draw() const
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
 		DrawGraph(0, 0, crackimage, true);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha3);
+		DrawGraph(0, 0, sootimage, true);
 		//画像透かし終わり
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -1448,6 +1458,14 @@ void GameMain::Draw() const
 		if (highscoreflg == true)
 		{
 			DrawGraph(0, 0, highscoreimage, true);
+			char res_4[] = "new record\0";
+			for (int i = 0; i < sizeof(res_4); i++)
+			{
+				int chr = res_4[i] - 'a';
+				SetDrawBright(255, 255, 0);
+				DrawRotaGraph((SCREEN_WIDTH - 360) + 18 * i, 220, 0.4, 0.0, alphabetimage[chr], true);
+				SetDrawBright(255, 255, 255);
+			}
 		}
 		else {
 			DrawGraph(0, 0, resultimage, true);
@@ -1459,10 +1477,16 @@ void GameMain::Draw() const
 			int chr = res[i] - 'a';
 			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 150, 1.0, 0.0, alphabetimage[chr], true);
 		}
-		char res_2[] = "press a\0";
+		char res_2[] = "high score\0";
 		for (int i = 0; i < sizeof(res_2); i++)
 		{
 			int chr = res_2[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * i, 390, 0.5, 0.0, alphabetimage[chr], true);
+		}
+		char res_3[] = "press a\0";
+		for (int i = 0; i < sizeof(res_3); i++)
+		{
+			int chr = res_3[i] - 'a';
 			DrawRotaGraph((SCREEN_WIDTH - 350) + 22 * i, 550, 0.6, 0.0, alphabetimage[chr], true);
 		}
 
@@ -1477,7 +1501,7 @@ void GameMain::Draw() const
 		for (int i = 0; i < hi_num; i++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * hi_num) / 2) - (40 * i), 280, 1.0, 0.0, numimage[bufhiscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 330 + (40 * hi_num) / 2) - (30 * i), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
 			bufhiscore /= 10;
 		}
 
@@ -1492,7 +1516,7 @@ void GameMain::Draw() const
 		for (int i = 0; i < num; i++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * i), 380, 1.0, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * i), 270, 1.0, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 	}
