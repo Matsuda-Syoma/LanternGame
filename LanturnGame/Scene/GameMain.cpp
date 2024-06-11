@@ -1176,12 +1176,13 @@ AbstractScene* GameMain::Update()
 		//	}
 		//}
 
+		bool CameraFlg = false;
 		for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++)
 		{
 			if (explosion[i] != nullptr)
 			{
 
-				ffff = 120;
+				CameraFlg = true;
 				cDistance = Vector2D(explosion[i]->GetLocation().x - Camera.x, explosion[i]->GetLocation().y - Camera.y);
 				//cFlg = true;
 
@@ -1247,13 +1248,28 @@ AbstractScene* GameMain::Update()
 			Vector2D qw = (Camera * (1. - (CameraDistance / DISTANCE_MAX)));
 			Vector2D qw2 = (0 * (CameraDistance / DISTANCE_MAX));
 			Camera = qw + qw2;
-			ffff--;
+			
 		}
 		else
 		{
 			cMin = 0;
 			cMax = 0;
 			CameraDistance = 0.0f;
+		}
+		if (CameraFlg)
+		{
+			if (ffff < 120)
+			{
+				ffff += 5;
+			}
+
+		}
+		else
+		{
+			if (ffff > 0)
+			{
+				ffff--;
+			}
 		}
 		// カメラアップデート
 		CameraUpdate();
