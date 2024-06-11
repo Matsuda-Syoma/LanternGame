@@ -4,8 +4,11 @@
 class Conveyor : public BoxCollider
 {
 private:
+    int images;
     float width, height;
     Vector2D location;
+    int maxexpcnt = 80;
+    int expcnt = maxexpcnt;
 public:
     Conveyor();    //コンストラクタ
     ~Conveyor();   //デストラクタ
