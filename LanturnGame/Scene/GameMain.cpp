@@ -977,7 +977,7 @@ AbstractScene* GameMain::Update()
 						float length = GetLength(bomb[j]->GetLocation(), tornado[i]->GetLocation());
 						Vector2D vvec = (tornado[i]->GetLocation() - bomb[j]->GetLocation());
 						vvec /= length;
-						bomb[j]->SetEXVelocity(vvec * 1.2);
+						bomb[j]->SetEXVelocity(vvec * 0.8);
 					}
 				}
 			}
@@ -1247,8 +1247,6 @@ AbstractScene* GameMain::Update()
 			Vector2D qw = (Camera * (1. - (CameraDistance / DISTANCE_MAX)));
 			Vector2D qw2 = (0 * (CameraDistance / DISTANCE_MAX));
 			Camera = qw + qw2;
-			//Camera = lerp(Camera, player->GetLocation(), min((ffff / 90), 1));
-			SpawnParticle(2, nullptr, false, Camera, 0.0f, 1.0f, 0.0f);
 			ffff--;
 		}
 		else
@@ -1257,10 +1255,6 @@ AbstractScene* GameMain::Update()
 			cMax = 0;
 			CameraDistance = 0.0f;
 		}
-		clsDx();
-		printfDx("%f %f| %f %f\n", cMin.x, cMin.y, cMax.x, cMax.y);
-		printfDx("%f |%f %f\n", CameraDistance, Camera.x, Camera.y);
-		printfDx("%d\n", min((ffff / 30), 1));
 		// カメラアップデート
 		CameraUpdate();
 
