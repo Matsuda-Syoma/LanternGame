@@ -65,6 +65,7 @@ private:
 	int highscoreimage;
 	int blackimage;
 	int crackimage;
+	int sootimage;
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;
@@ -89,6 +90,7 @@ private:
 	int countdown = 4;
 	int alpha = 0;
 	int alpha2 = 200;
+	int alpha3 = 0;
 	double countsize = 3.0;
 
 	Vector2D ev;

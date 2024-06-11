@@ -301,8 +301,9 @@ GameMain::GameMain()
 	resultimage = LoadGraph("Resources/images/result.png", 0);
 	highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
 	blackimage = LoadGraph("Resources/images/black.png", 0);
-	crackimage = LoadGraph("Resources/images/crack.png", 0);
-
+	crackimage = LoadGraph("Resources/images/crack1.png", 0);
+	sootimage = LoadGraph("Resources/images/soot.png", 0);
+	
 }
 
 // デストラクタ
@@ -729,26 +730,30 @@ AbstractScene* GameMain::Update()
 					// 敵とプレイヤーの当たり判定
 					if (bomb[i]->HitSphere(player))
 					{
-						vvec = (bomb[i]->GetLocation() - player->GetLocation());
-						length = bomb[i]->GetLength(player->GetLocation());
-						vvec /= length;
-						if (!bomb[i]->GetExpFlg())
-						{
-							bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 20.));
-						}
-						else
-						{
-							bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 50.));
-						}
-						SE_HitFlg = true;
-						bomb[i]->SetExpFlg(true);
-						SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.5f, 0.f);
-						for (int j = 0; j < 7; j++)
-						{
-							SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(), (GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
-						}
-						//SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f, 0.f);
-						SetCameraShake(7);
+							vvec = (bomb[i]->GetLocation() - player->GetLocation());
+							length = bomb[i]->GetLength(player->GetLocation());
+							vvec /= length;
+							if (!bomb[i]->GetExpFlg())
+							{
+								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 20.));
+							}
+							else
+							{
+								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 50.));
+							}
+							SE_HitFlg = true;
+							bomb[i]->SetExpFlg(true);
+							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
+							for (int j = 0; j < 7; j++)
+							{
+								if (bomb[i]->hitchek() == true)
+								{
+									SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(), (GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
+									bomb[i]->hitset();
+								}
+							}
+							//SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f, 0.f);
+							SetCameraShake(7);
 					}
 				}
 
@@ -861,10 +866,10 @@ AbstractScene* GameMain::Update()
 				{
 					if (player->GetFlg() == false && soldier[i]->ChekhitFlg() == true)
 					{
-						/*life--;*/
+						life = life - 10;
 						hitmoment = true;
 						soldier[i]->SetcatchFlg(true);
-						//player->SetFlg(true);
+						player->SetFlg(true);
 						player->SetHitSoldier(true);
 						soldier[i]->SetDMGflg(false);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
@@ -958,7 +963,7 @@ AbstractScene* GameMain::Update()
 					float length = GetLength(player->GetLocation(), tornado[i]->GetLocation());
 					Vector2D vvec = (tornado[i]->GetLocation() - player->GetLocation());
 					vvec /= length;
-					player->SetVelocity(vvec * 2.5);
+					player->SetVelocity(vvec);
 				}
 			}
 
@@ -971,7 +976,7 @@ AbstractScene* GameMain::Update()
 						float length = GetLength(bomb[j]->GetLocation(), tornado[i]->GetLocation());
 						Vector2D vvec = (tornado[i]->GetLocation() - bomb[j]->GetLocation());
 						vvec /= length;
-						bomb[j]->SetEXVelocity(vvec);
+						bomb[j]->SetEXVelocity(vvec * 1.2);
 					}
 				}
 			}
@@ -1281,6 +1286,7 @@ AbstractScene* GameMain::Update()
 		{
 		case(1):
 			alpha2 = 255;
+			alpha3 = 255;
 			break;
 		case(200):
 			resultflg = true;
@@ -1344,6 +1350,7 @@ AbstractScene* GameMain::Update()
 	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false)
 	{
 		alpha2 = 200;
+		alpha3 = 255 - life / 20 * 51;
 		crackflg = true;
 
 	}
@@ -1353,6 +1360,11 @@ AbstractScene* GameMain::Update()
 		if (alpha2 > 0)
 		{
 			alpha2 -= 1;
+		}
+
+		if (alpha3 > 0 && alpha2 <= alpha3)
+		{
+			alpha3 -= 1;
 		}
 
 		if (alpha2 == 0)
@@ -1389,6 +1401,7 @@ AbstractScene* GameMain::Update()
 		// Aボタンでタイトルに戻る
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 		{
+			PlaySoundMem(Sounds::SE_transition, DX_PLAYTYPE_BACK);
 			return new Title;
 		}
 	}
@@ -1538,6 +1551,8 @@ void GameMain::Draw() const
 	{
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
 		DrawGraph(0, 0, crackimage, true);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha3);
+		DrawGraph(0, 0, sootimage, true);
 		//画像透かし終わり
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -1586,7 +1601,7 @@ void GameMain::Draw() const
 			//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
 		}
 	}
-	// ミニマップ(ギミック(氷)
+	// ミニマップ(ギミック(竜巻)
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
 	{
 		if (tornado[i] != nullptr)
@@ -1634,6 +1649,14 @@ void GameMain::Draw() const
 		if (highscoreflg == true)
 		{
 			DrawGraph(0, 0, highscoreimage, true);
+			char res_4[] = "new record\0";
+			for (int i = 0; i < sizeof(res_4); i++)
+			{
+				int chr = res_4[i] - 'a';
+				SetDrawBright(255, 255, 0);
+				DrawRotaGraph((SCREEN_WIDTH - 360) + 18 * i, 220, 0.4, 0.0, alphabetimage[chr], true);
+				SetDrawBright(255, 255, 255);
+			}
 		}
 		else {
 			DrawGraph(0, 0, resultimage, true);
@@ -1643,13 +1666,34 @@ void GameMain::Draw() const
 		for (int i = 0; i < sizeof(res); i++)
 		{
 			int chr = res[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 300, 1.0, 0.0, alphabetimage[chr], true);
+			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 150, 1.0, 0.0, alphabetimage[chr], true);
 		}
-		char res_2[] = "press a\0";
+		char res_2[] = "high score\0";
 		for (int i = 0; i < sizeof(res_2); i++)
 		{
 			int chr = res_2[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 350) + 22 * i, 500, 0.6, 0.0, alphabetimage[chr], true);
+			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * i, 390, 0.5, 0.0, alphabetimage[chr], true);
+		}
+		char res_3[] = "press a\0";
+		for (int i = 0; i < sizeof(res_3); i++)
+		{
+			int chr = res_3[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 350) + 22 * i, 550, 0.6, 0.0, alphabetimage[chr], true);
+		}
+
+		int bufhiscore = hiscore;
+		int hi_num = 0;
+		while (bufhiscore > 0)
+		{
+			hi_num++;
+			bufhiscore /= 10;
+		}
+		bufhiscore = hiscore;
+		for (int i = 0; i < hi_num; i++)
+		{
+			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+			DrawRotaGraph((SCREEN_WIDTH - 330 + (40 * hi_num) / 2) - (30 * i), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
+			bufhiscore /= 10;
 		}
 
 		int bufscore = score;
@@ -1663,7 +1707,7 @@ void GameMain::Draw() const
 		for (int i = 0; i < num; i++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * i), 380, 1.0, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * i), 270, 1.0, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 	}
@@ -1768,7 +1812,7 @@ void GameMain::ChangeMapSize()
 		}
 		if (MapSize > GM_MIN_MAPSIZE)
 		{
-			SetMapSize(MapSize - 0.75f);
+			SetMapSize(MapSize - 0.5f);
 
 			if (MapSize < GM_MIN_MAPSIZE)
 			{

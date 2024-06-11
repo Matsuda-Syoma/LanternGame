@@ -6,6 +6,7 @@ int Bomb::images[3];
 Bomb::Bomb()
 {
 	speed = 2;
+	HitChek = true;
 }
 Bomb::~Bomb()
 {
@@ -143,4 +144,13 @@ void Bomb::LoadImages()
 void Bomb::DeleteImages()
 {
 	DeleteGraph(*images);
+}
+
+void Bomb::hitset()
+{
+	HitChek = false;
+}
+bool Bomb::hitchek()
+{
+	return HitChek;
 }

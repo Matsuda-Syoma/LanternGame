@@ -14,7 +14,7 @@ int Sounds::BGM_Title;
 int Sounds::SE_transition;
 int Sounds::SE_cursor;
 
-int Sounds::SE_CntDown;
+int Sounds::SE_CountDown;
 
 void Sounds::LoadSounds() {
 	BGM_Game = LoadSoundMem("Resources/sounds/BGM_Trip.wav");
@@ -37,7 +37,7 @@ void Sounds::LoadSounds() {
 	SE_transition = LoadSoundMem("Resources/sounds/SE_transition.mp3");
 	SE_cursor = LoadSoundMem("Resources/sounds/SE_cursor.mp3");
 
-	SE_CntDown = LoadSoundMem("Resources/sounds/SE_CountDwon.mp3");
+	SE_CountDown = LoadSoundMem("Resources/sounds/SE_CountDwon.mp3");
 
 	//SE_NextText = LoadSoundMem("Resources/sounds/SE_NextText.mp3");
 }
@@ -67,7 +67,7 @@ void Sounds::SetSoundVolume(int _Type, int _Volume)
 		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_MapClose);
 		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_transition);
 		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_cursor);
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_CntDown);
+		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_CountDown);
 		break;
 	default:
 		break;
