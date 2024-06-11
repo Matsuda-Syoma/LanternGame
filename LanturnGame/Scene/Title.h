@@ -4,7 +4,9 @@
 class Title : public AbstractScene
 {
 private:
+
 	int cursor_menu = 0;
+	int maxcursor_menu = 2 - 1;
 	int titleimage;
 	int menuimage[4];
 	int cursorimage;

@@ -9,17 +9,17 @@ Title::Title()
 {
 	SetUseASyncLoadFlag(true);
 	menuimage[0] = LoadGraph("Resources/images/titlemenu_start.png");
-	menuimage[1] = LoadGraph("Resources/images/titlemenu_setting.png");
-	menuimage[2] = LoadGraph("Resources/images/titlemenu_end.png");
-	for (int i = 0; i < 4; i++)
+	//menuimage[1] = LoadGraph("Resources/images/titlemenu_setting.png");
+	menuimage[1] = LoadGraph("Resources/images/titlemenu_end.png");
+	for (int i = 0; i < 2; i++)
 	{
 		if (menuimage[i] == -1) {
 			printfDx("err : menuimage\n");
 		}
 	}
 	LoadDivGraph("Resources/images/titlemenu_game.png", 63, 9, 7, 512, 512, menufireimage[0]);
-	LoadDivGraph("Resources/images/titlemenu_setting_fire.png", 63, 9, 7, 512, 512, menufireimage[1]);
-	LoadDivGraph("Resources/images/titlemenu_end_fire.png", 63, 9, 7, 512, 512, menufireimage[2]);
+	//LoadDivGraph("Resources/images/titlemenu_setting_fire.png", 63, 9, 7, 512, 512, menufireimage[1]);
+	LoadDivGraph("Resources/images/titlemenu_end_fire.png", 63, 9, 7, 512, 512, menufireimage[1]);
 	LoadDivGraph("Resources/images/cursor_fire.png", 16, 4, 4, 32, 32, cursorfireimage);
 	cursorimage = LoadGraph("Resources/images/match.png", 0);
 	titleimage = LoadGraph("Resources/images/Title.png", 0);
@@ -45,7 +45,7 @@ AbstractScene* Title::Update()
 		}
 		cursor_menu++;
 		// 一番下に到達したら、一番上にする
-		if (cursor_menu > 2)
+		if (cursor_menu > maxcursor_menu)
 		{
 			cursor_menu = 0;
 		}
@@ -62,7 +62,7 @@ AbstractScene* Title::Update()
 		// 一番上に到達したら、一番下にする
 		if (cursor_menu < 0)
 		{
-			cursor_menu = 2;
+			cursor_menu = maxcursor_menu;
 		}
 	}
 
@@ -103,10 +103,7 @@ AbstractScene* Title::Update()
 			return new GameMain;
 			break;
 		case 1:
-			return new Setting;
-			break;
-		case 2:
-			return new Title;
+			return nullptr;
 			break;
 		default:
 			//return new End;
@@ -134,7 +131,7 @@ void Title::Draw() const
 	int OldBlendMode, OldBlendParam;
 	GetDrawBlendMode(&OldBlendMode,&OldBlendParam);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, max(255 - (int)((fireanim / 62.) * 511.), 0));
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 2; i++) {
 		DrawRotaGraph(1040, 380 + (i * 65), 1.0, 0.0, menuimage[i], true);
 	}
 	SetDrawBlendMode(OldBlendMode, OldBlendParam);

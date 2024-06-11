@@ -1266,10 +1266,7 @@ AbstractScene* GameMain::Update()
 
 			player->SetPFlg(false);
 
-			if (CheckSoundMem(Sounds::BGM_Title) == 0)
-			{
-				PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
-			}
+
 		}
 	}
 	// 残機が０になったら
@@ -1285,6 +1282,10 @@ AbstractScene* GameMain::Update()
 			break;
 		case(200):
 			resultflg = true;
+			if (CheckSoundMem(Sounds::BGM_Title) == 0)
+			{
+				PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
+			}
 			break;
 		default:
 			break;
