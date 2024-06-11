@@ -5,7 +5,7 @@
 int Bomb::images[3];
 Bomb::Bomb()
 {
-	speed = 2;
+	speed = 1;
 	HitChek = true;
 }
 Bomb::~Bomb()
@@ -19,7 +19,7 @@ void Bomb::Update()
 {
 	if (expflg) {
 		//mode = 2;
-		speed = 3;
+		speed = 1.5;
 		expcnt--;
 		if (expcnt < 0) {
 			flg = false;
