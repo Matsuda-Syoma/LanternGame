@@ -1678,7 +1678,7 @@ void GameMain::Draw() const
 		for (int i = 0; i < sizeof(res_3); i++)
 		{
 			int chr = res_3[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 350) + 22 * i, 550, 0.6, 0.0, alphabetimage[chr], true);
+			DrawRotaGraph((SCREEN_WIDTH - 340) + 22 * i, 580, 0.6, 0.0, alphabetimage[chr], true);
 		}
 
 		int bufhiscore = hiscore;
@@ -1692,7 +1692,7 @@ void GameMain::Draw() const
 		for (int i = 0; i < hi_num; i++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 330 + (40 * hi_num) / 2) - (30 * i), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 340 + (40 * hi_num) / 2) - (28 * i), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
 			bufhiscore /= 10;
 		}
 
