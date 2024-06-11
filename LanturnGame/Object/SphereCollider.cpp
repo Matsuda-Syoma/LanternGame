@@ -24,6 +24,22 @@ bool SphereCollider::HitSphere(SphereCollider* spherecollider)const
 	return ret;
 }
 
+bool SphereCollider::HitSphere(SphereCollider* spherecollider, float _radius) const
+{
+	bool ret = false;	// 返り値
+	float distance;		// 中心座標の距離
+
+	// 中心座標の距離の計算
+	distance = sqrtf(powf(spherecollider->GetLocation().x - location.x, 2) + powf(spherecollider->GetLocation().y - location.y, 2));
+
+	if (distance < _radius + spherecollider->GetRadius())  // 当たり判定
+	{
+		ret = true;
+	}
+
+	return ret;
+}
+
 bool SphereCollider::HitBox(BoxCollider boxCollider) const {
 	Box box;
 	boxCollider.GetSize(box.top, box.bottom, box.left, box.right);

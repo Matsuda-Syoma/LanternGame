@@ -46,6 +46,7 @@ static int RandType(int rnd)
 	// 3,1,1,3,2
 	int percent = 0;
 	int addpercent[5] = { 10,10,10,40,30 };
+	//int addpercent[5] = { 0,100,0,0,0 };
 	for (int i = 0; i < 5; i++)
 	{
 		percent += addpercent[i];
@@ -75,3 +76,8 @@ static float ScaleFromCamera(float _distance)
 {
 	return (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM));
 }
+
+//template <typename T>
+//T lerp(const T& a, const T& b, float t) {
+//	return (1 - t) * a + t * b;
+//}
