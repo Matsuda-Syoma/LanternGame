@@ -83,40 +83,43 @@ GameMain::GameMain()
 				// 初期値
 				float length = 65535;
 				bool ret = false;
-				Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+				Vector2D spawnloc = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1300));
+				Vector2D spawnloc2 = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1800));
+					//(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 
 				// コンベアを見る
-				for (int j = 0; j < GM_MAX_CONVEYOR; j++)
-				{
-					// 自分以外なら
-					if (j != i)
-					{
-						// 距離を計算
-						length = GetLength(conveyor[j]->GetLocation(), spawnloc);
-						// 360より短いならだめ:フラグon
-						if (length < 360) {
-							ret = true;
-							break;
-						}
-					}
-				}
-				for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
-				{
-					// 距離を計算
-					length = GetLength(stage[j]->GetLocation(), spawnloc);
-					// 360より短いならだめ:フラグon
-					if (length < 500) {
-						ret = true;
-						break;
-					}
-				}
-				// フラグ0ffなら座標指定してるーぷぬける
-				if (!ret)
-				{
-					conveyor[i]->SetLocation(spawnloc);
+				//for (int j = 0; j < GM_MAX_CONVEYOR; j++)
+				//{
+				//	// 自分以外なら
+				//	if (j != i)
+				//	{
+				//		// 距離を計算
+				//		length = GetLength(conveyor[j]->GetLocation()/*spawnloc*/);
+				//		// 360より短いならだめ:フラグon
+				//		if (length < 360) {
+				//			ret = true;
+				//			break;
+				//		}
+				//	}
+				//}
+				//for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
+				//{
+				//		// 距離を計算
+				//		length = GetLength(stage[j]->GetLocation() /*spawnloc*/);
+				//		// 360より短いならだめ:フラグon
+				//		if (length < 500) {
+				//			ret = true;
+				//			break;
+				//		}
+				//}
+				//// フラグ0ffなら座標指定してるーぷぬける
+				//if (!ret)
+				/*{*/
+					conveyor[0]->SetLocation(spawnloc);
+					conveyor[1]->SetLocation(spawnloc2);
 					conveyor[i]->Update();
 					break;
-				}
+				/*}*/
 			}
 
 		}
