@@ -1351,7 +1351,7 @@ AbstractScene* GameMain::Update()
 	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false)
 	{
 		alpha2 = 200;
-		alpha3 = 255 - life / 20 * 51;
+		alpha3 = 255 - life * 51;
 		crackflg = true;
 
 	}
