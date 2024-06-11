@@ -9,7 +9,7 @@ public:
 	Tornado();
 	~Tornado();
 	void Update();
-	void Draw(Vector2D loc)const;
+	void Draw(Vector2D loc, float _distance)const;
 	static int LoadImages();
 	static void DeleteImages();
 };

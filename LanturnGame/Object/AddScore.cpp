@@ -62,13 +62,22 @@ void AddScore::Update(Vector2D loc)
 	
 }
 
-void AddScore::Draw(Vector2D loc) const
+void AddScore::Draw(Vector2D loc, float _distance) const
 {
 
 	int bufscore = score;
 	for (int i = 0; i < digit; i++) {
-		//DrawRotaGraphF((SCREEN_WIDTH / 2) + 16 - (i * 32) + location.x, (SCREEN_HEIGHT / 2) + 96 + location.y, .5, 0.0, numimg[bufcombo % 10], true);
-		DrawRotaGraphF(viewlocation.x + (-loc.x + (SCREEN_WIDTH / 2)) + (20 * (digit - 2)) - (i * 20), viewlocation.y + (-loc.y + (SCREEN_HEIGHT / 2)) + addy, .5, 0.0, numimg[bufscore % 10], true);
+		if (_distance != 0.0)
+		{
+			DrawRotaGraphF(DrawFromCameraX(location, _distance, loc) + (20 * (digit - 2)) - (i * 20)
+				, DrawFromCameraY(location, _distance, loc) + addy, 0.5, 0.0, numimg[bufscore % 10], true);
+		}
+		else
+		{
+			DrawRotaGraphF(DrawFromCameraX(viewlocation, _distance, loc) + (20 * (digit - 2)) - (i * 20)
+				, DrawFromCameraY(viewlocation, _distance, loc) + addy, 0.5, 0.0, numimg[bufscore % 10], true);
+		}
+
 		bufscore /= 10;
 	}
 

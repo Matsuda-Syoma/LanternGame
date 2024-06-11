@@ -6,6 +6,7 @@ int Bomb::images[3];
 Bomb::Bomb()
 {
 	speed = 2;
+	HitChek = true;
 }
 Bomb::~Bomb()
 {
@@ -51,14 +52,16 @@ void Bomb::Update()
 	}
 }
 
-void Bomb::Draw(Vector2D loc) const
+void Bomb::Draw(Vector2D loc, float _distance) const
 {
 	if (expcnt % 14 > 7 && expflg) {
 		SetDrawBright(255, 0, 0);// 赤以外を暗くする
 	}
 	//DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, images[mode - 1], true);
 	if (!expflg) {
-		DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 + (double)(max(45 - expcnt, 0) / 45.0), 0.0, images[0], true);
+		DrawRotaGraphF(DrawFromCameraX(location, _distance, loc)
+					 , DrawFromCameraY(location, _distance, loc)
+					 , (1.0 + (double)(max(45 - expcnt, 0) / 45.0)) * ScaleFromCamera(_distance), 0.0, images[0], true);
 
 	}
 	else {
@@ -66,10 +69,14 @@ void Bomb::Draw(Vector2D loc) const
 		int OldDrawParam;
 		GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 63);
-		DrawCircleAA(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 15 * (expsize - 2), 16, 0xffffff, false, 10);
+		DrawCircleAA(DrawFromCameraX(location, _distance, loc)
+					,DrawFromCameraY(location, _distance, loc)
+					,(15 * (expsize - 2)) * ScaleFromCamera(_distance), 16, 0xffffff, false, 10 * ScaleFromCamera(_distance));
 
 		SetDrawBlendMode(OldDrawMode, OldDrawParam);
-		DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 + (double)(max(45 - expcnt, 0) / 45.0), 0.0, images[2], true);
+		DrawRotaGraphF(DrawFromCameraX(location, _distance, loc)
+					 , DrawFromCameraY(location, _distance, loc)
+					 , (1.0 + (double)(max(45 - expcnt, 0) / 45.0)) * ScaleFromCamera(_distance), 0.0, images[2], true);
 	}
 	
 	SetDrawBright(255, 255, 255);// 全色暗くしない（デフォルト）
@@ -137,4 +144,13 @@ void Bomb::LoadImages()
 void Bomb::DeleteImages()
 {
 	DeleteGraph(*images);
+}
+
+void Bomb::hitset()
+{
+	HitChek = false;
+}
+bool Bomb::hitchek()
+{
+	return HitChek;
 }

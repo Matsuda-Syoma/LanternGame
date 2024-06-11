@@ -17,9 +17,9 @@ void BackGround::Init(int i)
 {
 }
 
-void BackGround::Draw(Vector2D loc) const
+void BackGround::Draw(Vector2D loc, float _distance) const
 {
-	DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)),2.0,0.0,images[9],true);
+	DrawRotaGraphF((location.x * (64. - (_distance * 32.))) + (-loc.x + (SCREEN_WIDTH / 2)), (location.y * (64. - (_distance * 32.))) + (-loc.y + (SCREEN_HEIGHT / 2)), 2.032 - _distance, 0.0, images[9], true);
 }
 
 void BackGround::LoadImages() {

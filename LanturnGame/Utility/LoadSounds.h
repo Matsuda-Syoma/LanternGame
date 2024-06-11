@@ -20,7 +20,7 @@ public:
 	static int BGM_Title;
 	static int SE_transition;
 	static int SE_cursor;
-	static int SE_CntDown;
+	static int SE_CountDown;
 	//static int SE_NextText;
 
 	static void LoadSounds();

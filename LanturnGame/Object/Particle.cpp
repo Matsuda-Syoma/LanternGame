@@ -37,7 +37,7 @@ void Particle::Update()
 
 }
 
-void Particle::Draw(Vector2D loc) const
+void Particle::Draw(Vector2D loc, float _distance) const
 {
 	if (flg) {
 		int OldDrawMode;
@@ -52,8 +52,9 @@ void Particle::Draw(Vector2D loc) const
 		}
 		if (visible)
 		{
-			DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2))
-				, location.y + (-loc.y + (SCREEN_HEIGHT / 2)), scale, imageangle, images[type][lifetime], true);
+			DrawRotaGraphF(DrawFromCameraX(location, _distance, loc)
+				, DrawFromCameraY(location, _distance, loc)
+				, scale * ScaleFromCamera(_distance), imageangle, images[type][lifetime], true);
 		}
 		if (type == 3)
 		{
@@ -71,7 +72,7 @@ bool Particle::Getflg() const
 
 int Particle::LoadImages()
 {
-	int ret = LoadDivGraph("Resources/images/impact.png", 30, 6, 5, 128, 128, images[0]);
+	int ret = LoadDivGraph("Resources/images/impact.pnacg", 30, 6, 5, 128, 128, images[0]);
 	ret = LoadDivGraph("Resources/images/fire.png", 30, 6, 5, 64, 64, images[1]);
 	ret = LoadDivGraph("Resources/images/explosion_2.png", 30, 6, 5, 128, 128, images[2]);
 	ret = LoadDivGraph("Resources/images/exp.png", 30, 6, 5, 256, 256, images[3]);

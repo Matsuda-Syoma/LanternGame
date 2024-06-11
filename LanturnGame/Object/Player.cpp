@@ -28,21 +28,6 @@ void Player::Update()
 {
 	lastinput = 0;
 
-	if (overice == false)
-	{
-		speed = 5;
-	}else{
-		speed = 10;
-	}
-
-	if (onconveyor == false)
-	{
-		speed = 5;
-	}
-	else {
-
-	}
-
 	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
 	if (pflg == true && hit_soldier == false)
 	{
@@ -110,25 +95,29 @@ void Player::Update()
 
 }
 
-void Player::Draw(int camerashake) const
+void Player::Draw(Vector2D loc, float _distance) const
 {
 	if (pflg == true && hit_soldier == false) {
 		if (blinkingflg == false)
 		{
-			DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, playerimg[imgnum], true);
+			DrawRotaGraph((location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
+						, (location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 * (1 - ((_distance / DISTANCE_MAX) / 4.0)), 0.0, playerimg[imgnum], true);
 		}
 		else {
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-			DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, playerimg[imgnum], true);
+			DrawRotaGraph((location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
+				, (location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 * (1 - ((_distance / DISTANCE_MAX) / 4.0)), 0.0, playerimg[imgnum], true);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 	}
 	else if(pflg == false) {
-		DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.0, 0.0, d_playerimg, true);
+		DrawRotaGraph((location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
+			, (location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 * (1 - ((_distance / DISTANCE_MAX) / 4.0)), 0.0, d_playerimg, true);
 	}
 	else if (pflg == true && hit_soldier == true)
 	{
-		DrawRotaGraph(SCREEN_WIDTH / 2 + camerashake, SCREEN_HEIGHT / 2 + camerashake, 1.2, 0.0, angryimg, true);
+		DrawRotaGraph((location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
+			, (location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.2 * (1 - ((_distance / DISTANCE_MAX) / 4.0)), 0.0, angryimg, true);
 	}
 	
 	// 元の描画を取得

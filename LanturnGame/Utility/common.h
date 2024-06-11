@@ -6,7 +6,7 @@
 #define FRAMERATE 60.0
 #define UPDATETIME 800
 
-#define GM_MAX_LIFE 100
+#define GM_MAX_LIFE 10
 
 #define GM_MAX_ENEMY_BOMB 200
 #define GM_MAX_EFFECT_EXPLOSION 200
@@ -14,7 +14,7 @@
 #define GM_MAX_ICEFLOOR 2
 #define GM_MAX_CONVEYOR 2
 
-#define GM_MAX_TORNADO 3
+#define GM_MAX_TORNADO 7
 #define GM_MAX_ADDSCORE 100
 #define GM_MAX_COMBOEND 3
 
@@ -22,7 +22,10 @@
 #define GM_MIN_MAPSIZE 320
 
 
-#define GM_MAX_ENEMY_SOLDIER 3
+#define GM_MAX_ENEMY_SOLDIER 0
+
+#define DISTANCE_MAX 1.5
+#define DISTANCE_NUM 1.333333
 
 #include "Vector2D.h"
 #include <math.h>
@@ -43,6 +46,7 @@ static int RandType(int rnd)
 	// 3,1,1,3,2
 	int percent = 0;
 	int addpercent[5] = { 10,10,10,40,30 };
+	//int addpercent[5] = { 0,100,0,0,0 };
 	for (int i = 0; i < 5; i++)
 	{
 		percent += addpercent[i];
@@ -57,3 +61,23 @@ static int RandType(int rnd)
 //Vector2D temp = loc - loc2;
 //angle = atan2f(temp.y, temp.x);
 //imageangle = atan2f(temp.y, temp.x);
+
+static float DrawFromCameraX(Vector2D location, float _distance, Vector2D loc)
+{
+	return (location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2));
+}
+
+static float DrawFromCameraY(Vector2D location, float _distance, Vector2D loc)
+{
+	return (location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2));
+}
+
+static float ScaleFromCamera(float _distance)
+{
+	return (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM));
+}
+
+//template <typename T>
+//T lerp(const T& a, const T& b, float t) {
+//	return (1 - t) * a + t * b;
+//}

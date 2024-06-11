@@ -15,7 +15,7 @@ public:
 	//更新
 	void Upadate(Vector2D PL);
 	//描画
-	void Draw(Vector2D PL);
+	void Draw(Vector2D PL, float _distance);
 	//移動
 	void Move(Vector2D PL);
 	//向き

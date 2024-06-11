@@ -33,7 +33,7 @@ public:
 	~Player();
 	void Init();
 	void Update();
-	void Draw(int camerashake)const;
+	void Draw(Vector2D loc, float _distance)const;
 	void Movement();
 	void Invincible();	// –³“GŽžŠÔ
 	void Blinking();	// “_–Å

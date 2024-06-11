@@ -46,6 +46,11 @@ private:
 	int C_MaxEnemyBomb = UserData::LoadData(UserData::SETTING, 1);
 	int C_ExpSize = UserData::LoadData(UserData::SETTING, 2);
 	int C_MaxSoldier = UserData::LoadData(UserData::SETTING, 3);
+	Vector2D Camera, cMin, cMax;
+
+	int ffff = 0;
+
+	float CameraDistance = 0.0f;
 
 	int life = GM_MAX_LIFE;
 	int Displaylife = life;
@@ -60,6 +65,7 @@ private:
 	int highscoreimage;
 	int blackimage;
 	int crackimage;
+	int sootimage;
 	bool hitmoment = false;
 	bool comboflg = false;
 	bool resultflg = false;
@@ -84,6 +90,7 @@ private:
 	int countdown = 4;
 	int alpha = 0;
 	int alpha2 = 200;
+	int alpha3 = 0;
 	double countsize = 3.0;
 
 	Vector2D ev;

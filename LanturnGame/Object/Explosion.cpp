@@ -32,10 +32,12 @@ void Explosion::Update()
 	}
 }
 
-void Explosion::Draw(Vector2D loc) const
+void Explosion::Draw(Vector2D loc, float _distance) const
 {
 	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - count * 8);
-	DrawCircleAA(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), radius, 16, 0xffffff, true, true);
+	DrawCircleAA(DrawFromCameraX(location, _distance, loc)
+				,DrawFromCameraY(location, _distance, loc)
+				,radius * ScaleFromCamera(_distance), 16, 0xffffff, true, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
