@@ -321,6 +321,8 @@ AbstractScene* GameMain::Update()
 {
 	// 文字の表示
 	textdisp->Update();
+	//スコア描画の中心の値を求める
+	ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
 		// 曲が鳴っていないなら鳴らす
@@ -335,12 +337,12 @@ AbstractScene* GameMain::Update()
 		Camera = player->GetLocation();
 		Camera += Camerashake;
 		//体力を徐々に減らす
-		if (Displaylife > life)
+		/*if (Displaylife > life)
 		{
 			if ((game_frametime % 2) == 0) {
 				Displaylife = Displaylife - 1;
 			}
-		}
+		}*/
 		if (player->GetPFlg() && !player->GetHitSoldier())
 		{
 			particle[0]->SetVisible(true);
@@ -746,7 +748,7 @@ AbstractScene* GameMain::Update()
 							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
 							for (int j = 0; j < 7; j++)
 							{
-								if (bomb[i]->hitchek() == true)
+								if (10 >= bomb[i]->hitchek())
 								{
 									SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(), (GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
 									bomb[i]->hitset();
@@ -815,11 +817,7 @@ AbstractScene* GameMain::Update()
 				{
 					if (player->GetFlg() == false)
 					{
-						life = life - C_ExpSize;
-						if (life <= 0)
-						{
-							life = 0;
-						}
+						life--;
 						hitmoment = true;
 						player->SetFlg(true);
 					}
@@ -866,7 +864,7 @@ AbstractScene* GameMain::Update()
 				{
 					if (player->GetFlg() == false && soldier[i]->ChekhitFlg() == true)
 					{
-						life = life - 10;
+						life--;
 						hitmoment = true;
 						soldier[i]->SetcatchFlg(true);
 						player->SetFlg(true);
@@ -1562,16 +1560,16 @@ void GameMain::Draw() const
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 
 	//残り体力の表示
-	/*DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
+	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 	for (int i = 0; i < life; i++)
 	{
 		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
-	}*/
+	}
 
-
-	DrawBox(SCREEN_WIDTH - 235, 328, SCREEN_WIDTH - 16, 378, 0x444444, true);
+	
+	/*DrawBox(SCREEN_WIDTH - 235, 328, SCREEN_WIDTH - 16, 378, 0x444444, true);
 	DrawFormatString(SCREEN_WIDTH - 215, 328, 0xffffff, "%d / 100", Displaylife);
-	DrawBox(SCREEN_WIDTH - 230, 358, (SCREEN_WIDTH - 230) + (Displaylife * 2), 368, 0xffffff, true);
+	DrawBox(SCREEN_WIDTH - 230, 358, (SCREEN_WIDTH -230) + (Displaylife * 2), 368, 0xffffff, true);*/
 
 	// ミニマップ
 	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
@@ -1634,11 +1632,12 @@ void GameMain::Draw() const
 		}
 	}
 	// リザルトじゃないなら
+	//スコアの表示
 	if (resultflg == false)
 	{
-		DrawBox(1060, 410, 1060 + 200, 410 + 74, 0x123456, true);
-		DrawFormatString(1060, 410, 0xffffff, "%06d", hiscore);
-		DrawFormatString(1060, 450, 0xffffff, "%06d", score);
+		//DrawBox(1060, 410, 1060 + 200, 410 + 74, 0x123456, true);
+		//DrawFormatString(1060, 410, 0xffffff, "%06d", hiscore);
+		DrawFormatString(640 - ScoreCenter, 0, 0xffffff, "%d", score);
 		//DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
 	}
 	// リザルトなら

@@ -96,6 +96,8 @@ private:
 	Vector2D ev;
 	float l;
 
+	int ScoreCenter = 0;
+
 public:
 	GameMain();
 	~GameMain();
