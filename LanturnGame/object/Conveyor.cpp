@@ -28,7 +28,7 @@ void Conveyor::Draw(Vector2D loc, float _distance) const {
 	//DrawFromCameraX(location, _distance, loc)
 	//	, DrawFromCameraY(location, _distance, loc)
 	//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2),(box.right + (-loc.x + SCREEN_WIDTH / 2)),(box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
-	DrawBoxAA(DrawFromCameraX(Vector2D(location.x + 600.f,0.0f), _distance, loc), DrawFromCameraY(Vector2D(location.y + 50.f), _distance, loc), 1.0 * ScaleFromCamera(_distance),0.0,images, 1);
+	DrawRotaGraphF(DrawFromCameraX(Vector2D(location.x + 300.f,0.0f), _distance, loc), DrawFromCameraY(Vector2D(location.y + 50.f), _distance, loc), 1.0 * ScaleFromCamera(_distance),0.0,images, 1);
 
 }
 
