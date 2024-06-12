@@ -42,6 +42,7 @@ void Player::Update()
 		if (stan <= 90)
 		{
 			stan++;
+			cun++;
 		}
 		else
 		{
@@ -49,6 +50,7 @@ void Player::Update()
 			{
 				hit_soldier = false;
 				stan = 0;
+				cun = 0;
 
 			}
 		}

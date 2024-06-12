@@ -903,7 +903,7 @@ AbstractScene* GameMain::Update()
 						life--;
 						hitmoment = true;
 						soldier[i]->SetcatchFlg(true);
-						player->SetFlg(true);
+						//player->SetFlg(true);
 						player->SetHitSoldier(true);
 						soldier[i]->SetDMGflg(false);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
@@ -1326,8 +1326,11 @@ AbstractScene* GameMain::Update()
 		switch (r_cun)
 		{
 		case(1):
-			alpha2 = 255;
-			alpha3 = 255;
+			if (player->GetHitSoldier() == false)
+			{
+				alpha2 = 255;
+				alpha3 = 255;
+			}
 			break;
 		case(200):
 			resultflg = true;
