@@ -15,9 +15,11 @@ GameMain::GameMain()
 	Tornado::LoadImages();
 	ComboEnd::LoadImages();
 	AddScore::LoadImages();
+
+	// ハイスコア読み込み
 	hiscore = (int)UserData::LoadData(UserData::Type::HISCORE);		// ハイスコア読み込み
 
-	//BGMをループしながら再生する
+	// BGMをループしながら再生する
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
 	/*******************初期化*******************/
@@ -157,12 +159,14 @@ GameMain::GameMain()
 		bomb[i] = nullptr;
 	}
 
+	// 爆弾を設定数初期化する
 	for (int i = 0; i < MaxSpawnEnemyBomb; i++)
 	{
 		bomb[i] = new Bomb;
 		bomb[i]->Init(C_ExpSize);
 		while (1)
 		{
+			// プレイヤーから距離が遠かったらスポーン
 			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 			if (1080 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
 				powf((spawnloc.x - player->GetLocation().x), 2) +
@@ -251,6 +255,7 @@ GameMain::GameMain()
 					}
 				}
 			}
+
 			for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
 			{
 				// 距離を計算
@@ -346,8 +351,11 @@ AbstractScene* GameMain::Update()
 				Displaylife = Displaylife - 1;
 			}
 		}*/
+
+		// プレイヤーが生きている&兵士が当たってないとき
 		if (player->GetPFlg() && !player->GetHitSoldier())
 		{
+			// 炎を表示する
 			particle[0]->SetVisible(true);
 			switch (player->GetDirection())
 			{
@@ -389,6 +397,7 @@ AbstractScene* GameMain::Update()
 		}
 		else
 		{
+			// 炎を表示しない
 			particle[0]->SetVisible(false);
 		}
 
@@ -540,7 +549,7 @@ AbstractScene* GameMain::Update()
 							// nullptrじゃないなら距離を見る
 							if (bomb[j] != nullptr)
 							{
-								// 距離が短いなら変数を保存する
+								// 距離が短いなら変数を保存する(3じゃないとき)
 								if (bomb[i]->GetMode() != 3)
 								{
 									if (length > bomb[j]->GetLength(bomb[i]->GetLocation()))
@@ -551,12 +560,15 @@ AbstractScene* GameMain::Update()
 								}
 							}
 						}
+						// 空ならデータを初期化
 						else if (bomb[j] == nullptr)
 						{
 							temp = -1;
 							length = 65535;
 						}
 					}
+
+					// -1以外なら見る
 					if (temp != -1)
 					{
 						// 距離が長いなら
@@ -576,6 +588,7 @@ AbstractScene* GameMain::Update()
 							bomb[i]->SetVelocity(vvec);
 							break;
 						}
+						// 距離が間なら動かない
 						else
 						{
 							bomb[i]->SetVelocity(NULL);
@@ -612,12 +625,14 @@ AbstractScene* GameMain::Update()
 								}
 							}
 						}
+						// 空ならデータを初期化
 						else if (bomb[j] == nullptr)
 						{
 							temp = -1;
 							length = 65535;
 						}
 					}
+					// -1以外なら見る
 					if (temp != -1)
 					{
 						// 距離が近いなら
@@ -634,6 +649,8 @@ AbstractScene* GameMain::Update()
 						vvec /= length;
 						bomb[i]->SetVelocity(vvec);
 					}
+
+					// 距離が間なら動かない
 					else
 					{
 						bomb[i]->SetVelocity(NULL);
@@ -650,9 +667,12 @@ AbstractScene* GameMain::Update()
 					}
 					else
 					{
+						// 次に行く座標をランダム指定
 						bomb[i]->SetMoveToLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 					}
+
 					if (fabsf(bomb[i]->GetMoveToLocation().x) - MapSize + 32 > 0 || fabsf(bomb[i]->GetMoveToLocation().y) - MapSize + 32 > 0) {
+						// 次に行く座標がマップ外なら再度指定
 						bomb[i]->SetMoveToLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 					}
 					break;
@@ -675,7 +695,7 @@ AbstractScene* GameMain::Update()
 								}
 							}
 						}
-
+						// 空ならデータを初期化
 						else if (bomb[j] == nullptr)
 						{
 							temp = -1;
@@ -683,6 +703,7 @@ AbstractScene* GameMain::Update()
 						}
 					}
 
+					// -1以外なら見る
 					if (temp != -1)
 					{
 						// 距離が近いなら
@@ -696,7 +717,10 @@ AbstractScene* GameMain::Update()
 					}
 
 					length = bomb[i]->GetLength(player->GetLocation() * -1);
-					if (length > 16) {
+
+					if (length > 16) 
+					{
+						// プレイヤーと対象の対称に座標指定
 						bomb[i]->SetMoveToLocation(player->GetLocation() * -1);
 						vvec = (bomb[i]->GetMoveToLocation() - bomb[i]->GetLocation());
 						vvec /= length;
@@ -735,18 +759,27 @@ AbstractScene* GameMain::Update()
 					// 敵とプレイヤーの当たり判定
 					if (bomb[i]->HitSphere(player))
 					{
+						// プレイヤーと爆弾のベクトル取得
 							vvec = (bomb[i]->GetLocation() - player->GetLocation());
 							length = bomb[i]->GetLength(player->GetLocation());
 							vvec /= length;
+
+							// 点火してないなら
 							if (!bomb[i]->GetExpFlg())
 							{
+								// プレイヤーの速度*20飛ばす
 								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 20.));
 							}
+
+							// 点火しているなら
 							else
 							{
+								// プレイヤーの速度*50飛ばす
 								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 50.));
 							}
+							// 効果音フラグ立てる
 							SE_HitFlg = true;
+							// 点火フラグ立てる
 							bomb[i]->SetExpFlg(true);
 							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
 							for (int j = 0; j < 7; j++)
