@@ -1101,7 +1101,7 @@ AbstractScene* GameMain::Update()
 		ChangeMapSize();
 
 		// マップサイズで敵の最大スポーン数を変える
-		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * (MapSize / GM_MAX_MAPSIZE));
+		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * (MapSize / GM_MAX_MAPSIZE)) / 2;
 
 		// ゲームのフレームを増やす
 		game_frametime++;
