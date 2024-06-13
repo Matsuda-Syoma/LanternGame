@@ -33,7 +33,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	Sounds::SetSoundVolume(Sounds::BGM, UserData::LoadData(UserData::SOUNDS, 0));
 	Sounds::SetSoundVolume(Sounds::SE, UserData::LoadData(UserData::SOUNDS, 1));
 
-	SceneManager scene = (dynamic_cast<AbstractScene*>(new Setting()));
+	SceneManager scene = (dynamic_cast<AbstractScene*>(new GameMain()));
 
 	FpsController FPSct(FRAMERATE, UPDATETIME);
 
