@@ -5,6 +5,7 @@ class Conveyor : public BoxCollider
 {
 private:
     int outimage;
+    int out2image;
     int inimage;
     float width, height;
     Vector2D location;

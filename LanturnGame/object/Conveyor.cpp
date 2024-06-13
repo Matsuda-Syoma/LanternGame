@@ -9,6 +9,7 @@ Conveyor::Conveyor() {
 	box.right = box.left + 600.f;
 	box.bottom = box.top + 100.f;
 	outimage = LoadGraph("Resources/images/conv_out.png", 0);
+	out2image = LoadGraph("Resources/images/conv_out2.png", 0);
 	inimage = LoadGraph("Resources/images/conv_in.png", 0);
 }
 
@@ -22,7 +23,7 @@ void Conveyor::Update() {
 	box.right = box.left + 600.f;
 	box.bottom = box.top + 100.f;
 
-	if (cnt >= 48)
+	if (cnt >= 58)
 	{
 		cnt = 0;
 	}
@@ -40,6 +41,9 @@ void Conveyor::Draw(Vector2D loc, float _distance) const {
 
 	DrawRotaGraphF(DrawFromCameraX(Vector2D(location.x + 300.f + (float)cnt, 0.0f), _distance, loc)
 		, DrawFromCameraY(Vector2D(location.y + 50.f), _distance, loc), 1.0 * ScaleFromCamera(_distance), 0.0, inimage, 1);
+
+	DrawRotaGraphF(DrawFromCameraX(Vector2D(location.x + 300.f, 0.0f), _distance, loc)
+		, DrawFromCameraY(Vector2D(location.y + 50.f), _distance, loc), 1.0 * ScaleFromCamera(_distance), 0.0, out2image, 1);
 }
 
 Vector2D Conveyor::GetLocation() const
