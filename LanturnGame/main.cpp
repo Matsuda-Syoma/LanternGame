@@ -11,7 +11,7 @@
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
 
 	// タイトルを設定
-	SetMainWindowText("Lantern");
+	SetMainWindowText("BomberGirl");
 
 	SetWindowIconID(333);
 
@@ -33,7 +33,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	Sounds::SetSoundVolume(Sounds::BGM, (int)UserData::LoadData(UserData::SOUNDS, 0));
 	Sounds::SetSoundVolume(Sounds::SE, (int)UserData::LoadData(UserData::SOUNDS, 1));
 
-	SceneManager scene = (dynamic_cast<AbstractScene*>(new GameMain()));
+	SceneManager scene = (dynamic_cast<AbstractScene*>(new Title()));
 
 	FpsController FPSct(FRAMERATE, UPDATETIME);
 
