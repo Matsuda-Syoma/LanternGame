@@ -3,10 +3,10 @@
 #include "SphereCollider.h"
 
 typedef struct Box {
-	float top;
-	float bottom;
-	float left;
-	float right;
+	float top = 0.0f;
+	float bottom = 0.0f;
+	float left = 0.0f;
+	float right = 0.0f;
 } Box;
 
 class BoxCollider

@@ -51,23 +51,23 @@ void Sounds::SetSoundVolume(int _Type, int _Volume)
 	switch (_Type)
 	{
 	case 0:
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::BGM_GMain);
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::BGM_Title);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::BGM_GMain);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::BGM_Title);
 		break;
 	case 1:
 		for (int i = 0; i < 5; i++)
 		{
-			SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_Explosion[i]);
+			SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_Explosion[i]);
 		}
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_Shoot);
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_Hit);
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_PlayerHit);
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_CatchiPlayer);
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_DeleteSoldier);
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_MapClose);
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_transition);
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_cursor);
-		SetVolumeSoundMem(_Volume * 39.216, Sounds::SE_CountDown);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_Shoot);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_Hit);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_PlayerHit);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_CatchiPlayer);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_DeleteSoldier);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_MapClose);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_transition);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_cursor);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_CountDown);
 		break;
 	default:
 		break;

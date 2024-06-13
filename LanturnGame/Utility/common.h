@@ -64,17 +64,17 @@ static int RandType(int rnd)
 
 static float DrawFromCameraX(Vector2D location, float _distance, Vector2D loc)
 {
-	return (location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2));
+	return (float)(location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2));
 }
 
 static float DrawFromCameraY(Vector2D location, float _distance, Vector2D loc)
 {
-	return (location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2));
+	return (float)(location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2));
 }
 
 static float ScaleFromCamera(float _distance)
 {
-	return (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM));
+	return (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM));
 }
 
 //template <typename T>

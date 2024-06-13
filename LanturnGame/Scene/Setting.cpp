@@ -71,8 +71,8 @@ AbstractScene* Setting::Update()
 					break;
 				}
 			}
-			Sounds::SetSoundVolume(Sounds::BGM, bgm);
-			Sounds::SetSoundVolume(Sounds::SE, se);
+			Sounds::SetSoundVolume(Sounds::BGM, (int)bgm);
+			Sounds::SetSoundVolume(Sounds::SE, (int)se);
 			break;
 		case 2:
 			if (isActive)
@@ -103,7 +103,7 @@ AbstractScene* Setting::Update()
 
 						if (config[i + 1] < min)
 						{
-							config[i + 1] = min;
+							config[i + 1] = (float)min;
 						}
 					}
 				}
@@ -160,8 +160,8 @@ AbstractScene* Setting::Update()
 					break;
 				}
 			}
-			Sounds::SetSoundVolume(Sounds::BGM, bgm);
-			Sounds::SetSoundVolume(Sounds::SE, se);
+			Sounds::SetSoundVolume(Sounds::BGM, (int)bgm);
+			Sounds::SetSoundVolume(Sounds::SE, (int)se);
 			break;
 
 			// ÉQÅ[ÉÄÇÃïœçX
@@ -194,7 +194,7 @@ AbstractScene* Setting::Update()
 						
 						if (config[i + 1] > max)
 						{
-							config[i + 1] = max;
+							config[i + 1] = (float)max;
 						}
 					}
 				}
@@ -317,8 +317,8 @@ AbstractScene* Setting::Update()
 				}
 				UserData::SaveData(UserData::Type::SOUNDS, 0, bgm);
 				UserData::SaveData(UserData::Type::SOUNDS, 1, se);
-				Sounds::SetSoundVolume(Sounds::BGM, bgm);
-				Sounds::SetSoundVolume(Sounds::SE, se);
+				Sounds::SetSoundVolume(Sounds::BGM, (int)bgm);
+				Sounds::SetSoundVolume(Sounds::SE, (int)se);
 				return new Title;
 				break;
 			}
@@ -337,8 +337,8 @@ AbstractScene* Setting::Update()
 			}
 			UserData::SaveData(UserData::Type::SOUNDS, 0, bgm);
 			UserData::SaveData(UserData::Type::SOUNDS, 1, se);
-			Sounds::SetSoundVolume(Sounds::BGM, bgm);
-			Sounds::SetSoundVolume(Sounds::SE, se);
+			Sounds::SetSoundVolume(Sounds::BGM, (int)bgm);
+			Sounds::SetSoundVolume(Sounds::SE, (int)se);
 			return new Title;
 		}
 		else
@@ -399,9 +399,9 @@ void Setting::Draw() const
 		DrawString(220, 250, "BGM", 0xffffff);
 		DrawString(220, 350, "SE", 0xffffff);
 		DrawBox(220, 308, 604, 328, 0x444444, true);
-		DrawBox(220 + 8, 308 + 8, 220 + 8 + ((bgm / 255.) * 368.), 328 - 8, 0xffffff, true);
+		DrawBox(220 + 8, 308 + 8, 220 + 8 + (int)((bgm / 255.0f) * 368.0f), 328 - 8, 0xffffff, true);
 		DrawBox(220, 408, 604, 428, 0x444444, true);
-		DrawBox(220 + 8, 408 + 8, 220 + 8 + ((se / 255.) * 368.), 428 - 8, 0xffffff, true);
+		DrawBox(220 + 8, 408 + 8, 220 + 8 + (int)((se / 255.0f) * 368.0f), 428 - 8, 0xffffff, true);
 		break;
 	case 2:
 		//DrawString(220, 170, "ÉQÅ[ÉÄÇÃê›íË", 0xffffff);
@@ -427,11 +427,11 @@ void Setting::Draw() const
 		DrawString(220, 300, "îöî≠ÉTÉCÉY", 0xffffff);
 		DrawString(220, 400, "ï∫émÇÃêî", 0xffffff);
 		DrawBox(220, 258, 604, 278, 0x444444, true);
-		DrawBox(220 + 8, 258 + 8, 220 + 8 + max(4, (((config[1] - 50) / 150.) * 368.)), 278 - 8, 0xffffff, true);
+		DrawBox(220 + 8, 258 + 8, 220 + 8 + max(4, (int)(((config[1] - 50) / 150.0f) * 368.0f)), 278 - 8, 0xffffff, true);
 		DrawBox(220, 358, 604, 378, 0x444444, true);
-		DrawBox(220 + 8, 358 + 8, 220 + 8 + max(4, (((config[2] - 8) / 8.) * 368.)), 378 - 8, 0xffffff, true);
+		DrawBox(220 + 8, 358 + 8, 220 + 8 + max(4, (int)(((config[2] - 8) / 8.0f) * 368.0f)), 378 - 8, 0xffffff, true);
 		DrawBox(220, 458, 604, 478, 0x444444, true);
-		DrawBox(220 + 8, 458 + 8, 220 + 8 + max(4, (((config[3] - 3) / 7.) * 368.)), 478 - 8, 0xffffff, true);
+		DrawBox(220 + 8, 458 + 8, 220 + 8 + max(4, (int)(((config[3] - 3) / 7.0f) * 368.0f)), 478 - 8, 0xffffff, true);
 		break;
 	case 3:
 		break;
