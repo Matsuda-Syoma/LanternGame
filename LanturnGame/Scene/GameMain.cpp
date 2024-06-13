@@ -1098,7 +1098,7 @@ AbstractScene* GameMain::Update()
 		ChangeMapSize();
 
 		// マップサイズで敵の最大スポーン数を変える
-		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * (MapSize / GM_MAX_MAPSIZE));
+		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * max(-0.5 + ((MapSize) / (GM_MAX_MAPSIZE)) * 1.5, 0.1));
 
 		// ゲームのフレームを増やす
 		game_frametime++;
@@ -1244,12 +1244,12 @@ AbstractScene* GameMain::Update()
 			CameraDistance = 0.0f;
 			if (cMin.x != 0.0 || cMin.y != 0.0)
 			{
-				float CameraDistanceTemp = (GetLength(Camera, Camera - cMin) / 1500.) * min((ffff / 90.), 1);
+				float CameraDistanceTemp = (GetLength(Camera, Camera - cMin) / 1200.) * min((ffff / 90.), 1);
 				CameraDistance = CameraDistanceTemp;
 			}
 			if (cMax.x != 0.0 || cMax.y != 0.0)
 			{
-				float CameraDistanceTemp = (GetLength(Camera, Camera - cMax) / 1500.) * min((ffff / 90.), 1);
+				float CameraDistanceTemp = (GetLength(Camera, Camera - cMax) / 1200.) * min((ffff / 90.), 1);
 				if (CameraDistance < CameraDistanceTemp)
 				{
 					CameraDistance = CameraDistanceTemp;
@@ -1503,11 +1503,16 @@ void GameMain::Draw() const
 
 	// マップの範囲
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 127);
-	//DrawBoxAA((MapSize - (CameraDistance * 675)) + (-Camera.x + (SCREEN_WIDTH / 2)), -(MapSize - (CameraDistance * 675)) + (-Camera.y + (SCREEN_HEIGHT / 2)), (GM_MAX_MAPSIZE - (CameraDistance * 675)) + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, (MapSize - (CameraDistance * 675)) + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	DrawBoxAA(MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
-	DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
+	//(CameraDistance / DISTANCE_MAX),(0 * (CameraDistance / DISTANCE_MAX));
+	// return (1 - t) * a + t * b; * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))
+	DrawBoxAA((MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)), -(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), (GM_MAX_MAPSIZE * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, (MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	//DrawBoxAA(MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	DrawBoxAA(-(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)), -(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), -(GM_MAX_MAPSIZE * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, (MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	DrawBoxAA(-(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), (MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), (MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), (GM_MAX_MAPSIZE * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
+	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
+	DrawBoxAA(-(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), (MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -(GM_MAX_MAPSIZE * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
+	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// 爆弾
@@ -1612,8 +1617,16 @@ void GameMain::Draw() const
 	{
 		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
 	}
-
 	
+	int bcnt = 0;
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+	{
+		if (bomb[i] != nullptr)
+		{
+			bcnt++;
+		}
+	}
+
 	/*DrawBox(SCREEN_WIDTH - 235, 328, SCREEN_WIDTH - 16, 378, 0x444444, true);
 	DrawFormatString(SCREEN_WIDTH - 215, 328, 0xffffff, "%d / 100", Displaylife);
 	DrawBox(SCREEN_WIDTH - 230, 358, (SCREEN_WIDTH -230) + (Displaylife * 2), 368, 0xffffff, true);*/
@@ -1868,9 +1881,9 @@ void GameMain::SetMapSize(float f)
 
 void GameMain::ChangeMapSize()
 {
-	if (game_frametime % 900 > 550 && game_frametime % 900 <= 750)
+	if (game_frametime % 1200 > 900 && game_frametime % 1200 <= 1100)
 	{
-		if (game_frametime % 900 == 551)
+		if (game_frametime % 1200 == 901)
 		{
 			PlaySoundMem(Sounds::SE_MapClose, DX_PLAYTYPE_BACK);
 		}
@@ -1921,16 +1934,22 @@ void GameMain::DrawCloseMap() const
 	int OldDrawMode;
 	int OldDrawParam;
 	GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (game_frametime % 150) * 4);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (game_frametime % 100) * 4);
+	char res[] = "closing\0";
 	if (MapSize > GM_MIN_MAPSIZE)
 	{
-		if (game_frametime % 900 > 450 && game_frametime % 900 <= 550)
+		if (game_frametime % 1200 > 800 && game_frametime % 1200 <= 900)
 		{
-			DrawRotaGraph((SCREEN_WIDTH / 2) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 1.0, 0.0, closemapimage, true);
+			for (int i = 0; i < sizeof(res); i++)
+			{
+				int chr = res[i] - 'a';
+				DrawRotaGraph((SCREEN_WIDTH / 2) - 88 + GetRand(3) - 2 + 32 * i, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
+			}
+			//DrawRotaGraph((SCREEN_WIDTH / 2) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 1.0, 0.0, closemapimage, true);
 			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
 				(SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);
-			DrawBoxAA((SCREEN_WIDTH / 2) - (float)(game_frametime % 150) + 100, (SCREEN_HEIGHT / 2) - 80,
-				(SCREEN_WIDTH / 2) + (float)(game_frametime % 150) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
+			DrawBoxAA((SCREEN_WIDTH / 2) - (float)(game_frametime % 100) + 100, (SCREEN_HEIGHT / 2) - 80,
+				(SCREEN_WIDTH / 2) + (float)(game_frametime % 100) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
 		}
 	}
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);
