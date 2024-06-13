@@ -903,7 +903,7 @@ AbstractScene* GameMain::Update()
 						life--;
 						hitmoment = true;
 						soldier[i]->SetcatchFlg(true);
-						//player->SetFlg(true);
+						player->SetFlg(true);
 						player->SetHitSoldier(true);
 						soldier[i]->SetDMGflg(false);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
@@ -1395,7 +1395,7 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false/* && player->GetHitSoldier() == false*/)
+	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false && player->GetHitSoldier() == false)
 	{
 		alpha2 = 200;
 		alpha3 = 255 - life * 51;
