@@ -1323,8 +1323,11 @@ AbstractScene* GameMain::Update()
 		switch (r_cun)
 		{
 		case(1):
-			alpha2 = 255;
-			alpha3 = 255;
+			if (player->GetHitSoldier() == false)
+			{
+				alpha2 = 255;
+				alpha3 = 255;
+			}
 			break;
 		case(200):
 			resultflg = true;
@@ -1389,7 +1392,7 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false)
+	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false && player->GetHitSoldier() == false)
 	{
 		alpha2 = 200;
 		alpha3 = 255 - life * 51;
@@ -1681,7 +1684,25 @@ void GameMain::Draw() const
 	{
 		//DrawBox(1060, 410, 1060 + 200, 410 + 74, 0x123456, true);
 		//DrawFormatString(1060, 410, 0xffffff, "%06d", hiscore);
-		DrawFormatString(640 - ScoreCenter, 0, 0xffffff, "%d", score);
+		// 
+		//DrawFormatString(640 - ScoreCenter, 0, 0xffffff, "%d", score);
+
+		int bufscore = score;
+		int num = 0;
+		while (bufscore > 0)
+		{
+			num++;
+			bufscore /= 10;
+		}
+		bufscore = score;
+		SetDrawBright(210, 210, 255);
+		for (int i = 0; i < num; i++)
+		{
+			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+			DrawRotaGraph((650 - ScoreCenter + (20 * num) / 2) - (20 * i), 20, 0.5, 0.0, numimage[bufscore % 10], true);
+			bufscore /= 10;
+		}
+		SetDrawBright(255, 255, 255);
 		//DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
 	}
 	// リザルトなら

@@ -45,8 +45,11 @@ void Player::Update()
 		}
 		else
 		{
-			hit_soldier = false;
-			stan = 0;
+			if (pflg == true)
+			{
+				hit_soldier = false;
+				stan = 0;
+			}
 		}
 
 
@@ -110,11 +113,11 @@ void Player::Draw(Vector2D loc, float _distance) const
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 	}
-	else if(pflg == false) {
+	else if(pflg == false && hit_soldier == false) {
 		DrawRotaGraph((location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
 			, (location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 * (1 - ((_distance / DISTANCE_MAX) / 4.0)), 0.0, d_playerimg, true);
 	}
-	else if (pflg == true && hit_soldier == true)
+	else if (hit_soldier == true)
 	{
 		DrawRotaGraph((location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
 			, (location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.2 * (1 - ((_distance / DISTANCE_MAX) / 4.0)), 0.0, angryimg, true);
@@ -306,6 +309,13 @@ void Player::Invincible()
 	switch (cun)
 	{
 	case(0):
+		break;
+	case(90):
+		if (hit_soldier == true)
+		{
+			hitflg = false;
+			cun = 0;
+		}
 		break;
 	case(180):
 		hitflg = false;
