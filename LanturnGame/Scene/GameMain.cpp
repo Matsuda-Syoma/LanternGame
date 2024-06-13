@@ -1242,17 +1242,17 @@ AbstractScene* GameMain::Update()
 		}
 
 
-		if (ffff > 0)
+		if (CameraOutCnt > 0)
 		{
 			CameraDistance = 0.0f;
 			if (cMin.x != 0.0 || cMin.y != 0.0)
 			{
-				float CameraDistanceTemp = (GetLength(Camera, Camera - cMin) / 1200.0f) * min((ffff / 90.0f), 1.0f);
+				float CameraDistanceTemp = (GetLength(Camera, Camera - cMin) / 1200.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 				CameraDistance = CameraDistanceTemp;
 			}
 			if (cMax.x != 0.0 || cMax.y != 0.0)
 			{
-				float CameraDistanceTemp = (GetLength(Camera, Camera - cMax) / 1200.0f) * min((ffff / 90.0f), 1.0f);
+				float CameraDistanceTemp = (GetLength(Camera, Camera - cMax) / 1200.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 				if (CameraDistance < CameraDistanceTemp)
 				{
 					CameraDistance = CameraDistanceTemp;
@@ -1264,19 +1264,19 @@ AbstractScene* GameMain::Update()
 			}
 			if (cMin.x != 0.0)
 			{
-				Camera.x += (cMin.x / 2.0f) * min((ffff / 90.0f), 1.0f);
+				Camera.x += (cMin.x / 2.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 			}
 			if (cMin.y != 0.0)
 			{
-				Camera.y += (cMin.y / 2.0f) * min((ffff / 90.0f), 1.0f);
+				Camera.y += (cMin.y / 2.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 			}
 			if (cMax.x != 0.0)
 			{
-				Camera.x += (cMax.x / 2.0f) * min((ffff / 90.0f), 1.0f);
+				Camera.x += (cMax.x / 2.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 			}
 			if (cMax.y != 0.0)
 			{
-				Camera.y += (cMax.y / 2.0f) * min((ffff / 90.0f), 1.0f);
+				Camera.y += (cMax.y / 2.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 			}
 			Vector2D qw = (Camera * (float)(1.0f - (CameraDistance / DISTANCE_MAX)));
 			Vector2D qw2 = (0 * (float)(CameraDistance / DISTANCE_MAX));
@@ -1291,17 +1291,17 @@ AbstractScene* GameMain::Update()
 		}
 		if (CameraFlg)
 		{
-			if (ffff < 120)
+			if (CameraOutCnt < 120)
 			{
-				ffff += 5;
+				CameraOutCnt += 5;
 			}
 
 		}
 		else
 		{
-			if (ffff > 0)
+			if (CameraOutCnt > 0)
 			{
-				ffff--;
+				CameraOutCnt--;
 			}
 		}
 		// カメラアップデート
@@ -1526,7 +1526,7 @@ void GameMain::Draw() const
 			// 画面中なら描画
 			if (720 > fabsf(sqrtf(
 				powf((bomb[i]->GetLocation().x - player->GetLocation().x), 2) +
-				powf((bomb[i]->GetLocation().y - player->GetLocation().y), 2))) || ffff)
+				powf((bomb[i]->GetLocation().y - player->GetLocation().y), 2))) || CameraOutCnt)
 			{
 				bomb[i]->Draw(Camera, CameraDistance);
 			}
