@@ -114,8 +114,8 @@ void Player::Draw(Vector2D loc, float _distance) const
 		}
 	}
 	else if(pflg == false && hit_soldier == false) {
-		DrawRotaGraph((location.x * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
-			, (location.y * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0 * (1 - ((_distance / DISTANCE_MAX) / 4.0)), 0.0, d_playerimg, true);
+		DrawRotaGraphF((location.x * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
+			, (location.y * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, d_playerimg, true);
 	}
 	else if (hit_soldier == true)
 	{
