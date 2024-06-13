@@ -869,10 +869,7 @@ AbstractScene* GameMain::Update()
 					{
 						if (explosion[i]->HitSphere(soldier[j]))
 						{
-							//PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
-							soldier[j]->SetDMGflg(false);
-							//StopSoundMem(Sounds::SE_DeleteSoldier);
-
+							soldier[j]->SetDMGflg(3);
 						}
 						if (soldier[j]->ChekDLflg() == true)
 						{
@@ -902,15 +899,15 @@ AbstractScene* GameMain::Update()
 					{
 						life--;
 						hitmoment = true;
-						soldier[i]->SetcatchFlg(true);
+						soldier[i]->SetcatchFlg();
 						player->SetFlg(true);
 						player->SetHitSoldier(true);
-						soldier[i]->SetDMGflg(false);
+						soldier[i]->SetDMGflg(2);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
 						{
 							if (soldier[i] != soldier[c])
 							{
-								soldier[c]->SetmoveFlg(false);
+								soldier[c]->SetmoveFlg();
 							}
 						}
 

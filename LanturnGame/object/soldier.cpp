@@ -21,7 +21,7 @@ Soldier::~Soldier()
 void Soldier::Initialize()
 {
 	speed = 2;	//���x�̏�����
-	dmgflg = true;
+	dmgflg = 1;
 	deleteFlg = false;
 	hitFlg = true;//当たり判定
 	catchFlg = false;
@@ -32,23 +32,31 @@ void Soldier::Initialize()
 
 void Soldier::Upadate(Vector2D PL)
 {
-	if (dmgflg == true)
+	if (dmgflg == 1)
 	{
 		Move(PL);
 	}
 	else
 	{
 		hitFlg = false;
-		if (Musicflg == 0)
+
+		if (Musicflg == false && dmgflg == 2)
 		{
-			PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
-			Musicflg = 1;
+			//プレイヤーを捕まえた
+			PlaySoundMem(Sounds::SE_CD_Soldier, DX_PLAYTYPE_BACK);
+			Musicflg = true;
+		}
+		else if (Musicflg == false && dmgflg == 3)
+		{
+			//爆発に巻き込まれた
+			PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
+			Musicflg = true;
 		}
 		
 		countNum++;
 		if (240 <= countNum)
 		{
-			dmgflg = true;
+			dmgflg = 1;
 			deleteFlg = true;
 			countNum = 0;
 		}
@@ -59,7 +67,7 @@ void Soldier::Upadate(Vector2D PL)
 
 void Soldier::Draw(Vector2D PL, float _distance)
 {
-	if (dmgflg == true)
+	if (dmgflg == 1)
 	{
 		cnt++;
 		if ((cnt % 60) == 0)
@@ -77,7 +85,7 @@ void Soldier::Draw(Vector2D PL, float _distance)
 	}
 	else
 	{
-		if (catchFlg == false)
+		if (dmgflg == 2)
 		{
 			DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
 				, DrawFromCameraY(location, _distance, PL)
@@ -174,7 +182,7 @@ void Soldier::PositionCheck()
 	}
 }
 
-void Soldier::SetDMGflg(bool i)
+void Soldier::SetDMGflg(int i)
 {
 	dmgflg = i;
 }
@@ -196,13 +204,13 @@ bool Soldier::ChekhitFlg()
 	return hitFlg;
 }
 
-void Soldier::SetcatchFlg(bool i)
+void Soldier::SetcatchFlg()
 {
-	catchFlg = i;
+	catchFlg = true;
 }
-void Soldier::SetmoveFlg(bool i)
+void Soldier::SetmoveFlg()
 {
-	moveFlg = i;
+	moveFlg = false;
 }
 bool Soldier::ChekmoveFlg()
 {
