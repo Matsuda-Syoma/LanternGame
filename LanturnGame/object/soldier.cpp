@@ -85,7 +85,7 @@ void Soldier::Draw(Vector2D PL, float _distance)
 	}
 	else
 	{
-		if (dmgflg == 2)
+		if (dmgflg == 3)
 		{
 			DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
 				, DrawFromCameraY(location, _distance, PL)

@@ -32,8 +32,8 @@ void Sounds::LoadSounds() {
 	BGM_GMain = LoadSoundMem("Resources/sounds/BGM_GMain.wav");
 	//SE_Shoot = LoadSoundMem("Resources/sounds/SE_Shoot.mp3");
 	SE_Hit = LoadSoundMem("Resources/sounds/hit.wav");
-	//SE_PlayerHit = LoadSoundMem("Resources/sounds/SE_PlayerHit.mp3");
-	//SE_CatchiPlayer = LoadSoundMem("Resources/sounds/SE_CatchiPlayer.mp3");
+	//SE_PlayerHit = LoadSoundMem("Resources/sounds/SE_PlayerHit.mp3chiPlayer = LoadSoundMem("Resources/sounds/SE_CatchiPlayer.mp3");");
+	//SE_Cat
 
 	SE_CD_Soldier = LoadSoundMem("Resources/sounds/SE_sample/maou_se_8bit10.mp3",1);
 	SE_ED_Soldier = LoadSoundMem("Resources/sounds/SE_sample/maou_se_battle_explosion06.mp3",1);
