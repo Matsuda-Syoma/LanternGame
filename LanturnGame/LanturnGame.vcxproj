@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Scene\credit.cpp" />
     <ClCompile Include="Object\AddScore.cpp" />
     <ClCompile Include="Object\BoxCollider.cpp" />
     <ClCompile Include="Object\ComboEnd.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="Utility\LoadSounds.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scene\credit.h" />
     <ClInclude Include="Object\AddScore.h" />
     <ClInclude Include="Object\BoxCollider.h" />
     <ClInclude Include="Object\ComboEnd.h" />
