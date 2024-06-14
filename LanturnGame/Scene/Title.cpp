@@ -23,6 +23,7 @@ Title::Title()
 	LoadDivGraph("Resources/images/cursor_fire.png", 16, 4, 4, 32, 32, cursorfireimage);
 	cursorimage = LoadGraph("Resources/images/match.png", 0);
 	titleimage = LoadGraph("Resources/images/Title.png", 0);
+	titlenameimage = LoadGraph("Resources/images/Titlename.png", 0);
 	SetUseASyncLoadFlag(false);
 }
 
@@ -127,6 +128,7 @@ AbstractScene* Title::Update()
 void Title::Draw() const
 {
 	DrawGraph(0, 0, titleimage,true);
+	DrawRotaGraph(980, 180, 1.5, 0.0, titlenameimage, true);
 	//DrawString(580, 60, "‚±‚±‚Íƒ^ƒCƒgƒ‹‚Å‚·", 0xffffff);
 	int OldBlendMode, OldBlendParam;
 	GetDrawBlendMode(&OldBlendMode,&OldBlendParam);
@@ -137,6 +139,7 @@ void Title::Draw() const
 	SetDrawBlendMode(OldBlendMode, OldBlendParam);
 	DrawRotaGraph(1040, 380 + (cursor_last * 65), 1.0, 0.0, menufireimage[cursor_last][fireanim], true);
 	DrawRotaGraph(800, 380 + (cursor_last * 65), 1.0, 0.0, cursorimage, true);
+
 	//DrawRotaGraph(800, 370 + (cursor_last * 65), 1.0, 0.0, cursorfireimage[cursor_fireanim], true);
 
 	//DrawCircle(560, 346 + menu_cursor * GetFontSize(), 8,0xffffff, TRUE);
