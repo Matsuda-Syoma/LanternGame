@@ -12,6 +12,7 @@ float UserData::LoadData(int filenum, int num)
 	float temp = 0;
 	FILE* fp = nullptr;
 	char name[64] = { "\0" };
+	// 指定したファイルを文字列に入れる
 	switch (filenum) {
 	case 0:
 		strcpy_s(name, "Resources/setting.csv");
@@ -101,6 +102,7 @@ float UserData::SaveData(int filenum, int num, float data)
 {
 	FILE* fp = nullptr;
 	char name[64] = { "\0" };
+	// 指定したファイルを文字列に入れる
 	switch (filenum) {
 	case 0:
 		strcpy_s(name, "Resources/setting.csv");

@@ -7,11 +7,10 @@ private:
     int outimage;
     int out2image;
     int inimage;
-    float width, height;
-    Vector2D location;
-    int maxexpcnt = 80;
-    int expcnt = maxexpcnt;
     int cnt = 0;
+    float width = 600.0f;
+    float height = 100.0f;
+    Vector2D location;
 public:
     Conveyor();    //コンストラクタ
     ~Conveyor();   //デストラクタ
@@ -20,4 +19,5 @@ public:
     void Draw(Vector2D loc, float _distance)const;   //描画処理
     Vector2D GetLocation() const;
     void SetLocation(Vector2D loc);
+    float GetScale(int i);
 };
