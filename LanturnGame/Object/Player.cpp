@@ -39,10 +39,10 @@ void Player::Update()
 	// 兵隊に捕まっていたら
 	else if (hitsoldier == true)
 	{
-		// 90秒スタンする
-		if (stan <= 90)
+		// 1.5秒スタンする
+		if (stan_cnt <= 90)
 		{
-			stan++;
+			stan_cnt++;
 		}
 		else
 		{
@@ -50,15 +50,15 @@ void Player::Update()
 			if (pflg == true)
 			{
 				hitsoldier = false;
-				stan = 0;
+				stan_cnt = 0;
 			}
 		}
 
 
 	}
 
-	// 爆発に当たったら無敵時間
-	if (hitbomb == true) {
+	// 爆発か兵隊に当たったら無敵時間
+	if (hitflg == true) {
 		Invincible();
 		Blinking();
 	}
@@ -283,12 +283,12 @@ void Player::Invincible()
 		// 兵隊に捕まっていたらここで無敵時間終わり
 		if (hitsoldier == true)
 		{
-			hitbomb = false;
+			hitflg = false;
 			Invincible_cnt = 0;
 		}
 		break;
 	case(180):
-		hitbomb = false;
+		hitflg = false;
 		Invincible_cnt = 0;
 		break;
 	default:
@@ -427,12 +427,12 @@ void Player::MoveDown()
 
 bool Player::GetFlg() const
 {
-	return hitbomb;
+	return hitflg;
 }
 
 void Player::SetFlg(bool b)
 {
-	this->hitbomb = b;
+	this->hitflg = b;
 }
 
 bool Player::GetPFlg() const

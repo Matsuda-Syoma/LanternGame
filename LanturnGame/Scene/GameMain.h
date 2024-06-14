@@ -82,16 +82,14 @@ private:
 	int CamerashakeCount = 0;
 	int Camerashake = 0;
 
-	int cun = 0;
-	int r_cun = 0;	// リザルト遷移カウント用
-	int c_cun = 0;
-	int f_cun = 0;
-	int d_cun = 0;
+	int result_cnt = 0;	// リザルト遷移カウント用
+	int cnt = 0;		// カウントダウン用
 	int countdown = 4;
-	int alpha = 0;
-	int alpha2 = 200;
-	int alpha3 = 0;
 	double countsize = 3.0;
+	// 画像透かし用
+	int fadeout_alpha = 0;
+	int crack_alpha = 200;
+	int soot_alpha = 0;
 
 	Vector2D ev;
 	float l;

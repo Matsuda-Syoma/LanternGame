@@ -1321,15 +1321,16 @@ AbstractScene* GameMain::Update()
 	// 残機が０になったら
 	if (player->GetPFlg() == false && resultflg == false) {
 		StopSoundMem(Sounds::BGM_GMain);
-		r_cun++;
+		result_cnt++;
 
-		switch (r_cun)
+		switch (result_cnt)
 		{
 		case(1):
+			// プレイヤーが兵隊に捕まっていなかったら
 			if (player->GetHitSoldier() == false)
 			{
-				alpha2 = 255;
-				alpha3 = 255;
+				crack_alpha = 255;
+				soot_alpha = 255;
 			}
 			break;
 		case(200):
@@ -1343,9 +1344,10 @@ AbstractScene* GameMain::Update()
 			break;
 		}
 
-		if (r_cun > 100)
+		// リザルトに遷移するまでフェードアウト
+		if (result_cnt > 100)
 		{
-			alpha += 3;
+			fadeout_alpha += 3;
 		}
 
 	}
@@ -1353,8 +1355,8 @@ AbstractScene* GameMain::Update()
 	// カウントダウン（３秒）
 	if (countdownflg == true && !textdisp->GetFlg())
 	{
-		c_cun++;
-		switch (c_cun)
+		cnt++;
+		switch (cnt)
 		{
 		case(1):
 		case(60):
@@ -1381,8 +1383,8 @@ AbstractScene* GameMain::Update()
 	// １秒間「START」表示
 	else if (countdown == 0)
 	{
-		c_cun++;
-		switch (c_cun)
+		cnt++;
+		switch (cnt)
 		{
 		case(240):
 			countdown = 4;
@@ -1398,8 +1400,8 @@ AbstractScene* GameMain::Update()
 	// プレイヤーが爆発に当たった かつ プレイヤーが生きている かつ ダメージ演出が表示されていなかったら
 	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false && player->GetHitSoldier() == false)
 	{
-		alpha2 = 200;
-		alpha3 = 255 - life * 51;
+		crack_alpha = 200;
+		soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
 		crackflg = true;
 
 	}
@@ -1407,17 +1409,19 @@ AbstractScene* GameMain::Update()
 	// ダメージ演出が表示されている かつ プレイヤーが生きていたら
 	if (crackflg == true && player->GetPFlg() == true)
 	{
-		if (alpha2 > 0)
+		// ダメージ演出を少しずつ薄くする
+
+		if (crack_alpha > 0)
 		{
-			alpha2 -= 1;
+			crack_alpha -= 1;
 		}
 
-		if (alpha3 > 0 && alpha2 <= alpha3)
+		if (soot_alpha > 0 && crack_alpha <= soot_alpha)
 		{
-			alpha3 -= 1;
+			soot_alpha -= 1;
 		}
 
-		if (alpha2 == 0)
+		if (crack_alpha == 0)
 		{
 			crackflg = false;
 		}
@@ -1425,9 +1429,9 @@ AbstractScene* GameMain::Update()
 	}
 
 	// フェードアウト
-	if (alpha > 0 && resultflg == true)
+	if (fadeout_alpha > 0 && resultflg == true)
 	{
-		alpha -= 10;
+		fadeout_alpha -= 10;
 	}
 
 	// リザルトフラグがたっているなら
@@ -1597,14 +1601,13 @@ void GameMain::Draw() const
 	}
 	DrawCloseMap();
 
-
+	// 爆弾に当たったときのダメージ演出
 	if (crackflg == true || life == 0)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
-		DrawGraph(0, 0, crackimage, true);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha3);
-		DrawGraph(0, 0, sootimage, true);
-		//画像透かし終わり
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, crack_alpha);
+		DrawGraph(0, 0, crackimage, true);	// ヒビ
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, soot_alpha);
+		DrawGraph(0, 0, sootimage, true);	// 煤
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	}
@@ -1709,7 +1712,7 @@ void GameMain::Draw() const
 		for (int i = 0; i < num; i++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((650 - ScoreCenter + (20 * num) / 2) - (20 * i), 20, 0.5, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 655 + (20 * num) / 2) - (20 * i), 20, 0.5, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 		SetDrawBright(255, 255, 255);
@@ -1720,15 +1723,16 @@ void GameMain::Draw() const
 	{
 		DrawGraph(0, 0, blackimage, false);
 
+		// ハイスコアだったら
 		if (highscoreflg == true)
 		{
 			DrawGraph(0, 0, highscoreimage, true);
-			char res_4[] = "new record\0";
-			for (int i = 0; i < sizeof(res_4); i++)
+			char newrecord[] = "new record\0";
+			for (int ne = 0; ne < sizeof(newrecord); ne++)
 			{
-				int chr = res_4[i] - 'a';
+				int chr = newrecord[ne] - 'a';
 				SetDrawBright(255, 255, 0);
-				DrawRotaGraph((SCREEN_WIDTH - 360) + 18 * i, 220, 0.4, 0.0, alphabetimage[chr], true);
+				DrawRotaGraph((SCREEN_WIDTH - 360) + 18 * ne, 220, 0.4, 0.0, alphabetimage[chr], true);
 				SetDrawBright(255, 255, 255);
 			}
 		}
@@ -1736,23 +1740,23 @@ void GameMain::Draw() const
 			DrawGraph(0, 0, resultimage, true);
 		}
 
-		char res[] = "result\0";
-		for (int i = 0; i < sizeof(res); i++)
+		char result[] = "result\0";
+		for (int re = 0; re < sizeof(result); re++)
 		{
-			int chr = res[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 150, 1.0, 0.0, alphabetimage[chr], true);
+			int chr = result[re] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * re, 150, 1.0, 0.0, alphabetimage[chr], true);
 		}
-		char res_2[] = "high score\0";
-		for (int i = 0; i < sizeof(res_2); i++)
+		char highscore[] = "high score\0";
+		for (int hi = 0; hi < sizeof(highscore); hi++)
 		{
-			int chr = res_2[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * i, 390, 0.5, 0.0, alphabetimage[chr], true);
+			int chr = highscore[hi] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * hi, 390, 0.5, 0.0, alphabetimage[chr], true);
 		}
-		char res_3[] = "press a\0";
-		for (int i = 0; i < sizeof(res_3); i++)
+		char press[] = "press a\0";
+		for (int pr = 0; pr < sizeof(press); pr++)
 		{
-			int chr = res_3[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 340) + 22 * i, 580, 0.6, 0.0, alphabetimage[chr], true);
+			int chr = press[pr] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 340) + 22 * pr, 580, 0.6, 0.0, alphabetimage[chr], true);
 		}
 
 		int bufhiscore = hiscore;
@@ -1763,10 +1767,10 @@ void GameMain::Draw() const
 			bufhiscore /= 10;
 		}
 		bufhiscore = hiscore;
-		for (int i = 0; i < hi_num; i++)
+		for (int h = 0; h < hi_num; h++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 340 + (40 * hi_num) / 2) - (28 * i), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 290 + (28 * hi_num) / 2) - (28 * h), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
 			bufhiscore /= 10;
 		}
 
@@ -1778,10 +1782,10 @@ void GameMain::Draw() const
 			bufscore /= 10;
 		}
 		bufscore = score;
-		for (int i = 0; i < num; i++)
+		for (int s = 0; s < num; s++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * i), 270, 1.0, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * s), 270, 1.0, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 	}
@@ -1804,11 +1808,10 @@ void GameMain::Draw() const
 
 	textdisp->Draw();
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+	// フェードアウト
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, fadeout_alpha);
 	DrawGraph(0, 0, blackimage, false);
-	//画像透かし終わり
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
 
 }
 
