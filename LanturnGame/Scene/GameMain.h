@@ -48,7 +48,7 @@ private:
 	int C_MaxSoldier = (int)UserData::LoadData(UserData::SETTING, 3);
 	Vector2D Camera, cMin, cMax;
 
-	int ffff = 0;
+	int CameraOutCnt = 0;
 
 	float CameraDistance = 0.0f;
 
