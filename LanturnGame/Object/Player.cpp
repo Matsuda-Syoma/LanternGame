@@ -425,22 +425,22 @@ void Player::MoveDown()
 	}
 }
 
-bool Player::GetFlg() const
+bool Player::GetHitFlg() const
 {
 	return hitflg;
 }
 
-void Player::SetFlg(bool b)
+void Player::SetHitFlg(bool b)
 {
 	this->hitflg = b;
 }
 
-bool Player::GetPFlg() const
+bool Player::GetPlayerFlg() const
 {
 	return pflg;
 }
 
-void Player::SetPFlg(bool b)
+void Player::SetPlayerFlg(bool b)
 {
 	this->pflg = b;
 }

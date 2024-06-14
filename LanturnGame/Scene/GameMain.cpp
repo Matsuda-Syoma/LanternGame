@@ -353,7 +353,7 @@ AbstractScene* GameMain::Update()
 		}*/
 
 		// プレイヤーが生きている&兵士が当たってないとき
-		if (player->GetPFlg() && !player->GetHitSoldier())
+		if (player->GetPlayerFlg() && !player->GetHitSoldier())
 		{
 			// 炎を表示する
 			particle[0]->SetVisible(true);
@@ -851,11 +851,11 @@ AbstractScene* GameMain::Update()
 				// プレイヤーと爆発の当たり判定
 				if (explosion[i]->HitSphere(player) && hitmoment == false)
 				{
-					if (player->GetFlg() == false)
+					if (player->GetHitFlg() == false)
 					{
 						life--;
 						hitmoment = true;
-						player->SetFlg(true);
+						player->SetHitFlg(true);
 					}
 				}
 				else if (!explosion[i]->HitSphere(player) && hitmoment == true)
@@ -898,12 +898,12 @@ AbstractScene* GameMain::Update()
 			{
 				if (soldier[i]->HitSphere(player))
 				{
-					if (player->GetFlg() == false && soldier[i]->ChekhitFlg() == true)
+					if (player->GetHitFlg() == false && soldier[i]->ChekhitFlg() == true)
 					{
 						life--;
 						hitmoment = true;
 						soldier[i]->SetcatchFlg(true);
-						player->SetFlg(true);
+						player->SetHitFlg(true);
 						player->SetHitSoldier(true);
 						soldier[i]->SetDMGflg(false);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
@@ -1313,13 +1313,13 @@ AbstractScene* GameMain::Update()
 		if (life <= 0)
 		{
 
-			player->SetPFlg(false);
+			player->SetPlayerFlg(false);
 
 
 		}
 	}
 	// 残機が０になったら
-	if (player->GetPFlg() == false && resultflg == false) {
+	if (player->GetPlayerFlg() == false && resultflg == false) {
 		StopSoundMem(Sounds::BGM_GMain);
 		result_cnt++;
 
@@ -1398,7 +1398,7 @@ AbstractScene* GameMain::Update()
 	}
 
 	// プレイヤーが爆発に当たった かつ プレイヤーが生きている かつ ダメージ演出が表示されていなかったら
-	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false && player->GetHitSoldier() == false)
+	if (player->GetHitFlg() == true && player->GetPlayerFlg() == true && crackflg == false && player->GetHitSoldier() == false)
 	{
 		crack_alpha = 200;
 		soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
@@ -1407,7 +1407,7 @@ AbstractScene* GameMain::Update()
 	}
 
 	// ダメージ演出が表示されている かつ プレイヤーが生きていたら
-	if (crackflg == true && player->GetPFlg() == true)
+	if (crackflg == true && player->GetPlayerFlg() == true)
 	{
 		// ダメージ演出を少しずつ薄くする
 

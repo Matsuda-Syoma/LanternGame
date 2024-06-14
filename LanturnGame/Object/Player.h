@@ -42,10 +42,10 @@ public:
 	void MoveUp();		// è„à⁄ìÆ
 	void MoveDown();	// â∫à⁄ìÆ
 
-	bool GetFlg() const;
-	void SetFlg(bool b);
-	bool GetPFlg() const;
-	void SetPFlg(bool b);
+	bool GetHitFlg() const;
+	void SetHitFlg(bool b);
+	bool GetPlayerFlg() const;
+	void SetPlayerFlg(bool b);
 	bool GetIceFlg() const;
 	void SetIceFlg(bool b);
 	bool GetConFlg() const;
