@@ -1395,6 +1395,7 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
+	// プレイヤーが爆発に当たった かつ プレイヤーが生きている かつ ダメージ演出が表示されていなかったら
 	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false && player->GetHitSoldier() == false)
 	{
 		alpha2 = 200;
@@ -1403,6 +1404,7 @@ AbstractScene* GameMain::Update()
 
 	}
 
+	// ダメージ演出が表示されている かつ プレイヤーが生きていたら
 	if (crackflg == true && player->GetPFlg() == true)
 	{
 		if (alpha2 > 0)
@@ -1431,9 +1433,6 @@ AbstractScene* GameMain::Update()
 	// リザルトフラグがたっているなら
 	if (resultflg == true)
 	{
-		//if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
-		//	life = 3;
-		//	resultflg = false;
 
 		// 一回だけ動く
 		if (!resultnewflg)
@@ -1697,10 +1696,6 @@ void GameMain::Draw() const
 	//スコアの表示
 	if (resultflg == false)
 	{
-		//DrawBox(1060, 410, 1060 + 200, 410 + 74, 0x123456, true);
-		//DrawFormatString(1060, 410, 0xffffff, "%06d", hiscore);
-		// 
-		//DrawFormatString(640 - ScoreCenter, 0, 0xffffff, "%d", score);
 
 		int bufscore = score;
 		int num = 0;
