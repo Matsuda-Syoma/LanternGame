@@ -106,11 +106,9 @@ void Player::Draw(Vector2D loc, float _distance) const
 						, (location.y * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, playerimg[imgnum], true);
 		}
 		else {
-			/*SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);*/	// 画像を透かす
 			SetIgnoreDrawGraphColor(TRUE);
 			DrawRotaGraphF((location.x * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
 				, (location.y * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, playerimg[imgnum], true);
-			/*SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);*/	// 画像透かし終わり
 			SetIgnoreDrawGraphColor(FALSE);
 		}
 	}

@@ -331,6 +331,8 @@ AbstractScene* GameMain::Update()
 	textdisp->Update();
 	//スコア描画の中心の値を求める
 	ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
+
+	// リザルトじゃない かつ カウントダウンが終わっているとき
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
 		// 曲が鳴っていないなら鳴らす
@@ -1307,17 +1309,14 @@ AbstractScene* GameMain::Update()
 		// カメラアップデート
 		CameraUpdate();
 
-
-		// 残機が0ならリザルトフラグを立てる
-
+		// 残機が0ならプレイヤーフラグをfalseにする
 		if (life <= 0)
 		{
-
 			player->SetPlayerFlg(false);
-
-
 		}
+
 	}
+
 	// 残機が０になったら
 	if (player->GetPlayerFlg() == false && resultflg == false) {
 		StopSoundMem(Sounds::BGM_GMain);
@@ -1696,10 +1695,9 @@ void GameMain::Draw() const
 		}
 	}
 	// リザルトじゃないなら
-	//スコアの表示
 	if (resultflg == false)
 	{
-
+		//スコアの表示
 		int bufscore = score;
 		int num = 0;
 		while (bufscore > 0)
