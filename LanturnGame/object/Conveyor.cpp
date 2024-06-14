@@ -25,7 +25,7 @@ void Conveyor::Update() {
 	{
 		cnt = 0;
 	}
-	cnt++;
+	cnt+=2;
 	box.right = box.left + width;
 	box.bottom = box.top + height;
 }

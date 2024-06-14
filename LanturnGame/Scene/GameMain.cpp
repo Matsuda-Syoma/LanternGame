@@ -932,11 +932,7 @@ AbstractScene* GameMain::Update()
 			conveyor[i]->Update();
 			if (conveyor[i]->HitSphere(*player))
 			{
-				player->SetLocation(Vector2D(player->GetLocation().x + 3, player->GetLocation().y));
-
-				/*if (player->GetConFlg() == false) {
-					player->SetConFlg(true);
-				}*/
+				player->SetLocation(Vector2D(player->GetLocation().x + 2, player->GetLocation().y));
 			}
 
 			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
@@ -945,7 +941,7 @@ AbstractScene* GameMain::Update()
 				{
 					if (conveyor[i]->HitSphere(*bomb[j]))
 					{
-						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x + 3, bomb[j]->GetLocation().y));
+						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x + 2, bomb[j]->GetLocation().y));
 					}
 				}
 			}
