@@ -343,7 +343,7 @@ AbstractScene* GameMain::Update()
 		player->GetMapSize(MapSize);
 		player->Update();
 		Camera = player->GetLocation();
-		Camera += Camerashake;
+		Camera += (float)Camerashake;
 		//体力を徐々に減らす
 		/*if (Displaylife > life)
 		{
@@ -768,14 +768,14 @@ AbstractScene* GameMain::Update()
 							if (!bomb[i]->GetExpFlg())
 							{
 								// プレイヤーの速度*20飛ばす
-								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 20.));
+								bomb[i]->SetKnockBack(vvec, (int)max(5, player->GetNormalSpeed() * 20.0f));
 							}
 
 							// 点火しているなら
 							else
 							{
 								// プレイヤーの速度*50飛ばす
-								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 50.));
+								bomb[i]->SetKnockBack(vvec, (int)max(5, player->GetNormalSpeed() * 50.0f));
 							}
 							// 効果音フラグ立てる
 							SE_HitFlg = true;
@@ -1007,7 +1007,7 @@ AbstractScene* GameMain::Update()
 						float length = GetLength(bomb[j]->GetLocation(), tornado[i]->GetLocation());
 						Vector2D vvec = (tornado[i]->GetLocation() - bomb[j]->GetLocation());
 						vvec /= length;
-						bomb[j]->SetEXVelocity(vvec * 0.8);
+						bomb[j]->SetEXVelocity(vvec * 0.8f);
 					}
 				}
 			}
@@ -1244,12 +1244,12 @@ AbstractScene* GameMain::Update()
 			CameraDistance = 0.0f;
 			if (cMin.x != 0.0 || cMin.y != 0.0)
 			{
-				float CameraDistanceTemp = (GetLength(Camera, Camera - cMin) / 1200.) * min((ffff / 90.), 1);
+				float CameraDistanceTemp = (GetLength(Camera, Camera - cMin) / 1200.0f) * min((ffff / 90.0f), 1.0f);
 				CameraDistance = CameraDistanceTemp;
 			}
 			if (cMax.x != 0.0 || cMax.y != 0.0)
 			{
-				float CameraDistanceTemp = (GetLength(Camera, Camera - cMax) / 1200.) * min((ffff / 90.), 1);
+				float CameraDistanceTemp = (GetLength(Camera, Camera - cMax) / 1200.0f) * min((ffff / 90.0f), 1.0f);
 				if (CameraDistance < CameraDistanceTemp)
 				{
 					CameraDistance = CameraDistanceTemp;
@@ -1261,22 +1261,22 @@ AbstractScene* GameMain::Update()
 			}
 			if (cMin.x != 0.0)
 			{
-				Camera.x += (cMin.x / 2.) * min((ffff / 90.), 1);
+				Camera.x += (cMin.x / 2.0f) * min((ffff / 90.0f), 1.0f);
 			}
 			if (cMin.y != 0.0)
 			{
-				Camera.y += (cMin.y / 2.) * min((ffff / 90.), 1);
+				Camera.y += (cMin.y / 2.0f) * min((ffff / 90.0f), 1.0f);
 			}
 			if (cMax.x != 0.0)
 			{
-				Camera.x += (cMax.x / 2.) * min((ffff / 90.), 1);
+				Camera.x += (cMax.x / 2.0f) * min((ffff / 90.0f), 1.0f);
 			}
 			if (cMax.y != 0.0)
 			{
-				Camera.y += (cMax.y / 2.) * min((ffff / 90.), 1);
+				Camera.y += (cMax.y / 2.0f) * min((ffff / 90.0f), 1.0f);
 			}
-			Vector2D qw = (Camera * (1. - (CameraDistance / DISTANCE_MAX)));
-			Vector2D qw2 = (0 * (CameraDistance / DISTANCE_MAX));
+			Vector2D qw = (Camera * (float)(1.0f - (CameraDistance / DISTANCE_MAX)));
+			Vector2D qw2 = (0 * (float)(CameraDistance / DISTANCE_MAX));
 			Camera = qw + qw2;
 			
 		}
@@ -1503,15 +1503,14 @@ void GameMain::Draw() const
 
 	// マップの範囲
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 127);
-	//(CameraDistance / DISTANCE_MAX),(0 * (CameraDistance / DISTANCE_MAX));
-	// return (1 - t) * a + t * b; * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))
-	DrawBoxAA((MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)), -(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), (GM_MAX_MAPSIZE * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, (MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	float Scale = (float)(1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM));
+	DrawBoxAA((float)((MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2))), (float)(-(MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)((GM_MAX_MAPSIZE * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) + 16), (float)((MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), 0x000000, true);
 	//DrawBoxAA(MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	DrawBoxAA(-(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)), -(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), -(GM_MAX_MAPSIZE * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, (MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	DrawBoxAA((float)(-(MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2))), (float)(-(MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)(-(GM_MAX_MAPSIZE * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) - 16), (float)((MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), 0x000000, true);
 	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	DrawBoxAA(-(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), (MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), (MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), (GM_MAX_MAPSIZE * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
+	DrawBoxAA((float)(-(MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize))), (float)((MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)((MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize))), (float)((GM_MAX_MAPSIZE * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16), 0x000000, true);
 	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
-	DrawBoxAA(-(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -(MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)), (MapSize * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -(GM_MAX_MAPSIZE * (1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM))) + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
+	DrawBoxAA((float)(-(MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize))), (float)(-(MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)((MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize))), (float)(-(GM_MAX_MAPSIZE * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16), 0x000000, true);
 	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
