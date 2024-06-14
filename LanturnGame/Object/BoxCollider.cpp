@@ -53,7 +53,7 @@ bool BoxCollider::HitSphere(SphereCollider sphereCollider) const {
 }
 
 void BoxCollider::DrawCollider() const {
-	DrawBox(box.left, box.top, box.right, box.bottom, 0xFF, TRUE);
+	DrawBoxAA(box.left, box.top, box.right, box.bottom, 0xFF, TRUE);
 }
 
 float BoxCollider::GetSize(int i)

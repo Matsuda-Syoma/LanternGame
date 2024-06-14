@@ -6,7 +6,7 @@
 #define FRAMERATE 60.0
 #define UPDATETIME 800
 
-#define GM_MAX_LIFE 1000
+#define GM_MAX_LIFE 5
 
 #define GM_MAX_ENEMY_BOMB 200
 #define GM_MAX_EFFECT_EXPLOSION 200
@@ -23,7 +23,7 @@
 #define GM_MIN_MAPSIZE 320
 
 
-#define GM_MAX_ENEMY_SOLDIER 0
+#define GM_MAX_ENEMY_SOLDIER 3
 
 #define DISTANCE_MAX 1.5
 #define DISTANCE_NUM 1.333333
@@ -65,17 +65,17 @@ static int RandType(int rnd)
 
 static float DrawFromCameraX(Vector2D location, float _distance, Vector2D loc)
 {
-	return (location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2));
+	return (float)(location.x * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2));
 }
 
 static float DrawFromCameraY(Vector2D location, float _distance, Vector2D loc)
 {
-	return (location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2));
+	return (float)(location.y * (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2));
 }
 
 static float ScaleFromCamera(float _distance)
 {
-	return (1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM));
+	return (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM));
 }
 
 //template <typename T>

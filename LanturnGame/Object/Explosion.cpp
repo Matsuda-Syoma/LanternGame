@@ -7,9 +7,6 @@ int Explosion::images[30];
 Explosion::Explosion()
 {
 	radius = 15.0f;
-	for (int i = 0; i < 3; i++) {
-		RGB[i] = GetRand(127) + 128;
-	}
 }
 
 Explosion::~Explosion()
@@ -23,22 +20,29 @@ void Explosion::Init(int _size)
 
 void Explosion::Update()
 {
+	// フラグがたっているなら
 	if (flg) {
+
+		// countが15より上なら
 		if (count > 15) {
+
+			// フラグを切る
 			flg = false;
 		}
+
+		// countを増やす
 		count++;
+
+		// 当たり判定の大きさをcount * sizeにする
 		radius = (float)count * size;
 	}
 }
 
 void Explosion::Draw(Vector2D loc, float _distance) const
 {
-	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255 - count * 8);
 	DrawCircleAA(DrawFromCameraX(location, _distance, loc)
 				,DrawFromCameraY(location, _distance, loc)
 				,radius * ScaleFromCamera(_distance), 16, 0xffffff, true, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 bool Explosion::Getflg() const

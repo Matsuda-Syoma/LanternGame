@@ -3,11 +3,10 @@
 class Explosion : public SphereCollider
 {
 private:
-	bool flg = true;
-	int size = 10 - 2;
-	unsigned int count = 0;
-	static int images[];
-	int RGB[3] = { 0 };
+	bool flg = true;		// ƒtƒ‰ƒO
+	int size = 10 - 2;		// ‘å‚«‚³
+	unsigned int count = 0;	// Œp‘±ŽžŠÔ
+	static int images[];	// ‰æ‘œ
 public:
 	Explosion();
 	~Explosion();

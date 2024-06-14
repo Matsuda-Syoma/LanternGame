@@ -15,9 +15,11 @@ GameMain::GameMain()
 	Tornado::LoadImages();
 	ComboEnd::LoadImages();
 	AddScore::LoadImages();
+
+	// ハイスコア読み込み
 	hiscore = (int)UserData::LoadData(UserData::Type::HISCORE);		// ハイスコア読み込み
 
-	//BGMをループしながら再生する
+	// BGMをループしながら再生する
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
 	/*******************初期化*******************/
@@ -184,12 +186,14 @@ GameMain::GameMain()
 		bomb[i] = nullptr;
 	}
 
+	// 爆弾を設定数初期化する
 	for (int i = 0; i < MaxSpawnEnemyBomb; i++)
 	{
 		bomb[i] = new Bomb;
 		bomb[i]->Init(C_ExpSize);
 		while (1)
 		{
+			// プレイヤーから距離が遠かったらスポーン
 			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 			if (1080 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
 				powf((spawnloc.x - player->GetLocation().x), 2) +
@@ -278,6 +282,7 @@ GameMain::GameMain()
 					}
 				}
 			}
+
 			for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
 			{
 				// 距離を計算
@@ -351,6 +356,8 @@ AbstractScene* GameMain::Update()
 {
 	// 文字の表示
 	textdisp->Update();
+	//スコア描画の中心の値を求める
+	ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
 		// 曲が鳴っていないなら鳴らす
@@ -363,16 +370,19 @@ AbstractScene* GameMain::Update()
 		player->GetMapSize(MapSize);
 		player->Update();
 		Camera = player->GetLocation();
-		Camera += Camerashake;
+		Camera += (float)Camerashake;
 		//体力を徐々に減らす
-		if (Displaylife > life)
+		/*if (Displaylife > life)
 		{
 			if ((game_frametime % 2) == 0) {
 				Displaylife = Displaylife - 1;
 			}
-		}
+		}*/
+
+		// プレイヤーが生きている&兵士が当たってないとき
 		if (player->GetPFlg() && !player->GetHitSoldier())
 		{
+			// 炎を表示する
 			particle[0]->SetVisible(true);
 			switch (player->GetDirection())
 			{
@@ -414,6 +424,7 @@ AbstractScene* GameMain::Update()
 		}
 		else
 		{
+			// 炎を表示しない
 			particle[0]->SetVisible(false);
 		}
 
@@ -565,7 +576,7 @@ AbstractScene* GameMain::Update()
 							// nullptrじゃないなら距離を見る
 							if (bomb[j] != nullptr)
 							{
-								// 距離が短いなら変数を保存する
+								// 距離が短いなら変数を保存する(3じゃないとき)
 								if (bomb[i]->GetMode() != 3)
 								{
 									if (length > bomb[j]->GetLength(bomb[i]->GetLocation()))
@@ -576,12 +587,15 @@ AbstractScene* GameMain::Update()
 								}
 							}
 						}
+						// 空ならデータを初期化
 						else if (bomb[j] == nullptr)
 						{
 							temp = -1;
 							length = 65535;
 						}
 					}
+
+					// -1以外なら見る
 					if (temp != -1)
 					{
 						// 距離が長いなら
@@ -601,6 +615,7 @@ AbstractScene* GameMain::Update()
 							bomb[i]->SetVelocity(vvec);
 							break;
 						}
+						// 距離が間なら動かない
 						else
 						{
 							bomb[i]->SetVelocity(NULL);
@@ -637,12 +652,14 @@ AbstractScene* GameMain::Update()
 								}
 							}
 						}
+						// 空ならデータを初期化
 						else if (bomb[j] == nullptr)
 						{
 							temp = -1;
 							length = 65535;
 						}
 					}
+					// -1以外なら見る
 					if (temp != -1)
 					{
 						// 距離が近いなら
@@ -659,6 +676,8 @@ AbstractScene* GameMain::Update()
 						vvec /= length;
 						bomb[i]->SetVelocity(vvec);
 					}
+
+					// 距離が間なら動かない
 					else
 					{
 						bomb[i]->SetVelocity(NULL);
@@ -675,9 +694,12 @@ AbstractScene* GameMain::Update()
 					}
 					else
 					{
+						// 次に行く座標をランダム指定
 						bomb[i]->SetMoveToLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 					}
+
 					if (fabsf(bomb[i]->GetMoveToLocation().x) - MapSize + 32 > 0 || fabsf(bomb[i]->GetMoveToLocation().y) - MapSize + 32 > 0) {
+						// 次に行く座標がマップ外なら再度指定
 						bomb[i]->SetMoveToLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 					}
 					break;
@@ -700,7 +722,7 @@ AbstractScene* GameMain::Update()
 								}
 							}
 						}
-
+						// 空ならデータを初期化
 						else if (bomb[j] == nullptr)
 						{
 							temp = -1;
@@ -708,6 +730,7 @@ AbstractScene* GameMain::Update()
 						}
 					}
 
+					// -1以外なら見る
 					if (temp != -1)
 					{
 						// 距離が近いなら
@@ -721,7 +744,10 @@ AbstractScene* GameMain::Update()
 					}
 
 					length = bomb[i]->GetLength(player->GetLocation() * -1);
-					if (length > 16) {
+
+					if (length > 16) 
+					{
+						// プレイヤーと対象の対称に座標指定
 						bomb[i]->SetMoveToLocation(player->GetLocation() * -1);
 						vvec = (bomb[i]->GetMoveToLocation() - bomb[i]->GetLocation());
 						vvec /= length;
@@ -760,23 +786,32 @@ AbstractScene* GameMain::Update()
 					// 敵とプレイヤーの当たり判定
 					if (bomb[i]->HitSphere(player))
 					{
+						// プレイヤーと爆弾のベクトル取得
 							vvec = (bomb[i]->GetLocation() - player->GetLocation());
 							length = bomb[i]->GetLength(player->GetLocation());
 							vvec /= length;
+
+							// 点火してないなら
 							if (!bomb[i]->GetExpFlg())
 							{
-								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 20.));
+								// プレイヤーの速度*20飛ばす
+								bomb[i]->SetKnockBack(vvec, (int)max(5, player->GetNormalSpeed() * 20.0f));
 							}
+
+							// 点火しているなら
 							else
 							{
-								bomb[i]->SetKnockBack(vvec, max(5, player->GetNormalSpeed() * 50.));
+								// プレイヤーの速度*50飛ばす
+								bomb[i]->SetKnockBack(vvec, (int)max(5, player->GetNormalSpeed() * 50.0f));
 							}
+							// 効果音フラグ立てる
 							SE_HitFlg = true;
+							// 点火フラグ立てる
 							bomb[i]->SetExpFlg(true);
 							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
 							for (int j = 0; j < 7; j++)
 							{
-								if (bomb[i]->hitchek() == true)
+								if (10 >= bomb[i]->hitcheck())
 								{
 									SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(), (GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
 									bomb[i]->hitset();
@@ -845,11 +880,7 @@ AbstractScene* GameMain::Update()
 				{
 					if (player->GetFlg() == false)
 					{
-						life = life - C_ExpSize;
-						if (life <= 0)
-						{
-							life = 0;
-						}
+						life--;
 						hitmoment = true;
 						player->SetFlg(true);
 					}
@@ -896,7 +927,7 @@ AbstractScene* GameMain::Update()
 				{
 					if (player->GetFlg() == false && soldier[i]->ChekhitFlg() == true)
 					{
-						life = life - 10;
+						life--;
 						hitmoment = true;
 						soldier[i]->SetcatchFlg(true);
 						player->SetFlg(true);
@@ -1047,7 +1078,7 @@ AbstractScene* GameMain::Update()
 						float length = GetLength(bomb[j]->GetLocation(), tornado[i]->GetLocation());
 						Vector2D vvec = (tornado[i]->GetLocation() - bomb[j]->GetLocation());
 						vvec /= length;
-						bomb[j]->SetEXVelocity(vvec * 1.2);
+						bomb[j]->SetEXVelocity(vvec * 0.8f);
 					}
 				}
 			}
@@ -1138,7 +1169,7 @@ AbstractScene* GameMain::Update()
 		ChangeMapSize();
 
 		// マップサイズで敵の最大スポーン数を変える
-		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * (MapSize / GM_MAX_MAPSIZE));
+		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * max(-0.5 + ((MapSize) / (GM_MAX_MAPSIZE)) * 1.5, 0.1));
 
 		// ゲームのフレームを増やす
 		game_frametime++;
@@ -1246,12 +1277,13 @@ AbstractScene* GameMain::Update()
 		//	}
 		//}
 
+		bool CameraFlg = false;
 		for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++)
 		{
 			if (explosion[i] != nullptr)
 			{
 
-				ffff = 120;
+				CameraFlg = true;
 				cDistance = Vector2D(explosion[i]->GetLocation().x - Camera.x, explosion[i]->GetLocation().y - Camera.y);
 				//cFlg = true;
 
@@ -1278,17 +1310,17 @@ AbstractScene* GameMain::Update()
 		}
 
 
-		if (ffff > 0)
+		if (CameraOutCnt > 0)
 		{
 			CameraDistance = 0.0f;
 			if (cMin.x != 0.0 || cMin.y != 0.0)
 			{
-				float CameraDistanceTemp = (GetLength(Camera, Camera - cMin) / 1500.) * min((ffff / 90.), 1);
+				float CameraDistanceTemp = (GetLength(Camera, Camera - cMin) / 1200.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 				CameraDistance = CameraDistanceTemp;
 			}
 			if (cMax.x != 0.0 || cMax.y != 0.0)
 			{
-				float CameraDistanceTemp = (GetLength(Camera, Camera - cMax) / 1500.) * min((ffff / 90.), 1);
+				float CameraDistanceTemp = (GetLength(Camera, Camera - cMax) / 1200.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 				if (CameraDistance < CameraDistanceTemp)
 				{
 					CameraDistance = CameraDistanceTemp;
@@ -1300,26 +1332,24 @@ AbstractScene* GameMain::Update()
 			}
 			if (cMin.x != 0.0)
 			{
-				Camera.x += (cMin.x / 2.) * min((ffff / 90.), 1);
+				Camera.x += (cMin.x / 2.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 			}
 			if (cMin.y != 0.0)
 			{
-				Camera.y += (cMin.y / 2.) * min((ffff / 90.), 1);
+				Camera.y += (cMin.y / 2.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 			}
 			if (cMax.x != 0.0)
 			{
-				Camera.x += (cMax.x / 2.) * min((ffff / 90.), 1);
+				Camera.x += (cMax.x / 2.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 			}
 			if (cMax.y != 0.0)
 			{
-				Camera.y += (cMax.y / 2.) * min((ffff / 90.), 1);
+				Camera.y += (cMax.y / 2.0f) * min((CameraOutCnt / 90.0f), 1.0f);
 			}
-			Vector2D qw = (Camera * (1. - (CameraDistance / DISTANCE_MAX)));
-			Vector2D qw2 = (0 * (CameraDistance / DISTANCE_MAX));
+			Vector2D qw = (Camera * (float)(1.0f - (CameraDistance / DISTANCE_MAX)));
+			Vector2D qw2 = (0 * (float)(CameraDistance / DISTANCE_MAX));
 			Camera = qw + qw2;
-			//Camera = lerp(Camera, player->GetLocation(), min((ffff / 90), 1));
-			SpawnParticle(2, nullptr, false, Camera, 0.0f, 1.0f, 0.0f);
-			ffff--;
+			
 		}
 		else
 		{
@@ -1327,10 +1357,21 @@ AbstractScene* GameMain::Update()
 			cMax = 0;
 			CameraDistance = 0.0f;
 		}
-		clsDx();
-		printfDx("%f %f| %f %f\n", cMin.x, cMin.y, cMax.x, cMax.y);
-		printfDx("%f |%f %f\n", CameraDistance, Camera.x, Camera.y);
-		printfDx("%d\n", min((ffff / 30), 1));
+		if (CameraFlg)
+		{
+			if (CameraOutCnt < 120)
+			{
+				CameraOutCnt += 5;
+			}
+
+		}
+		else
+		{
+			if (CameraOutCnt > 0)
+			{
+				CameraOutCnt--;
+			}
+		}
 		// カメラアップデート
 		CameraUpdate();
 
@@ -1342,33 +1383,39 @@ AbstractScene* GameMain::Update()
 
 			player->SetPFlg(false);
 
-			if (CheckSoundMem(Sounds::BGM_Title) == 0)
-			{
-				PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
-			}
+
 		}
 	}
 	// 残機が０になったら
 	if (player->GetPFlg() == false && resultflg == false) {
 		StopSoundMem(Sounds::BGM_GMain);
-		r_cun++;
+		result_cnt++;
 
-		switch (r_cun)
+		switch (result_cnt)
 		{
 		case(1):
-			alpha2 = 255;
-			alpha3 = 255;
+			// プレイヤーが兵隊に捕まっていなかったら
+			if (player->GetHitSoldier() == false)
+			{
+				crack_alpha = 255;
+				soot_alpha = 255;
+			}
 			break;
 		case(200):
 			resultflg = true;
+			if (CheckSoundMem(Sounds::BGM_Title) == 0)
+			{
+				PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
+			}
 			break;
 		default:
 			break;
 		}
 
-		if (r_cun > 100)
+		// リザルトに遷移するまでフェードアウト
+		if (result_cnt > 100)
 		{
-			alpha += 3;
+			fadeout_alpha += 3;
 		}
 
 	}
@@ -1376,8 +1423,8 @@ AbstractScene* GameMain::Update()
 	// カウントダウン（３秒）
 	if (countdownflg == true && !textdisp->GetFlg())
 	{
-		c_cun++;
-		switch (c_cun)
+		cnt++;
+		switch (cnt)
 		{
 		case(1):
 		case(60):
@@ -1404,8 +1451,8 @@ AbstractScene* GameMain::Update()
 	// １秒間「START」表示
 	else if (countdown == 0)
 	{
-		c_cun++;
-		switch (c_cun)
+		cnt++;
+		switch (cnt)
 		{
 		case(240):
 			countdown = 4;
@@ -1418,27 +1465,31 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false)
+	// プレイヤーが爆発に当たった かつ プレイヤーが生きている かつ ダメージ演出が表示されていなかったら
+	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false && player->GetHitSoldier() == false)
 	{
-		alpha2 = 200;
-		alpha3 = 255 - life / 20 * 51;
+		crack_alpha = 200;
+		soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
 		crackflg = true;
 
 	}
 
+	// ダメージ演出が表示されている かつ プレイヤーが生きていたら
 	if (crackflg == true && player->GetPFlg() == true)
 	{
-		if (alpha2 > 0)
+		// ダメージ演出を少しずつ薄くする
+
+		if (crack_alpha > 0)
 		{
-			alpha2 -= 1;
+			crack_alpha -= 1;
 		}
 
-		if (alpha3 > 0 && alpha2 <= alpha3)
+		if (soot_alpha > 0 && crack_alpha <= soot_alpha)
 		{
-			alpha3 -= 1;
+			soot_alpha -= 1;
 		}
 
-		if (alpha2 == 0)
+		if (crack_alpha == 0)
 		{
 			crackflg = false;
 		}
@@ -1446,17 +1497,14 @@ AbstractScene* GameMain::Update()
 	}
 
 	// フェードアウト
-	if (alpha > 0 && resultflg == true)
+	if (fadeout_alpha > 0 && resultflg == true)
 	{
-		alpha -= 10;
+		fadeout_alpha -= 10;
 	}
 
 	// リザルトフラグがたっているなら
 	if (resultflg == true)
 	{
-		//if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
-		//	life = 3;
-		//	resultflg = false;
 
 		// 一回だけ動く
 		if (!resultnewflg)
@@ -1537,11 +1585,15 @@ void GameMain::Draw() const
 
 	// マップの範囲
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 127);
-	//DrawBoxAA((MapSize - (CameraDistance * 675)) + (-Camera.x + (SCREEN_WIDTH / 2)), -(MapSize - (CameraDistance * 675)) + (-Camera.y + (SCREEN_HEIGHT / 2)), (GM_MAX_MAPSIZE - (CameraDistance * 675)) + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, (MapSize - (CameraDistance * 675)) + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	DrawBoxAA(MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
-	DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
-	DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
+	float Scale = (float)(1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM));
+	DrawBoxAA((float)((MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2))), (float)(-(MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)((GM_MAX_MAPSIZE * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) + 16), (float)((MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), 0x000000, true);
+	//DrawBoxAA(MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	DrawBoxAA((float)(-(MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2))), (float)(-(MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)(-(GM_MAX_MAPSIZE * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) - 16), (float)((MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), 0x000000, true);
+	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
+	DrawBoxAA((float)(-(MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize))), (float)((MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)((MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize))), (float)((GM_MAX_MAPSIZE * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16), 0x000000, true);
+	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
+	DrawBoxAA((float)(-(MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize))), (float)(-(MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)((MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize))), (float)(-(GM_MAX_MAPSIZE * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16), 0x000000, true);
+	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// 爆弾
@@ -1553,7 +1605,7 @@ void GameMain::Draw() const
 			// 画面中なら描画
 			if (720 > fabsf(sqrtf(
 				powf((bomb[i]->GetLocation().x - player->GetLocation().x), 2) +
-				powf((bomb[i]->GetLocation().y - player->GetLocation().y), 2))) || ffff)
+				powf((bomb[i]->GetLocation().y - player->GetLocation().y), 2))) || CameraOutCnt)
 			{
 				bomb[i]->Draw(Camera, CameraDistance);
 			}
@@ -1625,14 +1677,13 @@ void GameMain::Draw() const
 	}
 	DrawCloseMap();
 
-
+	// 爆弾に当たったときのダメージ演出
 	if (crackflg == true || life == 0)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
-		DrawGraph(0, 0, crackimage, true);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha3);
-		DrawGraph(0, 0, sootimage, true);
-		//画像透かし終わり
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, crack_alpha);
+		DrawGraph(0, 0, crackimage, true);	// ヒビ
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, soot_alpha);
+		DrawGraph(0, 0, sootimage, true);	// 煤
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	}
@@ -1641,16 +1692,24 @@ void GameMain::Draw() const
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 
 	//残り体力の表示
-	/*DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
+	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 	for (int i = 0; i < life; i++)
 	{
 		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
-	}*/
+	}
+	
+	int bcnt = 0;
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+	{
+		if (bomb[i] != nullptr)
+		{
+			bcnt++;
+		}
+	}
 
-
-	DrawBox(SCREEN_WIDTH - 235, 328, SCREEN_WIDTH - 16, 378, 0x444444, true);
+	/*DrawBox(SCREEN_WIDTH - 235, 328, SCREEN_WIDTH - 16, 378, 0x444444, true);
 	DrawFormatString(SCREEN_WIDTH - 215, 328, 0xffffff, "%d / 100", Displaylife);
-	DrawBox(SCREEN_WIDTH - 230, 358, (SCREEN_WIDTH - 230) + (Displaylife * 2), 368, 0xffffff, true);
+	DrawBox(SCREEN_WIDTH - 230, 358, (SCREEN_WIDTH -230) + (Displaylife * 2), 368, 0xffffff, true);*/
 
 	// ミニマップ
 	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
@@ -1725,11 +1784,26 @@ void GameMain::Draw() const
 		}
 	}
 	// リザルトじゃないなら
+	//スコアの表示
 	if (resultflg == false)
 	{
-		DrawBox(1060, 410, 1060 + 200, 410 + 74, 0x123456, true);
-		DrawFormatString(1060, 410, 0xffffff, "%06d", hiscore);
-		DrawFormatString(1060, 450, 0xffffff, "%06d", score);
+
+		int bufscore = score;
+		int num = 0;
+		while (bufscore > 0)
+		{
+			num++;
+			bufscore /= 10;
+		}
+		bufscore = score;
+		SetDrawBright(210, 210, 255);
+		for (int i = 0; i < num; i++)
+		{
+			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+			DrawRotaGraph((SCREEN_WIDTH - 655 + (20 * num) / 2) - (20 * i), 20, 0.5, 0.0, numimage[bufscore % 10], true);
+			bufscore /= 10;
+		}
+		SetDrawBright(255, 255, 255);
 		//DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
 	}
 	// リザルトなら
@@ -1737,15 +1811,16 @@ void GameMain::Draw() const
 	{
 		DrawGraph(0, 0, blackimage, false);
 
+		// ハイスコアだったら
 		if (highscoreflg == true)
 		{
 			DrawGraph(0, 0, highscoreimage, true);
-			char res_4[] = "new record\0";
-			for (int i = 0; i < sizeof(res_4); i++)
+			char newrecord[] = "new record\0";
+			for (int ne = 0; ne < sizeof(newrecord); ne++)
 			{
-				int chr = res_4[i] - 'a';
+				int chr = newrecord[ne] - 'a';
 				SetDrawBright(255, 255, 0);
-				DrawRotaGraph((SCREEN_WIDTH - 360) + 18 * i, 220, 0.4, 0.0, alphabetimage[chr], true);
+				DrawRotaGraph((SCREEN_WIDTH - 360) + 18 * ne, 220, 0.4, 0.0, alphabetimage[chr], true);
 				SetDrawBright(255, 255, 255);
 			}
 		}
@@ -1753,23 +1828,23 @@ void GameMain::Draw() const
 			DrawGraph(0, 0, resultimage, true);
 		}
 
-		char res[] = "result\0";
-		for (int i = 0; i < sizeof(res); i++)
+		char result[] = "result\0";
+		for (int re = 0; re < sizeof(result); re++)
 		{
-			int chr = res[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 150, 1.0, 0.0, alphabetimage[chr], true);
+			int chr = result[re] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * re, 150, 1.0, 0.0, alphabetimage[chr], true);
 		}
-		char res_2[] = "high score\0";
-		for (int i = 0; i < sizeof(res_2); i++)
+		char highscore[] = "high score\0";
+		for (int hi = 0; hi < sizeof(highscore); hi++)
 		{
-			int chr = res_2[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * i, 390, 0.5, 0.0, alphabetimage[chr], true);
+			int chr = highscore[hi] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * hi, 390, 0.5, 0.0, alphabetimage[chr], true);
 		}
-		char res_3[] = "press a\0";
-		for (int i = 0; i < sizeof(res_3); i++)
+		char press[] = "press a\0";
+		for (int pr = 0; pr < sizeof(press); pr++)
 		{
-			int chr = res_3[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 350) + 22 * i, 550, 0.6, 0.0, alphabetimage[chr], true);
+			int chr = press[pr] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 340) + 22 * pr, 580, 0.6, 0.0, alphabetimage[chr], true);
 		}
 
 		int bufhiscore = hiscore;
@@ -1780,10 +1855,10 @@ void GameMain::Draw() const
 			bufhiscore /= 10;
 		}
 		bufhiscore = hiscore;
-		for (int i = 0; i < hi_num; i++)
+		for (int h = 0; h < hi_num; h++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 330 + (40 * hi_num) / 2) - (30 * i), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 290 + (28 * hi_num) / 2) - (28 * h), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
 			bufhiscore /= 10;
 		}
 
@@ -1795,10 +1870,10 @@ void GameMain::Draw() const
 			bufscore /= 10;
 		}
 		bufscore = score;
-		for (int i = 0; i < num; i++)
+		for (int s = 0; s < num; s++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * i), 270, 1.0, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * s), 270, 1.0, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 	}
@@ -1821,11 +1896,10 @@ void GameMain::Draw() const
 
 	textdisp->Draw();
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+	// フェードアウト
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, fadeout_alpha);
 	DrawGraph(0, 0, blackimage, false);
-	//画像透かし終わり
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
 
 }
 
@@ -1895,9 +1969,9 @@ void GameMain::SetMapSize(float f)
 
 void GameMain::ChangeMapSize()
 {
-	if (game_frametime % 900 > 550 && game_frametime % 900 <= 750)
+	if (game_frametime % 1200 > 900 && game_frametime % 1200 <= 1100)
 	{
-		if (game_frametime % 900 == 551)
+		if (game_frametime % 1200 == 901)
 		{
 			PlaySoundMem(Sounds::SE_MapClose, DX_PLAYTYPE_BACK);
 		}
@@ -1948,16 +2022,22 @@ void GameMain::DrawCloseMap() const
 	int OldDrawMode;
 	int OldDrawParam;
 	GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (game_frametime % 150) * 4);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (game_frametime % 100) * 4);
+	char res[] = "closing\0";
 	if (MapSize > GM_MIN_MAPSIZE)
 	{
-		if (game_frametime % 900 > 450 && game_frametime % 900 <= 550)
+		if (game_frametime % 1200 > 800 && game_frametime % 1200 <= 900)
 		{
-			DrawRotaGraph((SCREEN_WIDTH / 2) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 1.0, 0.0, closemapimage, true);
+			for (int i = 0; i < sizeof(res); i++)
+			{
+				int chr = res[i] - 'a';
+				DrawRotaGraph((SCREEN_WIDTH / 2) - 88 + GetRand(3) - 2 + 32 * i, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
+			}
+			//DrawRotaGraph((SCREEN_WIDTH / 2) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 1.0, 0.0, closemapimage, true);
 			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
 				(SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);
-			DrawBoxAA((SCREEN_WIDTH / 2) - (float)(game_frametime % 150) + 100, (SCREEN_HEIGHT / 2) - 80,
-				(SCREEN_WIDTH / 2) + (float)(game_frametime % 150) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
+			DrawBoxAA((SCREEN_WIDTH / 2) - (float)(game_frametime % 100) + 100, (SCREEN_HEIGHT / 2) - 80,
+				(SCREEN_WIDTH / 2) + (float)(game_frametime % 100) - 100, (SCREEN_HEIGHT / 2) - 70, 0xffffff, true);
 		}
 	}
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);

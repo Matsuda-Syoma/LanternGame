@@ -5,19 +5,19 @@ class Bomb : public CharaBase
 {
 private:
 	static int images[];
-	int mode = 0;
-	bool flg = true;
-	bool expflg = false;
-	int maxexpcnt = 180;
-	int expcnt = maxexpcnt;
-	int expsize = 10;
-	Vector2D velocity = 0;
-	Vector2D exvelocity = 0;
-	Vector2D knockback = 0;
-	Vector2D movetoloc = 0;
+	int mode = 0;				// 動くタイプ
+	bool flg = true;			// 生きているか
+	bool expflg = false;		// 着火しているか
+	int maxexpcnt = 180;		// 着火から爆発するまで
+	int expcnt = maxexpcnt;		// 爆発するまでの時間
+	int expsize = 10;			// 初期の爆発サイズ
+	Vector2D velocity = 0;		// 移動Velocity
+	Vector2D exvelocity = 0;	// 外的Velocity
+	Vector2D knockback = 0;		// ノックバックVelocity
+	Vector2D movetoloc = 0;		// 指定座標
 
 	//パーティクルを一度だけ表示
-	bool HitChek;
+	int HitCheck;
 
 public:
 	Bomb();
@@ -43,7 +43,7 @@ public:
 	static void DeleteImages();
 
 	//パーティクルを一度だけ表示
-	bool hitchek();
+	int hitcheck();
 	void hitset();
 };
 

@@ -5,8 +5,8 @@
 int Bomb::images[3];
 Bomb::Bomb()
 {
-	speed = 2;
-	HitChek = true;
+	speed = 1;
+	HitCheck = true;
 }
 Bomb::~Bomb()
 {
@@ -17,23 +17,32 @@ void Bomb::Init(int _expsize)
 }
 void Bomb::Update()
 {
-	if (expflg) {
-		//mode = 2;
-		speed = 3;
+	// 点火しているなら
+	if (expflg)
+	{
+		// 速度を変更
+		speed = 1.5;
+		// 生存時間を下げる
 		expcnt--;
-		if (expcnt < 0) {
+		// 0以下になればフラグを切る
+		if (expcnt < 0)
+		{
 			flg = false;
 		}
 	}
-	if (knockback != 0.0f) {
+
+	// ノックバックの速度を徐々に遅くする
+	if (knockback != 0.0f)
+	{
 		knockback /= 1.1f;
 	}
+
+	// locationに座標を足す
 	location += velocity * speed;
 	location += knockback;
 	location += exvelocity;
 
 	// マップ外に出ないようにします
-
 	if (location.x < -MapSize + radius)
 	{
 		location.x = -MapSize + radius;
@@ -54,30 +63,35 @@ void Bomb::Update()
 
 void Bomb::Draw(Vector2D loc, float _distance) const
 {
-	if (expcnt % 14 > 7 && expflg) {
+
+	// 生存時間が14のあまり7以下なら
+	if (expcnt % 14 > 7 && expflg)
+	{
 		SetDrawBright(255, 0, 0);// 赤以外を暗くする
 	}
-	//DrawRotaGraphF(location.x + (-loc.x + (SCREEN_WIDTH / 2)), location.y + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0, 0.0, images[mode - 1], true);
-	if (!expflg) {
-		DrawRotaGraphF(DrawFromCameraX(location, _distance, loc)
-					 , DrawFromCameraY(location, _distance, loc)
-					 , (1.0 + (double)(max(45 - expcnt, 0) / 45.0)) * ScaleFromCamera(_distance), 0.0, images[0], true);
 
-	}
-	else {
+
+	int imgnum = 0;
+
+	// 点火しているなら
+	if (expflg)
+	{
 		int OldDrawMode;
 		int OldDrawParam;
 		GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 63);
+		// Alpha値63の爆発範囲の円を描画
 		DrawCircleAA(DrawFromCameraX(location, _distance, loc)
 					,DrawFromCameraY(location, _distance, loc)
 					,(15 * (expsize - 2)) * ScaleFromCamera(_distance), 16, 0xffffff, false, 10 * ScaleFromCamera(_distance));
-
 		SetDrawBlendMode(OldDrawMode, OldDrawParam);
-		DrawRotaGraphF(DrawFromCameraX(location, _distance, loc)
-					 , DrawFromCameraY(location, _distance, loc)
-					 , (1.0 + (double)(max(45 - expcnt, 0) / 45.0)) * ScaleFromCamera(_distance), 0.0, images[2], true);
+		imgnum = 2;
 	}
+
+	// 敵画像を描画
+	DrawRotaGraphF(DrawFromCameraX(location, _distance, loc)
+		, DrawFromCameraY(location, _distance, loc)
+		, (1.0 + (double)(max(45 - expcnt, 0) / 45.0)) * ScaleFromCamera(_distance), 0.0, images[imgnum], true);
 	
 	SetDrawBright(255, 255, 255);// 全色暗くしない（デフォルト）
 }
@@ -148,9 +162,9 @@ void Bomb::DeleteImages()
 
 void Bomb::hitset()
 {
-	HitChek = false;
+	HitCheck++;
 }
-bool Bomb::hitchek()
+int Bomb::hitcheck()
 {
-	return HitChek;
+	return HitCheck;
 }
