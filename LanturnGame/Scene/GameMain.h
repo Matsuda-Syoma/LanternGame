@@ -16,6 +16,7 @@
 #include "../Object/AddScore.h"
 #include "../Utility/UserData.h"
 #include "../Scene/Setting.h"
+#include "../Object/Conveyor_y.h"
 
 class GameMain : public AbstractScene
 {
@@ -33,7 +34,7 @@ private:
 	TextDisp* textdisp;
 	AddScore** addscore;
 	Setting* setting;
-
+	Conveyor_y** conveyor_y;
 	unsigned int game_frametime = 0;
 	unsigned int score = 100;
 	unsigned int hiscore = 0;

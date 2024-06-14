@@ -24,6 +24,7 @@
     <ClCompile Include="Utility\TextDisp.cpp" />
     <ClCompile Include="Object\AddScore.cpp" />
     <ClCompile Include="Object\BoxCollider.cpp" />
+    <ClCompile Include="object\conveyor_y.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object\soldier.h" />
@@ -52,6 +53,7 @@
     <ClInclude Include="Utility\TextDisp.h" />
     <ClInclude Include="Object\AddScore.h" />
     <ClInclude Include="Object\BoxCollider.h" />
+    <ClInclude Include="object\conveyor_y.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico" />
