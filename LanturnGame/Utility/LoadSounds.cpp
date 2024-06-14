@@ -68,8 +68,8 @@ void Sounds::SetSoundVolume(int _Type, int _Volume)
 		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_Shoot);
 		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_Hit);
 		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_PlayerHit);
-		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_CatchiPlayer);
-		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_DeleteSoldier);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_CD_Soldier);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_ED_Soldier);
 		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_MapClose);
 		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_transition);
 		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_cursor);
