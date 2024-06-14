@@ -85,8 +85,8 @@ GameMain::GameMain()
 				// 初期値
 				float length = 65535;
 				bool ret = false;
-				Vector2D spawnloc = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1300));
-				Vector2D spawnloc2 = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1800));
+				Vector2D spawnloc = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1200));
+				Vector2D spawnloc2 = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1900));
 					//(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 
 				// コンベアを見る
@@ -122,6 +122,33 @@ GameMain::GameMain()
 					conveyor[i]->Update();
 					break;
 				/*}*/
+			}
+
+		}
+	}
+	conveyor_y = new Conveyor_y * [GM_MAX_CONVEYOR_Y];
+	{
+		for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+		{
+			conveyor_y[i] = nullptr;
+		}
+		for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+		{
+			conveyor_y[i] = new Conveyor_y;
+		}
+		for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+		{
+			while (1)
+			{
+				// 初期値
+				float length = 65535;
+				bool ret = false;
+				Vector2D spawnloc = (Vector2D((float)((int)MapSize) - 1200, (float)((int)MapSize) - 1800));
+				Vector2D spawnloc2 = (Vector2D((float)((int)MapSize) - 1900, (float)((int)MapSize) - 1800));
+				conveyor_y[0]->SetLocation(spawnloc);
+				conveyor_y[1]->SetLocation(spawnloc2);
+				conveyor_y[i]->Update();
+				break;
 			}
 
 		}
@@ -956,9 +983,17 @@ AbstractScene* GameMain::Update()
 		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 		{
 			conveyor[i]->Update();
-			if (conveyor[i]->HitSphere(*player))
+			if (conveyor[0]->HitSphere(*player))
 			{
-				player->SetLocation(Vector2D(player->GetLocation().x + 3, player->GetLocation().y));
+				player->SetLocation(Vector2D(player->GetLocation().x + 5, player->GetLocation().y));
+
+				/*if (player->GetConFlg() == false) {
+					player->SetConFlg(true);
+				}*/
+			}
+			if (conveyor[1]->HitSphere(*player))
+			{
+				player->SetLocation(Vector2D(player->GetLocation().x - 5, player->GetLocation().y));
 
 				/*if (player->GetConFlg() == false) {
 					player->SetConFlg(true);
@@ -972,6 +1007,39 @@ AbstractScene* GameMain::Update()
 					if (conveyor[i]->HitSphere(*bomb[j]))
 					{
 						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x + 3, bomb[j]->GetLocation().y));
+					}
+				}
+			}
+		}
+
+		player->SetConFlg(false);
+		for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+		{
+			conveyor_y[i]->Update();
+			if (conveyor_y[0]->HitSphere(*player))
+			{
+				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - 5));
+
+				/*if (player->GetConFlg() == false) {
+					player->SetConFlg(true);
+				}*/
+			}
+			if (conveyor_y[1]->HitSphere(*player))
+			{
+				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + 5));
+
+				/*if (player->GetConFlg() == false) {
+					player->SetConFlg(true);
+				}*/
+			}
+
+			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
+			{
+				if (bomb[j] != nullptr)
+				{
+					if (conveyor_y[i]->HitSphere(*bomb[j]))
+					{
+						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y + 3));
 					}
 				}
 			}
@@ -1491,6 +1559,14 @@ void GameMain::Draw() const
 		}
 	}
 
+	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+	{
+		if (conveyor_y[i] != nullptr)
+		{
+			conveyor_y[i]->Draw(Camera, CameraDistance);
+		}
+	}
+
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
 	{
 		// nullptrじゃないなら
@@ -1659,6 +1735,18 @@ void GameMain::Draw() const
 				128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				SCREEN_WIDTH - 128 + (conveyor[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				128 + (conveyor[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
+			//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
+		}
+	}
+
+	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+	{
+		if (conveyor_y[i] != nullptr)
+		{
+			DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor_y[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				128 + (conveyor_y[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				SCREEN_WIDTH - 128 + (conveyor_y[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				128 + (conveyor_y[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
 			//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
 		}
 	}
