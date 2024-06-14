@@ -28,7 +28,7 @@ public:
 	void PositionCheck();
 
 	//爆発に巻き込まれた動きが止まる
-	void SetDMGflg(bool i);
+	void SetDMGflg(int i);
 	//
 	bool ChekDMGflg();
 	//消すフラグをセットする
@@ -38,11 +38,11 @@ public:
 	bool ChekhitFlg();
 
 	//動きが止まる
-	void SetmoveFlg(bool i);
+	void SetmoveFlg();
 	bool ChekmoveFlg();
 
 	//プレイヤーに振られたときにフラグを立てる
-	void SetcatchFlg(bool i);
+	void SetcatchFlg();
 
 private:
 	Vector2D length = 0;
@@ -56,10 +56,12 @@ private:
 	int countNum = 0;//再生成までの時間を測る
 	int a = 0;
 
-	bool dmgflg = false;
+	int dmgflg = 1; //1/通常 2/プレイヤーを捕まえた時 3/爆発に巻き込まれたとき
 	bool hitFlg = true;
+
 	bool deleteFlg = false;
 	bool Musicflg = false;
+
 	bool moveFlg = true;
 	bool catchFlg = true;
 
