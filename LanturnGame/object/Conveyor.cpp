@@ -18,8 +18,8 @@ Conveyor::~Conveyor() {
 void Conveyor::Update() {
 	box.left = location.x;
 	box.top = location.y;
-	box.right = box.left + 600.f;
-	box.bottom = box.top + 100.f;
+	box.right = box.left + width;
+	box.bottom = box.top + height;
 }
 
 
@@ -40,4 +40,19 @@ Vector2D Conveyor::GetLocation() const
 void Conveyor::SetLocation(Vector2D loc)
 {
 	this->location = loc;
+}
+
+float Conveyor::GetScale(int i)
+{
+	float ret = 0.0f;
+	switch (i)
+	{
+	case 0:
+		ret = width;
+		break;
+		ret = height;
+	case 1:
+		break;
+	}
+	return ret;
 }
