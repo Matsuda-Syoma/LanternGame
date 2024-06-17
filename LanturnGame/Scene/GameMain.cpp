@@ -100,6 +100,91 @@ GameMain::GameMain()
 		}
 	}
 
+	conveyor = new Conveyor * [GM_MAX_CONVEYOR];
+	{
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			conveyor[i] = nullptr;
+		}
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			conveyor[i] = new Conveyor;
+		}
+		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+		{
+			while (1)
+			{
+				// 初期値
+				float length = 65535;
+				bool ret = false;
+				Vector2D spawnloc = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1200));
+				Vector2D spawnloc2 = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1900));
+					//(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+
+				// コンベアを見る
+				//for (int j = 0; j < GM_MAX_CONVEYOR; j++)
+				//{
+				//	// 自分以外なら
+				//	if (j != i)
+				//	{
+				//		// 距離を計算
+				//		length = GetLength(conveyor[j]->GetLocation()/*spawnloc*/);
+				//		// 360より短いならだめ:フラグon
+				//		if (length < 360) {
+				//			ret = true;
+				//			break;
+				//		}
+				//	}
+				//}
+				//for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
+				//{
+				//		// 距離を計算
+				//		length = GetLength(stage[j]->GetLocation() /*spawnloc*/);
+				//		// 360より短いならだめ:フラグon
+				//		if (length < 500) {
+				//			ret = true;
+				//			break;
+				//		}
+				//}
+				//// フラグ0ffなら座標指定してるーぷぬける
+				//if (!ret)
+				/*{*/
+					conveyor[0]->SetLocation(spawnloc);
+					conveyor[1]->SetLocation(spawnloc2);
+					conveyor[i]->Update();
+					break;
+				/*}*/
+			}
+
+		}
+	}
+	conveyor_y = new Conveyor_y * [GM_MAX_CONVEYOR_Y];
+	{
+		for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+		{
+			conveyor_y[i] = nullptr;
+		}
+		for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+		{
+			conveyor_y[i] = new Conveyor_y;
+		}
+		for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+		{
+			while (1)
+			{
+				// 初期値
+				float length = 65535;
+				bool ret = false;
+				Vector2D spawnloc = (Vector2D((float)((int)MapSize) - 1200, (float)((int)MapSize) - 1800));
+				Vector2D spawnloc2 = (Vector2D((float)((int)MapSize) - 1900, (float)((int)MapSize) - 1800));
+				conveyor_y[0]->SetLocation(spawnloc);
+				conveyor_y[1]->SetLocation(spawnloc2);
+				conveyor_y[i]->Update();
+				break;
+			}
+
+		}
+	}
 	player->Init();
 
 	// 兵士の初期化
@@ -307,6 +392,8 @@ AbstractScene* GameMain::Update()
 	textdisp->Update();
 	//スコア描画の中心の値を求める
 	ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
+
+	// リザルトじゃない かつ カウントダウンが終わっているとき
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
 		// 曲が鳴っていないなら鳴らす
@@ -329,7 +416,7 @@ AbstractScene* GameMain::Update()
 		}*/
 
 		// プレイヤーが生きている&兵士が当たってないとき
-		if (player->GetPFlg() && !player->GetHitSoldier())
+		if (player->GetPlayerFlg() && !player->GetHitSoldier())
 		{
 			// 炎を表示する
 			particle[0]->SetVisible(true);
@@ -827,11 +914,11 @@ AbstractScene* GameMain::Update()
 				// プレイヤーと爆発の当たり判定
 				if (explosion[i]->HitSphere(player) && hitmoment == false)
 				{
-					if (player->GetFlg() == false)
+					if (player->GetHitFlg() == false)
 					{
 						life--;
 						hitmoment = true;
-						player->SetFlg(true);
+						player->SetHitFlg(true);
 					}
 				}
 				else if (!explosion[i]->HitSphere(player) && hitmoment == true)
@@ -845,10 +932,7 @@ AbstractScene* GameMain::Update()
 					{
 						if (explosion[i]->HitSphere(soldier[j]))
 						{
-							//PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
-							soldier[j]->SetDMGflg(false);
-							//StopSoundMem(Sounds::SE_DeleteSoldier);
-
+							soldier[j]->SetDMGflg(3);
 						}
 						if (soldier[j]->ChekDLflg() == true)
 						{
@@ -874,19 +958,19 @@ AbstractScene* GameMain::Update()
 			{
 				if (soldier[i]->HitSphere(player))
 				{
-					if (player->GetFlg() == false && soldier[i]->ChekhitFlg() == true)
+					if (player->GetHitFlg() == false && soldier[i]->ChekhitFlg() == true)
 					{
 						life--;
 						hitmoment = true;
-						soldier[i]->SetcatchFlg(true);
-						player->SetFlg(true);
+						soldier[i]->SetcatchFlg();
+						player->SetHitFlg(true);
 						player->SetHitSoldier(true);
-						soldier[i]->SetDMGflg(false);
+						soldier[i]->SetDMGflg(2);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
 						{
 							if (soldier[i] != soldier[c])
 							{
-								soldier[c]->SetmoveFlg(false);
+								soldier[c]->SetmoveFlg();
 							}
 						}
 
@@ -930,9 +1014,17 @@ AbstractScene* GameMain::Update()
 		for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 		{
 			conveyor[i]->Update();
-			if (conveyor[i]->HitSphere(*player))
+			if (conveyor[0]->HitSphere(*player))
 			{
-				player->SetLocation(Vector2D(player->GetLocation().x + 3, player->GetLocation().y));
+				player->SetLocation(Vector2D(player->GetLocation().x + 5, player->GetLocation().y));
+
+				/*if (player->GetConFlg() == false) {
+					player->SetConFlg(true);
+				}*/
+			}
+			if (conveyor[1]->HitSphere(*player))
+			{
+				player->SetLocation(Vector2D(player->GetLocation().x - 5, player->GetLocation().y));
 
 				/*if (player->GetConFlg() == false) {
 					player->SetConFlg(true);
@@ -946,6 +1038,39 @@ AbstractScene* GameMain::Update()
 					if (conveyor[i]->HitSphere(*bomb[j]))
 					{
 						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x + 3, bomb[j]->GetLocation().y));
+					}
+				}
+			}
+		}
+
+		player->SetConFlg(false);
+		for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+		{
+			conveyor_y[i]->Update();
+			if (conveyor_y[0]->HitSphere(*player))
+			{
+				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - 5));
+
+				/*if (player->GetConFlg() == false) {
+					player->SetConFlg(true);
+				}*/
+			}
+			if (conveyor_y[1]->HitSphere(*player))
+			{
+				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + 5));
+
+				/*if (player->GetConFlg() == false) {
+					player->SetConFlg(true);
+				}*/
+			}
+
+			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
+			{
+				if (bomb[j] != nullptr)
+				{
+					if (conveyor_y[i]->HitSphere(*bomb[j]))
+					{
+						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y + 3));
 					}
 				}
 			}
@@ -1283,29 +1408,27 @@ AbstractScene* GameMain::Update()
 		// カメラアップデート
 		CameraUpdate();
 
-
-		// 残機が0ならリザルトフラグを立てる
-
+		// 残機が0ならプレイヤーフラグをfalseにする
 		if (life <= 0)
 		{
-
-			player->SetPFlg(false);
-
-
+			player->SetPlayerFlg(false);
 		}
-	}
-	// 残機が０になったら
-	if (player->GetPFlg() == false && resultflg == false) {
-		StopSoundMem(Sounds::BGM_GMain);
-		r_cun++;
 
-		switch (r_cun)
+	}
+
+	// 残機が０になったら
+	if (player->GetPlayerFlg() == false && resultflg == false) {
+		StopSoundMem(Sounds::BGM_GMain);
+		result_cnt++;
+
+		switch (result_cnt)
 		{
 		case(1):
+			// プレイヤーが兵隊に捕まっていなかったら
 			if (player->GetHitSoldier() == false)
 			{
-				alpha2 = 255;
-				alpha3 = 255;
+				crack_alpha = 255;
+				soot_alpha = 255;
 			}
 			break;
 		case(200):
@@ -1319,9 +1442,10 @@ AbstractScene* GameMain::Update()
 			break;
 		}
 
-		if (r_cun > 100)
+		// リザルトに遷移するまでフェードアウト
+		if (result_cnt > 100)
 		{
-			alpha += 3;
+			fadeout_alpha += 3;
 		}
 
 	}
@@ -1329,8 +1453,8 @@ AbstractScene* GameMain::Update()
 	// カウントダウン（３秒）
 	if (countdownflg == true && !textdisp->GetFlg())
 	{
-		c_cun++;
-		switch (c_cun)
+		cnt++;
+		switch (cnt)
 		{
 		case(1):
 		case(60):
@@ -1357,8 +1481,8 @@ AbstractScene* GameMain::Update()
 	// １秒間「START」表示
 	else if (countdown == 0)
 	{
-		c_cun++;
-		switch (c_cun)
+		cnt++;
+		switch (cnt)
 		{
 		case(240):
 			countdown = 4;
@@ -1371,27 +1495,31 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false && player->GetHitSoldier() == false)
+	// プレイヤーが爆発に当たった かつ プレイヤーが生きている かつ ダメージ演出が表示されていなかったら
+	if (player->GetHitFlg() == true && player->GetPlayerFlg() == true && crackflg == false && player->GetHitSoldier() == false)
 	{
-		alpha2 = 200;
-		alpha3 = 255 - life * 51;
+		crack_alpha = 200;
+		soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
 		crackflg = true;
 
 	}
 
-	if (crackflg == true && player->GetPFlg() == true)
+	// ダメージ演出が表示されている かつ プレイヤーが生きていたら
+	if (crackflg == true && player->GetPlayerFlg() == true)
 	{
-		if (alpha2 > 0)
+		// ダメージ演出を少しずつ薄くする
+
+		if (crack_alpha > 0)
 		{
-			alpha2 -= 1;
+			crack_alpha -= 1;
 		}
 
-		if (alpha3 > 0 && alpha2 <= alpha3)
+		if (soot_alpha > 0 && crack_alpha <= soot_alpha)
 		{
-			alpha3 -= 1;
+			soot_alpha -= 1;
 		}
 
-		if (alpha2 == 0)
+		if (crack_alpha == 0)
 		{
 			crackflg = false;
 		}
@@ -1399,17 +1527,14 @@ AbstractScene* GameMain::Update()
 	}
 
 	// フェードアウト
-	if (alpha > 0 && resultflg == true)
+	if (fadeout_alpha > 0 && resultflg == true)
 	{
-		alpha -= 10;
+		fadeout_alpha -= 10;
 	}
 
 	// リザルトフラグがたっているなら
 	if (resultflg == true)
 	{
-		//if (InputControl::GetButtonDown(XINPUT_BUTTON_B)) {
-		//	life = 3;
-		//	resultflg = false;
 
 		// 一回だけ動く
 		if (!resultnewflg)
@@ -1462,6 +1587,14 @@ void GameMain::Draw() const
 		if (conveyor[i] != nullptr)
 		{
 			conveyor[i]->Draw(Camera, CameraDistance);
+		}
+	}
+
+	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+	{
+		if (conveyor_y[i] != nullptr)
+		{
+			conveyor_y[i]->Draw(Camera, CameraDistance);
 		}
 	}
 
@@ -1574,14 +1707,13 @@ void GameMain::Draw() const
 	}
 	DrawCloseMap();
 
-
+	// 爆弾に当たったときのダメージ演出
 	if (crackflg == true || life == 0)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha2);
-		DrawGraph(0, 0, crackimage, true);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha3);
-		DrawGraph(0, 0, sootimage, true);
-		//画像透かし終わり
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, crack_alpha);
+		DrawGraph(0, 0, crackimage, true);	// ヒビ
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, soot_alpha);
+		DrawGraph(0, 0, sootimage, true);	// 煤
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	}
@@ -1637,6 +1769,18 @@ void GameMain::Draw() const
 			//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
 		}
 	}
+
+	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+	{
+		if (conveyor_y[i] != nullptr)
+		{
+			DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor_y[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				128 + (conveyor_y[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				SCREEN_WIDTH - 128 + (conveyor_y[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				128 + (conveyor_y[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
+			//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
+		}
+	}
 	// ミニマップ(ギミック(竜巻)
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
 	{
@@ -1670,14 +1814,9 @@ void GameMain::Draw() const
 		}
 	}
 	// リザルトじゃないなら
-	//スコアの表示
 	if (resultflg == false)
 	{
-		//DrawBox(1060, 410, 1060 + 200, 410 + 74, 0x123456, true);
-		//DrawFormatString(1060, 410, 0xffffff, "%06d", hiscore);
-		// 
-		//DrawFormatString(640 - ScoreCenter, 0, 0xffffff, "%d", score);
-
+		//スコアの表示
 		int bufscore = score;
 		int num = 0;
 		while (bufscore > 0)
@@ -1690,7 +1829,7 @@ void GameMain::Draw() const
 		for (int i = 0; i < num; i++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((650 - ScoreCenter + (20 * num) / 2) - (20 * i), 20, 0.5, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 655 + (20 * num) / 2) - (20 * i), 20, 0.5, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 		SetDrawBright(255, 255, 255);
@@ -1701,15 +1840,16 @@ void GameMain::Draw() const
 	{
 		DrawGraph(0, 0, blackimage, false);
 
+		// ハイスコアだったら
 		if (highscoreflg == true)
 		{
 			DrawGraph(0, 0, highscoreimage, true);
-			char res_4[] = "new record\0";
-			for (int i = 0; i < sizeof(res_4); i++)
+			char newrecord[] = "new record\0";
+			for (int ne = 0; ne < sizeof(newrecord); ne++)
 			{
-				int chr = res_4[i] - 'a';
+				int chr = newrecord[ne] - 'a';
 				SetDrawBright(255, 255, 0);
-				DrawRotaGraph((SCREEN_WIDTH - 360) + 18 * i, 220, 0.4, 0.0, alphabetimage[chr], true);
+				DrawRotaGraph((SCREEN_WIDTH - 360) + 18 * ne, 220, 0.4, 0.0, alphabetimage[chr], true);
 				SetDrawBright(255, 255, 255);
 			}
 		}
@@ -1717,23 +1857,23 @@ void GameMain::Draw() const
 			DrawGraph(0, 0, resultimage, true);
 		}
 
-		char res[] = "result\0";
-		for (int i = 0; i < sizeof(res); i++)
+		char result[] = "result\0";
+		for (int re = 0; re < sizeof(result); re++)
 		{
-			int chr = res[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * i, 150, 1.0, 0.0, alphabetimage[chr], true);
+			int chr = result[re] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * re, 150, 1.0, 0.0, alphabetimage[chr], true);
 		}
-		char res_2[] = "high score\0";
-		for (int i = 0; i < sizeof(res_2); i++)
+		char highscore[] = "high score\0";
+		for (int hi = 0; hi < sizeof(highscore); hi++)
 		{
-			int chr = res_2[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * i, 390, 0.5, 0.0, alphabetimage[chr], true);
+			int chr = highscore[hi] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * hi, 390, 0.5, 0.0, alphabetimage[chr], true);
 		}
-		char res_3[] = "press a\0";
-		for (int i = 0; i < sizeof(res_3); i++)
+		char press[] = "press a\0";
+		for (int pr = 0; pr < sizeof(press); pr++)
 		{
-			int chr = res_3[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 340) + 22 * i, 580, 0.6, 0.0, alphabetimage[chr], true);
+			int chr = press[pr] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 340) + 22 * pr, 580, 0.6, 0.0, alphabetimage[chr], true);
 		}
 
 		int bufhiscore = hiscore;
@@ -1744,10 +1884,10 @@ void GameMain::Draw() const
 			bufhiscore /= 10;
 		}
 		bufhiscore = hiscore;
-		for (int i = 0; i < hi_num; i++)
+		for (int h = 0; h < hi_num; h++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 340 + (40 * hi_num) / 2) - (28 * i), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 290 + (28 * hi_num) / 2) - (28 * h), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
 			bufhiscore /= 10;
 		}
 
@@ -1759,10 +1899,10 @@ void GameMain::Draw() const
 			bufscore /= 10;
 		}
 		bufscore = score;
-		for (int i = 0; i < num; i++)
+		for (int s = 0; s < num; s++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * i), 270, 1.0, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * s), 270, 1.0, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 	}
@@ -1785,11 +1925,10 @@ void GameMain::Draw() const
 
 	textdisp->Draw();
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+	// フェードアウト
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, fadeout_alpha);
 	DrawGraph(0, 0, blackimage, false);
-	//画像透かし終わり
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
 
 }
 

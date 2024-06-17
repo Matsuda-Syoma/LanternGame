@@ -13,59 +13,58 @@ Player::Player()
 Player::~Player()
 {
 	DeleteGraph(*playerimg);
-	DeleteGraph(d_playerimg);
-	DeleteGraph(angryimg);
+	DeleteGraph(deadplayer_img);
+	DeleteGraph(angry_img);
 }
 
 void Player::Init()
 {
 	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
-	d_playerimg = LoadGraph("Resources/images/player_death.png");
-	angryimg = LoadGraph("Resources/images/angry.png");
+	deadplayer_img = LoadGraph("Resources/images/player_death.png");
+	angry_img = LoadGraph("Resources/images/angry.png");
 }
 
 void Player::Update()
 {
 	lastinput = 0;
 
-	//if (!InputControl::GetButton(XINPUT_BUTTON_A)) {
-	if (pflg == true && hit_soldier == false)
+	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
+	if (pflg == true && hitsoldier == false)
 	{
 		Movement();
 		location += velocity;
 		location += exvelocity;
 
 	}
-	else if (hit_soldier == true)
+	// 兵隊に捕まっていたら
+	else if (hitsoldier == true)
 	{
-
-		if (stan <= 90)
+		// 1.5秒スタンする
+		if (stan_cnt <= 90)
 		{
-			stan++;
+			stan_cnt++;
 		}
 		else
 		{
+			// プレイヤーが生きていたら
 			if (pflg == true)
 			{
-				hit_soldier = false;
-				stan = 0;
+				hitsoldier = false;
+				stan_cnt = 0;
 			}
 		}
 
 
 	}
-	//}
-	//else {
-	//	LineTrace();
-	//}
 
-	// 爆発に当たったら無敵時間
+	// 爆発か兵隊に当たったら無敵時間
 	if (hitflg == true) {
 		Invincible();
 		Blinking();
 	}
 
-	if (hit_soldier == false)
+	// 兵隊に捕まっていなかったら
+	if (hitsoldier == false)
 	{
 		// プレイヤーアニメーション
 		if (direction == 0) {	// 下移動
@@ -94,33 +93,35 @@ void Player::Update()
 		}
 	}
 
-	
-
 }
 
 void Player::Draw(Vector2D loc, float _distance) const
 {
-	if (pflg == true && hit_soldier == false) {
+	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
+	if (pflg == true && hitsoldier == false) {
+		// 点滅フラグがfalseだったら
 		if (blinkingflg == false)
 		{
 			DrawRotaGraphF((location.x * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
 						, (location.y * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, playerimg[imgnum], true);
 		}
 		else {
-			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+			SetIgnoreDrawGraphColor(TRUE);
 			DrawRotaGraphF((location.x * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
 				, (location.y * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, playerimg[imgnum], true);
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			SetIgnoreDrawGraphColor(FALSE);
 		}
 	}
-	else if(pflg == false && hit_soldier == false) {
+	// プレイヤーが死んでいる かつ 兵隊に捕まっていなかったら
+	else if(pflg == false && hitsoldier == false) {
 		DrawRotaGraphF((location.x * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
-			, (location.y * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, d_playerimg, true);
+			, (location.y * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, deadplayer_img, true);
 	}
-	else if (hit_soldier == true)
+	// 兵隊に捕まっていたら
+	else if (hitsoldier == true)
 	{
 		DrawRotaGraphF((location.x * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
-			, (location.y * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.2f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, angryimg, true);
+			, (location.y * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.2f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, angry_img, true);
 	}
 	
 	// 元の描画を取得
@@ -128,7 +129,7 @@ void Player::Draw(Vector2D loc, float _distance) const
 	int OldBlendParam;
 	GetDrawBlendMode(&OldBlendMode,&OldBlendParam);
 
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)max(((180. / cun) * 6) - 48, 0));
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)max(((180. / Invincible_cnt) * 6) - 48, 0));
 	DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xff0000, true);
 	SetDrawBlendMode(OldBlendMode, OldBlendParam);
 
@@ -193,7 +194,7 @@ void Player::Movement()
 
 
 	// 氷の上に乗っていない時
-	if (hit_soldier == false) {
+	if (hitsoldier == false) {
 		// 左右アニメーション
 		if (velocity.x == 0)
 		{
@@ -257,81 +258,49 @@ void Player::Movement()
 		}
 
 	}
-	// 氷に乗っているとき
-	//else {
-
-	//	// 右移動
-	//	if (InputControl::GetLeftStick().x > 0.2)
-	//	{
-	//		direction = 2;
-	//		stopdirection = 6;
-	//	}
-	//	// 左移動
-	//	if (InputControl::GetLeftStick().x < -0.2)
-	//	{
-	//		direction = 1;
-	//		stopdirection = 5;
-	//	}
-	//	// 上移動
-	//	if (InputControl::GetLeftStick().y > 0.2)
-	//	{
-	//		direction = 3;
-	//		stopdirection = 7;
-	//	}
-	//	// 下移動
-	//	if (InputControl::GetLeftStick().y < -0.2)
-	//	{
-	//		direction = 0;
-	//		stopdirection = 4;
-	//	}
-
-	//	direction = stopdirection;
-	//}
 
 	// 立ち止まっているとき（アニメーション）
 	// 左スティックが入力されていなかったら
 	if (InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2 
 		&& InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2) {
-		// 十字ボタンが入力されていなかったら
-		if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) 
-			&& !InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN)) 
-		{
-			direction = stopdirection;
-		}
 		
+		direction = stopdirection;
 	}
+
 }
 
 // 無敵時間
 void Player::Invincible()
 {
-	cun++;
-	switch (cun)
+	Invincible_cnt++;
+	switch (Invincible_cnt)
 	{
 	case(0):
 		break;
 	case(90):
-		if (hit_soldier == true)
+		// 兵隊に捕まっていたらここで無敵時間終わり
+		if (hitsoldier == true)
 		{
 			hitflg = false;
-			cun = 0;
+			Invincible_cnt = 0;
 		}
 		break;
 	case(180):
 		hitflg = false;
-		cun = 0;
+		Invincible_cnt = 0;
 		break;
 	default:
 		break;
 	}
 }
 
-// 点滅
+// プレイヤーの点滅
 void Player::Blinking()
 {
+	// プレイヤーが生きていたら
 	if (pflg == true) {
-		blinkingcun++;
-		switch (blinkingcun)
+		blinking_cnt++;
+		switch (blinking_cnt)
 		{
 		case(1):
 			blinkingflg = true;
@@ -340,7 +309,7 @@ void Player::Blinking()
 			blinkingflg = false;
 			break;
 		case(20):
-			blinkingcun = 0;
+			blinking_cnt = 0;
 		default:
 			break;
 		}
@@ -353,8 +322,8 @@ void Player::Blinking()
 // 右移動アニメーション
 void Player::MoveRight()
 {
-	animcun++;
-	switch (animcun)
+	anim_cnt++;
+	switch (anim_cnt)
 	{
 	case(1):
 		imgnum = 7;
@@ -369,7 +338,7 @@ void Player::MoveRight()
 		imgnum = 8;
 		break;
 	case(60):
-		animcun = 0;
+		anim_cnt = 0;
 		break;
 	default:
 		break;
@@ -379,8 +348,8 @@ void Player::MoveRight()
 // 左移動アニメーション
 void Player::MoveLeft()
 {
-	animcun++;
-	switch (animcun)
+	anim_cnt++;
+	switch (anim_cnt)
 	{
 	case(1):
 		imgnum = 4;
@@ -395,7 +364,7 @@ void Player::MoveLeft()
 		imgnum = 5;
 		break;
 	case(60):
-		animcun = 0;
+		anim_cnt = 0;
 		break;
 	default:
 		break;
@@ -405,8 +374,8 @@ void Player::MoveLeft()
 // 上移動アニメーション
 void Player::MoveUp()
 {
-	animcun++;
-	switch (animcun)
+	anim_cnt++;
+	switch (anim_cnt)
 	{
 	case(1):
 		imgnum = 10;
@@ -421,7 +390,7 @@ void Player::MoveUp()
 		imgnum = 11;
 		break;
 	case(60):
-		animcun = 0;
+		anim_cnt = 0;
 		break;
 	default:
 		break;
@@ -431,8 +400,8 @@ void Player::MoveUp()
 // 下移動アニメーション
 void Player::MoveDown()
 {
-	animcun++;
-	switch (animcun)
+	anim_cnt++;
+	switch (anim_cnt)
 	{
 	case(1):
 		imgnum = 0;
@@ -447,29 +416,29 @@ void Player::MoveDown()
 		imgnum = 1;
 		break;
 	case(60):
-		animcun = 0;
+		anim_cnt = 0;
 		break;
 	default:
 		break;
 	}
 }
 
-bool Player::GetFlg() const
+bool Player::GetHitFlg() const
 {
 	return hitflg;
 }
 
-void Player::SetFlg(bool b)
+void Player::SetHitFlg(bool b)
 {
 	this->hitflg = b;
 }
 
-bool Player::GetPFlg() const
+bool Player::GetPlayerFlg() const
 {
 	return pflg;
 }
 
-void Player::SetPFlg(bool b)
+void Player::SetPlayerFlg(bool b)
 {
 	this->pflg = b;
 }
@@ -496,12 +465,12 @@ void Player::SetConFlg(bool b)
 
 bool Player::GetHitSoldier()const
 {
-	return this->hit_soldier;
+	return this->hitsoldier;
 }
 
 void Player::SetHitSoldier(bool b)
 {
-	this->hit_soldier = b;
+	this->hitsoldier = b;
 }
 
 Vector2D Player::GetVelocity()

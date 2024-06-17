@@ -4,6 +4,7 @@
 #include "../Utility/InputControl.h"
 #include "GameMain.h"
 #include "Setting.h"
+#include "credit.h"
 
 Title::Title()
 {
@@ -104,7 +105,7 @@ AbstractScene* Title::Update()
 			return new GameMain;
 			break;
 		case 1:
-			return nullptr;
+			return new Credit;
 			break;
 		default:
 			//return new End;
