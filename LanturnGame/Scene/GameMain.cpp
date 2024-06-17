@@ -1556,7 +1556,8 @@ void GameMain::Draw() const
 	{
 		if (conveyor[i] != nullptr)
 		{
-			conveyor[i]->Draw(Camera, CameraDistance);
+			conveyor[0]->Draw(Camera, CameraDistance);
+			conveyor[1]->Draw_left(Camera, CameraDistance);
 		}
 	}
 
@@ -1564,7 +1565,8 @@ void GameMain::Draw() const
 	{
 		if (conveyor_y[i] != nullptr)
 		{
-			conveyor_y[i]->Draw(Camera, CameraDistance);
+			conveyor_y[1]->Draw(Camera, CameraDistance);
+			conveyor_y[0]->Draw_up(Camera, CameraDistance);
 		}
 	}
 
