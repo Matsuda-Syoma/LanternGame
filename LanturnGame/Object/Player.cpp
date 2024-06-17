@@ -202,13 +202,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().x > 0.8)
 			{
 				direction = 2;
-				stopdirection = 6;
+				walking_direction = 6;
 			}
 			// 左移動
 			if (InputControl::GetLeftStick().x < -0.8)
 			{
 				direction = 1;
-				stopdirection = 5;
+				walking_direction = 5;
 			}
 		}
 		else {
@@ -216,13 +216,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().x > 0.2)
 			{
 				direction = 2;
-				stopdirection = 6;
+				walking_direction = 6;
 			}
 			// 左移動
 			if (InputControl::GetLeftStick().x < -0.2)
 			{
 				direction = 1;
-				stopdirection = 5;
+				walking_direction = 5;
 			}
 		}
 
@@ -233,13 +233,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().y > 0.8)
 			{
 				direction = 3;
-				stopdirection = 7;
+				walking_direction = 7;
 			}
 			// 下移動
 			if (InputControl::GetLeftStick().y < -0.8)
 			{
 				direction = 0;
-				stopdirection = 4;
+				walking_direction = 4;
 			}
 		}
 		else {
@@ -247,13 +247,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().y > 0.2)
 			{
 				direction = 3;
-				stopdirection = 7;
+				walking_direction = 7;
 			}
 			// 下移動
 			if (InputControl::GetLeftStick().y < -0.2)
 			{
 				direction = 0;
-				stopdirection = 4;
+				walking_direction = 4;
 			}
 		}
 
@@ -264,7 +264,7 @@ void Player::Movement()
 	if (InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2 
 		&& InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2) {
 		
-		direction = stopdirection;
+		direction = walking_direction;
 	}
 
 }
