@@ -20,41 +20,38 @@ Soldier::~Soldier()
 
 void Soldier::Initialize()
 {
-	speed = 2;	//���x�̏�����
-	dmgflg = 1;
+	mode = 1;
 	deleteFlg = false;
-	hitFlg = true;//当たり判定
 	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 66, soldierimg);
 	soldierDetimg = LoadGraph("Resources/images/d_Soldier.png");
 }
 
 void Soldier::Upadate(Vector2D PL)
 {
-	if (dmgflg == 1)
+	if (mode == 1)
 	{
 		Move(PL);
 	}
 	else
 	{
-		hitFlg = false;
-
-		if (Musicflg == false && dmgflg == 2)
+		if (SEflg == false && mode == 2)
 		{
 			//プレイヤーを捕まえた
 			PlaySoundMem(Sounds::SE_CD_Soldier, DX_PLAYTYPE_BACK);
-			Musicflg = true;
+			SEflg = true;
 		}
-		else if (Musicflg == false && dmgflg == 3)
+		else if (SEflg == false && mode == 3)
 		{
 			//爆発に巻き込まれた
 			PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
-			Musicflg = true;
+			SEflg = true;
 		}
 		
 		countNum++;
+		//一定時間たったら動けるようになる
 		if (240 <= countNum)
 		{
-			dmgflg = 1;
+			mode = 1;
 			deleteFlg = true;
 			countNum = 0;
 		}
@@ -65,8 +62,9 @@ void Soldier::Upadate(Vector2D PL)
 
 void Soldier::Draw(Vector2D PL, float _distance)
 {
-	if (dmgflg == 1)
+	if (mode == 1)
 	{
+		//アニメーション切り替え
 		cnt++;
 		if ((cnt % 60) == 0)
 		{
@@ -76,6 +74,7 @@ void Soldier::Draw(Vector2D PL, float _distance)
 		{
 			animcnt = 0;
 		}
+
 		//兵隊イラストの描画
 		DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
 			, DrawFromCameraY(location, _distance, PL)
@@ -83,7 +82,8 @@ void Soldier::Draw(Vector2D PL, float _distance)
 	}
 	else
 	{
-		if (dmgflg == 3)
+		//爆発に巻き込まれたときのイラストを表示
+		if (mode == 3)
 		{
 			DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
 				, DrawFromCameraY(location, _distance, PL)
@@ -98,18 +98,18 @@ void Soldier::Move(Vector2D PL)
 	length = location - PL;
 
 	//フラグが立っているなら動ける
-	if (moveFlg == true)
+	if (mode == 1)
 	{
 		location += velocity * move;
 	}
 
-	else
+	else if(mode == 0)
 	{
 		//一定時間停止したら動けるようになる
 		countNum++;
 		if (240 <= countNum)
 		{
-			moveFlg = true;
+			mode = 1;
 			countNum = 0;
 		}
 	}
@@ -179,18 +179,14 @@ void Soldier::PositionCheck()
 
 void Soldier::SetDMGflg(int i)
 {
-	dmgflg = i;
+	mode = i;
 }
+int Soldier::CheckDMGflg()
+{
+	return mode;
+}
+
 bool Soldier::CheckDLflg()
 {
 	return deleteFlg;
-}
-
-bool Soldier::checkhitFlg()
-{
-	return hitFlg;
-}
-void Soldier::SetmoveFlg()
-{
-	moveFlg = false;
 }

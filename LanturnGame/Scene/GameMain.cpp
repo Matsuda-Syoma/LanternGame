@@ -921,7 +921,7 @@ AbstractScene* GameMain::Update()
 			{
 				if (soldier[i]->HitSphere(player))
 				{
-					if (player->GetHitFlg() == false && soldier[i]->checkhitFlg() == true)
+					if (player->GetHitFlg() == false && soldier[i]->CheckDMGflg() == 1)
 					{
 						life--;
 						hitmoment = true;
@@ -932,7 +932,7 @@ AbstractScene* GameMain::Update()
 						{
 							if (soldier[i] != soldier[c])
 							{
-								soldier[c]->SetmoveFlg();
+								soldier[c]->SetDMGflg(0);
 							}
 						}
 
