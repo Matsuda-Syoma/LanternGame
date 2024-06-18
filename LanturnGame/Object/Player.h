@@ -7,7 +7,7 @@ private:
 	Vector2D exvelocity;
 	Vector2D lastinput = 0;
 	bool pflg = true;			// プレイヤー生存フラグ
-	bool hitflg = false;		// ヒットフラグ
+	bool hitflg = false;		// ヒットフラグ（爆発or兵隊）
 	bool hitsoldier = false;	// ヒットフラグ（兵隊）
 	bool overice = false;		// 氷の床に乗ったとき用のフラグ
 	bool onconveyor = false;	// コンベアに乗ったとき用のフラグ
@@ -21,7 +21,7 @@ private:
 	int deadplayer_img = 0;		// プレイヤー画像（死亡時）
 	int angry_img = 0;			// 兵隊に捕まった時の画像
 	int direction = 4;			// 現在の向き（０：下　１：左　２：右　３：上）
-	int stopdirection = 4;		// 歩行中の向き（４：下　５：左　６：右　７：上）
+	int walking_direction = 4;	// 歩行中の向き（４：下　５：左　６：右　７：上）
 	float deadzone = 0.1f;
 	float acceleration = 1.f;
 	float friction = .8f;
@@ -42,10 +42,10 @@ public:
 	void MoveUp();		// 上移動
 	void MoveDown();	// 下移動
 
-	bool GetFlg() const;
-	void SetFlg(bool b);
-	bool GetPFlg() const;
-	void SetPFlg(bool b);
+	bool GetHitFlg() const;
+	void SetHitFlg(bool b);
+	bool GetPlayerFlg() const;
+	void SetPlayerFlg(bool b);
 	bool GetIceFlg() const;
 	void SetIceFlg(bool b);
 	bool GetConFlg() const;

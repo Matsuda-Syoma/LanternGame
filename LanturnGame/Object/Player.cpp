@@ -106,11 +106,9 @@ void Player::Draw(Vector2D loc, float _distance) const
 						, (location.y * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, playerimg[imgnum], true);
 		}
 		else {
-			/*SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);*/	// 画像を透かす
 			SetIgnoreDrawGraphColor(TRUE);
 			DrawRotaGraphF((location.x * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
 				, (location.y * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, playerimg[imgnum], true);
-			/*SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);*/	// 画像透かし終わり
 			SetIgnoreDrawGraphColor(FALSE);
 		}
 	}
@@ -204,13 +202,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().x > 0.8)
 			{
 				direction = 2;
-				stopdirection = 6;
+				walking_direction = 6;
 			}
 			// 左移動
 			if (InputControl::GetLeftStick().x < -0.8)
 			{
 				direction = 1;
-				stopdirection = 5;
+				walking_direction = 5;
 			}
 		}
 		else {
@@ -218,13 +216,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().x > 0.2)
 			{
 				direction = 2;
-				stopdirection = 6;
+				walking_direction = 6;
 			}
 			// 左移動
 			if (InputControl::GetLeftStick().x < -0.2)
 			{
 				direction = 1;
-				stopdirection = 5;
+				walking_direction = 5;
 			}
 		}
 
@@ -235,13 +233,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().y > 0.8)
 			{
 				direction = 3;
-				stopdirection = 7;
+				walking_direction = 7;
 			}
 			// 下移動
 			if (InputControl::GetLeftStick().y < -0.8)
 			{
 				direction = 0;
-				stopdirection = 4;
+				walking_direction = 4;
 			}
 		}
 		else {
@@ -249,13 +247,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().y > 0.2)
 			{
 				direction = 3;
-				stopdirection = 7;
+				walking_direction = 7;
 			}
 			// 下移動
 			if (InputControl::GetLeftStick().y < -0.2)
 			{
 				direction = 0;
-				stopdirection = 4;
+				walking_direction = 4;
 			}
 		}
 
@@ -266,7 +264,7 @@ void Player::Movement()
 	if (InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2 
 		&& InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2) {
 		
-		direction = stopdirection;
+		direction = walking_direction;
 	}
 
 }
@@ -281,7 +279,7 @@ void Player::Invincible()
 		break;
 	case(90):
 		// 兵隊に捕まっていたらここで無敵時間終わり
-		if (hitsoldier == true)
+		if (hitsoldier == true && pflg == true)
 		{
 			hitflg = false;
 			Invincible_cnt = 0;
@@ -425,22 +423,22 @@ void Player::MoveDown()
 	}
 }
 
-bool Player::GetFlg() const
+bool Player::GetHitFlg() const
 {
 	return hitflg;
 }
 
-void Player::SetFlg(bool b)
+void Player::SetHitFlg(bool b)
 {
 	this->hitflg = b;
 }
 
-bool Player::GetPFlg() const
+bool Player::GetPlayerFlg() const
 {
 	return pflg;
 }
 
-void Player::SetPFlg(bool b)
+void Player::SetPlayerFlg(bool b)
 {
 	this->pflg = b;
 }

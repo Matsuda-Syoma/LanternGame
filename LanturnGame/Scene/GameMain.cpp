@@ -390,6 +390,8 @@ AbstractScene* GameMain::Update()
 	textdisp->Update();
 	//スコア描画の中心の値を求める
 	ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
+
+	// リザルトじゃない かつ カウントダウンが終わっているとき
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
 		// 曲が鳴っていないなら鳴らす
@@ -412,7 +414,7 @@ AbstractScene* GameMain::Update()
 		}*/
 
 		// プレイヤーが生きている&兵士が当たってないとき
-		if (player->GetPFlg() && !player->GetHitSoldier())
+		if (player->GetPlayerFlg() && !player->GetHitSoldier())
 		{
 			// 炎を表示する
 			particle[0]->SetVisible(true);
@@ -479,13 +481,10 @@ AbstractScene* GameMain::Update()
 			if (soldier[i] != nullptr)
 			{
 				// 更新処理
+				if( 0 < life)
 				soldier[i]->Upadate(player->GetLocation());
 				soldier[i]->GetMapSize(MapSize);
 				soldier[i]->SetVelocity(1);
-				if (soldier[i]->ChekmoveFlg() == false)
-				{
-					//soldier[i]->SetmoveFlg(true);
-				}
 			}
 			else
 			{
@@ -910,11 +909,11 @@ AbstractScene* GameMain::Update()
 				// プレイヤーと爆発の当たり判定
 				if (explosion[i]->HitSphere(player) && hitmoment == false)
 				{
-					if (player->GetFlg() == false)
+					if (player->GetHitFlg() == false)
 					{
 						life--;
 						hitmoment = true;
-						player->SetFlg(true);
+						player->SetHitFlg(true);
 					}
 				}
 				else if (!explosion[i]->HitSphere(player) && hitmoment == true)
@@ -928,10 +927,7 @@ AbstractScene* GameMain::Update()
 					{
 						if (explosion[i]->HitSphere(soldier[j]))
 						{
-							//PlaySoundMem(Sounds::SE_DeleteSoldier, DX_PLAYTYPE_BACK);
-							soldier[j]->SetDMGflg(false);
-							//StopSoundMem(Sounds::SE_DeleteSoldier);
-
+							soldier[j]->SetDMGflg(3);
 						}
 						if (soldier[j]->ChekDLflg() == true)
 						{
@@ -957,29 +953,22 @@ AbstractScene* GameMain::Update()
 			{
 				if (soldier[i]->HitSphere(player))
 				{
-					if (player->GetFlg() == false && soldier[i]->ChekhitFlg() == true)
+					if (player->GetHitFlg() == false && soldier[i]->ChekhitFlg() == true)
 					{
 						life--;
 						hitmoment = true;
-						soldier[i]->SetcatchFlg(true);
-						player->SetFlg(true);
+						soldier[i]->SetcatchFlg();
+						player->SetHitFlg(true);
 						player->SetHitSoldier(true);
-						soldier[i]->SetDMGflg(false);
+						soldier[i]->SetDMGflg(2);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
 						{
 							if (soldier[i] != soldier[c])
 							{
-								soldier[c]->SetmoveFlg(false);
+								soldier[c]->SetmoveFlg();
 							}
 						}
 
-					}
-					else//無敵状態なら兵隊が反発する
-					{
-						ev = (soldier[i]->GetLocation() - player->GetLocation());
-						l = soldier[i]->direction(player->GetLocation());
-						ev /= l;
-						soldier[i]->Knockback(ev, 50);
 					}
 				}
 				else if (!soldier[i]->HitSphere(player) && hitmoment == true)
@@ -1204,7 +1193,6 @@ AbstractScene* GameMain::Update()
 		{
 			if (combo != 0)
 			{
-				SpawnParticle(2, player, false, Vector2D(0.f, 10.f), 0.f, 2.f, 0.f);
 
 				// ここに効果音
 
@@ -1443,19 +1431,16 @@ AbstractScene* GameMain::Update()
 		// カメラアップデート
 		CameraUpdate();
 
-
-		// 残機が0ならリザルトフラグを立てる
-
+		// 残機が0ならプレイヤーフラグをfalseにする
 		if (life <= 0)
 		{
-
-			player->SetPFlg(false);
-
-
+			player->SetPlayerFlg(false);
 		}
+
 	}
+
 	// 残機が０になったら
-	if (player->GetPFlg() == false && resultflg == false) {
+	if (player->GetPlayerFlg() == false && resultflg == false) {
 		StopSoundMem(Sounds::BGM_GMain);
 		result_cnt++;
 
@@ -1534,7 +1519,7 @@ AbstractScene* GameMain::Update()
 	}
 
 	// プレイヤーが爆発に当たった かつ プレイヤーが生きている かつ ダメージ演出が表示されていなかったら
-	if (player->GetFlg() == true && player->GetPFlg() == true && crackflg == false && player->GetHitSoldier() == false)
+	if (player->GetHitFlg() == true && player->GetPlayerFlg() == true && crackflg == false && player->GetHitSoldier() == false)
 	{
 		crack_alpha = 200;
 		soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
@@ -1543,7 +1528,7 @@ AbstractScene* GameMain::Update()
 	}
 
 	// ダメージ演出が表示されている かつ プレイヤーが生きていたら
-	if (crackflg == true && player->GetPFlg() == true)
+	if (crackflg == true && player->GetPlayerFlg() == true)
 	{
 		// ダメージ演出を少しずつ薄くする
 
@@ -1854,10 +1839,9 @@ void GameMain::Draw() const
 		}
 	}
 	// リザルトじゃないなら
-	//スコアの表示
 	if (resultflg == false)
 	{
-
+		//スコアの表示
 		int bufscore = score;
 		int num = 0;
 		while (bufscore > 0)
@@ -1885,7 +1869,7 @@ void GameMain::Draw() const
 		if (highscoreflg == true)
 		{
 			DrawGraph(0, 0, highscoreimage, true);
-			char newrecord[] = "new record\0";
+			char newrecord[] = "new record";
 			for (int ne = 0; ne < sizeof(newrecord); ne++)
 			{
 				int chr = newrecord[ne] - 'a';
@@ -1902,15 +1886,15 @@ void GameMain::Draw() const
 		for (int re = 0; re < sizeof(result); re++)
 		{
 			int chr = result[re] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * re, 150, 1.0, 0.0, alphabetimage[chr], true);
+			DrawRotaGraph((SCREEN_WIDTH - 400) + 50 * re, 150, 1.0, 0.0, alphabetimage[chr], true);
 		}
-		char highscore[] = "high score\0";
+		char highscore[] = "high score";
 		for (int hi = 0; hi < sizeof(highscore); hi++)
 		{
 			int chr = highscore[hi] - 'a';
 			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * hi, 390, 0.5, 0.0, alphabetimage[chr], true);
 		}
-		char press[] = "press a\0";
+		char press[] = "press a";
 		for (int pr = 0; pr < sizeof(press); pr++)
 		{
 			int chr = press[pr] - 'a';
@@ -1956,10 +1940,10 @@ void GameMain::Draw() const
 	// カウントダウン（START）
 	else if (countdown == 0)
 	{
-		char res3[] = "start\0";
-		for (int i = 0; i < sizeof(res3); i++)
+		char start[] = "start";
+		for (int i = 0; i < sizeof(start); i++)
 		{
-			int chr = res3[i] - 'a';
+			int chr = start[i] - 'a';
 			DrawRotaGraph((SCREEN_WIDTH - 750) + 56 * i, 270, countsize, 0.0, alphabetimage[chr], true);
 		}
 	}
