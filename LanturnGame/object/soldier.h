@@ -8,20 +8,14 @@ public:
 	Soldier();
 	~Soldier();
 
-	//初期化
-	void Initialize();
-	//終了時
-	void finalize();
-	//更新
-	void Upadate(Vector2D PL);
-	//描画
-	void Draw(Vector2D PL, float _distance);
-	//移動
-	void Move(Vector2D PL);
-	//向き
-	float direction(Vector2D L);
-	//ノックバック
-	void Knockback(Vector2D V, float P);
+	
+	void Initialize();//初期化
+	void finalize();//終了時
+	void Upadate(Vector2D PL);//更新
+	void Draw(Vector2D PL, float _distance);//描画
+	void Move(Vector2D PL);//移動
+	float direction(Vector2D L);//向き
+
 	void SetVelocity(Vector2D loc);
 
 	//壁より外側にいるなら内側に入れる
@@ -29,17 +23,14 @@ public:
 
 	//爆発に巻き込まれた動きが止まる
 	void SetDMGflg(int i);
-	//
-	bool ChekDMGflg();
+
 	//消すフラグをセットする
-	void SetDLflg(bool i);
-	
 	bool ChekDLflg();
+
 	bool ChekhitFlg();
 
 	//動きが止まる
 	void SetmoveFlg();
-	bool ChekmoveFlg();
 
 	//プレイヤーに振られたときにフラグを立てる
 	void SetcatchFlg();
