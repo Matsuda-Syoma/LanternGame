@@ -26,6 +26,26 @@ GameMain::GameMain()
 	textdisp = new TextDisp;
 	textdisp->LoadText(0);
 	player = new Player;
+
+	conveyor = new Conveyor * [GM_MAX_CONVEYOR];
+
+	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+	{
+		conveyor[i] = nullptr;
+	}
+	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+	{
+		conveyor[i] = new Conveyor;
+	}
+
+	Vector2D spawnloc = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1300));
+	Vector2D spawnloc2 = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1800));
+
+	conveyor[0]->SetLocation(spawnloc);
+	conveyor[1]->SetLocation(spawnloc2);
+	conveyor[0]->Update();
+	conveyor[1]->Update();
+
 	stage = new Stage * [GM_MAX_ICEFLOOR];
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
 	{
@@ -57,6 +77,18 @@ GameMain::GameMain()
 						ret = true;
 						break;
 					}
+				}
+			}
+			for (int j = 0; j < GM_MAX_CONVEYOR; j++)
+			{
+				// 距離を計算
+				length = GetLength(Vector2D(
+								   conveyor[j]->GetLocation().x + (conveyor[j]->GetScale(0) / 2),
+								   conveyor[j]->GetLocation().y + (conveyor[j]->GetScale(1) / 2)), spawnloc);
+				// 360より短いなら:フラグon
+				if (length < 500) {
+					ret = true;
+					break;
 				}
 			}
 			// フラグ0ffなら座標指定してるーぷぬける
@@ -296,7 +328,9 @@ GameMain::GameMain()
 			for (int j = 0; j < GM_MAX_CONVEYOR; j++)
 			{
 				// 距離を計算
-				length = GetLength(conveyor[j]->GetLocation(), spawnloc);
+				length = GetLength(Vector2D(
+					conveyor[j]->GetLocation().x + (conveyor[j]->GetScale(0) / 2),
+					conveyor[j]->GetLocation().y + (conveyor[j]->GetScale(1) / 2)), spawnloc);
 				// 360より短いなら:フラグon
 				if (length < 500) {
 					ret = true;
@@ -1124,7 +1158,6 @@ AbstractScene* GameMain::Update()
 		{
 			if (combo != 0)
 			{
-				SpawnParticle(2, player, false, Vector2D(0.f, 10.f), 0.f, 2.f, 0.f);
 
 				// ここに効果音
 

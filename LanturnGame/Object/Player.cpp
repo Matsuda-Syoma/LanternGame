@@ -279,7 +279,7 @@ void Player::Invincible()
 		break;
 	case(90):
 		// 兵隊に捕まっていたらここで無敵時間終わり
-		if (hitsoldier == true)
+		if (hitsoldier == true && pflg == true)
 		{
 			hitflg = false;
 			Invincible_cnt = 0;

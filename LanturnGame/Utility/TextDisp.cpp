@@ -22,6 +22,7 @@ TextDisp::~TextDisp()
 
 void TextDisp::Update()
 {
+	// 全角、半角の判定
 	char one[3] = {};
 	if (*p != '\0')
 	{
@@ -41,6 +42,7 @@ void TextDisp::Update()
 		default:
 			break;
 		}
+		// bufに入れる
 		strcat_sDx(buf, 128, one);
 	}
 	else
@@ -51,6 +53,8 @@ void TextDisp::Update()
 	StrLen = (int)strlen(buf);
 	StrWidth = GetDrawStringWidth(buf, StrLen);
 	CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
+
+	// Aボタンで次のテキスト
 	if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 	{
 		if (textnum - 1 > textorder)
@@ -136,7 +140,6 @@ int TextDisp::LoadText(int i)
 		}
 		// 数値を入れる
 		strcat_s(temp[textnum], 64, buf);
-		//printfDx("%d %s\n", textnum, temp[textnum]);
 		cnt = 0;
 		textnum++;
 		memset(buf, 0, sizeof(buf));
