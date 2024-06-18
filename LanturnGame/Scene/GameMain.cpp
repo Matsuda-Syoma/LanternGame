@@ -1169,7 +1169,6 @@ AbstractScene* GameMain::Update()
 		{
 			if (combo != 0)
 			{
-				SpawnParticle(2, player, false, Vector2D(0.f, 10.f), 0.f, 2.f, 0.f);
 
 				// ここに効果音
 
