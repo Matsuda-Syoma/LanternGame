@@ -151,10 +151,6 @@ float Soldier::direction(Vector2D L)
 	return  sqrtf(powf((L.x - location.x), 2) + powf((L.y - location.y), 2));
 }
 
-void Soldier::Knockback(Vector2D V, float P)
-{
-	this->knockback = V * P;
-}
 
 void Soldier::SetVelocity(Vector2D loc)
 {
@@ -186,14 +182,6 @@ void Soldier::SetDMGflg(int i)
 {
 	dmgflg = i;
 }
-bool Soldier::ChekDMGflg()
-{
-	return dmgflg;
-}
-void Soldier::SetDLflg(bool i)
-{
-	deleteFlg = i;
-}
 bool Soldier::ChekDLflg()
 {
 	return deleteFlg;
@@ -211,8 +199,4 @@ void Soldier::SetcatchFlg()
 void Soldier::SetmoveFlg()
 {
 	moveFlg = false;
-}
-bool Soldier::ChekmoveFlg()
-{
-	return moveFlg;
 }

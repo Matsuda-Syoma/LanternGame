@@ -938,15 +938,6 @@ AbstractScene* GameMain::Update()
 						}
 
 					}
-					else//無敵状態なら兵隊が反発する
-					{
-
-							ev = (soldier[i]->GetLocation() - player->GetLocation());
-							l = soldier[i]->direction(player->GetLocation());
-							ev /= l;
-							soldier[i]->Knockback(ev, 50);
-
-					}
 				}
 				else if (!soldier[i]->HitSphere(player) && hitmoment == true)
 				{
