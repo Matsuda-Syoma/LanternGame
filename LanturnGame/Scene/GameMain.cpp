@@ -449,13 +449,10 @@ AbstractScene* GameMain::Update()
 			if (soldier[i] != nullptr)
 			{
 				// 更新処理
+				if( 0 < life)
 				soldier[i]->Upadate(player->GetLocation());
 				soldier[i]->GetMapSize(MapSize);
 				soldier[i]->SetVelocity(1);
-				if (soldier[i]->ChekmoveFlg() == false)
-				{
-					//soldier[i]->SetmoveFlg(true);
-				}
 			}
 			else
 			{
@@ -943,10 +940,12 @@ AbstractScene* GameMain::Update()
 					}
 					else//無敵状態なら兵隊が反発する
 					{
-						ev = (soldier[i]->GetLocation() - player->GetLocation());
-						l = soldier[i]->direction(player->GetLocation());
-						ev /= l;
-						soldier[i]->Knockback(ev, 50);
+
+							ev = (soldier[i]->GetLocation() - player->GetLocation());
+							l = soldier[i]->direction(player->GetLocation());
+							ev /= l;
+							soldier[i]->Knockback(ev, 50);
+
 					}
 				}
 				else if (!soldier[i]->HitSphere(player) && hitmoment == true)

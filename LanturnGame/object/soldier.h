@@ -8,8 +8,8 @@ public:
 	Soldier();
 	~Soldier();
 
-	//初期化
-	void Initialize();
+	
+	void Initialize();//初期化
 	//終了時
 	void finalize();
 	//更新
