@@ -38,14 +38,11 @@ public:
 private:
 	Vector2D length = 0;
 	Vector2D move = 0;
-	Vector2D knockback = 0;
 	Vector2D velocity = 0;
-	int CD;//中心点の距離
 	int soldierimg[12];//画像イメージ
 	int soldierDetimg;//画像イメージ
 	int Velimg = 0;//画像の向き
 	int countNum = 0;//再生成までの時間を測る
-	int a = 0;
 
 	int dmgflg = 1; //1/通常 2/プレイヤーを捕まえた時 3/爆発に巻き込まれたとき
 	bool hitFlg = true;
