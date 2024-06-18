@@ -10,16 +10,19 @@ private:
     Vector2D location;
     int image_con;
     int image_belt;
-    int flg;
+    int image_line;
+    int image_left;
+    int flame;
     int maxexpcnt = 80;
     int expcnt = maxexpcnt;
     int scroll;
 public:
-    Conveyor();    //ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-    ~Conveyor();   //ƒfƒXƒgƒ‰ƒNƒ^
+    Conveyor();    //ï¿½Rï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
+    ~Conveyor();   //ï¿½fï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^
 
-    void Update();      //•`‰æˆÈŠO‚Ìˆ—
-    void Draw(Vector2D loc, float _distance)const;   //•`‰æˆ—
+    void Update();      //ï¿½`ï¿½ï¿½ÈŠOï¿½Ìï¿½ï¿½ï¿½
+    void Draw(Vector2D loc, float _distance)const;   //ï¿½`ï¿½æˆï¿½ï¿½
+    void Draw_left(Vector2D loc, float _distance)const;
     Vector2D GetLocation() const;
     void SetLocation(Vector2D loc);
     float GetScale(int i);
