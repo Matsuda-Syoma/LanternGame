@@ -13,8 +13,6 @@ private:
     int image_line;
     int image_left;
     int flame;
-    float width, height;
-    Vector2D location;
     int maxexpcnt = 80;
     int expcnt = maxexpcnt;
     int scroll;
