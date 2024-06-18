@@ -29,7 +29,7 @@ void Credit::Draw() const
 {
 	DrawGraph(0, 0, creditimg, true);
 
-	char credit[] = "credit\0";
+	char credit[] = "credit";
 	for (int i = 0; i < sizeof(credit); i++)
 	{
 		int chr = credit[i] - 'a';

@@ -1810,7 +1810,7 @@ void GameMain::Draw() const
 		if (highscoreflg == true)
 		{
 			DrawGraph(0, 0, highscoreimage, true);
-			char newrecord[] = "new record\0";
+			char newrecord[] = "new record";
 			for (int ne = 0; ne < sizeof(newrecord); ne++)
 			{
 				int chr = newrecord[ne] - 'a';
@@ -1827,15 +1827,15 @@ void GameMain::Draw() const
 		for (int re = 0; re < sizeof(result); re++)
 		{
 			int chr = result[re] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 420) + 56 * re, 150, 1.0, 0.0, alphabetimage[chr], true);
+			DrawRotaGraph((SCREEN_WIDTH - 400) + 50 * re, 150, 1.0, 0.0, alphabetimage[chr], true);
 		}
-		char highscore[] = "high score\0";
+		char highscore[] = "high score";
 		for (int hi = 0; hi < sizeof(highscore); hi++)
 		{
 			int chr = highscore[hi] - 'a';
 			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * hi, 390, 0.5, 0.0, alphabetimage[chr], true);
 		}
-		char press[] = "press a\0";
+		char press[] = "press a";
 		for (int pr = 0; pr < sizeof(press); pr++)
 		{
 			int chr = press[pr] - 'a';
@@ -1881,10 +1881,10 @@ void GameMain::Draw() const
 	// カウントダウン（START）
 	else if (countdown == 0)
 	{
-		char res3[] = "start\0";
-		for (int i = 0; i < sizeof(res3); i++)
+		char start[] = "start";
+		for (int i = 0; i < sizeof(start); i++)
 		{
-			int chr = res3[i] - 'a';
+			int chr = start[i] - 'a';
 			DrawRotaGraph((SCREEN_WIDTH - 750) + 56 * i, 270, countsize, 0.0, alphabetimage[chr], true);
 		}
 	}
