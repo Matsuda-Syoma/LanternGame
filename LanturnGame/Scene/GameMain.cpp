@@ -897,7 +897,7 @@ AbstractScene* GameMain::Update()
 						{
 							soldier[j]->SetDMGflg(3);
 						}
-						if (soldier[j]->ChekDLflg() == true)
+						if (soldier[j]->CheckDLflg() == true)
 						{
 							soldier[j] = nullptr;
 							delete soldier[j];
@@ -921,11 +921,10 @@ AbstractScene* GameMain::Update()
 			{
 				if (soldier[i]->HitSphere(player))
 				{
-					if (player->GetHitFlg() == false && soldier[i]->ChekhitFlg() == true)
+					if (player->GetHitFlg() == false && soldier[i]->checkhitFlg() == true)
 					{
 						life--;
 						hitmoment = true;
-						soldier[i]->SetcatchFlg();
 						player->SetHitFlg(true);
 						player->SetHitSoldier(true);
 						soldier[i]->SetDMGflg(2);
@@ -943,7 +942,7 @@ AbstractScene* GameMain::Update()
 				{
 					hitmoment = false;
 				}
-				if (soldier[i]->ChekDLflg() == true)
+				if (soldier[i]->CheckDLflg() == true)
 				{
 					soldier[i] = nullptr;
 					delete soldier[i];

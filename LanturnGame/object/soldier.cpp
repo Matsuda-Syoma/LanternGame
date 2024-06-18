@@ -24,7 +24,6 @@ void Soldier::Initialize()
 	dmgflg = 1;
 	deleteFlg = false;
 	hitFlg = true;//当たり判定
-	catchFlg = false;
 	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 66, soldierimg);
 	soldierDetimg = LoadGraph("Resources/images/d_Soldier.png");
 }
@@ -182,19 +181,14 @@ void Soldier::SetDMGflg(int i)
 {
 	dmgflg = i;
 }
-bool Soldier::ChekDLflg()
+bool Soldier::CheckDLflg()
 {
 	return deleteFlg;
 }
 
-bool Soldier::ChekhitFlg()
+bool Soldier::checkhitFlg()
 {
 	return hitFlg;
-}
-
-void Soldier::SetcatchFlg()
-{
-	catchFlg = true;
 }
 void Soldier::SetmoveFlg()
 {
