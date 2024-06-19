@@ -34,26 +34,34 @@ void Soldier::Upadate(Vector2D PL)
 	}
 	else
 	{
+			countNum++;
+			//一定時間たったら動けるようになる
+			if (240 <= countNum)
+			{
+				if (mode == 0)
+				{
+					mode = 1;
+					countNum = 0;
+
+				}
+				else
+				{
+					deleteFlg = true;
+					countNum = 0;
+
+				}
+			}
 		if (SEflg == false && mode == 2)
 		{
 			//プレイヤーを捕まえた
 			PlaySoundMem(Sounds::SE_CD_Soldier, DX_PLAYTYPE_BACK);
 			SEflg = true;
 		}
-		else if (SEflg == false && mode == 3)
+		if (SEflg == false && mode == 3)
 		{
 			//爆発に巻き込まれた
 			PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
 			SEflg = true;
-		}
-		
-		countNum++;
-		//一定時間たったら動けるようになる
-		if (240 <= countNum)
-		{
-			mode = 1;
-			deleteFlg = true;
-			countNum = 0;
 		}
 	}
 
@@ -62,7 +70,7 @@ void Soldier::Upadate(Vector2D PL)
 
 void Soldier::Draw(Vector2D PL, float _distance)
 {
-	if (mode == 1)
+	if (mode == 1 || mode == 0)
 	{
 		//アニメーション切り替え
 		cnt++;
@@ -107,7 +115,7 @@ void Soldier::Move(Vector2D PL)
 	{
 		//一定時間停止したら動けるようになる
 		countNum++;
-		if (240 <= countNum)
+		if (180 <= countNum)
 		{
 			mode = 1;
 			countNum = 0;

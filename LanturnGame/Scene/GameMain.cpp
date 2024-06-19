@@ -931,9 +931,9 @@ AbstractScene* GameMain::Update()
 						}
 						if (soldier[j]->CheckDLflg() == true)
 						{
-							soldier[j] = nullptr;
-							delete soldier[j];
-							break;
+								soldier[j] = nullptr;
+								delete soldier[j];
+								break;
 						}
 					}
 				}
@@ -976,9 +976,9 @@ AbstractScene* GameMain::Update()
 				}
 				if (soldier[i]->CheckDLflg() == true)
 				{
-					soldier[i] = nullptr;
-					delete soldier[i];
-					break;
+						soldier[i] = nullptr;
+						delete soldier[i];
+						break;
 				}
 			}
 		}
