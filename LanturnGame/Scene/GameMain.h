@@ -42,7 +42,6 @@ private:
 	unsigned int oldcombo = 0;
 	unsigned int botime = 0;
 	float MapSize = GM_MAX_MAPSIZE;
-	//float speed = CONVEYOR_SPEED;
 	float MapCloseSpeed = 1;
 	int MaxSpawnEnemyBomb = C_MaxEnemyBomb;
 	int C_MaxEnemyBomb = (int)UserData::LoadData(UserData::SETTING, 1);
