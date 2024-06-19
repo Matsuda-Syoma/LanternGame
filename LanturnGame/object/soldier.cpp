@@ -184,11 +184,11 @@ void Soldier::PositionCheck()
 	}
 }
 
-void Soldier::SetDMGflg(int i)
+void Soldier::SetMode(int i)
 {
 	mode = i;
 }
-int Soldier::CheckDMGflg()
+int Soldier::CheckMode()
 {
 	return mode;
 }

@@ -936,7 +936,7 @@ AbstractScene* GameMain::Update()
 					{
 						if (explosion[i]->HitSphere(soldier[j]))
 						{
-							soldier[j]->SetDMGflg(3);
+							soldier[j]->SetMode(3);
 						}
 						if (soldier[j]->CheckDLflg() == true)
 						{
@@ -962,18 +962,18 @@ AbstractScene* GameMain::Update()
 			{
 				if (soldier[i]->HitSphere(player))
 				{
-					if (player->GetHitFlg() == false && soldier[i]->CheckDMGflg() == 1)
+					if (player->GetHitFlg() == false && soldier[i]->CheckMode() == 1)
 					{
 						life--;
 						hitmoment = true;
 						player->SetHitFlg(true);
 						player->SetHitSoldier(true);
-						soldier[i]->SetDMGflg(2);
+						soldier[i]->SetMode(2);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
 						{
 							if (soldier[i] != soldier[c])
 							{
-								soldier[c]->SetDMGflg(0);
+								soldier[c]->SetMode(0);
 							}
 						}
 
@@ -1841,7 +1841,7 @@ void GameMain::Draw() const
 	// ミニマップ(兵士)
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
-		if (soldier[i] != nullptr && (soldier[i]->CheckDMGflg() == 1 || soldier[i]->CheckDMGflg() == 0))
+		if (soldier[i] != nullptr && (soldier[i]->CheckMode() == 1 || soldier[i]->CheckMode() == 0))
 		{
 			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
 		}

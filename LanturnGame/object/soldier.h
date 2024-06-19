@@ -19,8 +19,8 @@ public:
 	void PositionCheck();//壁より外側にいるなら内側に入れる
 
 	
-	void SetDMGflg(int i);//他の兵隊が爆発に巻き込まれた動きが止まる
-	int CheckDMGflg();//他の兵隊が爆発に巻き込まれた動きが止まる
+	void SetMode(int i);//他の兵隊が爆発に巻き込まれた動きが止まる
+	int CheckMode();//他の兵隊が爆発に巻き込まれた動きが止まる
 	bool CheckDLflg();//消すフラグをセットする
 
 private:
