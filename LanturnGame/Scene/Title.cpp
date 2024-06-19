@@ -18,18 +18,23 @@ Title::Title()
 			printfDx("err : menuimage\n");
 		}
 	}
-	LoadDivGraph("Resources/images/titlemenu_game.png", 63, 9, 7, 512, 512, menufireimage[0]);
-	//LoadDivGraph("Resources/images/titlemenu_setting_fire.png", 63, 9, 7, 512, 512, menufireimage[1]);
-	LoadDivGraph("Resources/images/titlemenu_end_fire.png", 63, 9, 7, 512, 512, menufireimage[1]);
-	LoadDivGraph("Resources/images/cursor_fire.png", 16, 4, 4, 32, 32, cursorfireimage);
 	cursorimage = LoadGraph("Resources/images/match.png", 0);
 	titleimage = LoadGraph("Resources/images/Title.png", 0);
-	titlenameimage = LoadGraph("Resources/images/Titlename.png", 0);
+	LoadDivGraph("Resources/images/Titlename.png", 2, 1, 2, 272, 128, titlenameimage);
+	titlebombimage = LoadGraph("Resources/images/titlebomb.png", 0);
+	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
+	Particle::LoadImages();
+	particle = new Particle * [GM_MAX_PARTICLE];
+	for (int i = 0; i < GM_MAX_PARTICLE; i++)
+	{
+		particle[i] = nullptr;
+	}
 	SetUseASyncLoadFlag(false);
 }
 
 Title::~Title()
 {
+	Particle::DeleteImages();
 }
 
 AbstractScene* Title::Update()
@@ -68,17 +73,9 @@ AbstractScene* Title::Update()
 		}
 	}
 
+	// ボタンを押してないなら数値更新
 	if (!isCheck) {
 		cursor_last = cursor_menu;
-	}
-
-	if (cursor_fireanim < 15)
-	{
-		cursor_fireanim++;
-	}
-	else
-	{
-		cursor_fireanim = 0;
 	}
 
 	// カーソル決定
@@ -89,10 +86,9 @@ AbstractScene* Title::Update()
 			isCheck = true;
 		}
 	}
-	//GetMousePoint(&MouseX,&MouseY);
-	//clsDx();
-	//printfDx("%d %d", MouseX, MouseY);
-	if (fireanim < 62) {
+
+	// あにめカウント更新
+	if (fireanim < maxfireanim) {
 		if (isCheck) {
 			fireanim++;
 		}
@@ -123,29 +119,120 @@ AbstractScene* Title::Update()
 		StopSoundMem(Sounds::SE_transition);
 	}
 
+	// lerp処理
+	Vector2D qw = (Vector2D(886.0f, 128.0f) * (float)clamp(1.0f - (fireanim / 60.0f), 0.0f, 1.0f));
+	Vector2D qw2 = (Vector2D(800.0f, 380.0f + (cursor_last * 65.0f)) * (float)clamp((fireanim / 60.0f), 0.0f, 1.0f));
+	bombloc = qw + qw2;
+
+	// 60フレームならパーティクル出す
+	if (fireanim == 60)
+	{
+		SpawnParticle(3, nullptr, false, bombloc, (float)GetRand(360), 1.0f, 0.0f);
+		PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
+	}
+	for (int i = 0; i < GM_MAX_PARTICLE; i++)
+	{
+		// パーティクルがnullptrじゃないなら
+		if (particle[i] != nullptr)
+		{
+			particle[i]->Update();
+			if (!particle[i]->Getflg())
+			{
+				particle[i] = nullptr;
+				delete particle[i];
+			}
+		}
+	}
+
 	return this;
 }
 
 void Title::Draw() const
 {
+	// タイトル画像の描画
 	DrawGraph(0, 0, titleimage,true);
-	DrawRotaGraph(980, 180, 1.5, 0.0, titlenameimage, true);
-	//DrawString(580, 60, "ここはタイトルです", 0xffffff);
+
+	// タイトル名を描画
+	DrawRotaGraph(980, 180, 1.5, 0.0, titlenameimage[1], true);
+
+	// 数値を一時保存
 	int OldBlendMode, OldBlendParam;
 	GetDrawBlendMode(&OldBlendMode,&OldBlendParam);
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, max(255 - (int)((fireanim / 62.) * 511.), 0));
-	for (int i = 0; i < 2; i++) {
-		DrawRotaGraph(1040, 380 + (i * 65), 1.0, 0.0, menuimage[i], true);
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, max(255 - (int)(clamp((fireanim / 30.0f), 0.0f, 1.0f) * 511.0f), 0));
+	
+	// タイトル名の爆弾を描画
+	DrawRotaGraph(800, 380 + (cursor_last * 65), 1.0, 0.0, titlebombimage, true);
+
+	SetDrawBlendMode(OldBlendMode, OldBlendParam);
+
+	// Startの描画
+	if (cursor_last == 0)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, max(255 - (int)(clamp(((fireanim - 60.0f) / (float)(maxfireanim - 60.0f)), 0.0f, 1.0f) * 511.0f), 0));
+	}
+	char chr_start[] = "start";
+	for (int i = 0; i < sizeof(chr_start); i++)
+	{
+		int chr = chr_start[i] - 'a';
+		DrawRotaGraph(880 + 48 * i, 380, 1.0, 0.0, alphabetimage[chr], true);
 	}
 	SetDrawBlendMode(OldBlendMode, OldBlendParam);
-	DrawRotaGraph(1040, 380 + (cursor_last * 65), 1.0, 0.0, menufireimage[cursor_last][fireanim], true);
-	DrawRotaGraph(800, 380 + (cursor_last * 65), 1.0, 0.0, cursorimage, true);
 
-	//DrawRotaGraph(800, 370 + (cursor_last * 65), 1.0, 0.0, cursorfireimage[cursor_fireanim], true);
+	// Endの描画
+	if (cursor_last == 1)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, max(255 - (int)(clamp(((fireanim - 60.0f) / (float)(maxfireanim - 60.0f)), 0.0f, 1.0f) * 511.0f), 0));
+	}
 
-	//DrawCircle(560, 346 + menu_cursor * GetFontSize(), 8,0xffffff, TRUE);
-	//DrawString(580, 336 + (0 * GetFontSize()), "ゲームスタート", 0xffffff);
-	//DrawString(580, 336 + (1 * GetFontSize()), "設定画面", 0xffffff);
-	//DrawString(580, 336 + (2 * GetFontSize()), "ヘルプ", 0xffffff);
-	//DrawString(580, 336 + (3 * GetFontSize()), "終了", 0xffffff);
+	char chr_end[] = "end";
+	for (int i = 0; i < sizeof(chr_end); i++)
+	{
+		int chr = chr_end[i] - 'a';
+		DrawRotaGraph(880 + 48 * i, 445, 1.0, 0.0, alphabetimage[chr], true);
+	}
+	SetDrawBlendMode(OldBlendMode, OldBlendParam);
+
+	// 爆弾の描画
+	if (fireanim < 60)
+	{
+		if (fireanim % 14 > 7)
+		{
+			SetDrawBright(255, 0, 0);// 赤以外暗くする
+		}
+		DrawRotaGraphF(bombloc.x, bombloc.y, 1.5, 0.0, titlebombimage, true);
+		SetDrawBright(255, 255, 255);// 全色暗くしない（デフォルト）
+	}
+
+
+	// パーティクルの描画
+	for (int i = 0; i < GM_MAX_PARTICLE; i++)
+	{
+		// 敵がnullptrじゃないなら
+		if (particle[i] != nullptr)
+		{
+			particle[i]->Draw();
+		}
+	}
+}
+
+// パーティクルのスポーン(種類、親、ループ可か、スポーン座標、向く座標、大きさ
+void Title::SpawnParticle(int type, SphereCollider* root, bool loop, Vector2D loc, float angle, float scale, float speed)
+{
+	for (int j = 0; j < GM_MAX_PARTICLE; j++)
+	{
+		if (particle[j] == nullptr)
+		{
+			particle[j] = new Particle();
+			particle[j]->Init(type, root, loop, scale);
+			if (root != nullptr)
+			{
+				particle[j]->SetRootLocation(loc);
+			}
+			particle[j]->SetLocation(loc);
+			particle[j]->SetAngle(angle);
+			particle[j]->SetSpeed(speed);
+			break;
+		}
+	}
 }
