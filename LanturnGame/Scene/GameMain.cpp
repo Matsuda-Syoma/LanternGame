@@ -1832,7 +1832,7 @@ void GameMain::Draw() const
 	// ミニマップ(兵士)
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
-		if (soldier[i] != nullptr)
+		if (soldier[i] != nullptr && (soldier[i]->CheckDMGflg() == 1 || soldier[i]->CheckDMGflg() == 0))
 		{
 			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
 		}
