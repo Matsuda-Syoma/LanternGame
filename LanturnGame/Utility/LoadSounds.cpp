@@ -4,6 +4,7 @@
 int Sounds::BGM_Game;
 int Sounds::SE_Explosion[5];
 int Sounds::BGM_GMain;
+int Sounds::SE_ComboEnd;
 int Sounds::SE_Shoot;
 int Sounds::SE_Hit;
 int Sounds::SE_PlayerHit;
