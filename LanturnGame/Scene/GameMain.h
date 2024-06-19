@@ -111,10 +111,10 @@ public:
 	void SetCameraShake(int _i);
 	void SetMapSize(float f);
 	void ChangeMapSize();
-	void DrawCombo()const;
 	void DrawCloseMap()const;
 	void SpawnAddScore(Vector2D loc, int _score);
 	void BlackOut(int color, int time);
 	void BlackOutDraw()const;
+	void DrawPause()const;
 };
 

@@ -369,7 +369,6 @@ AbstractScene* GameMain::Update()
 		//ポーズ画面
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_START))
 		{
-			printfDx("%d", PauseFlg);	
 				PauseFlg = !PauseFlg;
 		}
 		// 曲が鳴っていないなら鳴らす
@@ -1574,7 +1573,6 @@ void GameMain::Draw() const
 	}
 
 	// コンボ
-	DrawCombo();
 	for (int i = 0; i < GM_MAX_COMBOEND; i++)
 	{
 		if (comboend[i] != nullptr)
@@ -1799,6 +1797,11 @@ void GameMain::Draw() const
 	}
 
 	textdisp->Draw();
+	if (PauseFlg)
+	{
+		DrawPause();
+	}
+
 
 	// フェードアウト
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, fadeout_alpha);
@@ -1895,22 +1898,6 @@ void GameMain::ChangeMapSize()
 	}
 }
 
-void GameMain::DrawCombo() const
-{
-	int OldSize = GetFontSize();
-	// コンボフラグがたっているなら描画
-	if (comboflg)
-	{
-		SetFontSize(OldSize + ((1 + (ui_combo_framecount)) + (combo / 2)));
-		char buf[4];
-		int StrLen = snprintf(buf, 4, "%d", combo);
-		int StrWidth = GetDrawStringWidth(buf, StrLen);
-		int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-		DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(255, 255, 255 - (25 * combo)), "%d", combo);
-	}
-	SetFontSize(OldSize);
-}
-
 void GameMain::DrawCloseMap() const
 {
 	int OldDrawMode;
@@ -1925,8 +1912,9 @@ void GameMain::DrawCloseMap() const
 		{
 			for (int i = 0; i < sizeof(res); i++)
 			{
+				//+(20 * (digit - 2)) - (i * 20)
 				int chr = res[i] - 'a';
-				DrawRotaGraph(((SCREEN_WIDTH - GetDrawStringWidth(res,8))/ 2) - 88 + GetRand(3) - 2 + 32 * i, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
+				DrawRotaGraph((SCREEN_WIDTH / 2) - (32 * (((sizeof(res) - 1) / 2))) + (i * 32) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
 			}
 			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
 				(SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);
@@ -1958,4 +1946,16 @@ void GameMain::BlackOutDraw() const
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)max(((botime / 8.) * 63.), 0));
 	DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xffffff, true);
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);
+}
+
+void GameMain::DrawPause() const
+{
+	char res[] = "pause\0";
+
+	for (int i = 0; i < sizeof(res); i++)
+	{
+		//+(20 * (digit - 2)) - (i * 20)
+		int chr = res[i] - 'a';
+		DrawRotaGraph((SCREEN_WIDTH / 2) - (80 * (((sizeof(res) - 2) / 2))) + (i * 80), (SCREEN_HEIGHT / 2) - 120, 1.6, 0.0, alphabetimage[chr], true);
+	}
 }
