@@ -1154,7 +1154,7 @@ AbstractScene* GameMain::Update()
 			{
 
 				// ここに効果音
-
+				PlaySoundMem(Sounds::SE_ComboEnd, DX_PLAYTYPE_BACK);
 				oldcombo = combo;
 				for (int i = 0; i < GM_MAX_COMBOEND; i++)
 				{
@@ -1682,6 +1682,10 @@ void GameMain::Draw() const
 	// リザルトじゃないなら
 	if (resultflg == false)
 	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+		DrawBox(SCREEN_WIDTH - 233, 400, SCREEN_WIDTH - 23, 530, 0x000000, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 		char chr_score[] = "score";
 		for (int i = 0; i < sizeof(chr_score); i++)
 		{
@@ -1698,13 +1702,11 @@ void GameMain::Draw() const
 			bufscore /= 10;
 		}
 		bufscore = score;
-		SetDrawBright(210, 210, 255);
 		for (int s = 0; s < num; s++)
 		{
 			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
-		SetDrawBright(255, 255, 255);
 
 	}
 	// リザルトなら
