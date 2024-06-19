@@ -1729,7 +1729,6 @@ void GameMain::Draw() const
 	}
 
 	// コンボ
-	DrawCombo();
 	for (int i = 0; i < GM_MAX_COMBOEND; i++)
 	{
 		if (comboend[i] != nullptr)
@@ -2062,22 +2061,6 @@ void GameMain::ChangeMapSize()
 			SetMapSize(GM_MIN_MAPSIZE);
 		}
 	}
-}
-
-void GameMain::DrawCombo() const
-{
-	int OldSize = GetFontSize();
-	// コンボフラグがたっているなら描画
-	if (comboflg)
-	{
-		SetFontSize(OldSize + ((1 + (ui_combo_framecount)) + (combo / 2)));
-		char buf[4];
-		int StrLen = snprintf(buf, 4, "%d", combo);
-		int StrWidth = GetDrawStringWidth(buf, StrLen);
-		int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-		DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(255, 255, 255 - (25 * combo)), "%d", combo);
-	}
-	SetFontSize(OldSize);
 }
 
 void GameMain::DrawCloseMap() const
