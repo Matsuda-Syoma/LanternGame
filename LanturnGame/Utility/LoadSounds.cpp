@@ -30,7 +30,7 @@ void Sounds::LoadSounds() {
 	}
 	SetCreateSoundPitchRate(0);
 
-	BGM_GMain = LoadSoundMem("Resources/sounds/BGM_GMain.wav");
+	BGM_GMain = LoadSoundMem("Resources/sounds/BGM_GMain.wav", 1);
 
 	SE_Hit = LoadSoundMem("Resources/sounds/hit.wav");
 	SE_ComboEnd = LoadSoundMem("Resources/sounds/explosion.wav");
@@ -42,7 +42,7 @@ void Sounds::LoadSounds() {
 
 	SE_MapClose = LoadSoundMem("Resources/sounds/SE_MapClose.mp3");
 
-	BGM_Title = LoadSoundMem("Resources/sounds/BGM_Title.wav");
+	BGM_Title = LoadSoundMem("Resources/sounds/BGM_Title.wav", 1);
 	SE_transition = LoadSoundMem("Resources/sounds/SE_transition.mp3");
 	SE_cursor = LoadSoundMem("Resources/sounds/SE_cursor.mp3");
 }
