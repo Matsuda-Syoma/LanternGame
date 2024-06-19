@@ -78,6 +78,7 @@ private:
 	bool countdownflg = true;
 	bool highscoreflg = false;
 	bool crackflg = false;
+	bool PauseFlg = false;
 
 	__int8 ui_combo_framecount = 0;
 
