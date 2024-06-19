@@ -1757,6 +1757,11 @@ void GameMain::Draw() const
 			DrawRotaGraph((SCREEN_WIDTH - 190) + 33 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
 		}
 
+		if (score == 0)
+		{
+			DrawRotaGraph(SCREEN_WIDTH - 125, 490, 0.6, 0.0, numimage[0], true);
+		}
+
 		//スコアの表示
 		int bufscore = score;
 		int num = 0;
