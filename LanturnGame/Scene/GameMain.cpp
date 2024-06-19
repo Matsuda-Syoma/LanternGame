@@ -395,7 +395,7 @@ AbstractScene* GameMain::Update()
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
 		// 曲が鳴っていないなら鳴らす
-		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
+		if (player->GetPlayerFlg() == true && CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 		}
