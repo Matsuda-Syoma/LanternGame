@@ -835,7 +835,7 @@ AbstractScene* GameMain::Update()
 					combo += 1;
 					ui_combo_framecount = 25;
 					// スコア加算
-					score += ((10 * C_ExpSize) * combo);
+					score += (((10 * C_ExpSize) * combo) * (int)(1 + (game_frametime / 3600)));
 					SpawnAddScore(bomb[i]->GetLocation(), ((10 * C_ExpSize) * combo));
 					SetCameraShake(GetRand(8) + 4);
 					bomb[i] = nullptr;
@@ -1184,7 +1184,7 @@ AbstractScene* GameMain::Update()
 		ChangeMapSize();
 
 		// マップサイズで敵の最大スポーン数を変える
-		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * max(-0.5 + ((MapSize) / (GM_MAX_MAPSIZE)) * 1.5, 0.1));
+		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * max(-0.5 + ((MapSize) / (GM_MAX_MAPSIZE)) * 1.5, 0.2));
 
 		// ゲームのフレームを増やす
 		game_frametime++;
@@ -1609,6 +1609,7 @@ void GameMain::Draw() const
 		}
 	}
 
+	DrawFormatString(0, 0, 0xffffff, "%d", (int)(1 + (game_frametime / 3600)));
 
 	// ミニマップ
 	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
