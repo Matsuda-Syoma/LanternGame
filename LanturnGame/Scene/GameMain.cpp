@@ -1841,6 +1841,13 @@ void GameMain::Draw() const
 	// リザルトじゃないなら
 	if (resultflg == false)
 	{
+		char chr_score[] = "score";
+		for (int i = 0; i < sizeof(chr_score); i++)
+		{
+			int chr = chr_score[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 190) + 33 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
+		}
+
 		//スコアの表示
 		int bufscore = score;
 		int num = 0;
@@ -1851,10 +1858,10 @@ void GameMain::Draw() const
 		}
 		bufscore = score;
 		SetDrawBright(210, 210, 255);
-		for (int i = 0; i < num; i++)
+		for (int s = 0; s < num; s++)
 		{
 			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 655 + (20 * num) / 2) - (20 * i), 20, 0.5, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 		SetDrawBright(255, 255, 255);
