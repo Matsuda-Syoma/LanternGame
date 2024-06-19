@@ -31,6 +31,16 @@ void Soldier::Upadate(Vector2D PL)
 	if (mode == 1)
 	{
 		Move(PL);
+		//アニメーション切り替え
+		cnt++;
+		if ((cnt % 60) == 0)
+		{
+			animcnt++;
+		}
+		if (3 <= animcnt)
+		{
+			animcnt = 0;
+		}
 	}
 	else
 	{
@@ -72,17 +82,6 @@ void Soldier::Draw(Vector2D PL, float _distance)
 {
 	if (mode == 1 || mode == 0)
 	{
-		//アニメーション切り替え
-		cnt++;
-		if ((cnt % 60) == 0)
-		{
-			animcnt++;
-		}
-		if (3 <= animcnt)
-		{
-			animcnt = 0;
-		}
-
 		//兵隊イラストの描画
 		DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
 			, DrawFromCameraY(location, _distance, PL)
