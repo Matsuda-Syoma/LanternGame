@@ -370,6 +370,13 @@ AbstractScene* GameMain::Update()
 	//スコア描画の中心の値を求める
 	ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
 
+	//コンベアの表示
+	if (360 <= game_frametime)
+	{
+		ConFlg = true;
+	}
+		
+
 	// リザルトじゃない かつ カウントダウンが終わっているとき
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
@@ -1023,97 +1030,101 @@ AbstractScene* GameMain::Update()
 		//}
 
 		player->SetConFlg(false);
-		for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
-		{
-			conveyor_y[i]->Update();
-			if (conveyor_y[0]->HitSphere(*player))
-			{
-				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - CONVEYOR_SPEED));
+		if (ConFlg == true) {
 
-			}
-			if (conveyor_y[1]->HitSphere(*player))
-			{
-				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + CONVEYOR_SPEED));
 
-			}
-			if (conveyor_y[2]->HitSphere(*player))
+			for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
 			{
-				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - CONVEYOR_SPEED));
-
-			}
-			if (conveyor_y[3]->HitSphere(*player))
-			{
-				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + CONVEYOR_SPEED));
-
-			}
-			if (conveyor_y[4]->HitSphere(*player))
-			{
-				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - CONVEYOR_SPEED));
-
-			}
-			if (conveyor_y[5]->HitSphere(*player))
-			{
-				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + CONVEYOR_SPEED));
-
-			}
-
-			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
-			{
-				if (bomb[j] != nullptr)
+				conveyor_y[i]->Update();
+				if (conveyor_y[0]->HitSphere(*player))
 				{
-					if (conveyor_y[0]->HitSphere(*bomb[j]))
+					player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - CONVEYOR_SPEED));
+
+				}
+				if (conveyor_y[1]->HitSphere(*player))
+				{
+					player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + CONVEYOR_SPEED));
+
+				}
+				if (conveyor_y[2]->HitSphere(*player))
+				{
+					player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - CONVEYOR_SPEED));
+
+				}
+				if (conveyor_y[3]->HitSphere(*player))
+				{
+					player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + CONVEYOR_SPEED));
+
+				}
+				if (conveyor_y[4]->HitSphere(*player))
+				{
+					player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - CONVEYOR_SPEED));
+
+				}
+				if (conveyor_y[5]->HitSphere(*player))
+				{
+					player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + CONVEYOR_SPEED));
+
+				}
+
+				for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
+				{
+					if (bomb[j] != nullptr)
 					{
-						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y - CONVEYOR_SPEED));
-					}
-					if (conveyor_y[1]->HitSphere(*bomb[j]))
-					{
-						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y + CONVEYOR_SPEED));
-					}
-					if (conveyor_y[2]->HitSphere(*bomb[j]))
-					{
-						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y - CONVEYOR_SPEED));
-					}
-					if (conveyor_y[3]->HitSphere(*bomb[j]))
-					{
-						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y + CONVEYOR_SPEED));
-					}
-					if (conveyor_y[4]->HitSphere(*bomb[j]))
-					{
-						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y - CONVEYOR_SPEED));
-					}
-					if (conveyor_y[5]->HitSphere(*bomb[j]))
-					{
-						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y + CONVEYOR_SPEED));
+						if (conveyor_y[0]->HitSphere(*bomb[j]))
+						{
+							bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y - CONVEYOR_SPEED));
+						}
+						if (conveyor_y[1]->HitSphere(*bomb[j]))
+						{
+							bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y + CONVEYOR_SPEED));
+						}
+						if (conveyor_y[2]->HitSphere(*bomb[j]))
+						{
+							bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y - CONVEYOR_SPEED));
+						}
+						if (conveyor_y[3]->HitSphere(*bomb[j]))
+						{
+							bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y + CONVEYOR_SPEED));
+						}
+						if (conveyor_y[4]->HitSphere(*bomb[j]))
+						{
+							bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y - CONVEYOR_SPEED));
+						}
+						if (conveyor_y[5]->HitSphere(*bomb[j]))
+						{
+							bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y + CONVEYOR_SPEED));
+						}
 					}
 				}
-			}
-			for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
-			{
-				if (soldier[j] != nullptr)
+				for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
 				{
-					if (conveyor_y[0]->HitSphere(*soldier[j]))
+					if (soldier[j] != nullptr)
 					{
-						soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y - CONVEYOR_SPEED));
-					}
-					if (conveyor_y[1]->HitSphere(*soldier[j]))
-					{
-						soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y + CONVEYOR_SPEED));
-					}
-					if (conveyor_y[2]->HitSphere(*soldier[j]))
-					{
-						soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y - CONVEYOR_SPEED));
-					}
-					if (conveyor_y[3]->HitSphere(*soldier[j]))
-					{
-						soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y + CONVEYOR_SPEED));
-					}
-					if (conveyor_y[4]->HitSphere(*soldier[j]))
-					{
-						soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y - CONVEYOR_SPEED));
-					}
-					if (conveyor_y[5]->HitSphere(*soldier[j]))
-					{
-						soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y + CONVEYOR_SPEED));
+						if (conveyor_y[0]->HitSphere(*soldier[j]))
+						{
+							soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y - CONVEYOR_SPEED));
+						}
+						if (conveyor_y[1]->HitSphere(*soldier[j]))
+						{
+							soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y + CONVEYOR_SPEED));
+						}
+						if (conveyor_y[2]->HitSphere(*soldier[j]))
+						{
+							soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y - CONVEYOR_SPEED));
+						}
+						if (conveyor_y[3]->HitSphere(*soldier[j]))
+						{
+							soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y + CONVEYOR_SPEED));
+						}
+						if (conveyor_y[4]->HitSphere(*soldier[j]))
+						{
+							soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y - CONVEYOR_SPEED));
+						}
+						if (conveyor_y[5]->HitSphere(*soldier[j]))
+						{
+							soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y + CONVEYOR_SPEED));
+						}
 					}
 				}
 			}
@@ -1496,7 +1507,6 @@ AbstractScene* GameMain::Update()
 
 void GameMain::Draw() const
 {
-
 	// 背景
 	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2, 2); i++)
 	{
@@ -1528,7 +1538,7 @@ void GameMain::Draw() const
 
 	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
 	{
-		if (conveyor_y[i] != nullptr)
+		if (conveyor_y[i] != nullptr && ConFlg == true)
 		{
 			conveyor_y[1]->Draw(Camera, CameraDistance);
 			conveyor_y[0]->Draw_up(Camera, CameraDistance);
@@ -1673,8 +1683,6 @@ void GameMain::Draw() const
 		}
 	}
 
-	DrawFormatString(0, 0, 0xffffff, "%d", (int)(1 + (game_frametime / 3600)));
-
 	// ミニマップ
 	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
 	DrawBox(SCREEN_WIDTH - 128 - (GM_MAX_MAPSIZE / 16), 128 - (GM_MAX_MAPSIZE / 16), SCREEN_WIDTH - 128 + (GM_MAX_MAPSIZE / 16), 128 + (GM_MAX_MAPSIZE / 16), 0x8844ff, true);
@@ -1704,7 +1712,7 @@ void GameMain::Draw() const
 
 	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
 	{
-		if (conveyor_y[i] != nullptr)
+		if (conveyor_y[i] != nullptr && ConFlg == true)
 		{
 			DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor_y[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				128 + (conveyor_y[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
