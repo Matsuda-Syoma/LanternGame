@@ -897,7 +897,7 @@ AbstractScene* GameMain::Update()
 				{
 					if (soldier[j] != nullptr)
 					{
-						if (explosion[i]->HitSphere(soldier[j]))
+						if (explosion[i]->HitSphere(soldier[j]) && soldier[j]->CheckMode() == 1)
 						{
 							soldier[j]->SetMode(3);
 						}
@@ -1301,25 +1301,17 @@ AbstractScene* GameMain::Update()
 		StopSoundMem(Sounds::BGM_GMain);
 		result_cnt++;
 
-		switch (result_cnt)
-		{
-		case(1):
+		if (result_cnt == 1) {
 			// プレイヤーが兵隊に捕まっていなかったら
 			if (player->GetHitSoldier() == false)
 			{
 				crack_alpha = 255;
 				soot_alpha = 255;
 			}
-			break;
-		case(200):
+		}
+		if (200 <= result_cnt)
+		{
 			resultflg = true;
-			if (CheckSoundMem(Sounds::BGM_Title) == 0)
-			{
-				PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
-			}
-			break;
-		default:
-			break;
 		}
 
 		// リザルトに遷移するまでフェードアウト
@@ -1413,6 +1405,11 @@ AbstractScene* GameMain::Update()
 	// リザルトフラグがたっているなら
 	if (resultflg == true)
 	{
+
+		if (CheckSoundMem(Sounds::BGM_Title) == 0)
+		{
+			PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
+		}
 
 		// 一回だけ動く
 		if (!resultnewflg)
