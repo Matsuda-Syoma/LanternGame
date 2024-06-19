@@ -1914,7 +1914,7 @@ void GameMain::DrawCloseMap() const
 			{
 				//+(20 * (digit - 2)) - (i * 20)
 				int chr = res[i] - 'a';
-				DrawRotaGraph((SCREEN_WIDTH / 2) - (32 * (((sizeof(res) - 1) / 2))) + (i * 32) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
+				DrawRotaGraph((SCREEN_WIDTH / 2) - (32 * (((sizeof(res) - 2) / 2))) + (i * 32) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
 			}
 			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
 				(SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);
