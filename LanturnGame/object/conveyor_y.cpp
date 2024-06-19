@@ -25,7 +25,7 @@ void Conveyor_y::Update() {
 	box.right = box.left + 100.f;
 	box.bottom = box.top + 600.f;
 
-	if (scroll <= 58)
+	if (scroll <= 56)
 	{
 		scroll = scroll + 2;
 	}
