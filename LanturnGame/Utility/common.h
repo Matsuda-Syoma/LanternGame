@@ -46,6 +46,7 @@ static float Normalize(Vector2D loc, Vector2D loc2)
 static int RandType(int rnd)
 {
 	// 3,1,1,3,2
+	// 集まる、逃げる、追いかけ、ランダム、対称
 	int percent = 0;
 	int addpercent[5] = { 10,10,10,40,30 };
 	//int addpercent[5] = { 0,100,0,0,0 };
