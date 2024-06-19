@@ -27,7 +27,7 @@ void Conveyor_y::Update() {
 
 	if (scroll <= 58)
 	{
-		scroll++;
+		scroll = scroll + 2;
 	}
 	else
 	{
