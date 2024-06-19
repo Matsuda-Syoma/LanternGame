@@ -377,7 +377,6 @@ AbstractScene* GameMain::Update()
 		//ポーズ画面
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_START))
 		{
-			printfDx("%d", PauseFlg);	
 				PauseFlg = !PauseFlg;
 		}
 		// 曲が鳴っていないなら鳴らす
@@ -906,9 +905,9 @@ AbstractScene* GameMain::Update()
 				{
 					if (soldier[j] != nullptr)
 					{
-						if (explosion[i]->HitSphere(soldier[j]))
+						if (explosion[i]->HitSphere(soldier[j]) && soldier[j]->CheckMode() == 1)
 						{
-							soldier[j]->SetDMGflg(3);
+							soldier[j]->SetMode(3);
 						}
 						if (soldier[j]->CheckDLflg() == true)
 						{
@@ -934,18 +933,18 @@ AbstractScene* GameMain::Update()
 			{
 				if (soldier[i]->HitSphere(player))
 				{
-					if (player->GetHitFlg() == false && soldier[i]->CheckDMGflg() == 1)
+					if (player->GetHitFlg() == false && soldier[i]->CheckMode() == 1)
 					{
 						life--;
 						hitmoment = true;
 						player->SetHitFlg(true);
 						player->SetHitSoldier(true);
-						soldier[i]->SetDMGflg(2);
+						soldier[i]->SetMode(2);
 						for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
 						{
 							if (soldier[i] != soldier[c])
 							{
-								soldier[c]->SetDMGflg(0);
+								soldier[c]->SetMode(0);
 							}
 						}
 
@@ -1215,7 +1214,7 @@ AbstractScene* GameMain::Update()
 			{
 
 				// ここに効果音
-
+				PlaySoundMem(Sounds::SE_ComboEnd, DX_PLAYTYPE_BACK);
 				oldcombo = combo;
 				for (int i = 0; i < GM_MAX_COMBOEND; i++)
 				{
@@ -1362,25 +1361,17 @@ AbstractScene* GameMain::Update()
 		StopSoundMem(Sounds::BGM_GMain);
 		result_cnt++;
 
-		switch (result_cnt)
-		{
-		case(1):
+		if (result_cnt == 1) {
 			// プレイヤーが兵隊に捕まっていなかったら
 			if (player->GetHitSoldier() == false)
 			{
 				crack_alpha = 255;
 				soot_alpha = 255;
 			}
-			break;
-		case(200):
+		}
+		if (200 <= result_cnt)
+		{
 			resultflg = true;
-			if (CheckSoundMem(Sounds::BGM_Title) == 0)
-			{
-				PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
-			}
-			break;
-		default:
-			break;
 		}
 
 		// リザルトに遷移するまでフェードアウト
@@ -1474,6 +1465,11 @@ AbstractScene* GameMain::Update()
 	// リザルトフラグがたっているなら
 	if (resultflg == true)
 	{
+
+		if (CheckSoundMem(Sounds::BGM_Title) == 0)
+		{
+			PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
+		}
 
 		// 一回だけ動く
 		if (!resultnewflg)
@@ -1638,7 +1634,6 @@ void GameMain::Draw() const
 	}
 
 	// コンボ
-	DrawCombo();
 	for (int i = 0; i < GM_MAX_COMBOEND; i++)
 	{
 		if (comboend[i] != nullptr)
@@ -1743,7 +1738,7 @@ void GameMain::Draw() const
 	// ミニマップ(兵士)
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
-		if (soldier[i] != nullptr && (soldier[i]->CheckDMGflg() == 1 || soldier[i]->CheckDMGflg() == 0))
+		if (soldier[i] != nullptr && (soldier[i]->CheckMode() == 1 || soldier[i]->CheckMode() == 0))
 		{
 			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
 		}
@@ -1751,6 +1746,10 @@ void GameMain::Draw() const
 	// リザルトじゃないなら
 	if (resultflg == false)
 	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+		DrawBox(SCREEN_WIDTH - 233, 400, SCREEN_WIDTH - 23, 530, 0x000000, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 		char chr_score[] = "score";
 		for (int i = 0; i < sizeof(chr_score); i++)
 		{
@@ -1767,13 +1766,11 @@ void GameMain::Draw() const
 			bufscore /= 10;
 		}
 		bufscore = score;
-		SetDrawBright(210, 210, 255);
 		for (int s = 0; s < num; s++)
 		{
 			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
-		SetDrawBright(255, 255, 255);
 
 	}
 	// リザルトなら
@@ -1863,6 +1860,11 @@ void GameMain::Draw() const
 	}
 
 	textdisp->Draw();
+	if (PauseFlg)
+	{
+		DrawPause();
+	}
+
 
 	// フェードアウト
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, fadeout_alpha);
@@ -1959,22 +1961,6 @@ void GameMain::ChangeMapSize()
 	}
 }
 
-void GameMain::DrawCombo() const
-{
-	int OldSize = GetFontSize();
-	// コンボフラグがたっているなら描画
-	if (comboflg)
-	{
-		SetFontSize(OldSize + ((1 + (ui_combo_framecount)) + (combo / 2)));
-		char buf[4];
-		int StrLen = snprintf(buf, 4, "%d", combo);
-		int StrWidth = GetDrawStringWidth(buf, StrLen);
-		int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-		DrawFormatString(CenterX, SCREEN_HEIGHT / 2, GetColor(255, 255, 255 - (25 * combo)), "%d", combo);
-	}
-	SetFontSize(OldSize);
-}
-
 void GameMain::DrawCloseMap() const
 {
 	int OldDrawMode;
@@ -1989,8 +1975,9 @@ void GameMain::DrawCloseMap() const
 		{
 			for (int i = 0; i < sizeof(res); i++)
 			{
+				//+(20 * (digit - 2)) - (i * 20)
 				int chr = res[i] - 'a';
-				DrawRotaGraph(((SCREEN_WIDTH - GetDrawStringWidth(res,8))/ 2) - 88 + GetRand(3) - 2 + 32 * i, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
+				DrawRotaGraph((SCREEN_WIDTH / 2) - (32 * (((sizeof(res) - 2) / 2))) + (i * 32) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
 			}
 			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
 				(SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);
@@ -2022,4 +2009,16 @@ void GameMain::BlackOutDraw() const
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)max(((botime / 8.) * 63.), 0));
 	DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xffffff, true);
 	SetDrawBlendMode(OldDrawMode, OldDrawParam);
+}
+
+void GameMain::DrawPause() const
+{
+	char res[] = "pause\0";
+
+	for (int i = 0; i < sizeof(res); i++)
+	{
+		//+(20 * (digit - 2)) - (i * 20)
+		int chr = res[i] - 'a';
+		DrawRotaGraph((SCREEN_WIDTH / 2) - (80 * (((sizeof(res) - 2) / 2))) + (i * 80), (SCREEN_HEIGHT / 2) - 120, 1.6, 0.0, alphabetimage[chr], true);
+	}
 }

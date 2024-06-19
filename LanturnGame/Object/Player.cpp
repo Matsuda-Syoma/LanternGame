@@ -6,6 +6,7 @@
 #include "../Utility/UserData.h"
 Player::Player()
 {
+	radius = 8;
 	speed = 5;
 	deadzone = UserData::LoadData(UserData::Type::SETTING);
 }
