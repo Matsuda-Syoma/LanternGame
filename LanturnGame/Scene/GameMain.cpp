@@ -365,12 +365,20 @@ AbstractScene* GameMain::Update()
 	// リザルトじゃない かつ カウントダウンが終わっているとき
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
+		
+		//ポーズ画面
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_START))
+		{
+			printfDx("%d", PauseFlg);	
+				PauseFlg = !PauseFlg;
+		}
 		// 曲が鳴っていないなら鳴らす
 		if (player->GetPlayerFlg() == true && CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 		}
-
+		if(!PauseFlg)
+		{
 		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
@@ -1287,7 +1295,8 @@ AbstractScene* GameMain::Update()
 		}
 
 	}
-
+	}
+	
 	// 残機が０になったら
 	if (player->GetPlayerFlg() == false && resultflg == false) {
 		StopSoundMem(Sounds::BGM_GMain);
@@ -1670,7 +1679,7 @@ void GameMain::Draw() const
 	// ミニマップ(兵士)
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
-		if (soldier[i] != nullptr)
+		if (soldier[i] != nullptr && (soldier[i]->CheckDMGflg() == 1 || soldier[i]->CheckDMGflg() == 0))
 		{
 			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
 		}
@@ -1908,7 +1917,8 @@ void GameMain::DrawCloseMap() const
 	int OldDrawParam;
 	GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (game_frametime % 100) * 4);
-	char res[] = "closing\0";
+	char res[] = "area closing\0";
+	
 	if (MapSize > GM_MIN_MAPSIZE)
 	{
 		if (game_frametime % 1200 > 800 && game_frametime % 1200 <= 900)
@@ -1916,7 +1926,7 @@ void GameMain::DrawCloseMap() const
 			for (int i = 0; i < sizeof(res); i++)
 			{
 				int chr = res[i] - 'a';
-				DrawRotaGraph((SCREEN_WIDTH / 2) - 88 + GetRand(3) - 2 + 32 * i, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
+				DrawRotaGraph(((SCREEN_WIDTH - GetDrawStringWidth(res,8))/ 2) - 88 + GetRand(3) - 2 + 32 * i, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
 			}
 			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
 				(SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);

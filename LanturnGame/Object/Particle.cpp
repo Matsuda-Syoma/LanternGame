@@ -65,6 +65,32 @@ void Particle::Draw(Vector2D loc, float _distance) const
 
 }
 
+void Particle::Draw() const
+{
+	if (flg) {
+		int OldDrawMode;
+		int OldDrawParam;
+		GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
+		if (type == 3)
+		{
+
+			SetDrawBright(color[0], color[1], color[2]);
+			//SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
+
+		}
+		if (visible)
+		{
+			DrawRotaGraphF(location.x,location.y, scale, imageangle, images[type][lifetime], true);
+		}
+		if (type == 3)
+		{
+			SetDrawBright(255, 255, 255);
+		}
+		SetDrawBlendMode(OldDrawMode, OldDrawParam);
+	}
+
+}
+
 bool Particle::Getflg() const
 {
 	return this->flg;
