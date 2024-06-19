@@ -4,6 +4,7 @@
 int Sounds::BGM_Game;
 int Sounds::SE_Explosion[5];
 int Sounds::BGM_GMain;
+int Sounds::SE_ComboEnd;
 int Sounds::SE_Shoot;
 int Sounds::SE_Hit;
 int Sounds::SE_PlayerHit;
@@ -30,10 +31,10 @@ void Sounds::LoadSounds() {
 	SetCreateSoundPitchRate(0);
 
 	BGM_GMain = LoadSoundMem("Resources/sounds/BGM_GMain.wav");
-	//SE_Shoot = LoadSoundMem("Resources/sounds/SE_Shoot.mp3");
+
 	SE_Hit = LoadSoundMem("Resources/sounds/hit.wav");
-	//SE_PlayerHit = LoadSoundMem("Resources/sounds/SE_PlayerHit.mp3chiPlayer = LoadSoundMem("Resources/sounds/SE_CatchiPlayer.mp3");");
-	//SE_Cat
+	SE_ComboEnd = LoadSoundMem("Resources/sounds/explosion.wav");
+
 
 	SE_CD_Soldier = LoadSoundMem("Resources/sounds/SE_sample/maou_se_8bit10.mp3",1);
 	SE_ED_Soldier = LoadSoundMem("Resources/sounds/SE_sample/maou_se_battle_explosion06.mp3",1);
@@ -44,8 +45,6 @@ void Sounds::LoadSounds() {
 	BGM_Title = LoadSoundMem("Resources/sounds/BGM_Title.wav");
 	SE_transition = LoadSoundMem("Resources/sounds/SE_transition.mp3");
 	SE_cursor = LoadSoundMem("Resources/sounds/SE_cursor.mp3");
-
-	//SE_CountDown = LoadSoundMem("Resources/sounds/SE_CountDwon.mp3");
 }
 
 void Sounds::AllStop() {
@@ -66,6 +65,7 @@ void Sounds::SetSoundVolume(int _Type, int _Volume)
 			SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_Explosion[i]);
 		}
 		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_Shoot);
+		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_ComboEnd);
 		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_Hit);
 		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_PlayerHit);
 		SetVolumeSoundMem((int)(_Volume * 39.216), Sounds::SE_CD_Soldier);

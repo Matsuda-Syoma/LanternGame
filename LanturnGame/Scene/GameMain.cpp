@@ -1154,7 +1154,7 @@ AbstractScene* GameMain::Update()
 			{
 
 				// ここに効果音
-
+				PlaySoundMem(Sounds::SE_ComboEnd, DX_PLAYTYPE_BACK);
 				oldcombo = combo;
 				for (int i = 0; i < GM_MAX_COMBOEND; i++)
 				{

@@ -10,6 +10,7 @@ public:
 	};
 	static int BGM_Game;
 	static int SE_Explosion[5];
+	static int SE_ComboEnd;
 	static int BGM_GMain;
 	static int SE_Shoot;
 	static int SE_Hit;
@@ -31,4 +32,3 @@ public:
 	static void AllStop();
 	static void SetSoundVolume(int _Type, int _Volume);
 };
-
