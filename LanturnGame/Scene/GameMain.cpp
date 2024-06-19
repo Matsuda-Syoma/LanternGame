@@ -395,7 +395,7 @@ AbstractScene* GameMain::Update()
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
 		// 曲が鳴っていないなら鳴らす
-		if (CheckSoundMem(Sounds::BGM_GMain) == 0)
+		if (player->GetPlayerFlg() == true && CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 		}
@@ -914,6 +914,7 @@ AbstractScene* GameMain::Update()
 						life--;
 						hitmoment = true;
 						player->SetHitFlg(true);
+						player->SetDamageDirectionFlg(true);
 					}
 				}
 				else if (!explosion[i]->HitSphere(player) && hitmoment == true)
@@ -929,11 +930,11 @@ AbstractScene* GameMain::Update()
 						{
 							soldier[j]->SetDMGflg(3);
 						}
-						if (soldier[j]->ChekDLflg() == true)
+						if (soldier[j]->CheckDLflg() == true)
 						{
-							soldier[j] = nullptr;
-							delete soldier[j];
-							break;
+								soldier[j] = nullptr;
+								delete soldier[j];
+								break;
 						}
 					}
 				}
@@ -953,11 +954,10 @@ AbstractScene* GameMain::Update()
 			{
 				if (soldier[i]->HitSphere(player))
 				{
-					if (player->GetHitFlg() == false && soldier[i]->ChekhitFlg() == true)
+					if (player->GetHitFlg() == false && soldier[i]->CheckDMGflg() == 1)
 					{
 						life--;
 						hitmoment = true;
-						soldier[i]->SetcatchFlg();
 						player->SetHitFlg(true);
 						player->SetHitSoldier(true);
 						soldier[i]->SetDMGflg(2);
@@ -965,7 +965,7 @@ AbstractScene* GameMain::Update()
 						{
 							if (soldier[i] != soldier[c])
 							{
-								soldier[c]->SetmoveFlg();
+								soldier[c]->SetDMGflg(0);
 							}
 						}
 
@@ -975,11 +975,11 @@ AbstractScene* GameMain::Update()
 				{
 					hitmoment = false;
 				}
-				if (soldier[i]->ChekDLflg() == true)
+				if (soldier[i]->CheckDLflg() == true)
 				{
-					soldier[i] = nullptr;
-					delete soldier[i];
-					break;
+						soldier[i] = nullptr;
+						delete soldier[i];
+						break;
 				}
 			}
 		}
@@ -1519,12 +1519,11 @@ AbstractScene* GameMain::Update()
 	}
 
 	// プレイヤーが爆発に当たった かつ プレイヤーが生きている かつ ダメージ演出が表示されていなかったら
-	if (player->GetHitFlg() == true && player->GetPlayerFlg() == true && crackflg == false && player->GetHitSoldier() == false)
+	if (player->GetIDamageDirectionFlg() == true)
 	{
 		crack_alpha = 200;
 		soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
 		crackflg = true;
-
 	}
 
 	// ダメージ演出が表示されている かつ プレイヤーが生きていたら
