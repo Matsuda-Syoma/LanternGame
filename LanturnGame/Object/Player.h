@@ -12,6 +12,7 @@ private:
 	bool overice = false;		// 氷の床に乗ったとき用のフラグ
 	bool onconveyor = false;	// コンベアに乗ったとき用のフラグ
 	bool blinkingflg = false;	// 点滅フラグ
+	bool damagedirection = false;	// ダメージ演出用のフラグ
 	int Invincible_cnt = 0;		// 無敵時間カウント用
 	int blinking_cnt = 0;		// 点滅カウント用
 	int anim_cnt = 0;			// アニメーションカウント用
@@ -21,7 +22,7 @@ private:
 	int deadplayer_img = 0;		// プレイヤー画像（死亡時）
 	int angry_img = 0;			// 兵隊に捕まった時の画像
 	int direction = 4;			// 現在の向き（０：下　１：左　２：右　３：上）
-	int walking_direction = 4;	// 歩行中の向き（４：下　５：左　６：右　７：上）
+	int stop_direction = 4;		// 止まったときの向き（４：下　５：左　６：右　７：上）
 	float deadzone = 0.1f;
 	float acceleration = 1.f;
 	float friction = .8f;
@@ -52,6 +53,8 @@ public:
 	void SetConFlg(bool b);
 	bool GetHitSoldier() const;
 	void SetHitSoldier(bool b);
+	bool GetIDamageDirectionFlg() const;
+	void SetDamageDirectionFlg(bool b);
 	Vector2D GetVelocity();
 	void SetVelocity(Vector2D loc);
 	void SetLastInput();

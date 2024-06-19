@@ -914,6 +914,7 @@ AbstractScene* GameMain::Update()
 						life--;
 						hitmoment = true;
 						player->SetHitFlg(true);
+						player->SetDamageDirectionFlg(true);
 					}
 				}
 				else if (!explosion[i]->HitSphere(player) && hitmoment == true)
@@ -1519,12 +1520,11 @@ AbstractScene* GameMain::Update()
 	}
 
 	// プレイヤーが爆発に当たった かつ プレイヤーが生きている かつ ダメージ演出が表示されていなかったら
-	if (player->GetHitFlg() == true && player->GetPlayerFlg() == true && crackflg == false && player->GetHitSoldier() == false)
+	if (player->GetIDamageDirectionFlg() == true)
 	{
 		crack_alpha = 200;
 		soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
 		crackflg = true;
-
 	}
 
 	// ダメージ演出が表示されている かつ プレイヤーが生きていたら

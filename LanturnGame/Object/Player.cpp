@@ -202,13 +202,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().x > 0.8)
 			{
 				direction = 2;
-				walking_direction = 6;
+				stop_direction = 6;
 			}
 			// 左移動
 			if (InputControl::GetLeftStick().x < -0.8)
 			{
 				direction = 1;
-				walking_direction = 5;
+				stop_direction = 5;
 			}
 		}
 		else {
@@ -216,13 +216,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().x > 0.2)
 			{
 				direction = 2;
-				walking_direction = 6;
+				stop_direction = 6;
 			}
 			// 左移動
 			if (InputControl::GetLeftStick().x < -0.2)
 			{
 				direction = 1;
-				walking_direction = 5;
+				stop_direction = 5;
 			}
 		}
 
@@ -233,13 +233,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().y > 0.8)
 			{
 				direction = 3;
-				walking_direction = 7;
+				stop_direction = 7;
 			}
 			// 下移動
 			if (InputControl::GetLeftStick().y < -0.8)
 			{
 				direction = 0;
-				walking_direction = 4;
+				stop_direction = 4;
 			}
 		}
 		else {
@@ -247,13 +247,13 @@ void Player::Movement()
 			if (InputControl::GetLeftStick().y > 0.2)
 			{
 				direction = 3;
-				walking_direction = 7;
+				stop_direction = 7;
 			}
 			// 下移動
 			if (InputControl::GetLeftStick().y < -0.2)
 			{
 				direction = 0;
-				walking_direction = 4;
+				stop_direction = 4;
 			}
 		}
 
@@ -264,7 +264,7 @@ void Player::Movement()
 	if (InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2 
 		&& InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2) {
 		
-		direction = walking_direction;
+		direction = stop_direction;
 	}
 
 }
@@ -277,16 +277,9 @@ void Player::Invincible()
 	{
 	case(0):
 		break;
-	case(90):
-		// 兵隊に捕まっていたらここで無敵時間終わり
-		if (hitsoldier == true && pflg == true)
-		{
-			hitflg = false;
-			Invincible_cnt = 0;
-		}
-		break;
 	case(180):
 		hitflg = false;
+		damagedirection = false;
 		Invincible_cnt = 0;
 		break;
 	default:
@@ -472,6 +465,17 @@ void Player::SetHitSoldier(bool b)
 {
 	this->hitsoldier = b;
 }
+
+bool Player::GetIDamageDirectionFlg() const
+{
+	return this->damagedirection;
+}
+
+void Player::SetDamageDirectionFlg(bool b)
+{
+	this->damagedirection = b;
+}
+
 
 Vector2D Player::GetVelocity()
 {
