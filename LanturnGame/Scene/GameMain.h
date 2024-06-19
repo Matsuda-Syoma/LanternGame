@@ -117,5 +117,6 @@ public:
 	void SpawnAddScore(Vector2D loc, int _score);
 	void BlackOut(int color, int time);
 	void BlackOutDraw()const;
+	void DrawPause()const;
 };
 
