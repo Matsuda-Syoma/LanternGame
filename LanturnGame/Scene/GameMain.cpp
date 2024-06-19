@@ -47,41 +47,12 @@ GameMain::GameMain()
 				bool ret = false;
 				Vector2D spawnloc = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1100));
 				Vector2D spawnloc2 = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 2000));
-					//(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 
-				// コンベアを見る
-				//for (int j = 0; j < GM_MAX_CONVEYOR; j++)
-				//{
-				//	// 自分以外なら
-				//	if (j != i)
-				//	{
-				//		// 距離を計算
-				//		length = GetLength(conveyor[j]->GetLocation()/*spawnloc*/);
-				//		// 360より短いならだめ:フラグon
-				//		if (length < 360) {
-				//			ret = true;
-				//			break;
-				//		}
-				//	}
-				//}
-				//for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
-				//{
-				//		// 距離を計算
-				//		length = GetLength(stage[j]->GetLocation() /*spawnloc*/);
-				//		// 360より短いならだめ:フラグon
-				//		if (length < 500) {
-				//			ret = true;
-				//			break;
-				//		}
-				//}
-				//// フラグ0ffなら座標指定してるーぷぬける
-				//if (!ret)
-				/*{*/
-					conveyor[0]->SetLocation(spawnloc);
-					conveyor[1]->SetLocation(spawnloc2);
-					conveyor[i]->Update();
-					break;
-				/*}*/
+				conveyor[0]->SetLocation(spawnloc);
+				conveyor[1]->SetLocation(spawnloc2);
+				conveyor[i]->Update();
+				break;
+
 			}
 
 		}
@@ -394,24 +365,25 @@ AbstractScene* GameMain::Update()
 	// リザルトじゃない かつ カウントダウンが終わっているとき
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) {
 
+		
+		//ポーズ画面
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_START))
+		{
+			printfDx("%d", PauseFlg);	
+				PauseFlg = !PauseFlg;
+		}
 		// 曲が鳴っていないなら鳴らす
 		if (player->GetPlayerFlg() == true && CheckSoundMem(Sounds::BGM_GMain) == 0)
 		{
 			PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 		}
-
+		if(!PauseFlg)
+		{
 		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
 		Camera = player->GetLocation();
 		Camera += (float)Camerashake;
-		//体力を徐々に減らす
-		/*if (Displaylife > life)
-		{
-			if ((game_frametime % 2) == 0) {
-				Displaylife = Displaylife - 1;
-			}
-		}*/
 
 		// プレイヤーが生きている&兵士が当たってないとき
 		if (player->GetPlayerFlg() && !player->GetHitSoldier())
@@ -848,7 +820,7 @@ AbstractScene* GameMain::Update()
 									bomb[i]->hitset();
 								}
 							}
-							//SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), player->GetLocation(), 0.5f, 0.f);
+
 							SetCameraShake(7);
 					}
 				}
@@ -1006,17 +978,11 @@ AbstractScene* GameMain::Update()
 			{
 				player->SetLocation(Vector2D(player->GetLocation().x + CONVEYOR_SPEED, player->GetLocation().y));
 
-				/*if (player->GetConFlg() == false) {
-					player->SetConFlg(true);
-				}*/
 			}
 			if (conveyor[1]->HitSphere(*player))
 			{
 				player->SetLocation(Vector2D(player->GetLocation().x - CONVEYOR_SPEED, player->GetLocation().y));
 
-				/*if (player->GetConFlg() == false) {
-					player->SetConFlg(true);
-				}*/
 			}
 
 			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
@@ -1057,17 +1023,11 @@ AbstractScene* GameMain::Update()
 			{
 				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - CONVEYOR_SPEED));
 
-				/*if (player->GetConFlg() == false) {
-					player->SetConFlg(true);
-				}*/
 			}
 			if (conveyor_y[1]->HitSphere(*player))
 			{
 				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + CONVEYOR_SPEED));
 
-				/*if (player->GetConFlg() == false) {
-					player->SetConFlg(true);
-				}*/
 			}
 
 			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
@@ -1232,107 +1192,6 @@ AbstractScene* GameMain::Update()
 
 		Vector2D cDistance;
 
-		// 爆弾見る
-		//for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
-		//{
-		//	if (bomb[i] != nullptr)
-		//	{
-		//		// 点火しているなら
-		//		if (bomb[i]->GetExpFlg())
-		//		{
-		//			ffff = 120;
-		//			cDistance = Vector2D(bomb[i]->GetLocation().x - Camera.x, bomb[i]->GetLocation().y - Camera.y);
-		//			//cFlg = true;
-		//
-		//
-		//			if (cDistance.x < cMin.x)
-		//			{
-		//				cMin.x = cDistance.x;
-		//			}
-		//			if(cDistance.x >= cMax.x)
-		//			{
-		//				cMax.x = cDistance.x;
-		//			}
-		//			if (cDistance.y < cMin.y)
-		//			{
-		//				cMin.y = cDistance.y;
-		//			}
-		//			if (cDistance.y >= cMax.y)
-		//			{
-		//				cMax.y = cDistance.y;
-		//			}
-		//
-		//
-		//			// 点火爆弾をtempに保存
-		//			int exptemp = i;
-		//			if (exptemp != -1)
-		//			{
-		//				while (1)
-		//				{
-		//
-		//					bool LoopFlg = false;
-		//					for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
-		//					{
-		//						if (j != exptemp)
-		//						{
-		//							if (bomb[j] != nullptr)
-		//							{
-		//								if (bomb[exptemp]->HitSphere(bomb[j], (15 * (C_ExpSize - 2))))
-		//								{
-		//									cDistance = Vector2D(bomb[j]->GetLocation().x - Camera.x, bomb[j]->GetLocation().y - Camera.y);
-		//									// jとplayerの距離が遠いなら真
-		//									// 距離
-		//									if (cDistance.x < cMin.x)
-		//									{
-		//										cMin.x = cDistance.x;
-		//										LoopFlg = true;
-		//										exptemp = j;
-		//										break;
-		//									}
-		//									//if (cDistance.x >= cMax.x)
-		//									//{
-		//									//	cMax.x = cDistance.x;
-		//									//	LoopFlg = true;
-		//									//	temp = j;
-		//									//	break;
-		//									//}
-		//									//if (cDistance.y < cMin.y)
-		//									//{
-		//									//	cMin.y = cDistance.y;
-		//									//	LoopFlg = true;
-		//									//	temp = j;
-		//									//	break;
-		//									//}
-		//									//if (cDistance.y >= cMax.y)
-		//									//{
-		//									//	cMax.y = cDistance.y;
-		//									//	LoopFlg = true;
-		//									//	temp = j;
-		//									//	break;
-		//									//}
-		//									//if (0)
-		//									//{
-		//									//	LoopFlg = true;
-		//									//	temp = j;
-		//									//	break;
-		//									//}
-		//
-		//								}
-		//							}
-		//						}
-		//					}
-		//					if (!LoopFlg)
-		//					{
-		//						//SpawnParticle(1, nullptr, true, bomb[exptemp]->GetLocation(), 0.0f, 1.0f, 0.0f);
-		//						break;
-		//
-		//					}
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
-
 		bool CameraFlg = false;
 		for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++)
 		{
@@ -1341,8 +1200,6 @@ AbstractScene* GameMain::Update()
 
 				CameraFlg = true;
 				cDistance = Vector2D(explosion[i]->GetLocation().x - Camera.x, explosion[i]->GetLocation().y - Camera.y);
-				//cFlg = true;
-
 
 				if (cDistance.x < cMin.x)
 				{
@@ -1438,7 +1295,8 @@ AbstractScene* GameMain::Update()
 		}
 
 	}
-
+	}
+	
 	// 残機が０になったら
 	if (player->GetPlayerFlg() == false && resultflg == false) {
 		StopSoundMem(Sounds::BGM_GMain);
@@ -1484,7 +1342,6 @@ AbstractScene* GameMain::Update()
 		case(120):
 			countdown--;
 			countsize = 3.0;
-			//PlaySoundMem(Sounds::SE_CntDown, DX_PLAYTYPE_BACK);
 			break;
 		case(180):
 			countdown--;
@@ -1518,8 +1375,8 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	// プレイヤーが爆発に当たった かつ プレイヤーが生きている かつ ダメージ演出が表示されていなかったら
-	if (player->GetIDamageDirectionFlg() == true)
+	// プレイヤーが爆発に当たった かつ ダメージ演出が表示されていなかったら
+	if (player->GetIDamageDirectionFlg() == true && crackflg == false)
 	{
 		crack_alpha = 200;
 		soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
@@ -1641,13 +1498,9 @@ void GameMain::Draw() const
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 127);
 	float Scale = (float)(1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM));
 	DrawBoxAA((float)((MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2))), (float)(-(MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)((GM_MAX_MAPSIZE * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) + 16), (float)((MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), 0x000000, true);
-	//DrawBoxAA(MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) + 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
 	DrawBoxAA((float)(-(MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2))), (float)(-(MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)(-(GM_MAX_MAPSIZE * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) - 16), (float)((MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), 0x000000, true);
-	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), -GM_MAX_MAPSIZE + (-Camera.x + (SCREEN_WIDTH / 2)) - 16, MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), 0x000000, true);
 	DrawBoxAA((float)(-(MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize))), (float)((MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)((MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize))), (float)((GM_MAX_MAPSIZE * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16), 0x000000, true);
-	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) + 16, 0x000000, true);
 	DrawBoxAA((float)(-(MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize))), (float)(-(MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)((MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize))), (float)(-(GM_MAX_MAPSIZE * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16), 0x000000, true);
-	//DrawBoxAA(-MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize)), -MapSize + (-Camera.y + (SCREEN_HEIGHT / 2)), MapSize + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize)), -GM_MAX_MAPSIZE + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	// 爆弾
@@ -1761,15 +1614,11 @@ void GameMain::Draw() const
 		}
 	}
 
-	/*DrawBox(SCREEN_WIDTH - 235, 328, SCREEN_WIDTH - 16, 378, 0x444444, true);
-	DrawFormatString(SCREEN_WIDTH - 215, 328, 0xffffff, "%d / 100", Displaylife);
-	DrawBox(SCREEN_WIDTH - 230, 358, (SCREEN_WIDTH -230) + (Displaylife * 2), 368, 0xffffff, true);*/
 
 	// ミニマップ
 	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
 	DrawBox(SCREEN_WIDTH - 128 - (GM_MAX_MAPSIZE / 16), 128 - (GM_MAX_MAPSIZE / 16), SCREEN_WIDTH - 128 + (GM_MAX_MAPSIZE / 16), 128 + (GM_MAX_MAPSIZE / 16), 0x8844ff, true);
 	DrawBoxAA(SCREEN_WIDTH - 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 0x88ff88, true);
-
 
 
 	// ミニマップ(ギミック(氷)
@@ -1790,7 +1639,6 @@ void GameMain::Draw() const
 				128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				SCREEN_WIDTH - 128 + (conveyor[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				128 + (conveyor[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
-			//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
 		}
 	}
 
@@ -1802,7 +1650,6 @@ void GameMain::Draw() const
 				128 + (conveyor_y[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				SCREEN_WIDTH - 128 + (conveyor_y[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				128 + (conveyor_y[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
-			//DrawBoxAA(box.left + (-loc.x + SCREEN_WIDTH / 2), box.top + (-loc.y + SCREEN_HEIGHT / 2), (box.right + (-loc.x + SCREEN_WIDTH / 2)), (box.bottom + (-loc.y + SCREEN_HEIGHT / 2)), GetColor(80, 20, 0), 1);
 		}
 	}
 	// ミニマップ(ギミック(竜巻)
@@ -1832,7 +1679,7 @@ void GameMain::Draw() const
 	// ミニマップ(兵士)
 	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
 	{
-		if (soldier[i] != nullptr)
+		if (soldier[i] != nullptr && (soldier[i]->CheckDMGflg() == 1 || soldier[i]->CheckDMGflg() == 0))
 		{
 			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
 		}
@@ -1840,6 +1687,13 @@ void GameMain::Draw() const
 	// リザルトじゃないなら
 	if (resultflg == false)
 	{
+		char chr_score[] = "score";
+		for (int i = 0; i < sizeof(chr_score); i++)
+		{
+			int chr = chr_score[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 190) + 33 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
+		}
+
 		//スコアの表示
 		int bufscore = score;
 		int num = 0;
@@ -1850,14 +1704,13 @@ void GameMain::Draw() const
 		}
 		bufscore = score;
 		SetDrawBright(210, 210, 255);
-		for (int i = 0; i < num; i++)
+		for (int s = 0; s < num; s++)
 		{
-			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-			DrawRotaGraph((SCREEN_WIDTH - 655 + (20 * num) / 2) - (20 * i), 20, 0.5, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 		SetDrawBright(255, 255, 255);
-		//DrawFormatString(320, 25, 0xffffff, "%02dmin %02dsec", game_frametime / 3600,(game_frametime / 60) % 60);
+
 	}
 	// リザルトなら
 	else
@@ -1910,7 +1763,6 @@ void GameMain::Draw() const
 		bufhiscore = hiscore;
 		for (int h = 0; h < hi_num; h++)
 		{
-			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
 			DrawRotaGraph((SCREEN_WIDTH - 290 + (28 * hi_num) / 2) - (28 * h), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
 			bufhiscore /= 10;
 		}
@@ -1925,7 +1777,6 @@ void GameMain::Draw() const
 		bufscore = score;
 		for (int s = 0; s < num; s++)
 		{
-			//CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
 			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * s), 270, 1.0, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
@@ -2062,21 +1913,12 @@ void GameMain::DrawCombo() const
 
 void GameMain::DrawCloseMap() const
 {
-	//int OldSize = GetFontSize();
-	//if (game_frametime % 200 > 100) {
-	//SetFontSize(48 + (game_frametime % 100) /10);
-	//char buf[8] = {"Warning"};
-	//int StrLen = strlen(buf);
-	//int StrWidth = GetDrawStringWidth(buf, StrLen);
-	//int CenterX = (int)((0 + ((SCREEN_WIDTH - 0) / 2)) - (StrWidth / 2));
-	//DrawFormatStringF(CenterX, (SCREEN_HEIGHT / 2) - 120, GetColor(255, 64, 64), "%s", buf);
-	//}
-	//SetFontSize(OldSize);
 	int OldDrawMode;
 	int OldDrawParam;
 	GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (game_frametime % 100) * 4);
-	char res[] = "closing\0";
+	char res[] = "area closing\0";
+	
 	if (MapSize > GM_MIN_MAPSIZE)
 	{
 		if (game_frametime % 1200 > 800 && game_frametime % 1200 <= 900)
@@ -2084,9 +1926,8 @@ void GameMain::DrawCloseMap() const
 			for (int i = 0; i < sizeof(res); i++)
 			{
 				int chr = res[i] - 'a';
-				DrawRotaGraph((SCREEN_WIDTH / 2) - 88 + GetRand(3) - 2 + 32 * i, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
+				DrawRotaGraph(((SCREEN_WIDTH - GetDrawStringWidth(res,8))/ 2) - 88 + GetRand(3) - 2 + 32 * i, (SCREEN_HEIGHT / 2) - 120, 0.8, 0.0, alphabetimage[chr], true);
 			}
-			//DrawRotaGraph((SCREEN_WIDTH / 2) + GetRand(3) - 2, (SCREEN_HEIGHT / 2) - 120, 1.0, 0.0, closemapimage, true);
 			DrawBoxAA((SCREEN_WIDTH / 2) - 105, (SCREEN_HEIGHT / 2) - 85,
 				(SCREEN_WIDTH / 2) + 105, (SCREEN_HEIGHT / 2) - 65, 0x000000, true);
 			DrawBoxAA((SCREEN_WIDTH / 2) - (float)(game_frametime % 100) + 100, (SCREEN_HEIGHT / 2) - 80,

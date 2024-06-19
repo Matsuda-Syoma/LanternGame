@@ -28,10 +28,11 @@ void Player::Update()
 {
 	lastinput = 0;
 
+	Movement();
+
 	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
 	if (pflg == true && hitsoldier == false)
 	{
-		Movement();
 		location += velocity;
 		location += exvelocity;
 
@@ -137,41 +138,45 @@ void Player::Draw(Vector2D loc, float _distance) const
 
 void Player::Movement()
 {
-	if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
+	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
+	if (pflg == true && hitsoldier == false)
 	{
-		// スティック入力
-		velocity += Vector2D(
-			InputControl::GetLeftStick().x * acceleration
-		 , -InputControl::GetLeftStick().y * acceleration);
-	}
-	// 摩擦係数
-	if (overice == true)
-	{
-		velocity *= 0.99f;
-	}
-	else 
-	{
-		velocity *= friction;
-	}
+		if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
+		{
+			// スティック入力
+			velocity += Vector2D(
+				InputControl::GetLeftStick().x * acceleration
+				, -InputControl::GetLeftStick().y * acceleration);
+		}
+		// 摩擦係数
+		if (overice == true)
+		{
+			velocity *= 0.99f;
+		}
+		else
+		{
+			velocity *= friction;
+		}
 
-	// 移動ベクトルの大きさの計算
-	movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
+		// 移動ベクトルの大きさの計算
+		movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
 
-	// 最大速度を超えないように
-	if (movelength > speed)
-	{
-		float scale = speed / movelength;
-		velocity.x *= scale;
-		velocity.y *= scale;
-	}
+		// 最大速度を超えないように
+		if (movelength > speed)
+		{
+			float scale = speed / movelength;
+			velocity.x *= scale;
+			velocity.y *= scale;
+		}
 
-	if (fabs(velocity.x) < 0.01)
-	{
-		velocity.x = 0;
-	}
-	if (fabs(velocity.y) < 0.01)
-	{
-		velocity.y = 0;
+		if (fabs(velocity.x) < 0.01)
+		{
+			velocity.x = 0;
+		}
+		if (fabs(velocity.y) < 0.01)
+		{
+			velocity.y = 0;
+		}
 	}
 
 	// 画面外に出ないように
@@ -192,9 +197,8 @@ void Player::Movement()
 		location.y = MapSize - radius;
 	}
 
-
-	// 氷の上に乗っていない時
-	if (hitsoldier == false) {
+	// 兵隊に捕まっていない かつ プレイヤーが生きていたら
+	if (hitsoldier == false && pflg == true) {
 		// 左右アニメーション
 		if (velocity.x == 0)
 		{

@@ -79,7 +79,16 @@ static float ScaleFromCamera(float _distance)
 	return (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM));
 }
 
-//template <typename T>
-//T lerp(const T& a, const T& b, float t) {
-//	return (1 - t) * a + t * b;
-//}
+template <class T>
+constexpr const T& clamp(const T& v, const T& lo, const T& hi)
+{
+	if (v < lo)
+	{
+		return lo;
+	}
+	else if (v > hi)
+	{
+		return hi;
+	}
+	return v;
+}

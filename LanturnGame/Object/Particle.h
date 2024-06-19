@@ -23,6 +23,7 @@ public:
 
 	void Update();
 	void Draw(Vector2D loc, float _distance)const;
+	void Draw() const;
 	bool Getflg()const;
 	static int LoadImages();
 	static void DeleteImages();
