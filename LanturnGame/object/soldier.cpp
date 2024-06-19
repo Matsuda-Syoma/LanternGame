@@ -5,8 +5,8 @@
 #include "math.h"
 
 #define EM 0.1f
-#define EMMAX 2.0f
-#define EMMIN -2.0f
+#define EMRIGHT 2.0f
+#define EMLEFT -2.0f
 
 Soldier::Soldier()
 {
@@ -20,45 +20,48 @@ Soldier::~Soldier()
 
 void Soldier::Initialize()
 {
-	speed = 2;	//���x�̏�����
-	dmgflg = 1;
+	mode = 1;
 	deleteFlg = false;
-	hitFlg = true;//当たり判定
-	catchFlg = false;
-	a = 0;
 	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 66, soldierimg);
 	soldierDetimg = LoadGraph("Resources/images/d_Soldier.png");
 }
 
 void Soldier::Upadate(Vector2D PL)
 {
-	if (dmgflg == 1)
+	if (mode == 1)
 	{
 		Move(PL);
 	}
 	else
 	{
-		hitFlg = false;
+			countNum++;
+			//一定時間たったら動けるようになる
+			if (240 <= countNum)
+			{
+				if (mode == 0)
+				{
+					mode = 1;
+					countNum = 0;
 
-		if (Musicflg == false && dmgflg == 2)
+				}
+				else
+				{
+					deleteFlg = true;
+					countNum = 0;
+
+				}
+			}
+		if (SEflg == false && mode == 2)
 		{
 			//プレイヤーを捕まえた
 			PlaySoundMem(Sounds::SE_CD_Soldier, DX_PLAYTYPE_BACK);
-			Musicflg = true;
+			SEflg = true;
 		}
-		else if (Musicflg == false && dmgflg == 3)
+		if (SEflg == false && mode == 3)
 		{
 			//爆発に巻き込まれた
 			PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
-			Musicflg = true;
-		}
-		
-		countNum++;
-		if (240 <= countNum)
-		{
-			dmgflg = 1;
-			deleteFlg = true;
-			countNum = 0;
+			SEflg = true;
 		}
 	}
 
@@ -67,8 +70,9 @@ void Soldier::Upadate(Vector2D PL)
 
 void Soldier::Draw(Vector2D PL, float _distance)
 {
-	if (dmgflg == 1)
+	if (mode == 1 || mode == 0)
 	{
+		//アニメーション切り替え
 		cnt++;
 		if ((cnt % 60) == 0)
 		{
@@ -78,6 +82,7 @@ void Soldier::Draw(Vector2D PL, float _distance)
 		{
 			animcnt = 0;
 		}
+
 		//兵隊イラストの描画
 		DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
 			, DrawFromCameraY(location, _distance, PL)
@@ -85,7 +90,8 @@ void Soldier::Draw(Vector2D PL, float _distance)
 	}
 	else
 	{
-		if (dmgflg == 3)
+		//爆発に巻き込まれたときのイラストを表示
+		if (mode == 3)
 		{
 			DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
 				, DrawFromCameraY(location, _distance, PL)
@@ -98,42 +104,43 @@ void Soldier::Move(Vector2D PL)
 {
 	//プレイヤーとの中心座標の距離
 	length = location - PL;
-	CD = (int)sqrtf(length.x * length.x + length.y * length.y);
 
-	if (knockback != 0.0f) {
-		knockback /= 1.1f;
-	}
-
-	if (moveFlg == true)
+	//フラグが立っているなら動ける
+	if (mode == 1)
 	{
-		location += knockback;
 		location += velocity * move;
 	}
-	else
+
+	else if(mode == 0)
 	{
+		//一定時間停止したら動けるようになる
 		countNum++;
-		if (240 <= countNum)
+		if (180 <= countNum)
 		{
-			moveFlg = true;
+			mode = 1;
 			countNum = 0;
 		}
 	}
-	//移動速度の処理
-	if (length.x < 0 && move.x < EMMAX)
+	//プレイヤーとの中心座標の距離を比べて移動方向を変える
+	//兵隊がプレイヤーから見て左
+	if (length.x < 0 && move.x < EMRIGHT)
 	{
 		move += Vector2D(EM, 0.0f);
 		Velimg = 6;
 	}
-	if (length.x > 0 && move.x > EMMIN)
+	//兵隊がプレイヤーから見て右
+	if (length.x > 0 && move.x > EMLEFT)
 	{
 		move -= Vector2D(EM, 0.0f);
 		Velimg = 3;
 	}
-	if (length.y < 0 && move.y < EMMAX)
+	//兵隊がプレイヤーから見て下
+	if (length.y < 0 && move.y < EMRIGHT)
 	{
 		move += Vector2D(0.0f, EM);
 	}
-	if (length.y > 0 && move.y > EMMIN)
+	//兵隊がプレイヤーから見て上
+	if (length.y > 0 && move.y > EMLEFT)
 	{
 		move -= Vector2D(0.0f, EM);
 	}
@@ -180,23 +187,14 @@ void Soldier::PositionCheck()
 
 void Soldier::SetDMGflg(int i)
 {
-	dmgflg = i;
+	mode = i;
 }
-bool Soldier::ChekDLflg()
+int Soldier::CheckDMGflg()
+{
+	return mode;
+}
+
+bool Soldier::CheckDLflg()
 {
 	return deleteFlg;
-}
-
-bool Soldier::ChekhitFlg()
-{
-	return hitFlg;
-}
-
-void Soldier::SetcatchFlg()
-{
-	catchFlg = true;
-}
-void Soldier::SetmoveFlg()
-{
-	moveFlg = false;
 }
