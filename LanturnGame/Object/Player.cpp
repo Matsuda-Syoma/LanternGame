@@ -181,21 +181,21 @@ void Player::Movement()
 	}
 
 	// 画面外に出ないように
-	if (location.x < -MapSize + radius)
+	if (location.x < -MapSize + areahitradius)
 	{
-		location.x = -MapSize + radius;
+		location.x = -MapSize + areahitradius;
 	}
-	if (location.x >= MapSize - radius)
+	if (location.x >= MapSize - areahitradius)
 	{
-		location.x = MapSize - radius;
+		location.x = MapSize - areahitradius;
 	}
-	if (location.y < -MapSize + radius)
+	if (location.y < -MapSize + areahitradius)
 	{
-		location.y = -MapSize + radius;
+		location.y = -MapSize + areahitradius;
 	}
-	if (location.y >= MapSize - radius)
+	if (location.y >= MapSize - areahitradius)
 	{
-		location.y = MapSize - radius;
+		location.y = MapSize - areahitradius;
 	}
 
 	// 兵隊に捕まっていない かつ プレイヤーが生きていたら

@@ -9,6 +9,7 @@ private:
 	bool flg = true;
 	static int hukidasiimg;
 	static int numimg[10];
+	static int alphabetimage[26];
 public:
 	ComboEnd(int _combo);
 	ComboEnd();

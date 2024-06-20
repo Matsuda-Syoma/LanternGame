@@ -54,7 +54,7 @@ void AddScore::Update(Vector2D loc)
 		addy += 3;
 	}
 
-	if (cnt > 30)
+	if (cnt > 60)
 	{
 		flg = false;
 	}
