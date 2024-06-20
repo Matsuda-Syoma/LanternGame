@@ -23,7 +23,6 @@ Title::Title()
 	LoadDivGraph("Resources/images/Titlename.png", 2, 1, 2, 272, 128, titlenameimage);
 	titlebombimage = LoadGraph("Resources/images/titlebomb.png", 0);
 	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
-	Particle::LoadImages();
 	particle = new Particle * [GM_MAX_PARTICLE];
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)
 	{
@@ -34,7 +33,6 @@ Title::Title()
 
 Title::~Title()
 {
-	Particle::DeleteImages();
 }
 
 AbstractScene* Title::Update()
@@ -133,12 +131,12 @@ AbstractScene* Title::Update()
 
 	if (fireanim > 60 && fireanim % 3 == 0)
 	{
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			SpawnParticle(3, nullptr, false,
 				Vector2D((SCREEN_WIDTH / 2) + (GetRand(SCREEN_WIDTH) - (SCREEN_WIDTH / 2))
 					, (SCREEN_HEIGHT / 2) + (GetRand(SCREEN_HEIGHT) - (SCREEN_HEIGHT / 2)))
-				, (float)GetRand(360), 2.0f, 0.0f);
+				, (float)GetRand(360), (GetRand(9) + 1) / 5.0f, 0.0f);
 		}
 
 		PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
