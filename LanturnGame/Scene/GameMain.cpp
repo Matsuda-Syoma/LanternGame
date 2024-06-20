@@ -45,14 +45,36 @@ GameMain::GameMain()
 				// 初期値
 				float length = 65535;
 				bool ret = false;
-				Vector2D spawnloc = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 1100));
-				Vector2D spawnloc2 = (Vector2D((float)((int)MapSize) - 1800, (float)((int)MapSize) - 2000));
+				Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+				Vector2D center = (Vector2D((float)((int)MapSize) - 1500, (float)((int)MapSize) - 1500));
 
-				conveyor[0]->SetLocation(spawnloc);
-				conveyor[1]->SetLocation(spawnloc2);
-				conveyor[i]->Update();
-				break;
+				// コンベアを見る
+				for (int j = 0; j < GM_MAX_CONVEYOR; j++)
+				{
+					// 自分以外なら
+					if (j != i)
+					{
+						// 距離を計算
+						length = GetLength(conveyor[j]->GetLocation(), spawnloc);
+						// 360より短いならだめ:フラグon
+						if (length < 600) {
+							ret = true;
+							break;
+						}
+					}
 
+					length = GetLength(center, spawnloc);
+					if (length > 600) {
+						ret = true;
+						break;
+					}
+				}
+				if (!ret)
+				{
+					conveyor[i]->SetLocation(spawnloc);
+					conveyor[i]->Update();
+					break;
+				}
 			}
 
 		}
@@ -75,12 +97,49 @@ GameMain::GameMain()
 				// 初期値
 				float length = 65535;
 				bool ret = false;
-				Vector2D spawnloc = (Vector2D((float)((int)MapSize) - 1100, (float)((int)MapSize) - 1800));
-				Vector2D spawnloc2 = (Vector2D((float)((int)MapSize) - 2000, (float)((int)MapSize) - 1800));
-				conveyor_y[0]->SetLocation(spawnloc);
-				conveyor_y[1]->SetLocation(spawnloc2);
-				conveyor_y[i]->Update();
-				break;
+				bool rat = false;
+				Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+				Vector2D center = (Vector2D((float)((int)MapSize) - 1500, (float)((int)MapSize) - 1500));
+
+				// コンベアを見る
+				for (int j = 0; j < GM_MAX_CONVEYOR_Y; j++)
+				{
+					// 自分以外なら
+					if (j != i)
+					{
+						// 距離を計算
+						length = GetLength(conveyor_y[j]->GetLocation(), spawnloc);
+						// 360より短いならだめ:フラグon
+						if (length < 600) {
+							ret = true;
+							break;
+						}
+					}
+					for (int j = 0; j < GM_MAX_CONVEYOR; j++)
+					{
+						// 距離を計算
+						length = GetLength(conveyor[j]->GetLocation(), spawnloc);
+						// 360より短いなら:フラグon
+						if (length < 600) {
+							ret = true;
+							break;
+						}
+					}
+					length = GetLength(center, spawnloc);
+					if (length > 600) {
+						rat = true;
+						break;
+					}
+				}
+				if (!ret)
+				{
+					if (!rat) {
+						conveyor_y[i]->SetLocation(spawnloc);
+						conveyor_y[i]->Update();
+						break;
+					}
+				}
+				
 			}
 
 		}
@@ -362,11 +421,6 @@ AbstractScene* GameMain::Update()
 	//スコア描画の中心の値を求める
 	ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
 
-	//コンベアの表示
-	if (360 <= game_frametime)
-	{
-		ConFlg = true;
-	}
 		
 
 	// リザルトじゃない かつ カウントダウンが終わっているとき
@@ -1473,11 +1527,8 @@ void GameMain::Draw() const
 
 	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
 	{
-		if (conveyor_y[i] != nullptr && ConFlg == true)
-		{
 			conveyor_y[1]->Draw(Camera, CameraDistance);
 			conveyor_y[0]->Draw_up(Camera, CameraDistance);
-		}
 	}
 
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
@@ -1643,13 +1694,10 @@ void GameMain::Draw() const
 
 	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
 	{
-		if (conveyor_y[i] != nullptr && ConFlg == true)
-		{
 			DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor_y[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				128 + (conveyor_y[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				SCREEN_WIDTH - 128 + (conveyor_y[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				128 + (conveyor_y[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
-		}
 	}
 	// ミニマップ(ギミック(竜巻)
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
