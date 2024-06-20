@@ -119,13 +119,13 @@ GameMain::GameMain()
 						// 距離を計算
 						length = GetLength(conveyor[j]->GetLocation(), spawnloc);
 						// 360より短いなら:フラグon
-						if (length < 800) {
+						if (length < 900) {
 							ret = true;
 							break;
 						}
 					}
 					length = GetLength(center, spawnloc);
-					if (length > 800) {
+					if (length > 900) {
 						rat = true;
 						break;
 					}
