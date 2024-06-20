@@ -28,6 +28,7 @@
     <ClCompile Include="Object\Bomb.cpp" />
     <ClCompile Include="object\conveyor_y.cpp" />
     <ClCompile Include="Object\Explosion.cpp" />
+    <ClCompile Include="object\Conveyor.cpp" />
     <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="object\soldier.cpp" />
     <ClCompile Include="Object\Particle.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Object\CharaBase.h" />
     <ClInclude Include="object\conveyor_y.h" />
     <ClInclude Include="Object\Explosion.h" />
+    <ClInclude Include="object\Conveyor.h" />
     <ClInclude Include="Object\Player.h" />
     <ClInclude Include="object\soldier.h" />
     <ClInclude Include="Object\Particle.h" />

@@ -9,6 +9,7 @@
 #include "../Object/Particle.h"
 #include "../Utility/common.h"
 #include "../Object/stage.h"
+#include "../Object/Conveyor.h"
 #include "../Object/Tornado.h"
 #include "../Object/ComboEnd.h"
 #include "../Utility/TextDisp.h"
@@ -27,6 +28,7 @@ private:
 	BackGround** background;
 	Particle** particle;
 	Stage** stage;
+	Conveyor** conveyor;
 	Tornado** tornado;
 	ComboEnd** comboend;
 	TextDisp* textdisp;
@@ -40,7 +42,6 @@ private:
 	unsigned int oldcombo = 0;
 	unsigned int botime = 0;
 	float MapSize = GM_MAX_MAPSIZE;
-	float Speed = CONVEYOR_SPEED;
 	float MapCloseSpeed = 1;
 	int MaxSpawnEnemyBomb = C_MaxEnemyBomb;
 	int C_MaxEnemyBomb = (int)UserData::LoadData(UserData::SETTING, 1);
