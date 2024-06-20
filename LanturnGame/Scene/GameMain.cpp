@@ -11,7 +11,6 @@ GameMain::GameMain()
 	/*******************画像読み込み*******************/
 	BackGround::LoadImages();
 	Bomb::LoadImages();
-	Particle::LoadImages();
 	Tornado::LoadImages();
 	ComboEnd::LoadImages();
 	AddScore::LoadImages();
@@ -408,7 +407,6 @@ GameMain::~GameMain()
 {
 	Bomb::DeleteImages();
 	Explosion::DeleteImages();
-	Particle::DeleteImages();
 	BackGround::DeleteImages();
 	AddScore::DeleteImages();
 }
@@ -1214,13 +1212,13 @@ AbstractScene* GameMain::Update()
 			{
 
 				// ここに効果音
-				PlaySoundMem(Sounds::SE_ComboEnd, DX_PLAYTYPE_BACK);
+				//PlaySoundMem(Sounds::SE_ComboEnd, DX_PLAYTYPE_BACK);
 				oldcombo = combo;
 				for (int i = 0; i < GM_MAX_COMBOEND; i++)
 				{
 					if (comboend[i] == nullptr)
 					{
-						comboend[i] = new ComboEnd(oldcombo);
+						//comboend[i] = new ComboEnd(oldcombo);
 						break;
 					}
 				}
@@ -1937,6 +1935,14 @@ void GameMain::ChangeMapSize()
 		if (game_frametime % 1200 == 901)
 		{
 			PlaySoundMem(Sounds::SE_MapClose, DX_PLAYTYPE_BACK);
+			for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+			{
+				// 敵がnullptrじゃないなら
+				if (bomb[i] != nullptr)
+				{
+					bomb[i]->SetMode(RandType(GetRand(99)) + 1);
+				}
+			}
 		}
 		if (MapSize > GM_MIN_MAPSIZE)
 		{

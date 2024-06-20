@@ -27,6 +27,7 @@ private:
 	float acceleration = 1.f;
 	float friction = .8f;
 	float movelength = 0.0f;
+	int areahitradius = 32;
 public:
 	Player();
 	~Player();
