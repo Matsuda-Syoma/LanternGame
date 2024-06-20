@@ -127,9 +127,23 @@ AbstractScene* Title::Update()
 	// 60フレームならパーティクル出す
 	if (fireanim == 60)
 	{
-		SpawnParticle(3, nullptr, false, bombloc, (float)GetRand(360), 1.0f, 0.0f);
+		SpawnParticle(3, nullptr, false, bombloc, (float)GetRand(360), 2.0f, 0.0f);
 		PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
 	}
+
+	if (fireanim > 60 && fireanim % 3 == 0)
+	{
+		for (int i = 0; i < 1; i++)
+		{
+			SpawnParticle(3, nullptr, false,
+				Vector2D((SCREEN_WIDTH / 2) + (GetRand(SCREEN_WIDTH) - (SCREEN_WIDTH / 2))
+					, (SCREEN_HEIGHT / 2) + (GetRand(SCREEN_HEIGHT) - (SCREEN_HEIGHT / 2)))
+				, (float)GetRand(360), 2.0f, 0.0f);
+		}
+
+		PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
+	}
+
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)
 	{
 		// パーティクルがnullptrじゃないなら
