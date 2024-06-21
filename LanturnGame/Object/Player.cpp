@@ -231,16 +231,22 @@ void Player::Movement()
 			// 右移動
 			if (InputControl::GetLeftStick().x > 0.8 || InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
 			{
+				if (direction != 2)
+				{
+					anim_cnt = 0;
+				}
 				direction = 2;
 				stop_direction = 6;
-				anim_cnt = 0;
 			}
 			// 左移動
 			else if (InputControl::GetLeftStick().x < -0.8 || InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
 			{
+				if (direction != 1)
+				{
+					anim_cnt = 0;
+				}
 				direction = 1;
 				stop_direction = 5;
-				anim_cnt = 0;
 			}
 		}
 
@@ -248,18 +254,24 @@ void Player::Movement()
 		if (velocity.y != 0)
 		{
 			// 上移動
-			if (InputControl::GetLeftStick().y > 0.8)
+			if (InputControl::GetLeftStick().y > 0.8 || InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
 			{
+				if (direction != 3)
+				{
+					anim_cnt = 0;
+				}
 				direction = 3;
 				stop_direction = 7;
-				anim_cnt = 0;
 			}
 			// 下移動
-			if (InputControl::GetLeftStick().y < -0.8)
+			if (InputControl::GetLeftStick().y < -0.8 || InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
 			{
+				if (direction != 0)
+				{
+					anim_cnt = 0;
+				}
 				direction = 0;
 				stop_direction = 4;
-				anim_cnt = 0;
 			}
 		}
 
@@ -267,9 +279,11 @@ void Player::Movement()
 
 	// 立ち止まっているとき（アニメーション）
 	// 左スティックが入力されていなかったら
-	if (InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2 
-		&& InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2) {
-		
+	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
+		!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) &&
+		InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2
+		&& InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2)
+	{
 		direction = stop_direction;
 	}
 

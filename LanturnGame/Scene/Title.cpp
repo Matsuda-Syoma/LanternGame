@@ -41,8 +41,8 @@ AbstractScene* Title::Update()
 	{
 		PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
 	}
-	
-	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
+	printfDx("%d\n", stickonce);
+	if (InputControl::GetLeftStick().y > 0.8 && !stickonce || InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
 		if (!isCheck)
 		{
@@ -57,7 +57,7 @@ AbstractScene* Title::Update()
 	}
 
 	// カーソル上移動
-	if (InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
+	if (InputControl::GetLeftStick().y < -0.8 && !stickonce || InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 	{
 		if (!isCheck)
 		{
@@ -155,7 +155,15 @@ AbstractScene* Title::Update()
 			}
 		}
 	}
-
+	// スティックを一度だけ処理するフラグ
+	if (fabs(InputControl::GetLeftStick().y) > 0.8)
+	{
+		stickonce = true;
+	}
+	else
+	{
+		stickonce = false;
+	}
 	return this;
 }
 
