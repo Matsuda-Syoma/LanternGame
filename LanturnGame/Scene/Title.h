@@ -19,6 +19,7 @@ private:
 	int cursor_fireanim = 0;
 	bool isCheck = false;
 	int cursor_last = 0;
+	bool stickonce = false;
 
 public:
 	Title();
