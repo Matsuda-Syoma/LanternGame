@@ -63,10 +63,11 @@ GameMain::GameMain()
 					}
 
 					length = GetLength(center, spawnloc);
-					if (length > 800) {
-						if(length < 100)
-						ret = true;
-						break;
+					if (length > 600) {
+						if (length < 100) {
+							ret = true;
+							break;
+						}
 					}
 				}
 				if (!ret)
