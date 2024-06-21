@@ -28,6 +28,7 @@ private:
 	float friction = .8f;
 	float movelength = 0.0f;
 	int areahitradius = 32;
+	bool InputB = false;
 public:
 	Player();
 	~Player();

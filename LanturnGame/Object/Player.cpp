@@ -139,36 +139,38 @@ void Player::Draw(Vector2D loc, float _distance) const
 
 void Player::Movement()
 {
+	InputB = false;
 	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
 	if (pflg == true && hitsoldier == false)
 	{
-		// 十字キーで移動
-		if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) || InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) ||
-			InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) || InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+		//// 十字キーで移動
+		//if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) || InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) ||
+		//	InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) || InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+		//{
+		//	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+		//	{
+		//		velocity.x -= acceleration;
+		//	}
+
+		//	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+		//	{
+		//		velocity.x += acceleration;
+		//	}
+
+		//	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
+		//	{
+		//		velocity.y -= acceleration;
+		//	}
+
+		//	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
+		//	{
+		//		velocity.y += acceleration;
+		//	}
+
+		//}
+		if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
 		{
-			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
-			{
-				velocity.x -= acceleration;
-			}
 
-			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
-			{
-				velocity.x += acceleration;
-			}
-
-			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
-			{
-				velocity.y -= acceleration;
-			}
-
-			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
-			{
-				velocity.y += acceleration;
-			}
-
-		}
-		else if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
-		{
 			// スティック入力
 			velocity += Vector2D(
 				InputControl::GetLeftStick().x * acceleration
@@ -229,7 +231,7 @@ void Player::Movement()
 		if (velocity.x != 0)
 		{
 			// 右移動
-			if (InputControl::GetLeftStick().x > 0.8 || InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+			if (InputControl::GetLeftStick().x > 0.8 /*|| InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT)*/)
 			{
 				if (direction != 2)
 				{
@@ -239,7 +241,7 @@ void Player::Movement()
 				stop_direction = 6;
 			}
 			// 左移動
-			else if (InputControl::GetLeftStick().x < -0.8 || InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+			else if (InputControl::GetLeftStick().x < -0.8/* || InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT)*/)
 			{
 				if (direction != 1)
 				{
@@ -254,7 +256,7 @@ void Player::Movement()
 		if (velocity.y != 0)
 		{
 			// 上移動
-			if (InputControl::GetLeftStick().y > 0.8 || InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
+			if (InputControl::GetLeftStick().y > 0.8 /*|| InputControl::GetButton(XINPUT_BUTTON_DPAD_UP)*/)
 			{
 				if (direction != 3)
 				{
@@ -264,7 +266,7 @@ void Player::Movement()
 				stop_direction = 7;
 			}
 			// 下移動
-			if (InputControl::GetLeftStick().y < -0.8 || InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
+			 else if (InputControl::GetLeftStick().y < -0.8 /*|| InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN)*/)
 			{
 				if (direction != 0)
 				{
@@ -279,8 +281,8 @@ void Player::Movement()
 
 	// 立ち止まっているとき（アニメーション）
 	// 左スティックが入力されていなかったら
-	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) &&
+	if (/*!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
+		!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) &&*/
 		InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2
 		&& InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2)
 	{
