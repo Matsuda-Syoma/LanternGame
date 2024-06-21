@@ -63,7 +63,8 @@ GameMain::GameMain()
 					}
 
 					length = GetLength(center, spawnloc);
-					if (length > 600) {
+					if (length > 800) {
+						if(length < 100)
 						ret = true;
 						break;
 					}
@@ -1089,9 +1090,9 @@ AbstractScene* GameMain::Update()
 			}
 			
 
-				for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
-				{
-					if (bomb[j] != nullptr){
+			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
+			{
+				if (bomb[j] != nullptr) {
 					if (conveyor_y[0]->HitSphere(*bomb[j]))
 					{
 						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y - CONVEYOR_SPEED));
@@ -1101,18 +1102,18 @@ AbstractScene* GameMain::Update()
 						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y + CONVEYOR_SPEED));
 					}
 				}
+			}
 				for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
 				{
-					if (soldier[j] != nullptr){
-					if (conveyor_y[0]->HitSphere(*soldier[j]))
-					{
-						soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y - CONVEYOR_SPEED));
-					}
-					if (conveyor_y[1]->HitSphere(*soldier[j]))
-					{
-						soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y + CONVEYOR_SPEED));
-					}
-					}
+				if (soldier[j] != nullptr){
+				if (conveyor_y[0]->HitSphere(*soldier[j]))
+				{
+					soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y - CONVEYOR_SPEED));
+				}
+				if (conveyor_y[1]->HitSphere(*soldier[j]))
+				{
+					soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y + CONVEYOR_SPEED));
+				}
 				}
 			}
 		}
