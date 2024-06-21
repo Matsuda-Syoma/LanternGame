@@ -142,7 +142,32 @@ void Player::Movement()
 	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
 	if (pflg == true && hitsoldier == false)
 	{
-		if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
+		// 十字キーで移動
+		if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) || InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) ||
+			InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) || InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+		{
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+			{
+				velocity.x -= acceleration;
+			}
+
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+			{
+				velocity.x += acceleration;
+			}
+
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
+			{
+				velocity.y -= acceleration;
+			}
+
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
+			{
+				velocity.y += acceleration;
+			}
+
+		}
+		else if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
 		{
 			// スティック入力
 			velocity += Vector2D(
@@ -201,64 +226,40 @@ void Player::Movement()
 	// 兵隊に捕まっていない かつ プレイヤーが生きていたら
 	if (hitsoldier == false && pflg == true) {
 		// 左右アニメーション
-		if (velocity.x == 0)
+		if (velocity.x != 0)
 		{
 			// 右移動
-			if (InputControl::GetLeftStick().x > 0.8)
+			if (InputControl::GetLeftStick().x > 0.8 || InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
 			{
 				direction = 2;
 				stop_direction = 6;
+				anim_cnt = 0;
 			}
 			// 左移動
-			if (InputControl::GetLeftStick().x < -0.8)
+			else if (InputControl::GetLeftStick().x < -0.8 || InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
 			{
 				direction = 1;
 				stop_direction = 5;
-			}
-		}
-		else {
-			// 右移動
-			if (InputControl::GetLeftStick().x > 0.2)
-			{
-				direction = 2;
-				stop_direction = 6;
-			}
-			// 左移動
-			if (InputControl::GetLeftStick().x < -0.2)
-			{
-				direction = 1;
-				stop_direction = 5;
+				anim_cnt = 0;
 			}
 		}
 
 		// 前後アニメーション
-		if (velocity.y == 0)
+		if (velocity.y != 0)
 		{
 			// 上移動
 			if (InputControl::GetLeftStick().y > 0.8)
 			{
 				direction = 3;
 				stop_direction = 7;
+				anim_cnt = 0;
 			}
 			// 下移動
 			if (InputControl::GetLeftStick().y < -0.8)
 			{
 				direction = 0;
 				stop_direction = 4;
-			}
-		}
-		else {
-			// 上移動
-			if (InputControl::GetLeftStick().y > 0.2)
-			{
-				direction = 3;
-				stop_direction = 7;
-			}
-			// 下移動
-			if (InputControl::GetLeftStick().y < -0.2)
-			{
-				direction = 0;
-				stop_direction = 4;
+				anim_cnt = 0;
 			}
 		}
 
