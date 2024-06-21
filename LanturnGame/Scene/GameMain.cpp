@@ -128,8 +128,10 @@ GameMain::GameMain()
 					}
 					length = GetLength(center, spawnloc);
 					if (length > 900) {
-						rat = true;
-						break;
+						if (length < 100) {
+							rat = true;
+							break;
+						}
 					}
 				}
 				if (!ret)
