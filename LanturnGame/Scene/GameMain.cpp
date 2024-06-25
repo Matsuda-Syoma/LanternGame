@@ -296,7 +296,6 @@ GameMain::GameMain()
 	SpawnParticle(1, player, true,
 		Vector2D(player->GetLocation().x + 15, player->GetLocation().y), 0.f, 1.0, 0.f);
 
-
 	// 吸い込むギミックの初期化
 	tornado = new Tornado * [GM_MAX_TORNADO];
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
@@ -1884,8 +1883,9 @@ void GameMain::SpawnExplosion(Vector2D loc)
 }
 
 // パーティクルのスポーン(種類、親、ループ可か、スポーン座標、向く座標、大きさ
-void GameMain::SpawnParticle(int type, SphereCollider* root, bool loop, Vector2D loc, float angle, float scale, float speed)
+int GameMain::SpawnParticle(int type, SphereCollider* root, bool loop, Vector2D loc, float angle, float scale, float speed)
 {
+	int num = -1;
 	for (int j = 0; j < GM_MAX_PARTICLE; j++)
 	{
 		if (particle[j] == nullptr)
@@ -1899,9 +1899,11 @@ void GameMain::SpawnParticle(int type, SphereCollider* root, bool loop, Vector2D
 			particle[j]->SetLocation(loc);
 			particle[j]->SetAngle(angle);
 			particle[j]->SetSpeed(speed);
+			num = j;
 			break;
 		}
 	}
+	return num;
 }
 
 // カメラ更新
