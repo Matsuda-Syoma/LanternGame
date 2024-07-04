@@ -440,8 +440,7 @@ AbstractScene* GameMain::Update()
 		// プレイヤーの更新
 		player->GetMapSize(MapSize);
 		player->Update();
-		if(conveyor_y[0] != nullptr)
-		Camera = conveyor_y[0]->GetLocation();
+		Camera = player->GetLocation();
 		Camera += (float)Camerashake;
 
 		// プレイヤーが生きている&兵士が当たってないとき
@@ -1087,11 +1086,11 @@ AbstractScene* GameMain::Update()
 				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - CONVEYOR_SPEED));
 
 			}
-			/*if (conveyor_y[1]->HitSphere(*player))
+			if (conveyor_y[1]->HitSphere(*player))
 			{
 				player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + CONVEYOR_SPEED));
 
-			}*/
+			}
 			
 
 			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
@@ -1531,7 +1530,7 @@ void GameMain::Draw() const
 	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
 	{
 			conveyor_y[0]->Draw(Camera, CameraDistance);
-			conveyor_y[0]->Draw_up(Camera, CameraDistance);
+			conveyor_y[1]->Draw_up(Camera, CameraDistance);
 	}
 
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
@@ -1697,10 +1696,13 @@ void GameMain::Draw() const
 
 	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
 	{
+		if (conveyor_y[i] != nullptr)
+		{
 			DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor_y[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				128 + (conveyor_y[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				SCREEN_WIDTH - 128 + (conveyor_y[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
 				128 + (conveyor_y[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
+		}
 	}
 	// ミニマップ(ギミック(竜巻)
 	for (int i = 0; i < GM_MAX_TORNADO; i++)

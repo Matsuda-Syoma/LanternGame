@@ -44,9 +44,9 @@ private:
 	float MapSize = GM_MAX_MAPSIZE;
 	float MapCloseSpeed = 1;
 	int MaxSpawnEnemyBomb = C_MaxEnemyBomb;
-	int C_MaxEnemyBomb = 0;// (int)UserData::LoadData(UserData::SETTING, 1);
+	int C_MaxEnemyBomb = (int)UserData::LoadData(UserData::SETTING, 1);
 	int C_ExpSize = (int)UserData::LoadData(UserData::SETTING, 2);
-	int C_MaxSoldier = 0;// (int)UserData::LoadData(UserData::SETTING, 3);
+	int C_MaxSoldier = (int)UserData::LoadData(UserData::SETTING, 3);
 	Vector2D Camera, cMin, cMax;
 
 	int CameraOutCnt = 0;
