@@ -102,12 +102,24 @@ void Soldier::Draw(Vector2D PL, float _distance)
 void Soldier::Move(Vector2D PL)
 {
 	//プレイヤーとの中心座標の距離
-	length = location - PL;
+	length = PL - location;
+	float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
+	move.x = ((length.x / a) * 2);
+	move.y = ((length.y / a) * 2);
+
+	if (move.x <= 0)
+	{
+		Velimg = 3;
+	}
+	if (move.x >= 0)
+	{
+		Velimg = 6;
+	}
 
 	//フラグが立っているなら動ける
 	if (mode == 1)
 	{
-		location += velocity * move;
+		location += move;
 	}
 
 	else if(mode == 0)
@@ -120,31 +132,7 @@ void Soldier::Move(Vector2D PL)
 			countNum = 0;
 		}
 	}
-	//プレイヤーとの中心座標の距離を比べて移動方向を変える
-	//兵隊がプレイヤーから見て左
-	if (length.x < 0 && move.x < EMRIGHT)
-	{
-		move += Vector2D(EM, 0.0f);
-		Velimg = 6;
-	}
-	//兵隊がプレイヤーから見て右
-	if (length.x > 0 && move.x > EMLEFT)
-	{
-		move -= Vector2D(EM, 0.0f);
-		Velimg = 3;
-	}
-	//兵隊がプレイヤーから見て下
-	if (length.y < 0 && move.y < EMRIGHT)
-	{
-		move += Vector2D(0.0f, EM);
-	}
-	//兵隊がプレイヤーから見て上
-	if (length.y > 0 && move.y > EMLEFT)
-	{
-		move -= Vector2D(0.0f, EM);
-	}
-
-
+	
 }
 
 void Soldier::finalize()
