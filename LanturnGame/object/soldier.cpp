@@ -26,7 +26,7 @@ void Soldier::Initialize()
 	soldierDetimg = LoadGraph("Resources/images/d_Soldier.png");
 }
 
-void Soldier::Upadate(Vector2D PL)
+void Soldier::Update(Vector2D PL)
 {
 	if (mode == 1)
 	{

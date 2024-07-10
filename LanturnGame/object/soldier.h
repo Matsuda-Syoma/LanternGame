@@ -11,7 +11,7 @@ public:
 	
 	void Initialize();//初期化
 	void finalize();//終了時
-	void Upadate(Vector2D PL);//更新
+	void Update(Vector2D PL);//更新
 	void Draw(Vector2D PL, float _distance);//描画
 	void Move(Vector2D PL);//移動
 	float direction(Vector2D L);//向き

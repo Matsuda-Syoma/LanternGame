@@ -78,6 +78,7 @@ private:
 	bool highscoreflg = false;
 	bool crackflg = false;
 	bool PauseFlg = false;
+	bool ActionFlg = true;
 
 	__int8 ui_combo_framecount = 0;
 

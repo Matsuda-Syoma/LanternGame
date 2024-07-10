@@ -511,8 +511,8 @@ AbstractScene* GameMain::Update()
 			if (soldier[i] != nullptr)
 			{
 				// 更新処理
-				if( 0 < life)
-				soldier[i]->Upadate(player->GetLocation());
+				if( 0 < life && ActionFlg == true)
+				soldier[i]->Update(player->GetLocation());
 				soldier[i]->GetMapSize(MapSize);
 				soldier[i]->SetVelocity(1);
 			}
@@ -824,6 +824,7 @@ AbstractScene* GameMain::Update()
 
 				// 敵の更新
 				bomb[i]->GetMapSize(MapSize);
+				if(ActionFlg == true)
 				bomb[i]->Update();
 				// 敵のフラグが1なら
 				if (bomb[i]->GetFlg())
@@ -1337,7 +1338,7 @@ AbstractScene* GameMain::Update()
 			{
 				CameraOutCnt += 5;
 			}
-
+			ActionFlg = false;
 		}
 		else
 		{
@@ -1345,6 +1346,7 @@ AbstractScene* GameMain::Update()
 			{
 				CameraOutCnt--;
 			}
+			ActionFlg = true;
 		}
 		// カメラアップデート
 		CameraUpdate();
