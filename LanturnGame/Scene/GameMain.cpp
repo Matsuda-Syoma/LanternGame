@@ -1255,20 +1255,28 @@ AbstractScene* GameMain::Update()
 			{
 
 				CameraFlg = true;
-				cDistance = Vector2D(explosion[i]->GetLocation().x - Camera.x, explosion[i]->GetLocation().y - Camera.y);
+				cDistance = Vector2D(explosion[i]->GetLocation().x - Camera.x
+									,explosion[i]->GetLocation().y - Camera.y);
 
+				// 爆発-カメラのX座標の長さが元の数値より小さいなら保存
 				if (cDistance.x < cMin.x)
 				{
 					cMin.x = cDistance.x;
 				}
+
+				// 爆発-カメラのX座標の長さが元の数値より大きいなら保存
 				if (cDistance.x >= cMax.x)
 				{
 					cMax.x = cDistance.x;
 				}
+
+				// 爆発-カメラのY座標の長さが元の数値より小さいなら保存
 				if (cDistance.y < cMin.y)
 				{
 					cMin.y = cDistance.y;
 				}
+
+				// 爆発-カメラのY座標の長さが元の数値より大きいなら保存
 				if (cDistance.y >= cMax.y)
 				{
 					cMax.y = cDistance.y;
