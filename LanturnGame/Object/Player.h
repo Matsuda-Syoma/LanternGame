@@ -13,6 +13,8 @@ private:
 	bool onconveyor = false;	// コンベアに乗ったとき用のフラグ
 	bool blinkingflg = false;	// 点滅フラグ
 	bool damagedirection = false;	// ダメージ演出用のフラグ
+	bool stickflg = false;			// スティック入力フラグ
+	bool crossbuttonflg = false;	// 十字ボタン入力フラグ
 	int Invincible_cnt = 0;		// 無敵時間カウント用
 	int blinking_cnt = 0;		// 点滅カウント用
 	int anim_cnt = 0;			// アニメーションカウント用
