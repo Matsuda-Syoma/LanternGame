@@ -31,11 +31,19 @@ void Player::Update()
 
 	Movement();
 
+	// ノックバックの速度を徐々に遅くする
+	if (knockback != 0.0f)
+	{
+		knockback /= 1.1f;
+	}
+
 	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
 	if (pflg == true && hitsoldier == false)
 	{
 		location += velocity;
 		location += exvelocity;
+		location -= knockback;
+
 
 	}
 	// 兵隊に捕まっていたら
@@ -411,6 +419,20 @@ void Player::Blinking()
 	}
 }
 
+void Player::KnockBack(Vector2D EX)
+{
+	if (Invincible_cnt < 1)
+	{
+		vvec = EX - location;
+		length = GetLength(EX);
+		vvec /= length;
+
+		SetKnockBack(vvec, (int)max(5, 25.f));
+
+	}
+}
+
+
 // 右移動アニメーション
 void Player::MoveRight()
 {
@@ -613,7 +635,17 @@ float Player::GetNormalSpeed()
 	return this->movelength / speed;
 }
 
+float Player::GetLength(Vector2D loc)
+{
+	return sqrtf(powf((loc.x - location.x), 2) + powf((loc.y - location.y), 2));
+}
+
 int Player::GetDirection()
 {
 	return this->direction;
+}
+
+void Player::SetKnockBack(Vector2D vec, int i)
+{
+	this->knockback = vec * (float)i;
 }

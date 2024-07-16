@@ -942,8 +942,11 @@ AbstractScene* GameMain::Update()
 					{
 						life--;
 						hitmoment = true;
+						player->KnockBack(explosion[i]->GetLocation());
+
 						player->SetHitFlg(true);
 						player->SetDamageDirectionFlg(true);
+
 					}
 				}
 				else if (!explosion[i]->HitSphere(player) && hitmoment == true)

@@ -1,11 +1,15 @@
 #pragma once
 #include "CharaBase.h"
+
 class Player : public CharaBase
 {
 private:
 	Vector2D velocity;
 	Vector2D exvelocity;
 	Vector2D lastinput = 0;
+	Vector2D knockback = 0;
+	Vector2D vvec = 0;
+	Vector2D length = 0;
 	bool pflg = true;			// プレイヤー生存フラグ
 	bool hitflg = false;		// ヒットフラグ（爆発or兵隊）
 	bool hitsoldier = false;	// ヒットフラグ（兵隊）
@@ -40,6 +44,7 @@ public:
 	void Movement();
 	void Invincible();	// 無敵時間
 	void Blinking();	// 点滅
+	void KnockBack(Vector2D EX);
 
 	// アニメーション
 	void MoveRight();	// 右移動
@@ -59,10 +64,14 @@ public:
 	void SetHitSoldier(bool b);
 	bool GetIDamageDirectionFlg() const;
 	void SetDamageDirectionFlg(bool b);
+
 	Vector2D GetVelocity();
 	void SetVelocity(Vector2D loc);
 	void SetLastInput();
 	float GetNormalSpeed();
+	float GetLength(Vector2D loc);
 	int GetDirection();
+	void SetKnockBack(Vector2D vec, int i);
+
 };
 
