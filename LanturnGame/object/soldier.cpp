@@ -32,14 +32,7 @@ void Soldier::Update(Vector2D PL)
 {
 	if (state == 1)
 	{
-		if (Movemode == false)
-		{
-			Move1(PL);
-		}
-		else
-		{
-			Move2(PL);
-		}
+			Move(PL);
 		
 		//アニメーション切り替え
 		cnt++;
@@ -109,13 +102,30 @@ void Soldier::Draw(Vector2D PL, float _distance)
 	}
 }
 
-void Soldier::Move1(Vector2D PL)
+void Soldier::Move(Vector2D PL)
 {
-	//プレイヤーとの中心座標の距離
-	length = PL - location;
-	float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
-	move.x = ((length.x / a) * 2);
-	move.y = ((length.y / a) * 2);
+	if (Movemode == false)
+	{
+		//プレイヤーとの中心座標の距離
+		length = PL - location;
+		float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
+		move.x = ((length.x / a) * 2);
+		move.y = ((length.y / a) * 2);
+	}
+	else
+	{
+		//プレイヤーとの中心座標の距離
+		Vector2D input = InputControl::GetLeftStick() * 500;
+
+		input.y *= -1;
+
+		Pin = (PL + input);
+
+		length = Pin - location;
+		float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
+		move.x = ((length.x / a) * 2.5);
+		move.y = ((length.y / a) * 2.5);
+	}
 
 	if (move.x <= 0)
 	{
@@ -142,48 +152,6 @@ void Soldier::Move1(Vector2D PL)
 			countNum = 0;
 		}
 	}	
-}
-
-void Soldier::Move2(Vector2D PL)
-{
-	//プレイヤーとの中心座標の距離
-
-	Vector2D input = InputControl::GetLeftStick() * 500;
-
-	input.y *= -1;
-
-	Pin = (PL + input);
-
-	length = Pin - location;
-	float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
-	move.x = ((length.x / a) * 2.5);
-	move.y = ((length.y / a) * 2.5);
-
-	if (move.x <= 0)
-	{
-		Velimg = 3;
-	}
-	if (move.x >= 0)
-	{
-		Velimg = 6;
-	}
-
-	//フラグが立っているなら動ける
-	if (state == 1)
-	{
-		location += move;
-	}
-
-	else if (state == 0)
-	{
-		//一定時間停止したら動けるようになる
-		countNum++;
-		if (180 <= countNum)
-		{
-			state = 1;
-			countNum = 0;
-		}
-	}
 }
 
 void Soldier::finalize()

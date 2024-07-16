@@ -13,8 +13,7 @@ public:
 	void finalize();//終了時
 	void Update(Vector2D PL);//更新
 	void Draw(Vector2D PL, float _distance);//描画
-	void Move1(Vector2D PL);//移動
-	void Move2(Vector2D PL);//移動
+	void Move(Vector2D PL);//移動
 	float direction(Vector2D L);//向き
 	void SetVelocity(Vector2D loc);
 	void PositionCheck();//壁より外側にいるなら内側に入れる
