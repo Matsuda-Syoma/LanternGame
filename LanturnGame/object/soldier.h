@@ -13,7 +13,8 @@ public:
 	void finalize();//終了時
 	void Update(Vector2D PL);//更新
 	void Draw(Vector2D PL, float _distance);//描画
-	void Move(Vector2D PL);//移動
+	void Move1(Vector2D PL);//移動
+	void Move2(Vector2D PL);//移動
 	float direction(Vector2D L);//向き
 	void SetVelocity(Vector2D loc);
 	void PositionCheck();//壁より外側にいるなら内側に入れる
@@ -23,16 +24,21 @@ public:
 	int CheckMode();//他の兵隊が爆発に巻き込まれた動きが止まる
 	bool CheckDLflg();//消すフラグをセットする
 
+	int GetRandom(int min,int max);
+
 private:
 	Vector2D length = 0;
 	Vector2D move = 0;
 	Vector2D velocity = 0;
+	Vector2D Pin = 0;
+
 	int soldierimg[12];//画像イメージ
 	int soldierDetimg;//画像イメージ
 	int Velimg = 0;//画像の向き
 	int countNum = 0;//時間を測る
 
-	int mode = 1; //0,動けない 1,通常 2,プレイヤーを捕まえた時 3,爆発に巻き込まれたとき
+	int state = 1; //0,動けない 1,通常 2,プレイヤーを捕まえた時 3,爆発に巻き込まれたとき
+	bool Movemode = true;
 	bool deleteFlg = false;//画面からの削除
 	bool SEflg = false;//音が一度だけなる
 
