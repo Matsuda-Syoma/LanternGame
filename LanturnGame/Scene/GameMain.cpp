@@ -985,7 +985,7 @@ AbstractScene* GameMain::Update()
 			{
 				if (soldier[i]->HitSphere(player))
 				{
-					if (player->GetHitFlg() == false && soldier[i]->CheckMode() == 1)
+					if (player->GetHitFlg() == false && soldier[i]->CheckMode() == 1 && ActionFlg == true)
 					{
 						life--;
 						hitmoment = true;
@@ -1254,7 +1254,7 @@ AbstractScene* GameMain::Update()
 
 		Vector2D cDistance;
 
-		bool CameraFlg = false;
+		CameraFlg = false;
 		for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++)
 		{
 			if (explosion[i] != nullptr)
@@ -1346,7 +1346,10 @@ AbstractScene* GameMain::Update()
 			{
 				CameraOutCnt--;
 			}
-			ActionFlg = true;
+			else
+			{
+				ActionFlg = true;
+			}
 		}
 		// カメラアップデート
 		CameraUpdate();
