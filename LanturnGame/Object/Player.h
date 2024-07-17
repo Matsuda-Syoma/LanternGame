@@ -13,7 +13,7 @@ private:
 	bool pflg = true;			// プレイヤー生存フラグ
 	bool hitflg = false;		// ヒットフラグ（爆発or兵隊）
 	bool hitsoldier = false;	// ヒットフラグ（兵隊）
-	bool ignitionflg = true;	// 点火フラグ
+	bool ignitionflg = false;	// 点火フラグ
 	bool overice = false;		// 氷の床に乗ったとき用のフラグ
 	bool onconveyor = false;	// コンベアに乗ったとき用のフラグ
 	bool blinkingflg = false;	// 点滅フラグ
@@ -33,7 +33,7 @@ private:
 	int stop_direction = 4;		// 止まったときの向き（４：下　５：左　６：右　７：上）
 
 	float deadzone = 0.1f;
-	float acceleration = 1.f;
+	float acceleration = 4.f;
 	float friction = .8f;
 	float movelength = 0.0f;
 	int areahitradius = 32;

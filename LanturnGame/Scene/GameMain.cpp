@@ -386,6 +386,12 @@ GameMain::GameMain()
 		addscore[i] = nullptr;
 	}
 
+
+	if (particle[0] != nullptr)
+	{
+		particle[0]->SetVisible(false);
+	}
+
 	/*******************画像読み込み*******************/
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);
@@ -446,7 +452,10 @@ AbstractScene* GameMain::Update()
 		if (player->GetPlayerFlg() && !player->GetHitSoldier() && player->GetIgnitionFlg())
 		{
 			// 炎を表示する
+			if(particle[0] != nullptr)
+			{
 			particle[0]->SetVisible(true);
+			}
 			switch (player->GetDirection())
 			{
 			case 0:
@@ -488,7 +497,10 @@ AbstractScene* GameMain::Update()
 		else
 		{
 			// 炎を表示しない
-			particle[0]->SetVisible(false);
+			if (particle[0] != nullptr)
+			{
+				particle[0]->SetVisible(false);
+			}
 		}
 
 
