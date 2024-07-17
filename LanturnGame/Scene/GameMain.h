@@ -108,7 +108,7 @@ public:
 	void Draw() const override;
 	void Game();
 	void SpawnExplosion(Vector2D loc);
-	void SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, float angle, float scale, float speed);
+	int SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, float angle, float scale, float speed);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
 	void SetMapSize(float f);

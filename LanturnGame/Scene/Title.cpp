@@ -41,7 +41,7 @@ AbstractScene* Title::Update()
 	{
 		PlaySoundMem(Sounds::BGM_Title, DX_PLAYTYPE_BACK);
 	}
-	if (InputControl::GetLeftStick().y > 0.8 && !stickonce /*|| InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN)*/)
+	if (InputControl::GetLeftStick().y > 0.8 && !stickonce || InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_DOWN))
 	{
 		if (!isCheck)
 		{
@@ -56,7 +56,7 @@ AbstractScene* Title::Update()
 	}
 
 	// ƒJ[ƒ\ƒ‹ãˆÚ“®
-	if (InputControl::GetLeftStick().y < -0.8 && !stickonce /*|| InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP)*/)
+	if (InputControl::GetLeftStick().y < -0.8 && !stickonce || InputControl::GetButtonDown(XINPUT_BUTTON_DPAD_UP))
 	{
 		if (!isCheck)
 		{

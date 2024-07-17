@@ -296,7 +296,6 @@ GameMain::GameMain()
 	SpawnParticle(1, player, true,
 		Vector2D(player->GetLocation().x + 15, player->GetLocation().y), 0.f, 1.0, 0.f);
 
-
 	// 吸い込むギミックの初期化
 	tornado = new Tornado * [GM_MAX_TORNADO];
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
@@ -444,7 +443,7 @@ AbstractScene* GameMain::Update()
 		Camera += (float)Camerashake;
 
 		// プレイヤーが生きている&兵士が当たってないとき
-		if (player->GetPlayerFlg() && !player->GetHitSoldier())
+		if (player->GetPlayerFlg() && !player->GetHitSoldier() && player->GetIgnitionFlg())
 		{
 			// 炎を表示する
 			particle[0]->SetVisible(true);
@@ -868,8 +867,13 @@ AbstractScene* GameMain::Update()
 							}
 							// 効果音フラグ立てる
 							SE_HitFlg = true;
-							// 点火フラグ立てる
-							bomb[i]->SetExpFlg(true);
+
+							if (player->GetIgnitionFlg())
+							{
+								// 点火フラグ立てる
+								bomb[i]->SetExpFlg(true);
+
+							}
 							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
 							for (int j = 0; j < 7; j++)
 							{
@@ -944,8 +948,11 @@ AbstractScene* GameMain::Update()
 					{
 						life--;
 						hitmoment = true;
+						player->KnockBack(explosion[i]->GetLocation());
+
 						player->SetHitFlg(true);
 						player->SetDamageDirectionFlg(true);
+
 					}
 				}
 				else if (!explosion[i]->HitSphere(player) && hitmoment == true)
@@ -1262,20 +1269,28 @@ AbstractScene* GameMain::Update()
 			{
 
 				CameraFlg = true;
-				cDistance = Vector2D(explosion[i]->GetLocation().x - Camera.x, explosion[i]->GetLocation().y - Camera.y);
+				cDistance = Vector2D(explosion[i]->GetLocation().x - Camera.x
+									,explosion[i]->GetLocation().y - Camera.y);
 
+				// 爆発-カメラのX座標の長さが元の数値より小さいなら保存
 				if (cDistance.x < cMin.x)
 				{
 					cMin.x = cDistance.x;
 				}
+
+				// 爆発-カメラのX座標の長さが元の数値より大きいなら保存
 				if (cDistance.x >= cMax.x)
 				{
 					cMax.x = cDistance.x;
 				}
+
+				// 爆発-カメラのY座標の長さが元の数値より小さいなら保存
 				if (cDistance.y < cMin.y)
 				{
 					cMin.y = cDistance.y;
 				}
+
+				// 爆発-カメラのY座標の長さが元の数値より大きいなら保存
 				if (cDistance.y >= cMax.y)
 				{
 					cMax.y = cDistance.y;
@@ -1897,8 +1912,9 @@ void GameMain::SpawnExplosion(Vector2D loc)
 }
 
 // パーティクルのスポーン(種類、親、ループ可か、スポーン座標、向く座標、大きさ
-void GameMain::SpawnParticle(int type, SphereCollider* root, bool loop, Vector2D loc, float angle, float scale, float speed)
+int GameMain::SpawnParticle(int type, SphereCollider* root, bool loop, Vector2D loc, float angle, float scale, float speed)
 {
+	int num = -1;
 	for (int j = 0; j < GM_MAX_PARTICLE; j++)
 	{
 		if (particle[j] == nullptr)
@@ -1912,9 +1928,11 @@ void GameMain::SpawnParticle(int type, SphereCollider* root, bool loop, Vector2D
 			particle[j]->SetLocation(loc);
 			particle[j]->SetAngle(angle);
 			particle[j]->SetSpeed(speed);
+			num = j;
 			break;
 		}
 	}
+	return num;
 }
 
 // カメラ更新
