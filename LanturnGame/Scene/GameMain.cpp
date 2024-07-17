@@ -960,6 +960,7 @@ AbstractScene* GameMain::Update()
 						if (explosion[i]->HitSphere(soldier[j]) && soldier[j]->CheckMode() == 1)
 						{
 							soldier[j]->SetMode(3);
+							score += 500 * C_ExpSize;
 						}
 						if (soldier[j]->CheckDLflg() == true)
 						{
