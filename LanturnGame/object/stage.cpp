@@ -6,6 +6,7 @@
 Stage::Stage() {
 	radius = 150;
 	radias = 100;
+	map_radius = radius;
 	images = LoadGraph("Resources/images/ice.png", 0);
 }
 

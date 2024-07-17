@@ -1,19 +1,21 @@
 #include "Tornado.h"
 #include "DxLib.h"
 #include "../Utility/common.h"
+#include "CameraManager.h"
 
 int Tornado::images;
 
 Tornado::Tornado()
 {
 	radius = 200;
+	map_radius = radius;
 }
 
 Tornado::~Tornado()
 {
 }
 
-void Tornado::Update()
+void Tornado::Update(GameMain* _g)
 {
 	if (cnt >= 60) {
 		cnt = 0;
@@ -21,17 +23,16 @@ void Tornado::Update()
 	cnt++;
 }
 
-void Tornado::Draw(Vector2D loc, float _distance) const
+void Tornado::Draw(CameraManager* camera) const
 {
 	//DrawCircleAA(location.x + (-loc.x + SCREEN_WIDTH / 2), location.y + (-loc.y + SCREEN_HEIGHT / 2), radius, 16, GetColor(80, 0, 0), 0);
-	DrawRotaGraphF(DrawFromCameraX(location, _distance, loc)
-				 , DrawFromCameraY(location, _distance, loc)
-				 , 1.5 * ScaleFromCamera(_distance), (((DX_PI) / 180) * (cnt * 3)), images, true);
+	DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+				 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+				 , 1.5f * (1 - ((camera->GetDistance() / DISTANCE_NUM))), (((DX_PI) / 180) * (cnt * 3)), images, true);
 }
 
 int Tornado::LoadImages() {
 	images = LoadGraph("Resources/images/tornado_2.png");
-	//int result = 0;
 	if (images == -1) {
 		printfDx("âÊëúÉGÉâÅ[");
 	}
@@ -41,4 +42,10 @@ int Tornado::LoadImages() {
 void Tornado::DeleteImages()
 {
 	DeleteGraph(images);
+}
+
+void Tornado::Initialize(int _obj_pos)
+{
+	obj_pos = _obj_pos;
+	type = (int)TYPE::_GIMMICK;
 }

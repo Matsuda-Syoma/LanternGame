@@ -32,9 +32,11 @@ private:
 public:
 	Player();
 	~Player();
-	void Init();
-	void Update();
-	void Draw(Vector2D loc, float _distance)const;
+	void Initialize(int _obj_pos)override;
+	void Finalize()override;
+	void Update(GameMain* _g)override;
+	void Draw(CameraManager* camera)const override;
+	void Hit(SphereCollider* _sphere)override;
 	void Movement();
 	void Invincible();	// –³“GŽžŠÔ
 	void Blinking();	// “_–Å

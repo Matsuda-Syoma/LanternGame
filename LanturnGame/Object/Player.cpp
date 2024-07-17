@@ -4,28 +4,37 @@
 #include "../Utility/InputControl.h"
 #include "../Utility/common.h"
 #include "../Utility/UserData.h"
+#include "CameraManager.h"
 Player::Player()
 {
 	radius = 8;
 	speed = 5;
 	deadzone = UserData::LoadData(UserData::Type::SETTING);
+	map_radius = 32;
 }
 
 Player::~Player()
+{
+
+}
+
+void Player::Initialize(int _obj_pos)
+{
+	obj_pos = _obj_pos;
+	type = (int)TYPE::_PLAYER;
+	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
+	deadplayer_img = LoadGraph("Resources/images/player_death.png");
+	angry_img = LoadGraph("Resources/images/angry.png");
+}
+
+void Player::Finalize()
 {
 	DeleteGraph(*playerimg);
 	DeleteGraph(deadplayer_img);
 	DeleteGraph(angry_img);
 }
 
-void Player::Init()
-{
-	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
-	deadplayer_img = LoadGraph("Resources/images/player_death.png");
-	angry_img = LoadGraph("Resources/images/angry.png");
-}
-
-void Player::Update()
+void Player::Update(GameMain* _g)
 {
 	lastinput = 0;
 
@@ -97,33 +106,37 @@ void Player::Update()
 
 }
 
-void Player::Draw(Vector2D loc, float _distance) const
+void Player::Draw(CameraManager* camera) const
 {
 	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
 	if (pflg == true && hitsoldier == false) {
 		// 点滅フラグがfalseだったら
 		if (blinkingflg == false)
 		{
-			DrawRotaGraphF((location.x * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
-						, (location.y * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, playerimg[imgnum], true);
+			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+						 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+						 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, playerimg[imgnum], true);
 		}
 		else {
 			SetIgnoreDrawGraphColor(TRUE);
-			DrawRotaGraphF((location.x * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
-				, (location.y * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, playerimg[imgnum], true);
+			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+						 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+						 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, playerimg[imgnum], true);
 			SetIgnoreDrawGraphColor(FALSE);
 		}
 	}
 	// プレイヤーが死んでいる かつ 兵隊に捕まっていなかったら
 	else if(pflg == false && hitsoldier == false) {
-		DrawRotaGraphF((location.x * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
-			, (location.y * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.0f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, deadplayer_img, true);
+		DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+					 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+					 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, deadplayer_img, true);
 	}
 	// 兵隊に捕まっていたら
 	else if (hitsoldier == true)
 	{
-		DrawRotaGraphF((location.x * (1 - (float)((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.x + (SCREEN_WIDTH / 2))
-			, (location.y * (float)(1 - ((_distance / DISTANCE_MAX) / DISTANCE_NUM))) + (-loc.y + (SCREEN_HEIGHT / 2)), 1.2f * (1 - ((_distance / DISTANCE_MAX) / 4.0f)), 0.0, angry_img, true);
+		DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+					 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+					 , 1.2f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, angry_img, true);
 	}
 	
 	// 元の描画を取得
@@ -135,6 +148,10 @@ void Player::Draw(Vector2D loc, float _distance) const
 	DrawBox(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0xff0000, true);
 	SetDrawBlendMode(OldBlendMode, OldBlendParam);
 
+}
+
+void Player::Hit(SphereCollider* _sphere)
+{
 }
 
 void Player::Movement()

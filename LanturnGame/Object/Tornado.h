@@ -1,6 +1,8 @@
 #pragma once
-#include "SphereCollider.h"
-class Tornado : public SphereCollider
+#include "Object.h"
+class GameMain;
+class CameraManager;
+class Tornado : public Object
 {
 private:
 	static int images;
@@ -8,9 +10,13 @@ private:
 public:
 	Tornado();
 	~Tornado();
-	void Update();
-	void Draw(Vector2D loc, float _distance)const;
 	static int LoadImages();
 	static void DeleteImages();
+
+	void Initialize(int _obj_pos) override;
+	void Finalize() override {};
+	void Update(GameMain* _g) override;
+	void Draw(CameraManager* camera)const override;
+	void Hit(SphereCollider* _sphere) override {};                         // “–‚½‚Á‚½‚Ìˆ—
 };
 
