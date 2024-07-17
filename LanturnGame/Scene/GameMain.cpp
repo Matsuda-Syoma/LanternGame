@@ -845,7 +845,7 @@ AbstractScene* GameMain::Update()
 					}
 
 					// 敵とプレイヤーの当たり判定
-					if (bomb[i]->HitSphere(player))
+					if (bomb[i]->HitSphere(player) && ActionFlg == true)
 					{
 						// プレイヤーと爆弾のベクトル取得
 							vvec = (bomb[i]->GetLocation() - player->GetLocation());

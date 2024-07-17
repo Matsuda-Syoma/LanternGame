@@ -185,12 +185,14 @@ void Player::Movement()
 		// Aボタンで火の付ける/消す
 		if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 		{
-			if (ignitionflg == false)
+			if (!ignitionflg)
 			{
 				ignitionflg = true;
+				acceleration = 0.5f;
 			}
 			else {
 				ignitionflg = false;
+				acceleration = 4.f;
 			}
 		}
 
