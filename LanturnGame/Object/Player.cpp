@@ -182,6 +182,19 @@ void Player::Movement()
 			crossbuttonflg = false;
 		}
 
+		// Aボタンで火の付ける/消す
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
+		{
+			if (ignitionflg == false)
+			{
+				ignitionflg = true;
+			}
+			else {
+				ignitionflg = false;
+			}
+		}
+
+
 		if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
 		{
 			stickflg = true;
@@ -555,6 +568,16 @@ bool Player::GetPlayerFlg() const
 void Player::SetPlayerFlg(bool b)
 {
 	this->pflg = b;
+}
+
+bool Player::GetIgnitionFlg() const
+{
+	return ignitionflg;
+}
+
+void Player::SetIgnitionFlg(bool b)
+{
+	this->ignitionflg = b;
 }
 
 bool Player::GetIceFlg() const

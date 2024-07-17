@@ -443,7 +443,7 @@ AbstractScene* GameMain::Update()
 		Camera += (float)Camerashake;
 
 		// プレイヤーが生きている&兵士が当たってないとき
-		if (player->GetPlayerFlg() && !player->GetHitSoldier())
+		if (player->GetPlayerFlg() && !player->GetHitSoldier() && player->GetIgnitionFlg())
 		{
 			// 炎を表示する
 			particle[0]->SetVisible(true);
@@ -866,8 +866,13 @@ AbstractScene* GameMain::Update()
 							}
 							// 効果音フラグ立てる
 							SE_HitFlg = true;
-							// 点火フラグ立てる
-							bomb[i]->SetExpFlg(true);
+
+							if (player->GetIgnitionFlg())
+							{
+								// 点火フラグ立てる
+								bomb[i]->SetExpFlg(true);
+
+							}
 							SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
 							for (int j = 0; j < 7; j++)
 							{
