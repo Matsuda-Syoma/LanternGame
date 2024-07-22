@@ -107,13 +107,15 @@ void Soldier::Move(Vector2D PL)
 	move.x = ((length.x / a) * 2);
 	move.y = ((length.y / a) * 2);
 
-	if (move.x <= 0)
-	{
-		Velimg = 3;
-	}
-	if (move.x >= 0)
-	{
-		Velimg = 6;
+	if (ConveyorFlg = false) {
+		if (move.x <= 0)
+		{
+			Velimg = 3;
+		}
+		if (move.x >= 0)
+		{
+			Velimg = 6;
+		}
 	}
 
 	//フラグが立っているなら動ける
@@ -184,4 +186,14 @@ int Soldier::CheckMode()
 bool Soldier::CheckDLflg()
 {
 	return deleteFlg;
+}
+
+bool Soldier::GetConveyorFlg() const
+{
+	return ConveyorFlg;
+}
+
+void Soldier::SetConveyorFlg(bool b)
+{
+	this->ConveyorFlg = b;
 }

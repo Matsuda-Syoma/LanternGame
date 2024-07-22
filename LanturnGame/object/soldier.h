@@ -22,6 +22,8 @@ public:
 	void SetMode(int i);//他の兵隊が爆発に巻き込まれた動きが止まる
 	int CheckMode();//他の兵隊が爆発に巻き込まれた動きが止まる
 	bool CheckDLflg();//消すフラグをセットする
+	bool GetConveyorFlg() const;
+	void SetConveyorFlg(bool b);
 
 private:
 	Vector2D length = 0;
@@ -35,6 +37,8 @@ private:
 	int mode = 1; //0,動けない 1,通常 2,プレイヤーを捕まえた時 3,爆発に巻き込まれたとき
 	bool deleteFlg = false;//画面からの削除
 	bool SEflg = false;//音が一度だけなる
+	bool ConveyorFlg = false;
+
 
 	int cnt=0;//時間を測る関数
 	int animcnt=0;//アニメーション切り替え用関数

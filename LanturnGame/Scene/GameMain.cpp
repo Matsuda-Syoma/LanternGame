@@ -1037,7 +1037,6 @@ AbstractScene* GameMain::Update()
 				if (conveyor[0]->HitSphere(*player))
 				{
 					player->SetLocation(Vector2D(player->GetLocation().x + CONVEYOR_SPEED, player->GetLocation().y));
-
 				}
 				if (conveyor[1]->HitSphere(*player))
 				{
@@ -1066,10 +1065,16 @@ AbstractScene* GameMain::Update()
 						if (conveyor[0]->HitSphere(*soldier[j]))
 						{
 							soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x + CONVEYOR_SPEED, soldier[j]->GetLocation().y));
+							if (soldier[j]->GetConveyorFlg() == false) {
+								soldier[j]->SetConveyorFlg(true);
+							}
 						}
 						if (conveyor[1]->HitSphere(*soldier[j]))
 						{
 							soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x - CONVEYOR_SPEED, soldier[j]->GetLocation().y));
+							if (soldier[j]->GetConveyorFlg() == false) {
+								soldier[j]->SetConveyorFlg(true);
+							}
 						}
 					}
 				}
