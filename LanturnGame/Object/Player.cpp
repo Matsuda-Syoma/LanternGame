@@ -36,6 +36,7 @@ void Player::Update()
 	{
 		location += velocity;
 		location += exvelocity;
+		location += knockbackp;
 
 	}
 	// 兵隊に捕まっていたら
@@ -141,7 +142,7 @@ void Player::Movement()
 {
 	InputB = false;
 	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
-	if (pflg == true && hitsoldier == false)
+	if (pflg == true && hitsoldier == false && overice == false)
 	{
 		//// 十字キーで移動
 		//if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) || InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) ||
@@ -176,15 +177,7 @@ void Player::Movement()
 				InputControl::GetLeftStick().x * acceleration
 				, -InputControl::GetLeftStick().y * acceleration);
 		}
-		// 摩擦係数
-		if (overice == true)
-		{
-			velocity *= 0.99f;
-		}
-		else
-		{
-			velocity *= friction;
-		}
+		velocity *= friction;
 
 		// 移動ベクトルの大きさの計算
 		movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
@@ -206,6 +199,12 @@ void Player::Movement()
 			velocity.y = 0;
 		}
 	}
+	//int i = 0;
+	//while (i < 4) {
+	//	if (overice == true) {
+	//		overice = false;
+	//	}
+	//}
 
 	// 画面外に出ないように
 	if (location.x < -MapSize + areahitradius)
@@ -539,4 +538,9 @@ float Player::GetNormalSpeed()
 int Player::GetDirection()
 {
 	return this->direction;
+}
+
+void Player::SetKnockBack_p(Vector2D vec, int i)
+{
+	this->knockbackp = vec * (float)i;
 }

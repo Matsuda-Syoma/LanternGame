@@ -6,6 +6,7 @@ private:
 	Vector2D velocity;
 	Vector2D exvelocity;
 	Vector2D lastinput = 0;
+	Vector2D knockbackp = 0;
 	bool pflg = true;			// プレイヤー生存フラグ
 	bool hitflg = false;		// ヒットフラグ（爆発or兵隊）
 	bool hitsoldier = false;	// ヒットフラグ（兵隊）
@@ -38,6 +39,7 @@ public:
 	void Movement();
 	void Invincible();	// 無敵時間
 	void Blinking();	// 点滅
+	void SetKnockBack_p(Vector2D vec, int i);
 
 	// アニメーション
 	void MoveRight();	// 右移動

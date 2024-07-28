@@ -101,13 +101,14 @@ void Soldier::Draw(Vector2D PL, float _distance)
 
 void Soldier::Move(Vector2D PL)
 {
-	//プレイヤーとの中心座標の距離
-	length = PL - location;
-	float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
-	move.x = ((length.x / a) * 2);
-	move.y = ((length.y / a) * 2);
+	if (ConveyorFlg == false) {
+		//プレイヤーとの中心座標の距離
+		length = PL - location;
+		float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
+		move.x = ((length.x / a) * 2);
+		move.y = ((length.y / a) * 2);
 
-	if (ConveyorFlg = false) {
+
 		if (move.x <= 0)
 		{
 			Velimg = 3;
@@ -116,22 +117,23 @@ void Soldier::Move(Vector2D PL)
 		{
 			Velimg = 6;
 		}
-	}
 
-	//フラグが立っているなら動ける
-	if (mode == 1)
-	{
-		location += move;
-	}
 
-	else if(mode == 0)
-	{
-		//一定時間停止したら動けるようになる
-		countNum++;
-		if (180 <= countNum)
+		//フラグが立っているなら動ける
+		if (mode == 1)
 		{
-			mode = 1;
-			countNum = 0;
+			location += move;
+		}
+
+		else if (mode == 0)
+		{
+			//一定時間停止したら動けるようになる
+			countNum++;
+			if (180 <= countNum)
+			{
+				mode = 1;
+				countNum = 0;
+			}
 		}
 	}
 	
