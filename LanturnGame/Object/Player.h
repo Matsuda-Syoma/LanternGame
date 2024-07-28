@@ -1,29 +1,37 @@
 #pragma once
 #include "CharaBase.h"
+
 class Player : public CharaBase
 {
 private:
 	Vector2D velocity;
 	Vector2D exvelocity;
 	Vector2D lastinput = 0;
-	Vector2D knockbackp = 0;
-	bool pflg = true;			// ƒvƒŒƒCƒ„[¶‘¶ƒtƒ‰ƒO
-	bool hitflg = false;		// ƒqƒbƒgƒtƒ‰ƒOi”š”­or•º‘àj
-	bool hitsoldier = false;	// ƒqƒbƒgƒtƒ‰ƒOi•º‘àj
-	bool overice = false;		// •X‚Ì°‚Éæ‚Á‚½‚Æ‚«—p‚Ìƒtƒ‰ƒO
-	bool onconveyor = false;	// ƒRƒ“ƒxƒA‚Éæ‚Á‚½‚Æ‚«—p‚Ìƒtƒ‰ƒO
-	bool blinkingflg = false;	// “_–Åƒtƒ‰ƒO
-	bool damagedirection = false;	// ƒ_ƒ[ƒW‰‰o—p‚Ìƒtƒ‰ƒO
-	int Invincible_cnt = 0;		// –³“GŠÔƒJƒEƒ“ƒg—p
-	int blinking_cnt = 0;		// “_–ÅƒJƒEƒ“ƒg—p
-	int anim_cnt = 0;			// ƒAƒjƒ[ƒVƒ‡ƒ“ƒJƒEƒ“ƒg—p
-	int stan_cnt = 0;			// ƒXƒ^ƒ“ŠÔƒJƒEƒ“ƒg—p
-	int imgnum = 1;				// ‰æ‘œ•`‰æ—p•Ï”
-	int playerimg[12] = {};		// ƒvƒŒƒCƒ„[‰æ‘œ
-	int deadplayer_img = 0;		// ƒvƒŒƒCƒ„[‰æ‘œi€–Sj
-	int angry_img = 0;			// •º‘à‚É•ß‚Ü‚Á‚½‚Ì‰æ‘œ
-	int direction = 4;			// Œ»İ‚ÌŒü‚«i‚OF‰º@‚PF¶@‚QF‰E@‚RFãj
-	int stop_direction = 4;		// ~‚Ü‚Á‚½‚Æ‚«‚ÌŒü‚«i‚SF‰º@‚TF¶@‚UF‰E@‚VFãj
+	Vector2D knockback = 0;
+	Vector2D vvec = 0;
+	Vector2D length = 0;
+	bool pflg = true;			// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½O
+	bool hitflg = false;		// ï¿½qï¿½bï¿½gï¿½tï¿½ï¿½ï¿½Oï¿½iï¿½ï¿½ï¿½ï¿½orï¿½ï¿½ï¿½ï¿½ï¿½j
+	bool hitsoldier = false;	// ï¿½qï¿½bï¿½gï¿½tï¿½ï¿½ï¿½Oï¿½iï¿½ï¿½ï¿½ï¿½ï¿½j
+	bool ignitionflg = true;	// ï¿½_ï¿½Îƒtï¿½ï¿½ï¿½O
+	bool overice = false;		// ï¿½Xï¿½Ìï¿½ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½pï¿½Ìƒtï¿½ï¿½ï¿½O
+	bool onconveyor = false;	// ï¿½Rï¿½ï¿½ï¿½xï¿½Aï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½pï¿½Ìƒtï¿½ï¿½ï¿½O
+	bool blinkingflg = false;	// ï¿½_ï¿½Åƒtï¿½ï¿½ï¿½O
+	bool damagedirection = false;	// ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½ï¿½oï¿½pï¿½Ìƒtï¿½ï¿½ï¿½O
+	bool stickflg = false;			// ï¿½Xï¿½eï¿½Bï¿½bï¿½Nï¿½ï¿½ï¿½Íƒtï¿½ï¿½ï¿½O
+	bool crossbuttonflg = false;	// ï¿½\ï¿½ï¿½ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½Íƒtï¿½ï¿½ï¿½O
+
+	int Invincible_cnt = 0;		// ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½ÔƒJï¿½Eï¿½ï¿½ï¿½gï¿½p
+	int blinking_cnt = 0;		// ï¿½_ï¿½ÅƒJï¿½Eï¿½ï¿½ï¿½gï¿½p
+	int anim_cnt = 0;			// ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½p
+	int stan_cnt = 0;			// ï¿½Xï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ÔƒJï¿½Eï¿½ï¿½ï¿½gï¿½p
+	int imgnum = 1;				// ï¿½æ‘œï¿½`ï¿½ï¿½pï¿½Ïï¿½
+	int playerimg[12] = {};		// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½æ‘œ
+	int deadplayer_img = 0;		// ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½æ‘œï¿½iï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½j
+	int angry_img = 0;			// ï¿½ï¿½ï¿½ï¿½ï¿½É•ß‚Ü‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‰æ‘œ
+	int direction = 4;			// ï¿½ï¿½ï¿½İ‚ÌŒï¿½ï¿½ï¿½ï¿½iï¿½Oï¿½Fï¿½ï¿½ï¿½@ï¿½Pï¿½Fï¿½ï¿½ï¿½@ï¿½Qï¿½Fï¿½Eï¿½@ï¿½Rï¿½Fï¿½ï¿½j
+	int stop_direction = 4;		// ï¿½~ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ÌŒï¿½ï¿½ï¿½ï¿½iï¿½Sï¿½Fï¿½ï¿½ï¿½@ï¿½Tï¿½Fï¿½ï¿½ï¿½@ï¿½Uï¿½Fï¿½Eï¿½@ï¿½Vï¿½Fï¿½ï¿½j
+
 	float deadzone = 0.1f;
 	float acceleration = 1.f;
 	float friction = .8f;
@@ -37,20 +45,22 @@ public:
 	void Update();
 	void Draw(Vector2D loc, float _distance)const;
 	void Movement();
-	void Invincible();	// –³“GŠÔ
-	void Blinking();	// “_–Å
-	void SetKnockBack_p(Vector2D vec, int i);
+	void Invincible();	// ï¿½ï¿½ï¿½Gï¿½ï¿½ï¿½ï¿½
+	void Blinking();	// ï¿½_ï¿½ï¿½
+	void KnockBack(Vector2D EX);	// ï¿½mï¿½bï¿½Nï¿½oï¿½bï¿½N
 
-	// ƒAƒjƒ[ƒVƒ‡ƒ“
-	void MoveRight();	// ‰EˆÚ“®
-	void MoveLeft();	// ¶ˆÚ“®
-	void MoveUp();		// ãˆÚ“®
-	void MoveDown();	// ‰ºˆÚ“®
+	// ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½
+	void MoveRight();	// ï¿½Eï¿½Ú“ï¿½
+	void MoveLeft();	// ï¿½ï¿½ï¿½Ú“ï¿½
+	void MoveUp();		// ï¿½ï¿½Ú“ï¿½
+	void MoveDown();	// ï¿½ï¿½ï¿½Ú“ï¿½
 
 	bool GetHitFlg() const;
 	void SetHitFlg(bool b);
 	bool GetPlayerFlg() const;
 	void SetPlayerFlg(bool b);
+	bool GetIgnitionFlg() const;
+	void SetIgnitionFlg(bool b);
 	bool GetIceFlg() const;
 	void SetIceFlg(bool b);
 	bool GetConFlg() const;
@@ -59,10 +69,14 @@ public:
 	void SetHitSoldier(bool b);
 	bool GetIDamageDirectionFlg() const;
 	void SetDamageDirectionFlg(bool b);
+
 	Vector2D GetVelocity();
 	void SetVelocity(Vector2D loc);
 	void SetLastInput();
 	float GetNormalSpeed();
+	float GetLength(Vector2D loc);
 	int GetDirection();
+	void SetKnockBack(Vector2D vec, int i);
+
 };
 

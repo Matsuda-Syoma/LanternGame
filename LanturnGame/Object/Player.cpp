@@ -31,12 +31,19 @@ void Player::Update()
 
 	Movement();
 
+	// ノックバックの速度を徐々に遅くする
+	if (knockback != 0.0f)
+	{
+		knockback /= 1.1f;
+	}
+
 	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
 	if (pflg == true && hitsoldier == false)
 	{
 		location += velocity;
 		location += exvelocity;
-		location += knockbackp;
+		location -= knockback;
+
 
 	}
 	// 兵隊に捕まっていたら
@@ -145,39 +152,72 @@ void Player::Movement()
 	if (pflg == true && hitsoldier == false && overice == false)
 	{
 		//// 十字キーで移動
-		//if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) || InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) ||
-		//	InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) || InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
-		//{
-		//	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
-		//	{
-		//		velocity.x -= acceleration;
-		//	}
+		if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) || InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) ||
+			InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) || InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+		{
+			crossbuttonflg = true;
 
-		//	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
-		//	{
-		//		velocity.x += acceleration;
-		//	}
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+			{
+				velocity.x -= acceleration;
+			}
 
-		//	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
-		//	{
-		//		velocity.y -= acceleration;
-		//	}
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
+			{
+				velocity.x += acceleration;
+			}
 
-		//	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
-		//	{
-		//		velocity.y += acceleration;
-		//	}
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
+			{
+				velocity.y -= acceleration;
+			}
 
-		//}
+			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
+			{
+				velocity.y += acceleration;
+			}
+
+		}
+		else {
+			crossbuttonflg = false;
+		}
+
+		// Aボタンで火の付ける/消す
+		if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
+		{
+			if (ignitionflg == false)
+			{
+				ignitionflg = true;
+			}
+			else {
+				ignitionflg = false;
+			}
+		}
+
+
 		if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
 		{
+			stickflg = true;
 
 			// スティック入力
 			velocity += Vector2D(
 				InputControl::GetLeftStick().x * acceleration
 				, -InputControl::GetLeftStick().y * acceleration);
 		}
-		velocity *= friction;
+		else {
+			stickflg = false;
+		}
+
+
+		// 摩擦係数
+		if (overice == true)
+		{
+			velocity *= 0.99f;
+		}
+		else
+		{
+			velocity *= friction;
+		}
 
 		// 移動ベクトルの大きさの計算
 		movelength = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
@@ -229,64 +269,129 @@ void Player::Movement()
 		// 左右アニメーション
 		if (velocity.x != 0)
 		{
-			// 右移動
-			if (InputControl::GetLeftStick().x > 0.8 /*|| InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT)*/)
+			// スティック移動
+			if (crossbuttonflg == false)
 			{
-				if (direction != 2)
+				// 右移動
+				if (InputControl::GetLeftStick().x >= 0.2)
 				{
-					anim_cnt = 0;
+					if (direction != 2)
+					{
+						anim_cnt = 0;
+					}
+					direction = 2;
+					stop_direction = 6;
 				}
-				direction = 2;
-				stop_direction = 6;
+				// 左移動
+				else if (InputControl::GetLeftStick().x <= -0.2)
+				{
+					if (direction != 1)
+					{
+						anim_cnt = 0;
+					}
+					direction = 1;
+					stop_direction = 5;
+				}
 			}
-			// 左移動
-			else if (InputControl::GetLeftStick().x < -0.8/* || InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT)*/)
+
+			// 十字キー移動
+			if (stickflg == false)
 			{
-				if (direction != 1)
+				// 右移動
+				if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
 				{
-					anim_cnt = 0;
+					if (direction != 2)
+					{
+						anim_cnt = 0;
+					}
+					direction = 2;
+					stop_direction = 6;
 				}
-				direction = 1;
-				stop_direction = 5;
+				// 左移動
+				else if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
+				{
+					if (direction != 1)
+					{
+						anim_cnt = 0;
+					}
+					direction = 1;
+					stop_direction = 5;
+				}
 			}
+			
 		}
 
 		// 前後アニメーション
 		if (velocity.y != 0)
 		{
-			// 上移動
-			if (InputControl::GetLeftStick().y > 0.8 /*|| InputControl::GetButton(XINPUT_BUTTON_DPAD_UP)*/)
+			// スティック移動
+			if (crossbuttonflg == false)
 			{
-				if (direction != 3)
+				// 上移動
+				if (InputControl::GetLeftStick().y >= 0.2)
 				{
-					anim_cnt = 0;
+					if (direction != 3)
+					{
+						anim_cnt = 0;
+					}
+					direction = 3;
+					stop_direction = 7;
 				}
-				direction = 3;
-				stop_direction = 7;
+				// 下移動
+				else if (InputControl::GetLeftStick().y <= -0.2)
+				{
+					if (direction != 0)
+					{
+						anim_cnt = 0;
+					}
+					direction = 0;
+					stop_direction = 4;
+				}
 			}
-			// 下移動
-			 else if (InputControl::GetLeftStick().y < -0.8 /*|| InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN)*/)
+
+			// 十字キー移動
+			if (stickflg == false)
 			{
-				if (direction != 0)
+				// 上移動
+				if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
 				{
-					anim_cnt = 0;
+					if (direction != 3)
+					{
+						anim_cnt = 0;
+					}
+					direction = 3;
+					stop_direction = 7;
 				}
-				direction = 0;
-				stop_direction = 4;
+				// 下移動
+				else if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
+				{
+					if (direction != 0)
+					{
+						anim_cnt = 0;
+					}
+					direction = 0;
+					stop_direction = 4;
+				}
 			}
+			
 		}
 
 	}
 
 	// 立ち止まっているとき（アニメーション）
 	// 左スティックが入力されていなかったら
-	if (/*!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
-		!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) &&*/
+	if (!InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) &&
+		!InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) && !InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) &&
 		InputControl::GetLeftStick().x < 0.2 && InputControl::GetLeftStick().x > -0.2
 		&& InputControl::GetLeftStick().y < 0.2 && InputControl::GetLeftStick().y > -0.2)
 	{
 		direction = stop_direction;
 	}
+
+	/*if (stickflg == true && crossbuttonflg == true)
+	{
+		direction = stop_direction;
+	}*/
 
 }
 
@@ -332,6 +437,20 @@ void Player::Blinking()
 		blinkingflg = false;
 	}
 }
+
+void Player::KnockBack(Vector2D EX)
+{
+	if (Invincible_cnt < 1)
+	{
+		vvec = EX - location;
+		length = GetLength(EX);
+		vvec /= length;
+
+		SetKnockBack(vvec, (int)max(5, 25.f));
+
+	}
+}
+
 
 // 右移動アニメーション
 void Player::MoveRight()
@@ -457,6 +576,16 @@ void Player::SetPlayerFlg(bool b)
 	this->pflg = b;
 }
 
+bool Player::GetIgnitionFlg() const
+{
+	return ignitionflg;
+}
+
+void Player::SetIgnitionFlg(bool b)
+{
+	this->ignitionflg = b;
+}
+
 bool Player::GetIceFlg() const
 {
 	return overice;
@@ -535,12 +664,17 @@ float Player::GetNormalSpeed()
 	return this->movelength / speed;
 }
 
+float Player::GetLength(Vector2D loc)
+{
+	return sqrtf(powf((loc.x - location.x), 2) + powf((loc.y - location.y), 2));
+}
+
 int Player::GetDirection()
 {
 	return this->direction;
 }
 
-void Player::SetKnockBack_p(Vector2D vec, int i)
+void Player::SetKnockBack(Vector2D vec, int i)
 {
-	this->knockbackp = vec * (float)i;
+	this->knockback = vec * (float)i;
 }
