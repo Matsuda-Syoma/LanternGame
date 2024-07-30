@@ -1,6 +1,6 @@
 #pragma once
-#include "SphereCollider.h"
-class Explosion : public SphereCollider
+#include "CharaBase.h"
+class Explosion : public CharaBase
 {
 private:
 	bool flg = true;		// ƒtƒ‰ƒO
@@ -10,9 +10,15 @@ private:
 public:
 	Explosion();
 	~Explosion();
-	void Init(int _size);
-	void Update();
-	void Draw(Vector2D loc, float _distance) const;
+
+	void Initialize(GameMain* _g, int _obj_pos)override;
+	void Finalize()override;
+	void Hit(SphereCollider* _sphere)override;
+
+	void Init(int _expsize);
+	void Update(GameMain* _g)override;
+	void Draw(CameraManager* camera)const override;
+
 	bool Getflg()const;
 	static int LoadImages();
 	static void DeleteImages();

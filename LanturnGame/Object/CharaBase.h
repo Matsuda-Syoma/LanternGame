@@ -17,7 +17,7 @@ public:
 		movetoloc = loc;
 	}
 
-	void Initialize(int _obj_pos) override {};
+	void Initialize(GameMain* _g, int _obj_pos) override { gamemain = _g; obj_pos = _obj_pos; };
 	void Finalize() override {};
 
 	void Update(GameMain* _g) override {};

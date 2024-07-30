@@ -22,7 +22,9 @@
     <ClCompile Include="object\BackGround.cpp" />
     <ClCompile Include="Object\Bomb.cpp" />
     <ClCompile Include="Object\CameraManager.cpp" />
+    <ClCompile Include="Object\Explosion.cpp" />
     <ClCompile Include="Object\Object.cpp" />
+    <ClCompile Include="Object\Particle.cpp" />
     <ClCompile Include="Object\SphereCollider.cpp" />
     <ClCompile Include="Object\BoxCollider.cpp" />
     <ClCompile Include="main.cpp" />
@@ -40,7 +42,9 @@
     <ClInclude Include="object\BackGround.h" />
     <ClInclude Include="Object\Bomb.h" />
     <ClInclude Include="Object\CameraManager.h" />
+    <ClInclude Include="Object\Explosion.h" />
     <ClInclude Include="Object\Object.h" />
+    <ClInclude Include="Object\Particle.h" />
     <ClInclude Include="Object\SphereCollider.h" />
     <ClInclude Include="Object\BoxCollider.h" />
     <ClInclude Include="Object\CharaBase.h" />

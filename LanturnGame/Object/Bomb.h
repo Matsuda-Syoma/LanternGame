@@ -22,7 +22,7 @@ private:
 public:
 	Bomb();
 	~Bomb();
-	void Initialize(int _obj_pos)override;
+	void Initialize(GameMain* _g, int _obj_pos)override;
 	void Finalize()override;
 	void Hit(SphereCollider* _sphere)override;
 
@@ -43,10 +43,10 @@ public:
 	void SetKnockBack(Vector2D vec, int i);
 	static void LoadImages();
 	static void DeleteImages();
+	Object* GetInsideBomb();
 
 	//パーティクルを一度だけ表示
 	int hitcheck();
-	Object* GetInsideBomb();
 	void hitset();
 };
 

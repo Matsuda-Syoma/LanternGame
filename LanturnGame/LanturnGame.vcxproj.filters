@@ -17,6 +17,8 @@
     <ClCompile Include="object\BackGround.cpp" />
     <ClCompile Include="Object\Tornado.cpp" />
     <ClCompile Include="Object\Bomb.cpp" />
+    <ClCompile Include="Object\Explosion.cpp" />
+    <ClCompile Include="Object\Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility\InputControl.h" />
@@ -38,6 +40,8 @@
     <ClInclude Include="object\BackGround.h" />
     <ClInclude Include="Object\Tornado.h" />
     <ClInclude Include="Object\Bomb.h" />
+    <ClInclude Include="Object\Explosion.h" />
+    <ClInclude Include="Object\Particle.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico" />

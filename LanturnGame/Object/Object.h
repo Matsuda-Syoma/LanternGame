@@ -19,10 +19,11 @@ protected:
 	int type = -1;
 	int obj_pos = -1;
 	int map_radius = radius;
+	GameMain* gamemain;
 
 public:
 
-	virtual void Initialize(int _obj_pos) = 0;				// 
+	virtual void Initialize(GameMain* _g, int _obj_pos) = 0;				// 
 	virtual void Finalize() = 0;							// 
 	virtual void Update(GameMain* _g) = 0;					// XVˆ—
 	virtual void Draw(CameraManager* camera) const =	0;	// •`‰æˆ—

@@ -4,11 +4,11 @@
 #include "../Object/Object.h"
 #include "../Object/CameraManager.h"
 #include "../Object/Bomb.h"
-//#include "../Object/Explosion.h"
+#include "../Object/Explosion.h"
 #include "../Object/Player.h"
 #include "../Object/BackGround.h"
 //#include "../Object/Soldier.h"
-//#include "../Object/Particle.h"
+#include "../Object/Particle.h"
 #include "../Utility/common.h"
 //#include "../Object/stage.h"
 //#include "../Object/Conveyor.h"
@@ -30,7 +30,7 @@ private:
 	//Explosion** explosion;
 	//Player* player;
 	//Soldier** soldier;
-	//Particle** particle;
+	Particle** particle;
 	//Stage** stage;
 	//Conveyor** conveyor;
 	//Tornado** tornado;
@@ -110,7 +110,6 @@ public:
 	void Draw() const override;
 	void Game();
 	void SpawnExplosion(Vector2D loc);
-	int SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, float angle, float scale, float speed);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
 	void SetMapSize(float f);
@@ -122,8 +121,12 @@ public:
 	void BlackOutDraw()const;
 	void DrawPause()const;
 	int CreateObject(Object* _object);
+	int CreateParticle(int type);
+	Particle* GetParticle(int _num);
 	void DeleteObject(Object* _object, int _pos);
+	void DeleteParticle(Particle* _particle, int _pos);
 	Object* GetObject(int _pos);
 	Object* GetPlayer();
+	CameraManager* GetCamera();
 };
 

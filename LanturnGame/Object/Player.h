@@ -32,7 +32,7 @@ private:
 public:
 	Player();
 	~Player();
-	void Initialize(int _obj_pos)override;
+	void Initialize(GameMain* _g, int _obj_pos)override;
 	void Finalize()override;
 	void Update(GameMain* _g)override;
 	void Draw(CameraManager* camera)const override;

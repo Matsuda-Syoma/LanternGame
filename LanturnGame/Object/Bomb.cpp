@@ -14,9 +14,9 @@ Bomb::Bomb()
 Bomb::~Bomb()
 {
 }
-void Bomb::Initialize(int _obj_pos)
+void Bomb::Initialize(GameMain* _g, int _obj_pos)
 {
-	obj_pos = _obj_pos;
+	CharaBase::Initialize(_g, _obj_pos);
 
 	mode = RandType(GetRand(99)) + 1;
 }
@@ -25,6 +25,55 @@ void Bomb::Finalize()
 }
 void Bomb::Hit(SphereCollider* _sphere)
 {
+	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_PLAYER)
+	{
+		// プレイヤーと爆弾のベクトル取得
+		Vector2D vvec = (GetLocation() - _sphere->GetLocation());
+		float length = GetLength(_sphere->GetLocation());
+		vvec /= length;
+
+		// 点火してないなら
+		if (!GetExpFlg())
+		{
+			// プレイヤーの速度*20飛ばす
+			SetKnockBack(vvec, (int)max(5, static_cast<Player*>(_sphere)->GetNormalSpeed() * 20.0f));
+		}
+
+		// 点火しているなら
+		else
+		{
+			// プレイヤーの速度*50飛ばす
+			SetKnockBack(vvec, (int)max(5, static_cast<Player*>(_sphere)->GetNormalSpeed() * 50.0f));
+		}
+		// SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->
+		//GetLocation(), player->GetLocation()), 0.5f, 0.f);
+		int pt = gamemain->CreateParticle(0);
+		gamemain->GetParticle(pt)->SetLocation(location);
+		gamemain->GetParticle(pt)->SetAngle(90.0f - Normalize(location, gamemain->GetPlayer()->GetLocation()));
+		gamemain->GetParticle(pt)->SetScale(0.5f);
+
+		gamemain->GetCamera()->SetCameraShake(vvec, 1, 10);
+		// 点火フラグ立てる
+		SetExpFlg(true);
+		// 効果音フラグ立てる
+		//SE_HitFlg = true;
+		//SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
+		//for (int j = 0; j < 7; j++)
+		//{
+		//	if (10 >= bomb[i]->hitcheck())
+		//	{
+		//		SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(), (GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
+		//		bomb[i]->hitset();
+		//	}
+		//}
+		//SetCameraShake(7);
+	}
+
+	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_EXPLOSION)
+	{
+		flg = false;
+	}
+
 }
 void Bomb::Init(int _expsize)
 {
@@ -196,65 +245,6 @@ void Bomb::Update(GameMain* _g)
 		break;
 	}
 
-	//			bomb[i]->Update();
-	//			// 敵のフラグが1なら
-	//			if (bomb[i]->GetFlg())
-	//			{
-	//				// 爆発の数を見る
-	//				for (int j = 0; j < GM_MAX_EFFECT_EXPLOSION; j++)
-	//				{
-	//					// 爆発がnullptrじゃないなら
-	//					if (explosion[j] != nullptr)
-	//					{
-	//						// 敵と爆発の当たり判定
-	//						if (bomb[i]->HitSphere(explosion[j]))
-	//						{
-	//							// 敵のフラグを切って爆発のループを抜ける
-	//							bomb[i]->SetFlg(false);
-	//							break;
-	//						}
-	//					}
-	//				}
-
-	//				// 敵とプレイヤーの当たり判定
-	//				if (bomb[i]->HitSphere(player))
-	//				{
-	//					// プレイヤーと爆弾のベクトル取得
-	//						vvec = (bomb[i]->GetLocation() - player->GetLocation());
-	//						length = bomb[i]->GetLength(player->GetLocation());
-	//						vvec /= length;
-
-	//						// 点火してないなら
-	//						if (!bomb[i]->GetExpFlg())
-	//						{
-	//							// プレイヤーの速度*20飛ばす
-	//							bomb[i]->SetKnockBack(vvec, (int)max(5, player->GetNormalSpeed() * 20.0f));
-	//						}
-
-	//						// 点火しているなら
-	//						else
-	//						{
-	//							// プレイヤーの速度*50飛ばす
-	//							bomb[i]->SetKnockBack(vvec, (int)max(5, player->GetNormalSpeed() * 50.0f));
-	//						}
-	//						// 効果音フラグ立てる
-	//						SE_HitFlg = true;
-	//						// 点火フラグ立てる
-	//						bomb[i]->SetExpFlg(true);
-	//						SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
-	//						for (int j = 0; j < 7; j++)
-	//						{
-	//							if (10 >= bomb[i]->hitcheck())
-	//							{
-	//								SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(), (GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
-	//								bomb[i]->hitset();
-	//							}
-	//						}
-
-	//						SetCameraShake(7);
-	//				}
-	//			}
-
 	//			// 敵のフラグが0なら
 	//			if (!bomb[i]->GetFlg())
 	//			{
@@ -313,7 +303,23 @@ void Bomb::Update(GameMain* _g)
 		if (expcnt < 0)
 		{
 			flg = false;
+			
 		}
+	}
+
+	if (!flg)
+	{
+		int exptemp = gamemain->CreateObject(new Explosion);
+		gamemain->GetObjectA(exptemp)->SetLocation(location);
+
+		int pt = gamemain->CreateParticle(3);
+		gamemain->GetParticle(pt)->SetLocation(location);
+		gamemain->GetParticle(pt)->SetAngle((float)GetRand(360));
+		gamemain->GetParticle(pt)->SetScale(8 / 6.6667f);
+
+		gamemain->GetCamera()->SetCameraShake((float)GetRand(360), 10, 5);
+
+		gamemain->DeleteObject(this, obj_pos);
 	}
 
 	// ノックバックの速度を徐々に遅くする
@@ -366,10 +372,12 @@ void Bomb::Draw(CameraManager* camera) const
 		GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 63);
 		// Alpha値63の爆発範囲の円を描画
-
+		//DrawCircleAA(DrawFromCameraX(location, _distance, loc)
+		//	, DrawFromCameraY(location, _distance, loc)
+		//	, (15 * (expsize - 2)) * ScaleFromCamera(_distance), 16, 0xffffff, false, 10 * ScaleFromCamera(_distance));
 		DrawCircleAA(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 					,location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-					,(15 * (expsize - 2)) * camera->GetDistance(), 16, 0xffffff, false, 10 * camera->GetDistance());
+					,(15 * (expsize - 2)) * (1 - (camera->GetDistance())), 16, 0xffffff, false, 10 * (1 - (camera->GetDistance())));
 		SetDrawBlendMode(OldDrawMode, OldDrawParam);
 		imgnum = 2;
 	}

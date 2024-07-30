@@ -285,11 +285,11 @@ GameMain::GameMain()
 	}
 
 	//// パーティクルの初期化
-	//particle = new Particle * [GM_MAX_PARTICLE];
-	//for (int i = 0; i < GM_MAX_PARTICLE; i++)
-	//{
-	//	particle[i] = nullptr;
-	//}
+	particle = new Particle * [GM_MAX_PARTICLE];
+	for (int i = 0; i < GM_MAX_PARTICLE; i++)
+	{
+		particle[i] = nullptr;
+	}
 
 	//// プレイヤーの位置に炎を出現
 	//SpawnParticle(1, player, true,
@@ -1529,8 +1529,33 @@ AbstractScene* GameMain::Update()
 		if (object[i] != nullptr)
 		{
 			object[i]->Update(this);
+			if (object[i] == nullptr)
+			{
+				continue;
+			}
+			for (int j = 0; j < GM_MAX_OBJECT; j++)
+			{
+				if (object[j] != nullptr)
+				{
+					if (i != j && object[i]->HitSphere(object[j]))
+					{
+						object[i]->Hit(object[j]);
+						object[j]->Hit(object[i]);
+					}
+				}
+			}
 		}
 	}
+
+	for (int i = 0; i < GM_MAX_PARTICLE; i++)
+	{
+		// パーティクルがnullptrじゃないなら
+		if (particle[i] != nullptr)
+		{
+			particle[i]->Update(this);
+		}
+	}
+
 	camera->Update(this);
 	return this;
 
@@ -1645,15 +1670,6 @@ void GameMain::Draw() const
 	//	}
 	//}
 
-	//// パーティクル
-	//for (int i = 0; i < GM_MAX_PARTICLE; i++)
-	//{
-	//	// 敵がnullptrじゃないなら
-	//	if (particle[i] != nullptr)
-	//	{
-	//		particle[i]->Draw(Camera, CameraDistance);
-	//	}
-	//}
 
 	//for (int i = 0; i < GM_MAX_ADDSCORE; i++)
 	//{
@@ -1709,6 +1725,16 @@ void GameMain::Draw() const
 		if (object[i] != nullptr)
 		{
 			object[i]->Draw(camera);
+		}
+	}
+
+	// パーティクル
+	for (int i = 0; i < GM_MAX_PARTICLE; i++)
+	{
+		// nullptrじゃないなら
+		if (particle[i] != nullptr)
+		{
+			particle[i]->Draw(camera);
 		}
 	}
 
@@ -1927,44 +1953,41 @@ void GameMain::Game()
 {
 }
 
-// 爆発のスポーン
-void GameMain::SpawnExplosion(Vector2D loc)
+// パーティクルのスポーン(種類、親、ループ可か、スポーン座標、向く座標、大きさ
+int GameMain::CreateParticle(int type)
 {
-	//for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++)
-	//{
-	//	if (explosion[i] == nullptr)
-	//	{
-	//		explosion[i] = new Explosion;
-	//		explosion[i]->Init(C_ExpSize);
-	//		explosion[i]->SetLocation(loc);
-	//		break;
-	//	}
-	//}
+	int num = -1;
+	for (int j = 0; j < GM_MAX_PARTICLE; j++)
+	{
+		if (particle[j] == nullptr)
+		{
+			particle[j] = new Particle();
+			particle[j]->Init(type, j);
+			particle[j]->SetRoot(nullptr);
+			particle[j]->SetLoop(false);
+			particle[j]->SetScale(1.0f);
+			particle[j]->SetLocation(0.0f);
+			particle[j]->SetAngle(0.0f);
+			particle[j]->SetSpeed(0.0f);
+			num = j;
+			break;
+		}
+	}
+	return num;
 }
 
-// パーティクルのスポーン(種類、親、ループ可か、スポーン座標、向く座標、大きさ
-int GameMain::SpawnParticle(int type, SphereCollider* root, bool loop, Vector2D loc, float angle, float scale, float speed)
+Particle* GameMain::GetParticle(int _num)
 {
-	//int num = -1;
-	//for (int j = 0; j < GM_MAX_PARTICLE; j++)
-	//{
-	//	if (particle[j] == nullptr)
-	//	{
-	//		particle[j] = new Particle();
-	//		particle[j]->Init(type, root, loop, scale);
-	//		if (root != nullptr)
-	//		{
-	//			particle[j]->SetRootLocation(loc);
-	//		}
-	//		particle[j]->SetLocation(loc);
-	//		particle[j]->SetAngle(angle);
-	//		particle[j]->SetSpeed(speed);
-	//		num = j;
-	//		break;
-	//	}
-	//}
-	//return num;
-	return 0;
+	return particle[_num];
+}
+
+void GameMain::DeleteParticle(Particle* _particle, int _pos)
+{
+	if (particle[_pos] != nullptr && _particle != nullptr && _pos >= 0)
+	{
+		particle[_pos] = nullptr;
+		delete particle[_pos];
+	}
 }
 
 // カメラ更新
@@ -2099,7 +2122,7 @@ int GameMain::CreateObject(Object* _object)
 		{
 			object[i] = _object;
 
-			object[i]->Initialize(i);
+			object[i]->Initialize(this, i);
 			return i;
 			break;
 		}
@@ -2128,4 +2151,9 @@ Object* GameMain::GetPlayer()
 		return object[0];
 	}
 	return nullptr;
+}
+
+CameraManager* GameMain::GetCamera()
+{
+	return camera;
 }

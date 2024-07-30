@@ -18,9 +18,9 @@ Player::~Player()
 
 }
 
-void Player::Initialize(int _obj_pos)
+void Player::Initialize(GameMain* _g, int _obj_pos)
 {
-	obj_pos = _obj_pos;
+	CharaBase::Initialize(_g, _obj_pos);
 	type = (int)TYPE::_PLAYER;
 	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
 	deadplayer_img = LoadGraph("Resources/images/player_death.png");

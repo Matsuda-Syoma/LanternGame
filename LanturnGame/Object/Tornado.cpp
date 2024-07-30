@@ -44,8 +44,9 @@ void Tornado::DeleteImages()
 	DeleteGraph(images);
 }
 
-void Tornado::Initialize(int _obj_pos)
+void Tornado::Initialize(GameMain* _g, int _obj_pos)
 {
+	gamemain = _g;
 	obj_pos = _obj_pos;
 	type = (int)TYPE::_GIMMICK;
 }
