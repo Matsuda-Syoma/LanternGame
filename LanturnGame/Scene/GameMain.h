@@ -95,6 +95,8 @@ private:
 	int crack_alpha = 200;
 	int soot_alpha = 0;
 
+	int add_amount = 0;
+
 	Vector2D ev;
 	float l;
 

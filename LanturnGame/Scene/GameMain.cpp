@@ -424,6 +424,11 @@ AbstractScene* GameMain::Update()
 	//スコア描画の中心の値を求める
 	ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
 
+	if (0 < add_amount)
+	{
+		score += 100;
+		add_amount -= 100;
+	}
 		
 
 	// リザルトじゃない かつ カウントダウンが終わっているとき
@@ -911,7 +916,8 @@ AbstractScene* GameMain::Update()
 					combo += 1;
 					ui_combo_framecount = 25;
 					// スコア加算
-					score += (((10 * C_ExpSize) * combo) * (int)(1 + (game_frametime / 3600)));
+					add_amount = (((10 * C_ExpSize) * combo) * (int)(1 + (game_frametime / 3600)));
+					
 					SpawnAddScore(bomb[i]->GetLocation(), ((10 * C_ExpSize) * combo));
 					SetCameraShake(GetRand(8) + 4);
 					bomb[i] = nullptr;
