@@ -19,6 +19,7 @@
     <ClCompile Include="Object\Bomb.cpp" />
     <ClCompile Include="Object\Explosion.cpp" />
     <ClCompile Include="Object\Particle.cpp" />
+    <ClCompile Include="Object\soldier.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility\InputControl.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="Object\Bomb.h" />
     <ClInclude Include="Object\Explosion.h" />
     <ClInclude Include="Object\Particle.h" />
+    <ClInclude Include="Object\soldier.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico" />

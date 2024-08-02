@@ -395,6 +395,13 @@ GameMain::GameMain()
 		object[temp]->SetLocation(spawnloc);
 	}
 
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
+	{
+		int temp = CreateObject(new Soldier);
+		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+		object[temp]->SetLocation(spawnloc);
+	}
+
 	int gimmicknum = 0;
 
 	for (int i = 0; i < GM_MAX_TORNADO; i++)

@@ -7,7 +7,7 @@
 #include "../Object/Explosion.h"
 #include "../Object/Player.h"
 #include "../Object/BackGround.h"
-//#include "../Object/Soldier.h"
+#include "../Object/Soldier.h"
 #include "../Object/Particle.h"
 #include "../Utility/common.h"
 //#include "../Object/stage.h"
