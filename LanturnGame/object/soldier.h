@@ -31,7 +31,7 @@ private:
 	Vector2D velocity = 0;
 	Vector2D Pin = 0;
 
-	int soldierimg[12];//画像イメージ
+	int soldierimg[24];//画像イメージ
 	int soldierDetimg;//画像イメージ
 	int Velimg = 0;//画像の向き
 	int countNum = 0;//時間を測る
@@ -40,6 +40,7 @@ private:
 	bool Movemode = true;
 	bool deleteFlg = false;//画面からの削除
 	bool SEflg = false;//音が一度だけなる
+	float speed = 2;
 
 	int cnt=0;//時間を測る関数
 	int animcnt=0;//アニメーション切り替え用関数

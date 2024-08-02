@@ -9,6 +9,8 @@
 #define EMRIGHT 2.0f
 #define EMLEFT -2.0f
 
+#define PI 3.141592653589793
+
 Soldier::Soldier()
 {
 	Initialize();
@@ -24,7 +26,7 @@ void Soldier::Initialize()
 	state = 1;
 	Movemode = GetRandom(0,2);
 	deleteFlg = false;
-	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 66, soldierimg);
+	LoadDivGraph("Resources/images/Soldier.png", 24, 6, 4, 64, 64, soldierimg);
 	soldierDetimg = LoadGraph("Resources/images/d_Soldier.png");
 }
 
@@ -40,7 +42,7 @@ void Soldier::Update(Vector2D PL)
 		{
 			animcnt++;
 		}
-		if (3 <= animcnt)
+		if (2 <= animcnt)
 		{
 			animcnt = 0;
 		}
@@ -88,7 +90,7 @@ void Soldier::Draw(Vector2D PL, float _distance)
 		//兵隊イラストの描画
 		DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
 			, DrawFromCameraY(location, _distance, PL)
-			, 1.4 * ScaleFromCamera(_distance), 0.0, soldierimg[Velimg + animcnt], true);
+			, ScaleFromCamera(_distance), 0.0, soldierimg[Velimg + animcnt], true);
 	}
 	else
 	{
@@ -97,7 +99,7 @@ void Soldier::Draw(Vector2D PL, float _distance)
 		{
 			DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
 				, DrawFromCameraY(location, _distance, PL)
-				, 1.4 * ScaleFromCamera(_distance), 0.0, soldierDetimg, true);
+				, ScaleFromCamera(_distance), 0.0, soldierDetimg, true);
 		}
 	}
 }
@@ -109,8 +111,8 @@ void Soldier::Move(Vector2D PL)
 		//プレイヤーとの中心座標の距離
 		length = PL - location;
 		float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
-		move.x = ((length.x / a) * 2);
-		move.y = ((length.y / a) * 2);
+		move.x = ((length.x / a) * speed);
+		move.y = ((length.y / a) * speed);
 	}
 	else
 	{
@@ -123,18 +125,55 @@ void Soldier::Move(Vector2D PL)
 
 		length = Pin - location;
 		float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
-		move.x = ((length.x / a) * 2.5);
-		move.y = ((length.y / a) * 2.5);
+		move.x = ((length.x / a) * speed);
+		move.y = ((length.y / a) * speed);
 	}
 
-	if (move.x <= 0)
+	//上
+	float ab = atan2(length.x, length.y);
+	ab = ab / PI *-180;
+	if (ab < 0)
+	{
+		ab += 360;
+	}
+	printfDx("%f\n", ab);
+
+	//上
+	if (157.6 < ab && ab < 202.5)
+	{
+		Velimg = 18;
+	}
+	//右上
+	if (202.6 < ab && ab < 247.5)
+	{
+		Velimg = 21;
+	}//右
+	if (247.5 < ab && ab < 292.5)
+		Velimg = 6;
+	//右下
+	if (292.6 < ab && ab < 337.5)
+		Velimg = 9;
+	//下
+	if ((0.01 < ab && ab < 22.5) || (337.6 < ab && ab < 360))
+	{
+		Velimg = 0;
+	}
+	//左上
+	if (22.6 < ab && ab < 67.5)
 	{
 		Velimg = 3;
 	}
-	if (move.x >= 0)
+	//左
+	if (67.6 < ab && ab < 112.5)
 	{
-		Velimg = 6;
+		Velimg = 12;
 	}
+	//左下
+	if (112.6 < ab && ab< 157.5)
+	{
+		Velimg = 15;
+	}
+
 
 	//フラグが立っているなら動ける
 	if (state == 1)
