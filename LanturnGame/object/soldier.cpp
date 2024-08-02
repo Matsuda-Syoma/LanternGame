@@ -130,46 +130,45 @@ void Soldier::Move(Vector2D PL)
 	}
 
 	//上
-	float ab = atan2(length.x, length.y);
-	ab = ab / PI *-180;
-	if (ab < 0)
+	float angle = atan2(length.x, length.y);
+	angle = angle / PI *-180;
+	if (angle < 0)
 	{
-		ab += 360;
+		angle += 360;
 	}
-	printfDx("%f\n", ab);
 
 	//上
-	if (157.6 < ab && ab < 202.5)
+	if (157.6 < angle && angle < 202.5)
 	{
 		Velimg = 18;
 	}
 	//右上
-	if (202.6 < ab && ab < 247.5)
+	if (202.6 < angle && angle < 247.5)
 	{
 		Velimg = 21;
 	}//右
-	if (247.5 < ab && ab < 292.5)
+	if (247.5 < angle && angle < 292.5)
 		Velimg = 6;
 	//右下
-	if (292.6 < ab && ab < 337.5)
+	if (292.6 < angle && angle < 337.5)
 		Velimg = 9;
 	//下
-	if ((0.01 < ab && ab < 22.5) || (337.6 < ab && ab < 360))
+	if ((0.01 < angle && angle < 22.5) || (337.6 < angle && angle < 360))
 	{
 		Velimg = 0;
 	}
 	//左上
-	if (22.6 < ab && ab < 67.5)
+	if (22.6 < angle && angle < 67.5)
 	{
 		Velimg = 3;
 	}
 	//左
-	if (67.6 < ab && ab < 112.5)
+	if (67.6 < angle && angle < 112.5)
 	{
 		Velimg = 12;
 	}
 	//左下
-	if (112.6 < ab && ab< 157.5)
+	if (112.6 < angle && angle< 157.5)
 	{
 		Velimg = 15;
 	}
@@ -178,7 +177,7 @@ void Soldier::Move(Vector2D PL)
 	//フラグが立っているなら動ける
 	if (state == 1)
 	{
-		location += move;
+		location += (move + velocity);
 	}
 
 	else if(state == 0)
