@@ -10,12 +10,12 @@
 #include "../Object/Soldier.h"
 #include "../Object/Particle.h"
 #include "../Utility/common.h"
-//#include "../Object/stage.h"
+#include "../Object/stage.h"
 //#include "../Object/Conveyor.h"
 #include "../Object/Tornado.h"
 //#include "../Object/ComboEnd.h"
 #include "../Utility/TextDisp.h"
-//#include "../Object/AddScore.h"
+#include "../Object/AddScore.h"
 #include "../Utility/UserData.h"
 #include "../Scene/Setting.h"
 //#include "../Object/Conveyor_y.h"
@@ -128,5 +128,6 @@ public:
 	Object* GetObject(int _pos);
 	Object* GetPlayer();
 	CameraManager* GetCamera();
+	void AddLife(int i);
 };
 

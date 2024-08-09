@@ -20,6 +20,8 @@
     <ClCompile Include="Object\Explosion.cpp" />
     <ClCompile Include="Object\Particle.cpp" />
     <ClCompile Include="Object\soldier.cpp" />
+    <ClCompile Include="Object\stage.cpp" />
+    <ClCompile Include="Object\AddScore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility\InputControl.h" />
@@ -44,6 +46,8 @@
     <ClInclude Include="Object\Explosion.h" />
     <ClInclude Include="Object\Particle.h" />
     <ClInclude Include="Object\soldier.h" />
+    <ClInclude Include="Object\stage.h" />
+    <ClInclude Include="Object\AddScore.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico" />

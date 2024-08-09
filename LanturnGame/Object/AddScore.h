@@ -1,6 +1,9 @@
 #pragma once
-#include "../Utility/Vector2D.h"
-class AddScore
+#include "Object.h"
+class GameMain;
+class CameraManager;
+
+class AddScore : public Object
 {
 private:
 	bool flg = true;
@@ -9,18 +12,21 @@ private:
 	int score = 0;
 	int digit = 0;
 	static int numimg[10];
-	Vector2D location;
 	Vector2D viewlocation;
 public:
 
-	//AddScore(int _score);
+	AddScore() {}
 	AddScore(Vector2D loc, int _score);
 	~AddScore();
-	void Update(Vector2D loc);
-	//void Update();
-	void Draw(Vector2D loc, float _distance)const;
 	static void LoadImages();
 	static void DeleteImages();
 	bool GetFlg()const;
+	void SetScore(int _score);
+
+	void Initialize(GameMain* _g, int _obj_pos) override;
+	void Finalize() override {};
+	void Update(GameMain* _g) override;
+	void Draw(CameraManager* camera)const override;
+	void Hit(SphereCollider* _sphere) override;
 };
 

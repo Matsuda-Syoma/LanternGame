@@ -73,7 +73,14 @@ void Bomb::Hit(SphereCollider* _sphere)
 	{
 		flg = false;
 	}
+	if (static_cast<Tornado*>(_sphere)->GetType() == TYPE::_GIMMICK)
+	{
+		float length = GetLength(static_cast<Object*>(_sphere)->GetLocation() - GetLocation());
+		Vector2D vvec = (static_cast<Object*>(_sphere)->GetLocation() - GetLocation());
+		vvec /= length;
+		SetEXVelocity(vvec * 0.8f);
 
+	}
 }
 void Bomb::Init(int _expsize)
 {
@@ -83,7 +90,6 @@ void Bomb::Update(GameMain* _g)
 {
 
 	MapSize = _g->GetMapSize();
-
 	// 敵と敵の距離を見る
 	int temp = -1;
 	float length = 65535;
@@ -319,6 +325,10 @@ void Bomb::Update(GameMain* _g)
 
 		gamemain->GetCamera()->SetCameraShake((float)GetRand(360), 10, 5);
 
+		exptemp = gamemain->CreateObject(new AddScore);
+		gamemain->GetObjectA(exptemp)->SetLocation(location);
+		static_cast<AddScore*>(gamemain->GetObjectA(exptemp))->SetScore(100);
+
 		gamemain->DeleteObject(this, obj_pos);
 	}
 
@@ -332,6 +342,8 @@ void Bomb::Update(GameMain* _g)
 	location += velocity * speed;
 	location += knockback;
 	location += exvelocity;
+
+	exvelocity = 0.0f;
 
 	// マップ外に出ないようにします
 	if (location.x < -MapSize + radius)

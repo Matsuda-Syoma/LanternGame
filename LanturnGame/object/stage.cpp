@@ -2,10 +2,10 @@
 #include"Dxlib.h"
 #include"math.h"
 #include"../Utility/common.h"
+#include "CameraManager.h"
 
 Stage::Stage() {
 	radius = 150;
-	radias = 100;
 	map_radius = radius;
 	images = LoadGraph("Resources/images/ice.png", 0);
 }
@@ -14,13 +14,21 @@ Stage::~Stage() {
 
 }
 
-void Stage::Update() {
 
+void Stage::Initialize(GameMain* _g, int _obj_pos)
+{
+	gamemain = _g;
+	obj_pos = _obj_pos;
+	type = (int)TYPE::_GIMMICK;
 }
 
-void Stage::Draw(Vector2D loc, float _distance) const {
-	//DrawCircleAA(location.x + (-loc.x + SCREEN_WIDTH / 2), location.y + (-loc.y + SCREEN_HEIGHT / 2), radius, 16, GetColor(0, 20, 100), 1);
-	DrawRotaGraphF(DrawFromCameraX(location, _distance, loc)
-				 , DrawFromCameraY(location, _distance, loc)
-				 , 1.0 * ScaleFromCamera(_distance), 0.0, images, true);
+void Stage::Update(GameMain* _g)
+{
+}
+
+void Stage::Draw(CameraManager* camera) const
+{
+	DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+				,  location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+				,  1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM))), 0.0, images, true);
 }

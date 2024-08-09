@@ -13,7 +13,7 @@ GameMain::GameMain()
 	Bomb::LoadImages();
 	Tornado::LoadImages();
 	//ComboEnd::LoadImages();
-	//AddScore::LoadImages();
+	AddScore::LoadImages();
 
 	// ハイスコア読み込み
 	hiscore = (int)UserData::LoadData(UserData::Type::HISCORE);		// ハイスコア読み込み
@@ -24,7 +24,6 @@ GameMain::GameMain()
 	/*******************初期化*******************/
 	//textdisp = new TextDisp;
 	//textdisp->LoadText(0);
-	//player = new Player;
 
 	//conveyor = new Conveyor * [GM_MAX_CONVEYOR];
 	//{
@@ -142,127 +141,6 @@ GameMain::GameMain()
 
 	//	}
 	//}
-	//stage = new Stage * [GM_MAX_ICEFLOOR];
-	//for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
-	//{
-	//	stage[i] = nullptr;
-	//}
-	//for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
-	//{
-	//	stage[i] = new Stage;
-	//}
-	//for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
-	//{
-	//	while (1)
-	//	{
-	//		// 初期値
-	//		float length = 65535;
-	//		bool ret = false;
-	//		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-
-	//		// 氷を見る
-	//		for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
-	//		{
-	//			// 自分以外なら
-	//			if (j != i)
-	//			{
-	//				// 距離を計算
-	//				length = GetLength(stage[j]->GetLocation(), spawnloc);
-	//				// 360より短いならだめ:フラグon
-	//				if (length < 360) {
-	//					ret = true;
-	//					break;
-	//				}
-	//			}
-	//		}
-	//		for (int j = 0; j < GM_MAX_CONVEYOR; j++)
-	//		{
-	//			// 距離を計算
-	//			length = GetLength(conveyor[j]->GetLocation() + 300, spawnloc);
-	//			// 360より短いなら:フラグon
-	//			if (length < 500) {
-	//				ret = true;
-	//				break;
-	//			}
-	//		}
-	//		for (int j = 0; j < GM_MAX_CONVEYOR_Y; j++)
-	//		{
-	//			// 距離を計算
-	//			length = GetLength(conveyor_y[j]->GetLocation() + 300, spawnloc);
-	//			// 360より短いなら:フラグon
-	//			if (length < 500) {
-	//				ret = true;
-	//				break;
-	//			}
-	//		}
-	//		// フラグ0ffなら座標指定してるーぷぬける
-	//		if (!ret)
-	//		{
-	//			stage[i]->SetLocation(spawnloc);
-	//			break;
-	//		}
-	//	}
-	//}
-	//player->Init();
-
-	//// 兵士の初期化
-	//soldier = new Soldier * [GM_MAX_ENEMY_SOLDIER];
-	//for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	//{
-	//	soldier[i] = nullptr;
-	//}
-
-	//// 兵士の作成
-	//for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	//{
-	//	soldier[i] = new Soldier;
-	//	while (1)
-	//	{
-	//		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-	//		if (1080 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
-	//			powf((spawnloc.x - player->GetLocation().x), 2) +
-	//			powf((spawnloc.y - player->GetLocation().y), 2))))
-	//		{
-	//			soldier[i]->SetLocation(spawnloc);
-	//			break;
-	//		}
-	//	}
-	//}
-
-	//// 爆弾の初期化
-	//bomb = new Bomb * [GM_MAX_ENEMY_BOMB];
-	//for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
-	//{
-	//	bomb[i] = nullptr;
-	//}
-
-	//// 爆弾を設定数初期化する
-	//for (int i = 0; i < MaxSpawnEnemyBomb; i++)
-	//{
-	//	bomb[i] = new Bomb;
-	//	bomb[i]->Init(C_ExpSize);
-	//	while (1)
-	//	{
-	//		// プレイヤーから距離が遠かったらスポーン
-	//		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-	//		if (1080 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
-	//			powf((spawnloc.x - player->GetLocation().x), 2) +
-	//			powf((spawnloc.y - player->GetLocation().y), 2))))
-	//		{
-	//			bomb[i]->SetLocation(spawnloc);
-	//			bomb[i]->SetMoveToLocation(spawnloc);
-	//			bomb[i]->SetMode(RandType(GetRand(99)) + 1);
-	//			break;
-	//		}
-	//	}
-	//}
-
-	//// 爆発判定の初期化
-	//explosion = new Explosion * [GM_MAX_EFFECT_EXPLOSION];
-	//for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++)
-	//{
-	//	explosion[i] = nullptr;
-	//}
 
 	// 背景の初期化(マップサイズ/64を正の無限大へ丸めて、二倍にする。そのあと二乗する)
 	background = new BackGround * [(int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2 + 2, 2)];
@@ -295,96 +173,6 @@ GameMain::GameMain()
 	//SpawnParticle(1, player, true,
 	//	Vector2D(player->GetLocation().x + 15, player->GetLocation().y), 0.f, 1.0, 0.f);
 
-	//// 吸い込むギミックの初期化
-	//tornado = new Tornado * [GM_MAX_TORNADO];
-	//for (int i = 0; i < GM_MAX_TORNADO; i++)
-	//{
-	//	tornado[i] = nullptr;
-	//}
-
-	//// 吸い込むギミックの生成
-	//for (int i = 0; i < GM_MAX_TORNADO; i++)
-	//{
-	//	tornado[i] = new Tornado;
-	//}
-	//for (int i = 0; i < GM_MAX_TORNADO; i++)
-	//{
-	//	while (1)
-	//	{
-	//		// 初期値
-	//		float length = 65535;
-	//		bool ret = false;
-	//		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-
-	//		// 吸い込みを見る
-	//		for (int j = 0; j < GM_MAX_TORNADO; j++)
-	//		{
-	//			// 自分以外なら
-	//			if (j != i)
-	//			{
-	//				// 距離を計算
-	//				length = GetLength(tornado[j]->GetLocation(), spawnloc);
-	//				// 360より短いなら:フラグon
-	//				if (length < 420) {
-	//					ret = true;
-	//					break;
-	//				}
-	//			}
-	//		}
-
-	//		for (int j = 0; j < GM_MAX_ICEFLOOR; j++)
-	//		{
-	//			// 距離を計算
-	//			length = GetLength(stage[j]->GetLocation(), spawnloc);
-	//			// 360より短いなら:フラグon
-	//			if (length < 420) {
-	//				ret = true;
-	//				break;
-	//			}
-	//		}
-	//		for (int j = 0; j < GM_MAX_CONVEYOR; j++)
-	//		{
-	//			// 距離を計算
-	//			length = GetLength(conveyor[j]->GetLocation() + 300, spawnloc);
-	//			// 800より短いなら:フラグon
-	//			if (length < 600) {
-	//				ret = true;
-	//				break;
-	//			}
-	//		}
-	//		for (int j = 0; j < GM_MAX_CONVEYOR_Y; j++)
-	//		{
-	//			// 距離を計算
-	//			length = GetLength(conveyor_y[j]->GetLocation() + 300, spawnloc);
-	//			// 360より短いなら:フラグon
-	//			if (length < 600) {
-	//				ret = true;
-	//				break;
-	//			}
-	//		}
-	//		// フラグ0ffなら座標指定してるーぷぬける
-	//		if (!ret)
-	//		{
-	//			tornado[i]->SetLocation(spawnloc);
-	//			break;
-	//		}
-	//	}
-	//}
-
-
-	//// コンボ初期化
-	//comboend = new ComboEnd * [GM_MAX_COMBOEND];
-	//for (int i = 0; i < GM_MAX_COMBOEND; i++)
-	//{
-	//	comboend[i] = nullptr;
-	//}
-
-	//// スコア表示の初期化
-	//addscore = new AddScore * [GM_MAX_ADDSCORE];
-	//for (int i = 0; i < GM_MAX_ADDSCORE; i++)
-	//{
-	//	addscore[i] = nullptr;
-	//}
 
 	CreateObject(new Player);
 
@@ -407,6 +195,14 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_TORNADO; i++)
 	{
 		int temp = CreateObject(new Tornado);
+		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+		object[temp]->SetLocation(spawnloc);
+		gimmicknum++;
+	}
+
+	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
+	{
+		int temp = CreateObject(new Stage);
 		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 		object[temp]->SetLocation(spawnloc);
 		gimmicknum++;
@@ -468,12 +264,6 @@ AbstractScene* GameMain::Update()
 	//	}
 	//	if(!PauseFlg)
 	//	{
-	//	// プレイヤーの更新
-	//	player->GetMapSize(MapSize);
-	//	player->Update(this);
-	//	Camera = player->GetLocation();
-	//	Camera += (float)Camerashake;
-
 	//	// プレイヤーが生きている&兵士が当たってないとき
 	//	if (player->GetPlayerFlg() && !player->GetHitSoldier())
 	//	{
@@ -521,708 +311,6 @@ AbstractScene* GameMain::Update()
 	//	{
 	//		// 炎を表示しない
 	//		particle[0]->SetVisible(false);
-	//	}
-
-
-	//	// 吸い込むギミックの更新
-	//	for (int i = 0; i < GM_MAX_TORNADO; i++)
-	//	{
-	//		// nullptrじゃないなら見る
-	//		if (tornado[i] != nullptr)
-	//		{
-	//			// 更新処理
-	//			tornado[i]->Update();
-	//		}
-	//	}
-
-	//	// 兵士の更新
-	//	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	//	{
-	//		// nullptrじゃないなら見る
-	//		if (soldier[i] != nullptr)
-	//		{
-	//			// 更新処理
-	//			if( 0 < life)
-	//			soldier[i]->Upadate(player->GetLocation());
-	//			soldier[i]->GetMapSize(MapSize);
-	//			soldier[i]->SetVelocity(1);
-	//		}
-	//		else
-	//		{
-	//			// 兵士のスポーン
-	//			soldier[i] = new Soldier;
-	//			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-	//			if (640 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
-	//				powf((spawnloc.x - player->GetLocation().x), 2) +
-	//				powf((spawnloc.y - player->GetLocation().y), 2))))
-	//			{
-	//				soldier[i]->SetLocation(spawnloc);
-	//				break;
-	//			}
-
-	//		}
-	//	}
-
-	//	Vector2D ee = 0;
-	//	float eel = 65535;
-	//	int chek = -1;
-
-
-
-	//	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	//	{
-	//		//兵隊同士の当たり判定
-	//		for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
-	//		{
-	//			if (i != j)
-	//			{
-	//				// nullptrじゃないなら距離を見る
-	//				if (soldier[i] != nullptr && soldier[j] != nullptr)
-	//				{
-
-	//					// 距離が短いなら変数を保存する
-	//					if (eel > soldier[i]->direction(soldier[j]->GetLocation()))
-	//					{
-	//						chek = j;
-	//						eel = soldier[i]->direction(soldier[j]->GetLocation());
-	//					}
-	//				}
-	//			}
-	//		}
-	//		if (chek != -1)
-	//		{
-	//			if (eel < 80)
-	//			{
-	//				ee = (soldier[chek]->GetLocation() - soldier[i]->GetLocation());
-	//				ee /= eel;
-	//				soldier[i]->SetVelocity(ee);
-	//				break;
-	//			}
-	//		}
-	//		//兵隊と爆弾の当たり判定
-	//		for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
-	//		{
-	//			// nullptrじゃないなら距離を見る
-	//			if (soldier[i] != nullptr && bomb[j] != nullptr)
-	//			{
-	//				// 距離が短いなら変数を保存する
-	//				if (eel > soldier[i]->direction(bomb[j]->GetLocation()))
-	//				{
-	//					chek = j;
-	//					eel = soldier[i]->direction(bomb[j]->GetLocation());
-	//				}
-	//			}
-	//		}
-	//		if (chek != -1)
-	//		{
-	//			if (eel < 80)
-	//			{
-	//				ee = (soldier[i]->GetLocation() - bomb[chek]->GetLocation());
-	//				ee /= eel;
-	//				soldier[i]->SetVelocity(ee);
-	//				break;
-	//			}
-	//		}
-	//	}
-
-	//	for (int i = 0; i < GM_MAX_PARTICLE; i++)
-	//	{
-	//		// パーティクルがnullptrじゃないなら
-	//		if (particle[i] != nullptr)
-	//		{
-	//			particle[i]->Update();
-	//			if (!particle[i]->Getflg())
-	//			{
-	//				particle[i] = nullptr;
-	//				delete particle[i];
-	//			}
-	//		}
-	//	}
-
-
-	//	// 敵の数を見る
-	//	SE_HitFlg = false;
-	//	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
-	//	{
-	//		// 敵がnullptrじゃないなら
-	//		if (bomb[i] != nullptr)
-	//		{
-	//			// 敵と敵の距離を見る
-	//			int temp = -1;
-	//			float length = 65535;
-	//			Vector2D vvec = 0;
-
-	//			switch (bomb[i]->GetMode())
-	//			{
-	//			case 0:
-	//				break;
-
-	//				// 敵同士集まる
-	//			case 1:
-
-	//				for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
-	//				{
-	//					// 自分以外なら
-	//					if (j != i)
-	//					{
-	//						// nullptrじゃないなら距離を見る
-	//						if (bomb[j] != nullptr)
-	//						{
-	//							// 距離が短いなら変数を保存する(3じゃないとき)
-	//							if (bomb[i]->GetMode() != 3)
-	//							{
-	//								if (length > bomb[j]->GetLength(bomb[i]->GetLocation()))
-	//								{
-	//									temp = j;
-	//									length = bomb[j]->GetLength(bomb[i]->GetLocation());
-	//								}
-	//							}
-	//						}
-	//					}
-	//					// 空ならデータを初期化
-	//					else if (bomb[j] == nullptr)
-	//					{
-	//						temp = -1;
-	//						length = 65535;
-	//					}
-	//				}
-
-	//				// -1以外なら見る
-	//				if (temp != -1)
-	//				{
-	//					// 距離が長いなら
-	//					if (length > 80)
-	//					{
-	//						vvec = (bomb[temp]->GetLocation() - bomb[i]->GetLocation());
-	//						vvec /= length;
-	//						bomb[i]->SetVelocity(vvec);
-	//						break;
-	//					}
-
-	//					// 距離が近いなら
-	//					else if (length < 72)
-	//					{
-	//						vvec = (bomb[i]->GetLocation() - bomb[temp]->GetLocation());
-	//						vvec /= length;
-	//						bomb[i]->SetVelocity(vvec);
-	//						break;
-	//					}
-	//					// 距離が間なら動かない
-	//					else
-	//					{
-	//						bomb[i]->SetVelocity(NULL);
-	//					}
-	//				}
-	//				break;
-
-	//				// プレイヤーから逃げる
-	//			case 2:
-	//				length = bomb[i]->GetLength(player->GetLocation());
-	//				vvec = (bomb[i]->GetLocation() - player->GetLocation());
-	//				vvec /= length;
-	//				bomb[i]->SetVelocity(vvec);
-	//				break;
-
-	//				// プレイヤーを追いかける
-	//			case 3:
-	//				for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
-	//				{
-
-	//					// 自分以外なら
-	//					if (j != i)
-	//					{
-
-	//						// nullptrじゃないなら距離を見る
-	//						if (bomb[j] != nullptr)
-	//						{
-
-	//							// 距離が短いなら変数を保存する
-	//							if (length > bomb[j]->GetLength(bomb[i]->GetLocation()))
-	//							{
-	//								temp = j;
-	//								length = bomb[j]->GetLength(bomb[i]->GetLocation());
-	//							}
-	//						}
-	//					}
-	//					// 空ならデータを初期化
-	//					else if (bomb[j] == nullptr)
-	//					{
-	//						temp = -1;
-	//						length = 65535;
-	//					}
-	//				}
-	//				// -1以外なら見る
-	//				if (temp != -1)
-	//				{
-	//					// 距離が近いなら
-	//					if (length < 72) {
-	//						vvec = (bomb[i]->GetLocation() - bomb[temp]->GetLocation());
-	//						vvec /= length;
-	//						bomb[i]->SetVelocity(vvec);
-	//						break;
-	//					}
-	//				}
-	//				length = bomb[i]->GetLength(player->GetLocation());
-	//				if (length > 80) {
-	//					vvec = (player->GetLocation() - bomb[i]->GetLocation());
-	//					vvec /= length;
-	//					bomb[i]->SetVelocity(vvec);
-	//				}
-
-	//				// 距離が間なら動かない
-	//				else
-	//				{
-	//					bomb[i]->SetVelocity(NULL);
-	//				}
-	//				break;
-
-	//				// ランダム移動
-	//			case 4:
-	//				length = bomb[i]->GetLength(bomb[i]->GetMoveToLocation());
-	//				if (length > 16) {
-	//					vvec = (bomb[i]->GetMoveToLocation() - bomb[i]->GetLocation());
-	//					vvec /= length;
-	//					bomb[i]->SetVelocity(vvec);
-	//				}
-	//				else
-	//				{
-	//					// 次に行く座標をランダム指定
-	//					bomb[i]->SetMoveToLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-	//				}
-
-	//				if (fabsf(bomb[i]->GetMoveToLocation().x) - MapSize + 32 > 0 || fabsf(bomb[i]->GetMoveToLocation().y) - MapSize + 32 > 0) {
-	//					// 次に行く座標がマップ外なら再度指定
-	//					bomb[i]->SetMoveToLocation(Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-	//				}
-	//				break;
-
-	//				// プレイヤーと対称の動き
-	//			case 5:
-	//				for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
-	//				{
-	//					// 自分以外なら
-	//					if (j != i)
-	//					{
-	//						// nullptrじゃないなら距離を見る
-	//						if (bomb[j] != nullptr)
-	//						{
-	//							// 距離が短いなら変数を保存する
-	//							if (length > bomb[j]->GetLength(bomb[i]->GetLocation()))
-	//							{
-	//								temp = j;
-	//								length = bomb[j]->GetLength(bomb[i]->GetLocation());
-	//							}
-	//						}
-	//					}
-	//					// 空ならデータを初期化
-	//					else if (bomb[j] == nullptr)
-	//					{
-	//						temp = -1;
-	//						length = 65535;
-	//					}
-	//				}
-
-	//				// -1以外なら見る
-	//				if (temp != -1)
-	//				{
-	//					// 距離が近いなら
-	//					if (length < 72)
-	//					{
-	//						vvec = (bomb[i]->GetLocation() - bomb[temp]->GetLocation());
-	//						vvec /= length;
-	//						bomb[i]->SetVelocity(vvec);
-	//						break;
-	//					}
-	//				}
-
-	//				length = bomb[i]->GetLength(player->GetLocation() * -1);
-
-	//				if (length > 16) 
-	//				{
-	//					// プレイヤーと対象の対称に座標指定
-	//					bomb[i]->SetMoveToLocation(player->GetLocation() * -1);
-	//					vvec = (bomb[i]->GetMoveToLocation() - bomb[i]->GetLocation());
-	//					vvec /= length;
-	//					bomb[i]->SetVelocity(vvec);
-
-	//				}
-	//				else
-	//				{
-	//					bomb[i]->SetVelocity(NULL);
-	//				}
-	//				break;
-	//			}
-
-	//			// 敵の更新
-	//			bomb[i]->GetMapSize(MapSize);
-	//			bomb[i]->Update();
-	//			// 敵のフラグが1なら
-	//			if (bomb[i]->GetFlg())
-	//			{
-	//				// 爆発の数を見る
-	//				for (int j = 0; j < GM_MAX_EFFECT_EXPLOSION; j++)
-	//				{
-	//					// 爆発がnullptrじゃないなら
-	//					if (explosion[j] != nullptr)
-	//					{
-	//						// 敵と爆発の当たり判定
-	//						if (bomb[i]->HitSphere(explosion[j]))
-	//						{
-	//							// 敵のフラグを切って爆発のループを抜ける
-	//							bomb[i]->SetFlg(false);
-	//							break;
-	//						}
-	//					}
-	//				}
-
-	//				// 敵とプレイヤーの当たり判定
-	//				if (bomb[i]->HitSphere(player))
-	//				{
-	//					// プレイヤーと爆弾のベクトル取得
-	//						vvec = (bomb[i]->GetLocation() - player->GetLocation());
-	//						length = bomb[i]->GetLength(player->GetLocation());
-	//						vvec /= length;
-
-	//						// 点火してないなら
-	//						if (!bomb[i]->GetExpFlg())
-	//						{
-	//							// プレイヤーの速度*20飛ばす
-	//							bomb[i]->SetKnockBack(vvec, (int)max(5, player->GetNormalSpeed() * 20.0f));
-	//						}
-
-	//						// 点火しているなら
-	//						else
-	//						{
-	//							// プレイヤーの速度*50飛ばす
-	//							bomb[i]->SetKnockBack(vvec, (int)max(5, player->GetNormalSpeed() * 50.0f));
-	//						}
-	//						// 効果音フラグ立てる
-	//						SE_HitFlg = true;
-	//						// 点火フラグ立てる
-	//						bomb[i]->SetExpFlg(true);
-	//						SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->GetLocation() , player->GetLocation()), 0.5f, 0.f);
-	//						for (int j = 0; j < 7; j++)
-	//						{
-	//							if (10 >= bomb[i]->hitcheck())
-	//							{
-	//								SpawnParticle(5, nullptr, false, bomb[i]->GetLocation(), (GetRand(60) - 30) - Normalize(bomb[i]->GetLocation(), player->GetLocation()), 0.1f, GetRand(5) + 10.f);
-	//								bomb[i]->hitset();
-	//							}
-	//						}
-
-	//						SetCameraShake(7);
-	//				}
-	//			}
-
-	//			// 敵のフラグが0なら
-	//			if (!bomb[i]->GetFlg())
-	//			{
-	//				// 爆発を発生して敵をnullptrにしてループを抜ける
-	//				SpawnExplosion(bomb[i]->GetLocation());
-	//				botime = 8;
-	//				SpawnParticle(3, nullptr, false, bomb[i]->GetLocation(), (float)GetRand(360), C_ExpSize / 6.6667f, 0.f);
-	//				PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
-	//				combo += 1;
-	//				ui_combo_framecount = 25;
-	//				// スコア加算
-	//				score += (((10 * C_ExpSize) * combo) * (int)(1 + (game_frametime / 3600)));
-	//				SpawnAddScore(bomb[i]->GetLocation(), ((10 * C_ExpSize) * combo));
-	//				SetCameraShake(GetRand(8) + 4);
-	//				bomb[i] = nullptr;
-	//				delete bomb[i];
-	//				continue;
-	//			}
-	//		}
-
-	//		// スポーン仮
-	//		else
-	//		{
-	//			if (!comboflg)
-	//			{
-	//				if (i < MaxSpawnEnemyBomb)
-	//				{
-	//					bomb[i] = new Bomb;
-	//					bomb[i]->Init(C_ExpSize);
-	//					while (1)
-	//					{
-	//						Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-	//						if (1080 * (MapSize / GM_MAX_MAPSIZE) < fabsf(sqrtf(
-	//							powf((spawnloc.x - player->GetLocation().x), 2) +
-	//							powf((spawnloc.y - player->GetLocation().y), 2))))
-	//						{
-	//							bomb[i]->SetLocation(spawnloc);
-	//							bomb[i]->SetMoveToLocation(spawnloc);
-	//							bomb[i]->SetMode(RandType(GetRand(99)) + 1);
-	//							break;
-	//						}
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//	comboflg = false;
-	//	for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++)
-	//	{
-	//		if (explosion[i] != nullptr)
-	//		{
-	//			comboflg = true;
-	//			explosion[i]->Update();
-	//			// プレイヤーと爆発の当たり判定
-	//			if (explosion[i]->HitSphere(player) && hitmoment == false)
-	//			{
-	//				if (player->GetHitFlg() == false)
-	//				{
-	//					life--;
-	//					hitmoment = true;
-	//					player->SetHitFlg(true);
-	//					player->SetDamageDirectionFlg(true);
-	//				}
-	//			}
-	//			else if (!explosion[i]->HitSphere(player) && hitmoment == true)
-	//			{
-	//				hitmoment = false;
-	//			}
-	//			//兵隊と爆発の当たり判定
-	//			for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
-	//			{
-	//				if (soldier[j] != nullptr)
-	//				{
-	//					if (explosion[i]->HitSphere(soldier[j]) && soldier[j]->CheckMode() == 1)
-	//					{
-	//						soldier[j]->SetMode(3);
-	//					}
-	//					if (soldier[j]->CheckDLflg() == true)
-	//					{
-	//							soldier[j] = nullptr;
-	//							delete soldier[j];
-	//							break;
-	//					}
-	//				}
-	//			}
-
-	//			if (!explosion[i]->Getflg())
-	//			{
-	//				explosion[i] = nullptr;
-	//				delete explosion[i];
-	//			}
-	//		}
-	//	}
-
-	//	// 兵隊とプレイヤーの当たり判定
-	//	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	//	{
-	//		if (soldier[i] != nullptr)
-	//		{
-	//			if (soldier[i]->HitSphere(player))
-	//			{
-	//				if (player->GetHitFlg() == false && soldier[i]->CheckMode() == 1)
-	//				{
-	//					life--;
-	//					hitmoment = true;
-	//					player->SetHitFlg(true);
-	//					player->SetHitSoldier(true);
-	//					soldier[i]->SetMode(2);
-	//					for (int c = 0; c < GM_MAX_ENEMY_SOLDIER; c++)
-	//					{
-	//						if (soldier[i] != soldier[c])
-	//						{
-	//							soldier[c]->SetMode(0);
-	//						}
-	//					}
-
-	//				}
-	//			}
-	//			else if (!soldier[i]->HitSphere(player) && hitmoment == true)
-	//			{
-	//				hitmoment = false;
-	//			}
-	//			if (soldier[i]->CheckDLflg() == true)
-	//			{
-	//					soldier[i] = nullptr;
-	//					delete soldier[i];
-	//					break;
-	//			}
-	//		}
-	//	}
-	//	//氷の床の当たり判定
-	//	player->SetIceFlg(false);
-	//	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
-	//	{
-	//		if (stage[i]->HitSphere(player))
-	//		{
-	//			if (player->GetIceFlg() == false)
-	//			{
-	//				player->SetIceFlg(true);
-	//			}
-	//		}
-	//	}
-
-
-	//	//コンベアの当たり判定
-	//	player->SetConFlg(false);
-	//	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
-	//	{
-	//		if (conveyor[i] != nullptr) {
-
-
-	//			conveyor[i]->Update();
-	//			if (conveyor[0]->HitSphere(*player))
-	//			{
-	//				player->SetLocation(Vector2D(player->GetLocation().x + CONVEYOR_SPEED, player->GetLocation().y));
-
-	//			}
-	//			if (conveyor[1]->HitSphere(*player))
-	//			{
-	//				player->SetLocation(Vector2D(player->GetLocation().x - CONVEYOR_SPEED, player->GetLocation().y));
-
-	//			}
-
-	//			for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
-	//			{
-	//				if (bomb[j] != nullptr)
-	//				{
-	//					if (conveyor[0]->HitSphere(*bomb[j]))
-	//					{
-	//						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x + CONVEYOR_SPEED, bomb[j]->GetLocation().y));
-	//					}
-	//					if (conveyor[1]->HitSphere(*bomb[j]))
-	//					{
-	//						bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x - CONVEYOR_SPEED, bomb[j]->GetLocation().y));
-	//					}
-	//				}
-	//			}
-	//			for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
-	//			{
-	//				if (soldier[j] != nullptr)
-	//				{
-	//					if (conveyor[0]->HitSphere(*soldier[j]))
-	//					{
-	//						soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x + CONVEYOR_SPEED, soldier[j]->GetLocation().y));
-	//					}
-	//					if (conveyor[1]->HitSphere(*soldier[j]))
-	//					{
-	//						soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x - CONVEYOR_SPEED, soldier[j]->GetLocation().y));
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-
-	//	player->SetConFlg(false);
-	//	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
-	//	{
-	//		conveyor_y[i]->Update();
-	//		if (conveyor_y[0]->HitSphere(*player))
-	//		{
-	//			player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y - CONVEYOR_SPEED));
-
-	//		}
-	//		if (conveyor_y[1]->HitSphere(*player))
-	//		{
-	//			player->SetLocation(Vector2D(player->GetLocation().x, player->GetLocation().y + CONVEYOR_SPEED));
-
-	//		}
-	//		
-
-	//		for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
-	//		{
-	//			if (bomb[j] != nullptr) {
-	//				if (conveyor_y[0]->HitSphere(*bomb[j]))
-	//				{
-	//					bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y - CONVEYOR_SPEED));
-	//				}
-	//				if (conveyor_y[1]->HitSphere(*bomb[j]))
-	//				{
-	//					bomb[j]->SetLocation(Vector2D(bomb[j]->GetLocation().x, bomb[j]->GetLocation().y + CONVEYOR_SPEED));
-	//				}
-	//			}
-	//		}
-	//			for (int j = 0; j < GM_MAX_ENEMY_SOLDIER; j++)
-	//			{
-	//			if (soldier[j] != nullptr){
-	//			if (conveyor_y[0]->HitSphere(*soldier[j]))
-	//			{
-	//				soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y - CONVEYOR_SPEED));
-	//			}
-	//			if (conveyor_y[1]->HitSphere(*soldier[j]))
-	//			{
-	//				soldier[j]->SetLocation(Vector2D(soldier[j]->GetLocation().x, soldier[j]->GetLocation().y + CONVEYOR_SPEED));
-	//			}
-	//			}
-	//		}
-	//	}
-
-
-	//	// Velocity初期化
-	//	player->SetVelocity(NULL);
-	//	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
-	//	{
-	//		if (bomb[i] != nullptr)
-	//		{
-	//			bomb[i]->SetEXVelocity(NULL);
-	//		}
-	//	}
-
-	//	// 吸い込みギミックの判定
-	//	for (int i = 0; i < GM_MAX_TORNADO; i++)
-	//	{
-	//		if (tornado[i] != nullptr)
-	//		{
-	//			// プレイヤーが当たっているなら
-	//			if (tornado[i]->HitSphere(player))
-	//			{
-	//				float length = GetLength(player->GetLocation(), tornado[i]->GetLocation());
-	//				Vector2D vvec = (tornado[i]->GetLocation() - player->GetLocation());
-	//				vvec /= length;
-	//				player->SetVelocity(vvec);
-	//			}
-	//		}
-
-	//		for (int j = 0; j < GM_MAX_ENEMY_BOMB; j++)
-	//		{
-	//			if (bomb[j] != nullptr)
-	//			{
-	//				if (tornado[i]->HitSphere(bomb[j]))
-	//				{
-	//					float length = GetLength(bomb[j]->GetLocation(), tornado[i]->GetLocation());
-	//					Vector2D vvec = (tornado[i]->GetLocation() - bomb[j]->GetLocation());
-	//					vvec /= length;
-	//					bomb[j]->SetEXVelocity(vvec * 0.8f);
-	//				}
-	//			}
-	//		}
-	//	}
-
-	//	// スコア表示の更新
-	//	for (int i = 0; i < GM_MAX_ADDSCORE; i++)
-	//	{
-	//		// nullptrじゃないなら見る
-	//		if (addscore[i] != nullptr)
-	//		{
-	//			// 更新処理
-	//			addscore[i]->Update(Camera);
-
-	//			// フラグがたっていないなら消す
-	//			if (!addscore[i]->GetFlg())
-	//			{
-	//				addscore[i] = nullptr;
-	//				delete addscore[i];
-	//			}
-	//		}
-	//	}
-
-
-	//	for (int i = 0; i < GM_MAX_COMBOEND; i++)
-	//	{
-	//		if (comboend[i] != nullptr)
-	//		{
-	//			comboend[i]->Update();
-	//			if (!comboend[i]->GetFlg())
-	//			{
-	//				comboend[i] = nullptr;
-	//				delete comboend[i];
-	//			}
-	//		}
 	//	}
 
 	//	// 効果音のフラグがたっているなら
@@ -1274,13 +362,13 @@ AbstractScene* GameMain::Update()
 	//	}
 
 	//	// マップサイズの変更
-	//	ChangeMapSize();
+		ChangeMapSize();
 
 	//	// マップサイズで敵の最大スポーン数を変える
-	//	MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * max(-0.5 + ((MapSize) / (GM_MAX_MAPSIZE)) * 1.5, 0.2));
+		MaxSpawnEnemyBomb = (int)(C_MaxEnemyBomb * max(-0.5 + ((MapSize) / (GM_MAX_MAPSIZE)) * 1.5, 0.2));
 
 	//	// ゲームのフレームを増やす
-	//	game_frametime++;
+		game_frametime++;
 
 	//	Vector2D cDistance;
 
@@ -1579,16 +667,6 @@ void GameMain::Draw() const
 		}
 	}
 
-	////ギミック(氷)
-	//for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
-	//{
-	//	// nullptrじゃないなら
-	//	if (stage[i] != nullptr)
-	//	{
-	//		stage[i]->Draw(Camera, CameraDistance);
-	//	}
-	//}
-
 	////ギミック(コンベア)
 	//for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 	//{
@@ -1605,21 +683,6 @@ void GameMain::Draw() const
 	//		conveyor_y[1]->Draw_up(Camera, CameraDistance);
 	//}
 
-	//for (int i = 0; i < GM_MAX_TORNADO; i++)
-	//{
-	//	// nullptrじゃないなら
-	//	if (tornado[i] != nullptr)
-	//	{
-	//		// 画面中なら描画
-	//		if (1040 > fabsf(sqrtf(
-	//			powf((tornado[i]->GetLocation().x - player->GetLocation().x), 2) +
-	//			powf((tornado[i]->GetLocation().y - player->GetLocation().y), 2))))
-	//		{
-	//			tornado[i]->Draw(Camera, CameraDistance);
-	//		}
-	//	}
-	//}
-
 	//// マップの範囲
 	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 127);
 	//float Scale = (float)(1 - ((CameraDistance / DISTANCE_MAX) / DISTANCE_NUM));
@@ -1629,72 +692,7 @@ void GameMain::Draw() const
 	//DrawBoxAA((float)(-(MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize))), (float)(-(MapSize * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2))), (float)((MapSize * Scale) + (-Camera.x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize))), (float)(-(GM_MAX_MAPSIZE * Scale) + (-Camera.y + (SCREEN_HEIGHT / 2)) - 16), 0x000000, true);
 	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	//// 爆弾
-	//for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
-	//{
-	//	// nullptrじゃないなら
-	//	if (bomb[i] != nullptr)
-	//	{
-	//		// 画面中なら描画
-	//		if (720 > fabsf(sqrtf(
-	//			powf((bomb[i]->GetLocation().x - player->GetLocation().x), 2) +
-	//			powf((bomb[i]->GetLocation().y - player->GetLocation().y), 2))) || CameraOutCnt)
-	//		{
-	//			bomb[i]->Draw(Camera, CameraDistance);
-	//		}
-	//	}
-	//}
-	//// 爆発
-	//for (int i = 0; i < GM_MAX_EFFECT_EXPLOSION; i++)
-	//{
-	//	// nullptrじゃないなら
-	//	if (explosion[i] != nullptr)
-	//	{
-	//		// 画面中なら描画
-	//		if (800 > fabsf(sqrtf(
-	//			powf((explosion[i]->GetLocation().x - player->GetLocation().x), 2) +
-	//			powf((explosion[i]->GetLocation().y - player->GetLocation().y), 2))))
-	//		{
-	//			explosion[i]->Draw(Camera, CameraDistance);
-	//		}
-	//	}
-	//}
-	//// プレイヤー
 
-	//// 兵士
-	//for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	//{
-	//	// nullptrじゃないなら
-	//	if (soldier[i] != nullptr)
-	//	{
-	//		// 画面中なら描画
-	//		if (1720 > fabsf(sqrtf(
-	//			powf((soldier[i]->GetLocation().x - player->GetLocation().x), 2) +
-	//			powf((soldier[i]->GetLocation().y - player->GetLocation().y), 2))))
-	//		{
-	//			soldier[i]->Draw(Camera, CameraDistance);
-	//		}
-	//	}
-	//}
-
-
-	//for (int i = 0; i < GM_MAX_ADDSCORE; i++)
-	//{
-	//	// 敵がnullptrじゃないなら
-	//	if (addscore[i] != nullptr)
-	//	{
-	//		addscore[i]->Draw(Camera, CameraDistance);
-	//	}
-	//}
-
-	//// コンボ
-	//for (int i = 0; i < GM_MAX_COMBOEND; i++)
-	//{
-	//	if (comboend[i] != nullptr)
-	//	{
-	//		comboend[i]->Draw();
-	//	}
-	//}
 	//DrawCloseMap();
 
 	//// 爆弾に当たったときのダメージ演出
@@ -1707,31 +705,32 @@ void GameMain::Draw() const
 	//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//}
+	//残り体力の表示
+	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
+	for (int i = 0; i < life; i++)
+	{
+		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
+	}
 
-
-	//DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
-
-	////残り体力の表示
-	//DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
-	//for (int i = 0; i < life; i++)
-	//{
-	//	DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
-	//}
-	//
-	//int bcnt = 0;
-	//for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
-	//{
-	//	if (bomb[i] != nullptr)
-	//	{
-	//		bcnt++;
-	//	}
-	//}
+for (int i = 0; i < GM_MAX_OBJECT; i++)
+{
+	if (object[i] != nullptr)
+	{
+		if ((int)object[i]->GetType() == 4)
+		{
+			object[i]->Draw(camera);
+		}
+	}
+}
 
 	for (int i = 0; i < GM_MAX_OBJECT; i++)
 	{
 		if (object[i] != nullptr)
 		{
-			object[i]->Draw(camera);
+			if ((int)object[i]->GetType() != 4)
+			{
+				object[i]->Draw(camera);
+			}
 		}
 	}
 
@@ -1758,15 +757,6 @@ void GameMain::Draw() const
 		}
 	}
 
-	//// ミニマップ(ギミック(氷)
-	//for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
-	//{
-	//	if (stage[i] != nullptr)
-	//	{
-	//		DrawCircleAA(SCREEN_WIDTH - 128 + (stage[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (stage[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
-	//	}
-	//}
-
 	////ミニマップ(ギミック(コンベア))
 	//for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 	//{
@@ -1789,142 +779,111 @@ void GameMain::Draw() const
 	//			128 + (conveyor_y[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
 	//	}
 	//}
-	//// ミニマップ(ギミック(竜巻)
-	//for (int i = 0; i < GM_MAX_TORNADO; i++)
-	//{
-	//	if (tornado[i] != nullptr)
-	//	{
-	//		DrawCircleAA(SCREEN_WIDTH - 128 + (tornado[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (tornado[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 12, 8, 0x800000, true);
-	//	}
-	//}
 
-	//BlackOutDraw();
+	// リザルトじゃないなら
+	if (resultflg == false)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+		DrawBox(SCREEN_WIDTH - 233, 400, SCREEN_WIDTH - 23, 530, 0x000000, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	//// ミニマップ(プレイヤー)
-	//DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		char chr_score[] = "score";
+		for (int i = 0; i < sizeof(chr_score); i++)
+		{
+			int chr = chr_score[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 190) + 33 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
+		}
 
-	//// ミニマップ(爆弾)
-	//for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
-	//{
-	//	if (bomb[i] != nullptr)
-	//	{
-	//		DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x7f2244, true);
-	//	}
-	//}
+		if (score == 0)
+		{
+			DrawRotaGraph(SCREEN_WIDTH - 125, 490, 0.6, 0.0, numimage[0], true);
+		}
 
-	//// ミニマップ(兵士)
-	//for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	//{
-	//	if (soldier[i] != nullptr && (soldier[i]->CheckMode() == 1 || soldier[i]->CheckMode() == 0))
-	//	{
-	//		DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
-	//	}
-	//}
-	//// リザルトじゃないなら
-	//if (resultflg == false)
-	//{
-	//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	//	DrawBox(SCREEN_WIDTH - 233, 400, SCREEN_WIDTH - 23, 530, 0x000000, true);
-	//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		//スコアの表示
+		int bufscore = score;
+		int num = 0;
+		while (bufscore > 0)
+		{
+			num++;
+			bufscore /= 10;
+		}
+		bufscore = score;
+		for (int s = 0; s < num; s++)
+		{
+			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
+			bufscore /= 10;
+		}
 
-	//	char chr_score[] = "score";
-	//	for (int i = 0; i < sizeof(chr_score); i++)
-	//	{
-	//		int chr = chr_score[i] - 'a';
-	//		DrawRotaGraph((SCREEN_WIDTH - 190) + 33 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
-	//	}
+	}
+	// リザルトなら
+	else
+	{
+		DrawGraph(0, 0, blackimage, false);
 
-	//	if (score == 0)
-	//	{
-	//		DrawRotaGraph(SCREEN_WIDTH - 125, 490, 0.6, 0.0, numimage[0], true);
-	//	}
+		// ハイスコアだったら
+		if (highscoreflg == true)
+		{
+			DrawGraph(0, 0, highscoreimage, true);
+			char newrecord[] = "new record";
+			for (int ne = 0; ne < sizeof(newrecord); ne++)
+			{
+				int chr = newrecord[ne] - 'a';
+				SetDrawBright(255, 255, 0);
+				DrawRotaGraph((SCREEN_WIDTH - 360) + 18 * ne, 220, 0.4, 0.0, alphabetimage[chr], true);
+				SetDrawBright(255, 255, 255);
+			}
+		}
+		else {
+			DrawGraph(0, 0, resultimage, true);
+		}
 
-	//	//スコアの表示
-	//	int bufscore = score;
-	//	int num = 0;
-	//	while (bufscore > 0)
-	//	{
-	//		num++;
-	//		bufscore /= 10;
-	//	}
-	//	bufscore = score;
-	//	for (int s = 0; s < num; s++)
-	//	{
-	//		DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
-	//		bufscore /= 10;
-	//	}
+		char result[] = "result\0";
+		for (int re = 0; re < sizeof(result); re++)
+		{
+			int chr = result[re] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 400) + 50 * re, 150, 1.0, 0.0, alphabetimage[chr], true);
+		}
+		char highscore[] = "high score";
+		for (int hi = 0; hi < sizeof(highscore); hi++)
+		{
+			int chr = highscore[hi] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * hi, 390, 0.5, 0.0, alphabetimage[chr], true);
+		}
+		char press[] = "press a";
+		for (int pr = 0; pr < sizeof(press); pr++)
+		{
+			int chr = press[pr] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 340) + 22 * pr, 580, 0.6, 0.0, alphabetimage[chr], true);
+		}
 
-	//}
-	//// リザルトなら
-	//else
-	//{
-	//	DrawGraph(0, 0, blackimage, false);
+		int bufhiscore = hiscore;
+		int hi_num = 0;
+		while (bufhiscore > 0)
+		{
+			hi_num++;
+			bufhiscore /= 10;
+		}
+		bufhiscore = hiscore;
+		for (int h = 0; h < hi_num; h++)
+		{
+			DrawRotaGraph((SCREEN_WIDTH - 290 + (28 * hi_num) / 2) - (28 * h), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
+			bufhiscore /= 10;
+		}
 
-	//	// ハイスコアだったら
-	//	if (highscoreflg == true)
-	//	{
-	//		DrawGraph(0, 0, highscoreimage, true);
-	//		char newrecord[] = "new record";
-	//		for (int ne = 0; ne < sizeof(newrecord); ne++)
-	//		{
-	//			int chr = newrecord[ne] - 'a';
-	//			SetDrawBright(255, 255, 0);
-	//			DrawRotaGraph((SCREEN_WIDTH - 360) + 18 * ne, 220, 0.4, 0.0, alphabetimage[chr], true);
-	//			SetDrawBright(255, 255, 255);
-	//		}
-	//	}
-	//	else {
-	//		DrawGraph(0, 0, resultimage, true);
-	//	}
-
-	//	char result[] = "result\0";
-	//	for (int re = 0; re < sizeof(result); re++)
-	//	{
-	//		int chr = result[re] - 'a';
-	//		DrawRotaGraph((SCREEN_WIDTH - 400) + 50 * re, 150, 1.0, 0.0, alphabetimage[chr], true);
-	//	}
-	//	char highscore[] = "high score";
-	//	for (int hi = 0; hi < sizeof(highscore); hi++)
-	//	{
-	//		int chr = highscore[hi] - 'a';
-	//		DrawRotaGraph((SCREEN_WIDTH - 360) + 20 * hi, 390, 0.5, 0.0, alphabetimage[chr], true);
-	//	}
-	//	char press[] = "press a";
-	//	for (int pr = 0; pr < sizeof(press); pr++)
-	//	{
-	//		int chr = press[pr] - 'a';
-	//		DrawRotaGraph((SCREEN_WIDTH - 340) + 22 * pr, 580, 0.6, 0.0, alphabetimage[chr], true);
-	//	}
-
-	//	int bufhiscore = hiscore;
-	//	int hi_num = 0;
-	//	while (bufhiscore > 0)
-	//	{
-	//		hi_num++;
-	//		bufhiscore /= 10;
-	//	}
-	//	bufhiscore = hiscore;
-	//	for (int h = 0; h < hi_num; h++)
-	//	{
-	//		DrawRotaGraph((SCREEN_WIDTH - 290 + (28 * hi_num) / 2) - (28 * h), 440, 0.6, 0.0, numimage[bufhiscore % 10], true);
-	//		bufhiscore /= 10;
-	//	}
-
-	//	int bufscore = score;
-	//	int num = 0;
-	//	while (bufscore > 0)
-	//	{
-	//		num++;
-	//		bufscore /= 10;
-	//	}
-	//	bufscore = score;
-	//	for (int s = 0; s < num; s++)
-	//	{
-	//		DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * s), 270, 1.0, 0.0, numimage[bufscore % 10], true);
-	//		bufscore /= 10;
-	//	}
-	//}
+		int bufscore = score;
+		int num = 0;
+		while (bufscore > 0)
+		{
+			num++;
+			bufscore /= 10;
+		}
+		bufscore = score;
+		for (int s = 0; s < num; s++)
+		{
+			DrawRotaGraph((SCREEN_WIDTH - 300 + (40 * num) / 2) - (40 * s), 270, 1.0, 0.0, numimage[bufscore % 10], true);
+			bufscore /= 10;
+		}
+	}
 
 	//// カウントダウン（数字）
 	//if (countdownflg == true && countdown < 4)
@@ -2163,4 +1122,9 @@ Object* GameMain::GetPlayer()
 CameraManager* GameMain::GetCamera()
 {
 	return camera;
+}
+
+void GameMain::AddLife(int i)
+{
+	life += i;
 }
