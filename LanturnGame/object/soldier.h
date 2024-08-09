@@ -33,6 +33,7 @@ private:
 	Vector2D move = 0;
 	Vector2D velocity = 0;
 	Vector2D Pin = 0;
+	Vector2D PL = 0;
 
 	int soldierimg[24];//画像イメージ
 	int soldierDetimg;//画像イメージ

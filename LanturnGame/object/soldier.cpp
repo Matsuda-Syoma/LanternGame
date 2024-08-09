@@ -27,14 +27,15 @@ void Soldier::Initialize(GameMain* _g, int _obj_pos)
 {
 	CharaBase::Initialize(_g, _obj_pos);
 	type = (int)TYPE::_SOLDIER;
-	mode = 1;
+	state = 1;
 	deleteFlg = false;
 	LoadDivGraph("Resources/images/Soldier.png", 24, 6, 4, 64, 64, soldierimg);
 	soldierDetimg = LoadGraph("Resources/images/d_Soldier.png");
 }
 
-void Soldier::Upadate(Vector2D PL)
+void Soldier::Finalize()
 {
+
 }
 
 void Soldier::Hit(SphereCollider* _sphere)
@@ -82,9 +83,9 @@ void Soldier::Hit(SphereCollider* _sphere)
 
 void Soldier::Update(GameMain* _g)
 {
-	if (mode == 1)
+	if (state == 1)
 	{
-		Move(PL);
+		//Move(PL);
 		//アニメーション切り替え
 		cnt++;
 		if ((cnt % 60) == 0)
