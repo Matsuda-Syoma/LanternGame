@@ -22,15 +22,17 @@ private:
 public:
 	Bomb();
 	~Bomb();
+	void Initialize(GameMain* _g, int _obj_pos)override;
+	void Finalize()override;
+	void Hit(SphereCollider* _sphere)override;
+
 	void Init(int _expsize);
-	void Update();
-	void Draw(Vector2D loc, float _distance) const;
+	void Update(GameMain* _g)override;
+	void Draw(CameraManager* camera)const override;
 	bool GetFlg() const;
 	void SetFlg(bool b);
 	bool GetExpFlg() const;
 	void SetExpFlg(bool b);
-
-	float GetLength(Vector2D loc);
 
 	void SetVelocity(Vector2D loc);
 	void SetEXVelocity(Vector2D loc);
@@ -41,6 +43,7 @@ public:
 	void SetKnockBack(Vector2D vec, int i);
 	static void LoadImages();
 	static void DeleteImages();
+	Object* GetInsideBomb();
 
 	//パーティクルを一度だけ表示
 	int hitcheck();

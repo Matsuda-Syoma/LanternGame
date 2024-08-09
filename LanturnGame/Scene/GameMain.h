@@ -1,6 +1,8 @@
 #pragma once
 #include"DxLib.h"
 #include"AbstractScene.h"
+#include "../Object/Object.h"
+#include "../Object/CameraManager.h"
 #include "../Object/Bomb.h"
 #include "../Object/Explosion.h"
 #include "../Object/Player.h"
@@ -9,32 +11,34 @@
 #include "../Object/Particle.h"
 #include "../Utility/common.h"
 #include "../Object/stage.h"
-#include "../Object/Conveyor.h"
+//#include "../Object/Conveyor.h"
 #include "../Object/Tornado.h"
-#include "../Object/ComboEnd.h"
+//#include "../Object/ComboEnd.h"
 #include "../Utility/TextDisp.h"
 #include "../Object/AddScore.h"
 #include "../Utility/UserData.h"
 #include "../Scene/Setting.h"
-#include "../Object/Conveyor_y.h"
+//#include "../Object/Conveyor_y.h"
 
 class GameMain : public AbstractScene
 {
 private:
-	Bomb** bomb;
-	Explosion** explosion;
-	Player* player;
-	Soldier** soldier;
+	Object* object[GM_MAX_OBJECT] = { nullptr };
+	CameraManager* camera;
 	BackGround** background;
+	//Bomb** bomb;
+	//Explosion** explosion;
+	//Player* player;
+	//Soldier** soldier;
 	Particle** particle;
-	Stage** stage;
-	Conveyor** conveyor;
-	Tornado** tornado;
-	ComboEnd** comboend;
-	TextDisp* textdisp;
-	AddScore** addscore;
-	Setting* setting;
-	Conveyor_y** conveyor_y;
+	//Stage** stage;
+	//Conveyor** conveyor;
+	//Tornado** tornado;
+	//ComboEnd** comboend;
+	//TextDisp* textdisp;
+	//AddScore** addscore;
+	//Setting* setting;
+	//Conveyor_y** conveyor_y;
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
 	unsigned int hiscore = 0;
@@ -106,15 +110,24 @@ public:
 	void Draw() const override;
 	void Game();
 	void SpawnExplosion(Vector2D loc);
-	int SpawnParticle(int type, SphereCollider * root, bool loop, Vector2D loc, float angle, float scale, float speed);
 	void CameraUpdate();
 	void SetCameraShake(int _i);
 	void SetMapSize(float f);
+	float GetMapSize() const;
 	void ChangeMapSize();
 	void DrawCloseMap()const;
 	void SpawnAddScore(Vector2D loc, int _score);
 	void BlackOut(int color, int time);
 	void BlackOutDraw()const;
 	void DrawPause()const;
+	int CreateObject(Object* _object);
+	int CreateParticle(int type);
+	Particle* GetParticle(int _num);
+	void DeleteObject(Object* _object, int _pos);
+	void DeleteParticle(Particle* _particle, int _pos);
+	Object* GetObject(int _pos);
+	Object* GetPlayer();
+	CameraManager* GetCamera();
+	void AddLife(int i);
 };
 

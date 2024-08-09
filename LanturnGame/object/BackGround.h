@@ -1,5 +1,6 @@
 #pragma once
 #include "../Utility/Vector2D.h"
+class CameraManager;
 class BackGround
 {
 private:
@@ -9,7 +10,7 @@ public:
 	BackGround(Vector2D loc);
 	~BackGround();
 	void Init(int i);
-	void Draw(Vector2D loc, float _distance)const;
+	void Draw(CameraManager* camera)const;
 	static void LoadImages();
 	static void DeleteImages();
 };

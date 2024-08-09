@@ -1,17 +1,21 @@
 #pragma once
-#include "SphereCollider.h"
+#include "Object.h"
 
-class Stage : public SphereCollider
+class GameMain;
+class CameraManager;
+
+class Stage : public Object
 {
 private:
-    int radias;
     int images;
-    int maxexpcnt = 180;
-    int expcnt = maxexpcnt;
+
 public:
     Stage();    //コンストラクタ
     ~Stage();   //デストラクタ
 
-    void Update();      //描画以外の処理
-    void Draw(Vector2D loc, float _distance)const;   //描画処理
+    void Initialize(GameMain* _g, int _obj_pos) override;
+    void Finalize() override {};
+    void Update(GameMain* _g) override;
+    void Draw(CameraManager* camera)const override;
+    void Hit(SphereCollider* _sphere) override {};                         // 当たった時の処理
 };

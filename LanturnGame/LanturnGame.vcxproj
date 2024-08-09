@@ -19,26 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Scene\credit.cpp" />
     <ClCompile Include="Object\AddScore.cpp" />
-    <ClCompile Include="Object\BoxCollider.cpp" />
-    <ClCompile Include="Object\ComboEnd.cpp" />
     <ClCompile Include="object\BackGround.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\Bomb.cpp" />
-    <ClCompile Include="object\conveyor_y.cpp" />
+    <ClCompile Include="Object\CameraManager.cpp" />
     <ClCompile Include="Object\Explosion.cpp" />
-    <ClCompile Include="object\Conveyor.cpp" />
-    <ClCompile Include="Object\Player.cpp" />
-    <ClCompile Include="object\soldier.cpp" />
+    <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="Object\Particle.cpp" />
-    <ClCompile Include="Scene\Setting.cpp" />
+    <ClCompile Include="Object\soldier.cpp" />
     <ClCompile Include="Object\SphereCollider.cpp" />
-    <ClCompile Include="object\stage.cpp" />
+    <ClCompile Include="Object\BoxCollider.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Object\Player.cpp" />
+    <ClCompile Include="Object\stage.cpp" />
+    <ClCompile Include="Object\Tornado.cpp" />
     <ClCompile Include="Scene\GameMain.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
-    <ClCompile Include="Scene\Title.cpp" />
-    <ClCompile Include="Object\Tornado.cpp" />
     <ClCompile Include="Utility\TextDisp.cpp" />
     <ClCompile Include="Utility\UserData.cpp" />
     <ClCompile Include="Utility\FPSController.cpp" />
@@ -46,27 +42,23 @@
     <ClCompile Include="Utility\LoadSounds.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Scene\credit.h" />
     <ClInclude Include="Object\AddScore.h" />
-    <ClInclude Include="Object\BoxCollider.h" />
-    <ClInclude Include="Object\ComboEnd.h" />
     <ClInclude Include="object\BackGround.h" />
     <ClInclude Include="Object\Bomb.h" />
-    <ClInclude Include="Object\CharaBase.h" />
-    <ClInclude Include="object\conveyor_y.h" />
+    <ClInclude Include="Object\CameraManager.h" />
     <ClInclude Include="Object\Explosion.h" />
-    <ClInclude Include="object\Conveyor.h" />
-    <ClInclude Include="Object\Player.h" />
-    <ClInclude Include="object\soldier.h" />
+    <ClInclude Include="Object\Object.h" />
     <ClInclude Include="Object\Particle.h" />
-    <ClInclude Include="Scene\Setting.h" />
+    <ClInclude Include="Object\soldier.h" />
     <ClInclude Include="Object\SphereCollider.h" />
-    <ClInclude Include="object\stage.h" />
+    <ClInclude Include="Object\BoxCollider.h" />
+    <ClInclude Include="Object\CharaBase.h" />
+    <ClInclude Include="Object\Player.h" />
+    <ClInclude Include="Object\stage.h" />
+    <ClInclude Include="Object\Tornado.h" />
     <ClInclude Include="Scene\AbstractScene.h" />
     <ClInclude Include="Scene\GameMain.h" />
     <ClInclude Include="Scene\SceneManager.h" />
-    <ClInclude Include="Scene\Title.h" />
-    <ClInclude Include="Object\Tornado.h" />
     <ClInclude Include="Utility\TextDisp.h" />
     <ClInclude Include="Utility\UserData.h" />
     <ClInclude Include="Utility\common.h" />

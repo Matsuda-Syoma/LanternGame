@@ -1,6 +1,7 @@
 #include "BackGround.h"
 #include "DxLib.h"
 #include "../Utility/common.h"
+#include "CameraManager.h"
 
 int BackGround::images[64];
 
@@ -17,11 +18,11 @@ void BackGround::Init(int i)
 {
 }
 
-void BackGround::Draw(Vector2D loc, float _distance) const
+void BackGround::Draw(CameraManager* camera) const
 {
 	// •`‰æ
-	DrawRotaGraphF((location.x * (64.0f - (_distance * 32.0f))) + (-loc.x + (SCREEN_WIDTH / 2))
-				 , (location.y * (64.0f - (_distance * 32.0f))) + (-loc.y + (SCREEN_HEIGHT / 2)), 2.032 - _distance, 0.0, images[9], true);
+	DrawRotaGraphF((location.x * (64.0f - (camera->GetDistance() * 32.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+				 , (location.y * (64.0f - (camera->GetDistance() * 32.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)), 2.032 - camera->GetDistance(), 0.0, images[9], true);
 }
 
 void BackGround::LoadImages() {
