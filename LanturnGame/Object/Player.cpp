@@ -432,6 +432,7 @@ void Player::Blinking()
 	}
 }
 
+// プレイヤーの反発
 void Player::KnockBack(Vector2D EX)
 {
 	if (Invincible_cnt < 1)
