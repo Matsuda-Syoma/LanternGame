@@ -1,15 +1,31 @@
 #include "Explosion.h"
 #include "DxLib.h"
 #include "../Utility/common.h"
+#include "../Scene/GameMain.h"
+#include "CameraManager.h"
 
 int Explosion::images[30];
 
 Explosion::Explosion()
 {
+	type = (int)TYPE::_EXPLOSION;
 	radius = 15.0f;
 }
 
 Explosion::~Explosion()
+{
+}
+
+void Explosion::Initialize(GameMain* _g, int _obj_pos)
+{
+	CharaBase::Initialize(_g, _obj_pos);
+}
+
+void Explosion::Finalize()
+{
+}
+
+void Explosion::Hit(SphereCollider* _sphere)
 {
 }
 
@@ -18,7 +34,7 @@ void Explosion::Init(int _size)
 	size = _size - 2;
 }
 
-void Explosion::Update()
+void Explosion::Update(GameMain* _g)
 {
 	// フラグがたっているなら
 	if (flg) {
@@ -28,6 +44,7 @@ void Explosion::Update()
 
 			// フラグを切る
 			flg = false;
+			_g->DeleteObject(this, obj_pos);
 		}
 
 		// countを増やす
@@ -38,12 +55,13 @@ void Explosion::Update()
 	}
 }
 
-void Explosion::Draw(Vector2D loc, float _distance) const
+void Explosion::Draw(CameraManager* camera) const
 {
-	DrawCircleAA(DrawFromCameraX(location, _distance, loc)
-				,DrawFromCameraY(location, _distance, loc)
-				,radius * ScaleFromCamera(_distance), 16, 0xffffff, true, true);
+	DrawCircleAA(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+				,location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+				,radius * (1 - (camera->GetDistance())), 16, 0xffffff, false);
 }
+
 
 bool Explosion::Getflg() const
 {

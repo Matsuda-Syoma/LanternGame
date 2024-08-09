@@ -1,6 +1,6 @@
 #pragma once
-#include "SphereCollider.h"
-class CharaBase : public SphereCollider
+#include "Object.h"
+class CharaBase : public Object
 {
 protected:
 	float speed = 0;
@@ -16,4 +16,12 @@ public:
 	virtual void SetMoveToLocation(Vector2D loc) {
 		movetoloc = loc;
 	}
+
+	void Initialize(GameMain* _g, int _obj_pos) override { gamemain = _g; obj_pos = _obj_pos; };
+	void Finalize() override {};
+
+	void Update(GameMain* _g) override {};
+	void Draw(CameraManager* camera)const override {};
+
+	void Hit(SphereCollider* _sphere) override {};                         // “–‚½‚Á‚½‚Ìˆ—
 };

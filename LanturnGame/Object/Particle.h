@@ -1,8 +1,11 @@
 #pragma once
 #include "SphereCollider.h"
+class GameMain;
+class CameraManager;
 class Particle : public SphereCollider
 {
 private:
+	int obj_pos = -1;
 	bool flg = true;
 	bool visible = true;
 	unsigned int type = 0;
@@ -19,18 +22,22 @@ private:
 	int color[3] = {};
 public:
 	Particle();
-	~Particle();
+	~Particle();                       // ìñÇΩÇ¡ÇΩéûÇÃèàóù
 
-	void Update();
-	void Draw(Vector2D loc, float _distance)const;
-	void Draw() const;
-	bool Getflg()const;
 	static int LoadImages();
 	static void DeleteImages();
+
+	void Update(GameMain* _g);
+	void Draw(CameraManager* camera)const;
+	void Draw() const;
+	bool Getflg()const;
 	void SetAngle(Vector2D loc, Vector2D loc2);
 	void SetAngle(float _angle);
-	void Init(int _type, SphereCollider * _root, bool _loop, float _scale);
-
+	void Init(int _type, int _obj_pos);
+	void SetRoot(SphereCollider * _root);
+	void SetLoop(bool b);
+	void SetLocation(Vector2D loc);
+	void SetScale(float _scale);
 	void SetRootLocation(Vector2D loc);
 
 	void SetSpeed(float _speed);

@@ -9,10 +9,13 @@ public:
 	~Soldier();
 
 	
-	void Initialize();//初期化
-	void finalize();//終了時
-	void Update(Vector2D PL);//更新
-	void Draw(Vector2D PL, float _distance);//描画
+	void Initialize(GameMain* _g, int _obj_pos)override;
+	void Finalize()override;
+	void Hit(SphereCollider* _sphere)override;
+
+	void Update(GameMain* _g)override;
+	void Draw(CameraManager* camera)const override;
+
 	void Move(Vector2D PL);//移動
 	float direction(Vector2D L);//向き
 	void SetVelocity(Vector2D loc);
