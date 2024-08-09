@@ -88,16 +88,20 @@ void AddScore::Update(GameMain* _g)
 		addy += 3;
 	}
 
-	if (cnt > 60)
-	{
-		flg = false;
-	}
+	//if (cnt > 60)
+	//{
+	//	flg = false;
+	//}
 
 	if (!flg)
 	{
 		gamemain->DeleteObject(this, obj_pos);
 	}
-	cnt++;
+
+	if (cnt < 7 * 2)
+	{
+		cnt++;
+	}
 }
 
 void AddScore::Draw(CameraManager* camera) const
@@ -117,4 +121,8 @@ void AddScore::Draw(CameraManager* camera) const
 
 void AddScore::Hit(SphereCollider* _sphere)
 {
+	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_PLAYER)
+	{
+		flg = false;
+	}
 }
