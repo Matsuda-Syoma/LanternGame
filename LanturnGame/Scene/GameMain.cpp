@@ -214,6 +214,12 @@ GameMain::GameMain()
 
 	camera = new CameraManager();
 
+
+	if (particle[0] != nullptr)
+	{
+		particle[0]->SetVisible(false);
+	}
+
 	/*******************画像読み込み*******************/
 	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
 	lifematchimage = LoadGraph("Resources/images/match.png", 0);

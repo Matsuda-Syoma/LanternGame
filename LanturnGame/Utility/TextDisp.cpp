@@ -4,6 +4,7 @@
 #include "InputControl.h"
 #include "../Utility/LoadSounds.h"
 
+
 char TextDisp::temp[16][64];
 TextDisp::TextDisp()
 {

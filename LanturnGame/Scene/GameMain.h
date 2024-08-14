@@ -82,6 +82,8 @@ private:
 	bool highscoreflg = false;
 	bool crackflg = false;
 	bool PauseFlg = false;
+	bool CameraFlg = false;
+	bool ActionFlg = true;
 
 	__int8 ui_combo_framecount = 0;
 
@@ -96,6 +98,8 @@ private:
 	int fadeout_alpha = 0;
 	int crack_alpha = 200;
 	int soot_alpha = 0;
+
+	int add_amount = 0;
 
 	Vector2D ev;
 	float l;

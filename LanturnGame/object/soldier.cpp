@@ -1,5 +1,6 @@
 ﻿#include "soldier.h"
 #include "../Utility/common.h"
+#include "../Utility/InputControl.h"
 #include "../Utility/LoadSounds.h"
 #include "DxLib.h"
 #include "math.h"
@@ -10,6 +11,8 @@
 #define EMRIGHT 2.0f
 #define EMLEFT -2.0f
 
+#define PI 3.141592653589793
+
 Soldier::Soldier()
 {
 
@@ -17,21 +20,22 @@ Soldier::Soldier()
 
 Soldier::~Soldier()
 {
-
+	
 }
 
 void Soldier::Initialize(GameMain* _g, int _obj_pos)
 {
 	CharaBase::Initialize(_g, _obj_pos);
 	type = (int)TYPE::_SOLDIER;
-	mode = 1;
+	state = 1;
 	deleteFlg = false;
-	LoadDivGraph("Resources/images/Soldier.png", 12, 3, 4, 64, 66, soldierimg);
+	LoadDivGraph("Resources/images/Soldier.png", 24, 6, 4, 64, 64, soldierimg);
 	soldierDetimg = LoadGraph("Resources/images/d_Soldier.png");
 }
 
 void Soldier::Finalize()
 {
+
 }
 
 void Soldier::Hit(SphereCollider* _sphere)
@@ -79,17 +83,16 @@ void Soldier::Hit(SphereCollider* _sphere)
 
 void Soldier::Update(GameMain* _g)
 {
-	if (mode == 1)
+	if (state == 1)
 	{
-		Move(gamemain->GetPlayer()->GetLocation());
-
+		//Move(PL);
 		//アニメーション切り替え
 		cnt++;
 		if ((cnt % 60) == 0)
 		{
 			animcnt++;
 		}
-		if (3 <= animcnt)
+		if (2 <= animcnt)
 		{
 			animcnt = 0;
 		}
@@ -100,9 +103,9 @@ void Soldier::Update(GameMain* _g)
 			//一定時間たったら動けるようになる
 			if (240 <= countNum)
 			{
-				if (mode == 0)
+				if (state == 0)
 				{
-					mode = 1;
+					state = 1;
 					countNum = 0;
 
 				}
@@ -114,13 +117,13 @@ void Soldier::Update(GameMain* _g)
 
 				}
 			}
-		if (SEflg == false && mode == 2)
+		if (SEflg == false && state == 2)
 		{
 			//プレイヤーを捕まえた
 			PlaySoundMem(Sounds::SE_CD_Soldier, DX_PLAYTYPE_BACK);
 			SEflg = true;
 		}
-		if (SEflg == false && mode == 3)
+		if (SEflg == false && state == 3)
 		{
 			//爆発に巻き込まれた
 			PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
@@ -133,7 +136,7 @@ void Soldier::Update(GameMain* _g)
 
 void Soldier::Draw(CameraManager* camera)const
 {
-	if (mode == 1 || mode == 0)
+	if (state == 1 || state == 0)
 	{
 		//兵隊イラストの描画
 		//DrawRotaGraphF(DrawFromCameraX(location, _distance, PL)
@@ -146,7 +149,7 @@ void Soldier::Draw(CameraManager* camera)const
 	else
 	{
 		//爆発に巻き込まれたときのイラストを表示
-		if (mode == 3)
+		if (state == 3)
 		{
 			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 						,  location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
@@ -157,35 +160,88 @@ void Soldier::Draw(CameraManager* camera)const
 
 void Soldier::Move(Vector2D PL)
 {
-	//プレイヤーとの中心座標の距離
-	length = PL - location;
-	float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
-	move.x = ((length.x / a) * 2);
-	move.y = ((length.y / a) * 2);
+	if (Movemode == false)
+	{
+		//プレイヤーとの中心座標の距離
+		length = PL - location;
+		float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
+		move.x = ((length.x / a) * speed);
+		move.y = ((length.y / a) * speed);
+	}
+	else
+	{
+		//プレイヤーとの中心座標の距離
+		Vector2D input = InputControl::GetLeftStick() * 500;
 
-	if (move.x <= 0)
+		input.y *= -1;
+
+		Pin = (PL + input);
+
+		length = Pin - location;
+		float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
+		move.x = ((length.x / a) * speed);
+		move.y = ((length.y / a) * speed);
+	}
+
+	//上
+	float angle = atan2(length.x, length.y);
+	angle = angle / PI *-180;
+	if (angle < 0)
+	{
+		angle += 360;
+	}
+
+	//上
+	if (157.6 < angle && angle < 202.5)
+	{
+		Velimg = 18;
+	}
+	//右上
+	if (202.6 < angle && angle < 247.5)
+	{
+		Velimg = 21;
+	}//右
+	if (247.5 < angle && angle < 292.5)
+		Velimg = 6;
+	//右下
+	if (292.6 < angle && angle < 337.5)
+		Velimg = 9;
+	//下
+	if ((0.01 < angle && angle < 22.5) || (337.6 < angle && angle < 360))
+	{
+		Velimg = 0;
+	}
+	//左上
+	if (22.6 < angle && angle < 67.5)
 	{
 		Velimg = 3;
 	}
-	if (move.x >= 0)
+	//左
+	if (67.6 < angle && angle < 112.5)
 	{
-		Velimg = 6;
+		Velimg = 12;
+	}
+	//左下
+	if (112.6 < angle && angle< 157.5)
+	{
+		Velimg = 15;
 	}
 
+
 	//フラグが立っているなら動ける
-	if (mode == 1)
+	if (state == 1)
 	{
 		location += move;
 		location += velocity;
 	}
 
-	else if(mode == 0)
+	else if(state == 0)
 	{
 		//一定時間停止したら動けるようになる
 		countNum++;
 		if (180 <= countNum)
 		{
-			mode = 1;
+			state = 1;
 			countNum = 0;
 		}
 	}
@@ -262,14 +318,20 @@ void Soldier::PositionCheck()
 
 void Soldier::SetMode(int i)
 {
-	mode = i;
+	state = i;
 }
 int Soldier::CheckMode()
 {
-	return mode;
+	return state;
 }
 
 bool Soldier::CheckDLflg()
 {
 	return deleteFlg;
+}
+
+//乱数取得
+int Soldier::GetRandom(int min, int max)
+{
+	return min + (int)(rand() * (max - min + 1.0) / (1.0 + RAND_MAX));
 }
