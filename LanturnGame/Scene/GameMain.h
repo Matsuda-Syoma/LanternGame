@@ -133,5 +133,6 @@ public:
 	Object* GetPlayer();
 	CameraManager* GetCamera();
 	void AddLife(int i);
+	void AddScore(int i);
 };
 

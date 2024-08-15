@@ -1134,3 +1134,8 @@ void GameMain::AddLife(int i)
 {
 	life += i;
 }
+
+void GameMain::AddScore(int i)
+{
+	score += i;
+}

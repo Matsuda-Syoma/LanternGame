@@ -52,6 +52,9 @@ void AddScore::Initialize(GameMain* _g, int _obj_pos)
 {
 	gamemain = _g;
 	obj_pos = _obj_pos;
+
+	totalscorelocation = Vector2D(SCREEN_WIDTH - 140, SCREEN_HEIGHT - 230);
+	startlocation = Vector2D(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 }
 
 void AddScore::Update(GameMain* _g)
@@ -102,6 +105,23 @@ void AddScore::Update(GameMain* _g)
 	{
 		cnt++;
 	}
+
+	if (moveflg)
+	{
+		if (totalscorelocation.x <= location.x && totalscorelocation.y <= location.y)
+		{
+			gamemain->AddScore(score);
+			flg = false;
+			moveflg = false;
+			speed = 0;
+		}
+		else
+		{
+			Move();
+			speed += 0.2;
+		}
+	}
+
 }
 
 void AddScore::Draw(CameraManager* camera) const
@@ -111,18 +131,44 @@ void AddScore::Draw(CameraManager* camera) const
 			//DrawRotaGraphF(DrawFromCameraX(location, _distance, loc) + (20 * (digit - 2)) - (i * 20)
 			//	, DrawFromCameraY(location, _distance, loc) + addy, 0.5, 0.0, numimg[bufscore % 10], true);
 
+		if (!moveflg)
+		{
 			DrawRotaGraphF(viewlocation.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2)) + (20 * (digit - 2)) - (i * 20)
-						 , viewlocation.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)) + addy
-						 , 0.5, 0.0, numimg[bufscore % 10], true);
+				, viewlocation.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)) + addy
+				, 0.5, 0.0, numimg[bufscore % 10], true);
+
+		}
+		else 
+		{
+			DrawRotaGraphF(location.x + (20 * (digit - 2)) - (i * 20), location.y, 0.5, 0.0, numimg[bufscore % 10], true);
+		}
 
 		bufscore /= 10;
 	}
+
 }
 
 void AddScore::Hit(SphereCollider* _sphere)
 {
 	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_PLAYER)
 	{
-		flg = false;
+		//totalscore += 100;
+		if (!moveflg)
+		{
+			location = startlocation;
+			moveflg = true;
+
+		}
+		//flg = false;
 	}
+}
+
+void AddScore::Move()
+{
+	length = totalscorelocation - location;
+	float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
+	move.x = ((length.x / a) * speed);
+	move.y = ((length.y / a) * speed);
+
+	location += move;
 }
