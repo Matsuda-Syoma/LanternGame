@@ -102,6 +102,13 @@ private:
 
 	int ScoreCenter = 0;
 
+	int ignited ;
+	int touch;
+	int bakuhatu;
+	int Movepng;
+	int MovepngMax;
+	bool page;
+
 public:
 	GameMain();
 	~GameMain();

@@ -21,6 +21,13 @@ GameMain::GameMain()
 	// BGMをループしながら再生する
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
+	ignited = LoadGraph("Resources/images/ignited.png");
+	touch = LoadGraph("Resources/images/touch.png");
+	bakuhatu = LoadGraph("Resources/images/explosion.png");
+	Movepng = 0;
+	MovepngMax = 0;
+	page = false;
+
 	/*******************初期化*******************/
 	textdisp = new TextDisp;
 	textdisp->LoadText(0);
@@ -424,6 +431,31 @@ AbstractScene* GameMain::Update()
 	//スコア描画の中心の値を求める
 	ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
 
+		if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && !page)
+		{
+			if (MovepngMax < 2000)
+				MovepngMax += 1000;
+		}
+		if (Movepng < MovepngMax)
+		{
+			page = true;
+			Movepng += 50;
+			if (MovepngMax == 1000 && Movepng >= MovepngMax)
+			{
+				//touch = 0;
+				page = false;
+			}
+			if (MovepngMax == 2000 && Movepng >= MovepngMax)
+			{
+				//ignited = 0;
+				page = false;
+			}
+			if (MovepngMax == 3000 && Movepng >= MovepngMax)
+			{
+				//bakuhatu = 0;
+				page = false;
+			}
+		}
 	if (0 < add_amount)
 	{
 		score += 100;
@@ -1545,6 +1577,7 @@ void GameMain::Draw() const
 			background[i]->Draw(Camera, CameraDistance);
 		}
 	}
+	
 
 	//ギミック(氷)
 	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
@@ -1706,6 +1739,8 @@ void GameMain::Draw() const
 		}
 	}
 
+	
+
 	// ミニマップ
 	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
 	DrawBox(SCREEN_WIDTH - 128 - (GM_MAX_MAPSIZE / 16), 128 - (GM_MAX_MAPSIZE / 16), SCREEN_WIDTH - 128 + (GM_MAX_MAPSIZE / 16), 128 + (GM_MAX_MAPSIZE / 16), 0x8844ff, true);
@@ -1809,6 +1844,13 @@ void GameMain::Draw() const
 			bufscore /= 10;
 		}
 
+		if (textdisp->GetFlg() == true)
+		{
+			DrawBox(320, 0, 960, 330, 0xffffff, true);
+			DrawRotaGraph(640 + Movepng, 160, 0.7, 0.0, touch, TRUE);
+			DrawRotaGraph(-360 + Movepng, 160, 0.7, 0.0, ignited, TRUE);
+			DrawRotaGraph(-1360 + Movepng, 160, 0.7, 0.0, bakuhatu, TRUE);
+		}
 	}
 	// リザルトなら
 	else
