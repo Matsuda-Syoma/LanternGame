@@ -13,8 +13,10 @@ private:
 	int score = 0;
 	int totalscore = 0;
 	int digit = 0;
+	float interval = 20;
 	static int numimg[10];
 	float speed = 2.0;
+	float fontsize = 0.5;
 	Vector2D viewlocation;
 	Vector2D totalscorelocation;
 	Vector2D length = 0;

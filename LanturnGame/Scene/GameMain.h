@@ -60,6 +60,9 @@ private:
 	int life = GM_MAX_LIFE;
 	int Displaylife = life;
 
+	int addscore = 0;
+	float scoresize = 0.6;
+
 	int lifeimage;
 	int lifematchimage;
 	int closemapimage;

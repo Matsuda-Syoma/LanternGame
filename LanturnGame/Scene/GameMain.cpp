@@ -19,7 +19,7 @@ GameMain::GameMain()
 	hiscore = (int)UserData::LoadData(UserData::Type::HISCORE);		// ハイスコア読み込み
 
 	// BGMをループしながら再生する
-	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
+	//PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
 	/*******************初期化*******************/
 	//textdisp = new TextDisp;
@@ -657,6 +657,11 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
+	if (scoresize > 0.6)
+	{
+		scoresize -= 0.02;
+	}
+
 	camera->Update(this);
 	return this;
 
@@ -816,7 +821,7 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 		bufscore = score;
 		for (int s = 0; s < num; s++)
 		{
-			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, scoresize, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 
@@ -1138,4 +1143,5 @@ void GameMain::AddLife(int i)
 void GameMain::AddScore(int i)
 {
 	score += i;
+	scoresize = 0.8;
 }

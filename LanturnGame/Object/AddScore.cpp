@@ -54,7 +54,7 @@ void AddScore::Initialize(GameMain* _g, int _obj_pos)
 	obj_pos = _obj_pos;
 
 	totalscorelocation = Vector2D(SCREEN_WIDTH - 140, SCREEN_HEIGHT - 230);
-	startlocation = Vector2D(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+	startlocation = Vector2D(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20);
 }
 
 void AddScore::Update(GameMain* _g)
@@ -114,11 +114,18 @@ void AddScore::Update(GameMain* _g)
 			flg = false;
 			moveflg = false;
 			speed = 0;
+			fontsize = 0.5;
+			interval = 20.0;
 		}
 		else
 		{
 			Move();
 			speed += 0.2;
+			if (fontsize > 0.1)
+			{
+				fontsize -= 0.02;
+				interval -= 0.5;
+			}
 		}
 	}
 
@@ -140,7 +147,14 @@ void AddScore::Draw(CameraManager* camera) const
 		}
 		else 
 		{
-			DrawRotaGraphF(location.x + (20 * (digit - 2)) - (i * 20), location.y, 0.5, 0.0, numimg[bufscore % 10], true);
+			if (fontsize <= 0.1)
+			{
+				DrawCircle(location.x, location.y, 4, 0xffffff, TRUE);
+			}
+			else
+			{
+				DrawRotaGraphF(location.x + (interval * (digit - 2)) - (i * interval), location.y, fontsize, 0.0, numimg[bufscore % 10], true);
+			}
 		}
 
 		bufscore /= 10;
@@ -156,6 +170,8 @@ void AddScore::Hit(SphereCollider* _sphere)
 		if (!moveflg)
 		{
 			location = startlocation;
+			fontsize = 0.8;
+			interval = 25.0;
 			moveflg = true;
 
 		}
