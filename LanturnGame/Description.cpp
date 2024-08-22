@@ -24,7 +24,6 @@ Description::Description()
 	Movepng = 0;
 	MovepngMax = 0;
 
-	textNumber = 0;
 }
 
 Description::~Description()
@@ -59,21 +58,13 @@ void Description::Update()
 
 void Description::Draw()
 {
-	DrawBox(220, 0, 1060, 330, 0xffffff, true);
-	if(MovepngMax < 5000)
-	DrawRotaGraph(990, 160, 0.3, PI / 2, sankaku, TRUE);
-	DrawRotaGraph(290, 160, 0.3, PI / -2, sankaku, TRUE);
-	
-	//‰æ‘œ‚Ì•`‰æ
-	DrawRotaGraph((640 - (thousand * 0)) + Movepng, 160, 0.7, 0.0, touchbomb, TRUE);
-	DrawRotaGraph((640 - (thousand * 1)) + Movepng, 160, 0.7, 0.0, ignited, TRUE);
-	DrawRotaGraph((640 - (thousand * 2)) + Movepng, 160, 0.7, 0.0, bakuhatu, TRUE);
-	DrawRotaGraph((640 - (thousand * 3)) + Movepng, 160, 0.7, 0.0, be_pursued, TRUE);
-	DrawRotaGraph((640 - (thousand * 4)) + Movepng, 160, 0.7, 0.0, touchsoldier, TRUE);
-	DrawRotaGraph((640 - (thousand * 5)) + Movepng, 160, 0.7, 0.0, chain, TRUE);
-}
+	DrawBox(220, 10, 1060, 340, 0xffffff, true);
 
-int Description::cheakTextNumber()
-{
-	return textNumber;
+	//‰æ‘œ‚Ì•`‰æ
+	DrawRotaGraph((640 - (thousand * 0)) + Movepng, 170, 0.7, 0.0, touchbomb, TRUE);
+	DrawRotaGraph((640 - (thousand * 1)) + Movepng, 170, 0.7, 0.0, ignited, TRUE);
+	DrawRotaGraph((640 - (thousand * 2)) + Movepng, 170, 0.7, 0.0, bakuhatu, TRUE);
+	DrawRotaGraph((640 - (thousand * 3)) + Movepng, 170, 0.7, 0.0, be_pursued, TRUE);
+	DrawRotaGraph((640 - (thousand * 4)) + Movepng, 170, 0.7, 0.0, touchsoldier, TRUE);
+	DrawRotaGraph((640 - (thousand * 5)) + Movepng, 170, 0.7, 0.0, chain, TRUE);
 }

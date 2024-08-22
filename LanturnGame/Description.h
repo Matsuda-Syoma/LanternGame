@@ -7,8 +7,6 @@ public:
 	void Update();
 	void Draw();
 
-	int cheakTextNumber();
-
 private:
 	//画像読み込み用変数
 	//爆弾
@@ -26,8 +24,5 @@ private:
 	int Movepng;
 	int MovepngMax;
 	bool page;
-
-	//表示するtext確認
-	int textNumber;
 };
 
