@@ -17,10 +17,10 @@
 #include "../Utility/UserData.h"
 #include "../Scene/Setting.h"
 #include "../Object/Conveyor_y.h"
-#include "../Description.h"
 
 class GameMain : public AbstractScene
 {
+	//
 private:
 	Bomb** bomb;
 	Explosion** explosion;
@@ -36,7 +36,6 @@ private:
 	AddScore** addscore;
 	Setting* setting;
 	Conveyor_y** conveyor_y;
-	Description* descripition;
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
 	unsigned int hiscore = 0;
@@ -104,7 +103,12 @@ private:
 
 	int ScoreCenter = 0;
 
-	
+	int ignited ;
+	int touch;
+	int bakuhatu;
+	int Movepng;
+	int MovepngMax;
+	bool page;
 
 public:
 	GameMain();

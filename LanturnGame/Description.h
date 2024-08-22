@@ -8,6 +8,7 @@ public:
 	void Draw();
 
 	int cheakTextNumber();
+	//
 
 private:
 	//‰æ‘œ“Ç‚İ‚İ—p•Ï”

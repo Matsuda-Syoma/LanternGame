@@ -7,6 +7,7 @@
 
 GameMain::GameMain()
 {
+	//
 	SetFontSize(32);
 	/*******************画像読み込み*******************/
 	BackGround::LoadImages();
@@ -21,10 +22,16 @@ GameMain::GameMain()
 	// BGMをループしながら再生する
 	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
+	ignited = LoadGraph("Resources/images/ignited.png");
+	touch = LoadGraph("Resources/images/touch.png");
+	bakuhatu = LoadGraph("Resources/images/explosion.png");
+	Movepng = 0;
+	MovepngMax = 0;
+	page = false;
+
 	/*******************初期化*******************/
 	textdisp = new TextDisp;
 	textdisp->LoadText(0);
-	descripition = new Description;
 	player = new Player;
 	
 
@@ -425,8 +432,31 @@ AbstractScene* GameMain::Update()
 	//スコア描画の中心の値を求める
 	ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
 
-	descripition->Update();
-		
+		if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT) && !page)
+		{
+			if (MovepngMax < 2000)
+				MovepngMax += 1000;
+		}
+		if (Movepng < MovepngMax)
+		{
+			page = true;
+			Movepng += 50;
+			if (MovepngMax == 1000 && Movepng >= MovepngMax)
+			{
+				//touch = 0;
+				page = false;
+			}
+			if (MovepngMax == 2000 && Movepng >= MovepngMax)
+			{
+				//ignited = 0;
+				page = false;
+			}
+			if (MovepngMax == 3000 && Movepng >= MovepngMax)
+			{
+				//bakuhatu = 0;
+				page = false;
+			}
+		}
 	if (0 < add_amount)
 	{
 		score += 100;
@@ -1666,7 +1696,7 @@ void GameMain::Draw() const
 		// 敵がnullptrじゃないなら
 		if (addscore[i] != nullptr)
 		{
-			//addscore[i]->Draw(Camera, CameraDistance);
+			addscore[i]->Draw(Camera, CameraDistance);
 		}
 	}
 
@@ -1692,14 +1722,14 @@ void GameMain::Draw() const
 	}
 
 
-	//DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
+	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 
-	////残り体力の表示
-	//DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
-	//for (int i = 0; i < life; i++)
-	//{
-	//	DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
-	//}
+	//残り体力の表示
+	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
+	for (int i = 0; i < life; i++)
+	{
+		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
+	}
 	
 	int bcnt = 0;
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
@@ -1713,111 +1743,114 @@ void GameMain::Draw() const
 	
 
 	// ミニマップ
-	//DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
-	//DrawBox(SCREEN_WIDTH - 128 - (GM_MAX_MAPSIZE / 16), 128 - (GM_MAX_MAPSIZE / 16), SCREEN_WIDTH - 128 + (GM_MAX_MAPSIZE / 16), 128 + (GM_MAX_MAPSIZE / 16), 0x8844ff, true);
-	//DrawBoxAA(SCREEN_WIDTH - 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 0x88ff88, true);
+	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
+	DrawBox(SCREEN_WIDTH - 128 - (GM_MAX_MAPSIZE / 16), 128 - (GM_MAX_MAPSIZE / 16), SCREEN_WIDTH - 128 + (GM_MAX_MAPSIZE / 16), 128 + (GM_MAX_MAPSIZE / 16), 0x8844ff, true);
+	DrawBoxAA(SCREEN_WIDTH - 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 0x88ff88, true);
 
 
-	//// ミニマップ(ギミック(氷)
-	//for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
-	//{
-	//	if (stage[i] != nullptr)
-	//	{
-	//		DrawCircleAA(SCREEN_WIDTH - 128 + (stage[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (stage[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
-	//	}
-	//}
+	// ミニマップ(ギミック(氷)
+	for (int i = 0; i < GM_MAX_ICEFLOOR; i++)
+	{
+		if (stage[i] != nullptr)
+		{
+			DrawCircleAA(SCREEN_WIDTH - 128 + (stage[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (stage[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 8, 8, 0x004488, true);
+		}
+	}
 
-	////ミニマップ(ギミック(コンベア))
-	//for (int i = 0; i < GM_MAX_CONVEYOR; i++)
-	//{
-	//	if (conveyor[i] != nullptr)
-	//	{
-	//		DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			SCREEN_WIDTH - 128 + (conveyor[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			128 + (conveyor[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
-	//	}
-	//}
+	//ミニマップ(ギミック(コンベア))
+	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+	{
+		if (conveyor[i] != nullptr)
+		{
+			DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				SCREEN_WIDTH - 128 + (conveyor[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				128 + (conveyor[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
+		}
+	}
 
-	//for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
-	//{
-	//	if (conveyor_y[i] != nullptr)
-	//	{
-	//		DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor_y[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			128 + (conveyor_y[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			SCREEN_WIDTH - 128 + (conveyor_y[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			128 + (conveyor_y[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
-	//	}
-	//}
-	//// ミニマップ(ギミック(竜巻)
-	//for (int i = 0; i < GM_MAX_TORNADO; i++)
-	//{
-	//	if (tornado[i] != nullptr)
-	//	{
-	//		DrawCircleAA(SCREEN_WIDTH - 128 + (tornado[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (tornado[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 12, 8, 0x800000, true);
-	//	}
-	//}
+	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
+	{
+		if (conveyor_y[i] != nullptr)
+		{
+			DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor_y[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				128 + (conveyor_y[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				SCREEN_WIDTH - 128 + (conveyor_y[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+				128 + (conveyor_y[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
+		}
+	}
+	// ミニマップ(ギミック(竜巻)
+	for (int i = 0; i < GM_MAX_TORNADO; i++)
+	{
+		if (tornado[i] != nullptr)
+		{
+			DrawCircleAA(SCREEN_WIDTH - 128 + (tornado[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (tornado[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 12, 8, 0x800000, true);
+		}
+	}
 
-	//BlackOutDraw();
+	BlackOutDraw();
 
-	//// ミニマップ(プレイヤー)
-	//DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	// ミニマップ(プレイヤー)
+	DrawCircleAA(SCREEN_WIDTH - 128 + (player->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (player->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x8888ff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	//// ミニマップ(爆弾)
-	//for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
-	//{
-	//	if (bomb[i] != nullptr)
-	//	{
-	//		DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x7f2244, true);
-	//	}
-	//}
+	// ミニマップ(爆弾)
+	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
+	{
+		if (bomb[i] != nullptr)
+		{
+			DrawCircleAA(SCREEN_WIDTH - 128 + (bomb[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (bomb[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2, 8, 0x7f2244, true);
+		}
+	}
 
-	//// ミニマップ(兵士)
-	//for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
-	//{
-	//	if (soldier[i] != nullptr && (soldier[i]->CheckMode() == 1 || soldier[i]->CheckMode() == 0))
-	//	{
-	//		DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
-	//	}
-	//}
+	// ミニマップ(兵士)
+	for (int i = 0; i < GM_MAX_ENEMY_SOLDIER; i++)
+	{
+		if (soldier[i] != nullptr && (soldier[i]->CheckMode() == 1 || soldier[i]->CheckMode() == 0))
+		{
+			DrawCircleAA(SCREEN_WIDTH - 128 + (soldier[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (soldier[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 2.5, 8, 0xff0000, true);
+		}
+	}
 	// リザルトじゃないなら
 	if (resultflg == false)
 	{
-		//SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-		//DrawBox(SCREEN_WIDTH - 233, 400, SCREEN_WIDTH - 23, 530, 0x000000, true);
-		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
+		DrawBox(SCREEN_WIDTH - 233, 400, SCREEN_WIDTH - 23, 530, 0x000000, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		//char chr_score[] = "score";
-		//for (int i = 0; i < sizeof(chr_score); i++)
-		//{
-		//	int chr = chr_score[i] - 'a';
-		//	DrawRotaGraph((SCREEN_WIDTH - 190) + 33 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
-		//}
+		char chr_score[] = "score";
+		for (int i = 0; i < sizeof(chr_score); i++)
+		{
+			int chr = chr_score[i] - 'a';
+			DrawRotaGraph((SCREEN_WIDTH - 190) + 33 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
+		}
 
-		//if (score == 0)
-		//{
-		//	DrawRotaGraph(SCREEN_WIDTH - 125, 490, 0.6, 0.0, numimage[0], true);
-		//}
+		if (score == 0)
+		{
+			DrawRotaGraph(SCREEN_WIDTH - 125, 490, 0.6, 0.0, numimage[0], true);
+		}
 
-		////スコアの表示
-		//int bufscore = score;
-		//int num = 0;
-		//while (bufscore > 0)
-		//{
-		//	num++;
-		//	bufscore /= 10;
-		//}
-		//bufscore = score;
-		//for (int s = 0; s < num; s++)
-		//{
-		//	DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
-		//	bufscore /= 10;
-		//}
+		//スコアの表示
+		int bufscore = score;
+		int num = 0;
+		while (bufscore > 0)
+		{
+			num++;
+			bufscore /= 10;
+		}
+		bufscore = score;
+		for (int s = 0; s < num; s++)
+		{
+			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
+			bufscore /= 10;
+		}
 
 		if (textdisp->GetFlg() == true)
 		{
-			descripition->Draw();
+			DrawBox(320, 0, 960, 330, 0xffffff, true);
+			DrawRotaGraph(640 + Movepng, 160, 0.7, 0.0, touch, TRUE);
+			DrawRotaGraph(-360 + Movepng, 160, 0.7, 0.0, ignited, TRUE);
+			DrawRotaGraph(-1360 + Movepng, 160, 0.7, 0.0, bakuhatu, TRUE);
 		}
 	}
 	// リザルトなら

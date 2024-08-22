@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Description.cpp" />
     <ClCompile Include="Scene\credit.cpp" />
     <ClCompile Include="Object\AddScore.cpp" />
     <ClCompile Include="Object\BoxCollider.cpp" />
@@ -47,7 +46,6 @@
     <ClCompile Include="Utility\LoadSounds.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Description.h" />
     <ClInclude Include="Scene\credit.h" />
     <ClInclude Include="Object\AddScore.h" />
     <ClInclude Include="Object\BoxCollider.h" />

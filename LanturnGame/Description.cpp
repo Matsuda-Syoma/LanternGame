@@ -76,4 +76,5 @@ void Description::Draw()
 int Description::cheakTextNumber()
 {
 	return textNumber;
+	
 }
