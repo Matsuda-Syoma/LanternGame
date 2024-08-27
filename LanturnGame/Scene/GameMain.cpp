@@ -44,6 +44,11 @@ GameMain::GameMain()
 	//			bool ret = false;
 	//			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 	//			Vector2D center = (Vector2D((float)((int)MapSize) - 1500, (float)((int)MapSize) - 1500));
+	textdisp = new TextDisp;
+	textdisp->LoadText(0);
+	descripition = new Description;
+	player = new Player;
+	
 
 	//			// コンベアを見る
 	//			for (int j = 0; j < GM_MAX_CONVEYOR; j++)
@@ -750,7 +755,14 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 		}
 	}
 
-	// ミニマップ
+	//残り体力の表示
+	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
+	for (int i = 0; i < life; i++)
+	{
+		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
+	}
+
+	//ミニマップ
 	DrawBox(SCREEN_WIDTH - 128 - 104, 128 - 104, SCREEN_WIDTH - 128 + 104, 128 + 104, 0x004400, true);
 	DrawBox(SCREEN_WIDTH - 128 - (GM_MAX_MAPSIZE / 16), 128 - (GM_MAX_MAPSIZE / 16), SCREEN_WIDTH - 128 + (GM_MAX_MAPSIZE / 16), 128 + (GM_MAX_MAPSIZE / 16), 0x8844ff, true);
 	DrawBoxAA(SCREEN_WIDTH - 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 - ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), SCREEN_WIDTH - 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 128 + ((GM_MAX_MAPSIZE / 16) * (MapSize / GM_MAX_MAPSIZE)), 0x88ff88, true);
@@ -820,6 +832,10 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 			bufscore /= 10;
 		}
 
+		if (textdisp->GetFlg() == true)
+		{
+			descripition->Draw();
+		}
 	}
 	// リザルトなら
 	else

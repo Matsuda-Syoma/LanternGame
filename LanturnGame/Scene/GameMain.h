@@ -19,6 +19,7 @@
 #include "../Utility/UserData.h"
 #include "../Scene/Setting.h"
 //#include "../Object/Conveyor_y.h"
+#include "../Description.h"
 
 class GameMain : public AbstractScene
 {
@@ -105,6 +106,8 @@ private:
 	float l;
 
 	int ScoreCenter = 0;
+
+	
 
 public:
 	GameMain();
