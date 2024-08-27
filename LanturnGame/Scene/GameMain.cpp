@@ -44,10 +44,10 @@ GameMain::GameMain()
 	//			bool ret = false;
 	//			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 	//			Vector2D center = (Vector2D((float)((int)MapSize) - 1500, (float)((int)MapSize) - 1500));
-	textdisp = new TextDisp;
-	textdisp->LoadText(0);
-	descripition = new Description;
-	player = new Player;
+	//textdisp = new TextDisp;
+	//textdisp->LoadText(0);
+	//description = new Description;
+	//player = new Player;
 	
 
 	//			// コンベアを見る
@@ -832,10 +832,10 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 			bufscore /= 10;
 		}
 
-		if (textdisp->GetFlg() == true)
+		/*if (textdisp->GetFlg() == true)
 		{
 			descripition->Draw();
-		}
+		}*/
 	}
 	// リザルトなら
 	else

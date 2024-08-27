@@ -36,10 +36,11 @@ private:
 	//Conveyor** conveyor;
 	//Tornado** tornado;
 	//ComboEnd** comboend;
-	//TextDisp* textdisp;
+	TextDisp* textdisp;
 	//AddScore** addscore;
 	//Setting* setting;
 	//Conveyor_y** conveyor_y;
+	//Description* description;
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
 	unsigned int hiscore = 0;
