@@ -88,7 +88,6 @@ void Bomb::Init(int _expsize)
 }
 void Bomb::Update(GameMain* _g)
 {
-
 	MapSize = _g->GetMapSize();
 	// 敵と敵の距離を見る
 	int temp = -1;
@@ -313,6 +312,7 @@ void Bomb::Update(GameMain* _g)
 		}
 	}
 
+	// 爆発処理
 	if (!flg)
 	{
 		int exptemp = gamemain->CreateObject(new Explosion);
@@ -327,7 +327,8 @@ void Bomb::Update(GameMain* _g)
 
 		exptemp = gamemain->CreateObject(new AddScore);
 		gamemain->GetObjectA(exptemp)->SetLocation(location);
-		static_cast<AddScore*>(gamemain->GetObjectA(exptemp))->SetScore(100);
+		gamemain->AddCombo(1);
+		static_cast<AddScore*>(gamemain->GetObjectA(exptemp))->SetScore(100 * gamemain->GetComboCount());
 
 		gamemain->DeleteObject(this, obj_pos);
 	}

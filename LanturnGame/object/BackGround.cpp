@@ -20,9 +20,10 @@ void BackGround::Init(int i)
 
 void BackGround::Draw(CameraManager* camera) const
 {
+
 	// •`‰æ
-	DrawRotaGraphF((location.x * (64.0f - (camera->GetDistance() * 32.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
-				 , (location.y * (64.0f - (camera->GetDistance() * 32.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)), 2.032 - camera->GetDistance(), 0.0, images[9], true);
+	DrawRotaGraphF((location.x * (64.0f - (camera->GetDistance() * 64.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+				 , (location.y * (64.0f - (camera->GetDistance() * 64.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)), 2.032 - (camera->GetDistance() * 2), 0.0, images[9], true);
 }
 
 void BackGround::LoadImages() {

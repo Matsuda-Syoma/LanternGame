@@ -4,6 +4,7 @@
 #include "../Utility/InputControl.h"
 #include "../Utility/common.h"
 #include "../Utility/UserData.h"
+#include "../Scene/GameMain.h"
 #include "CameraManager.h"
 Player::Player()
 {
@@ -36,6 +37,8 @@ void Player::Finalize()
 
 void Player::Update(GameMain* _g)
 {
+
+	GetMapSize(gamemain->GetMapSize());
 	lastinput = 0;
 
 	Movement();
@@ -160,6 +163,16 @@ void Player::Draw(CameraManager* camera) const
 
 void Player::Hit(SphereCollider* _sphere)
 {
+	if (static_cast<CharaBase*>(_sphere)->GetType() == CharaBase::TYPE::_EXPLOSION)
+	{
+		if (!hitflg)
+		{
+			gamemain->AddLife(-1);
+		}
+		SetHitFlg(true);
+		SetDamageDirectionFlg(true);
+	}
+
 }
 
 void Player::Movement()
@@ -258,9 +271,8 @@ void Player::Movement()
 			velocity.y = 0;
 		}
 	}
-
 	// 画面外に出ないように
-	if (location.x < -MapSize + areahitradius)
+	if (location.x < -MapSize + map_radius)
 	{
 		location.x = -MapSize + areahitradius;
 	}
