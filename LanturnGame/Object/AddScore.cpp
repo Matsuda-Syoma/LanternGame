@@ -177,6 +177,11 @@ void AddScore::Hit(SphereCollider* _sphere)
 		}
 		//flg = false;
 	}
+
+	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_SOLDIER)
+	{
+
+	}
 }
 
 void AddScore::Move()

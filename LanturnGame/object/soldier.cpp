@@ -76,6 +76,11 @@ void Soldier::Hit(SphereCollider* _sphere)
 	{
 		if (CheckMode() == 1)
 		{
+
+			int score = gamemain->CreateObject(new AddScore);
+			gamemain->GetObjectA(score)->SetLocation(location);
+			static_cast<AddScore*>(gamemain->GetObjectA(score))->SetScore(MyScore);
+
 			SetMode(3);
 		}
 	}
@@ -334,4 +339,9 @@ bool Soldier::CheckDLflg()
 int Soldier::GetRandom(int min, int max)
 {
 	return min + (int)(rand() * (max - min + 1.0) / (1.0 + RAND_MAX));
+}
+
+void Soldier::SetMyScore(int Score)
+{
+	MyScore += Score;
 }
