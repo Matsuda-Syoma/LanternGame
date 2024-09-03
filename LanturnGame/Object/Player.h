@@ -32,8 +32,8 @@ private:
 	int playerimg[24] = {};		// プレイヤー画像
 	int deadplayer_img = 0;		// プレイヤー画像（死亡時）
 	int angry_img = 0;			// 兵隊に捕まった時の画像
-	int direction = 4;			// 現在の向き（０：下　１：左　２：右　３：上　４：左斜め下　５：左斜め上　６：右斜め下　７：右斜め上）
-	int stop_direction = 4;		// 止まったときの向き（８：下　９：左　１０：右　１１：上　１２：左斜め下　１３：左斜め上　１４：右斜め下　１５：右斜め上）
+	int direction = 1;			// 現在の向き（０：下　１：左　２：右　３：上　４：左斜め下　５：左斜め上　６：右斜め下　７：右斜め上）
+	int stop_direction = 8;		// 止まったときの向き（８：下　９：左　１０：右　１１：上　１２：左斜め下　１３：左斜め上　１４：右斜め下　１５：右斜め上）
 
 	float deadzone = 0.1f;
 	float acceleration = 4.f;
@@ -56,10 +56,10 @@ public:
 
 	// アニメーション
 	void MoveAnim();
-	void MoveRight();	// 右移動
-	void MoveLeft();	// 左移動
-	void MoveUp();		// 上移動
-	void MoveDown();	// 下移動
+	//void MoveRight();	// 右移動
+	//void MoveLeft();	// 左移動
+	//void MoveUp();		// 上移動
+	//void MoveDown();	// 下移動
 
 	bool GetHitFlg() const;
 	void SetHitFlg(bool b);
