@@ -89,35 +89,27 @@ void Player::Update(GameMain* _g)
 		// プレイヤーアニメーション
 		if (direction == 0) {	// 下移動
 			imgdirection = 1;
-			MoveAnim();
 		}
 		else if (direction == 1) {	// 左移動
 			imgdirection = 13;
-			MoveAnim();
 		}
 		else if (direction == 2) {	// 右移動
 			imgdirection = 7;
-			MoveAnim();
 		}
 		else if (direction == 3) {	// 上移動
 			imgdirection = 19;
-			MoveAnim();
 		}
 		else if (direction == 4) {	// 左斜め下移動
 			imgdirection = 4;
-			MoveAnim();
 		}
 		else if (direction == 5) {	// 左斜め上移動
 			imgdirection = 10;
-			MoveAnim();
 		}
 		else if (direction == 6) {	// 右斜め下移動
 			imgdirection = 16;
-			MoveAnim();
 		}
 		else if (direction == 7) {	// 右斜め上移動
 			imgdirection = 22;
-			MoveAnim();
 		}
 		else if (direction == 8) {	// 下停止
 			imgnum = 1;
@@ -315,9 +307,12 @@ void Player::Movement()
 
 	// 兵隊に捕まっていない かつ プレイヤーが生きていたら
 	if (hitsoldier == false && pflg == true) {
-		// 歩行アニメーション
+		// 歩行向き所得
 		if (velocity.x != 0 || velocity.y != 0)
 		{
+			// 歩行アニメーション
+			MoveAnim();
+
 			// スティック移動
 			if (crossbuttonflg == false)
 			{
@@ -353,7 +348,6 @@ void Player::Movement()
 						}
 						direction = 2;
 						stop_direction = 10;
-
 					}
 
 				}
@@ -393,6 +387,7 @@ void Player::Movement()
 					}
 					
 				}
+				// 上移動
 				else if (InputControl::GetLeftStick().y >= 0.2)
 				{
 					if (direction != 3)
@@ -402,6 +397,7 @@ void Player::Movement()
 					direction = 3;
 					stop_direction = 11;
 				}
+				// 下移動
 				else if (InputControl::GetLeftStick().y <= -0.2)
 				{
 					if (direction != 0)
@@ -419,6 +415,7 @@ void Player::Movement()
 				// 右向き
 				if (InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
 				{
+					// 右斜め上移動
 					if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
 					{
 						if (direction != 7)
@@ -428,6 +425,7 @@ void Player::Movement()
 						direction = 7;
 						stop_direction = 15;
 					}
+					// 右斜め下移動
 					else if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
 					{
 						if (direction != 6)
@@ -437,6 +435,7 @@ void Player::Movement()
 						direction = 6;
 						stop_direction = 14;
 					}
+					// 右移動
 					else {
 						if (direction != 2)
 						{
@@ -450,6 +449,7 @@ void Player::Movement()
 				// 左向き
 				else if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
 				{
+					// 左斜め上移動
 					if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
 					{
 						if (direction != 5)
@@ -459,6 +459,7 @@ void Player::Movement()
 						direction = 5;
 						stop_direction = 13;
 					}
+					// 左斜め下移動
 					else if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
 					{
 						if (direction != 4)
@@ -468,6 +469,7 @@ void Player::Movement()
 						direction = 4;
 						stop_direction = 12;
 					}
+					// 左移動
 					else {
 						if (direction != 1)
 						{
@@ -503,60 +505,60 @@ void Player::Movement()
 		}
 
 		// 前後アニメーション
-		if (velocity.y != 0)
-		{
-			//// スティック移動
-			//if (crossbuttonflg == false)
-			//{
-			//	
-			//	// 上移動
-			//    if (InputControl::GetLeftStick().y >= 0.2)
-			//	{
-			//		if (direction != 3)
-			//		{
-			//			anim_cnt = 0;
-			//		}
-			//		direction = 3;
-			//		stop_direction = 11;
-			//	}
-			//	// 下移動
-			//	else if (InputControl::GetLeftStick().y <= -0.2)
-			//	{
-			//		if (direction != 0)
-			//		{
-			//			anim_cnt = 0;
-			//		}
-			//		direction = 0;
-			//		stop_direction = 8;
-			//	}
-			//}
+		//if (velocity.y != 0)
+		//{
+		//	// スティック移動
+		//	if (crossbuttonflg == false)
+		//	{
+		//		
+		//		// 上移動
+		//	    if (InputControl::GetLeftStick().y >= 0.2)
+		//		{
+		//			if (direction != 3)
+		//			{
+		//				anim_cnt = 0;
+		//			}
+		//			direction = 3;
+		//			stop_direction = 11;
+		//		}
+		//		// 下移動
+		//		else if (InputControl::GetLeftStick().y <= -0.2)
+		//		{
+		//			if (direction != 0)
+		//			{
+		//				anim_cnt = 0;
+		//			}
+		//			direction = 0;
+		//			stop_direction = 8;
+		//		}
+		//	}
 
-			// 十字キー移動
-			//if (stickflg == false)
-			//{
-			//	// 上移動
-			//	if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
-			//	{
-			//		if (direction != 3)
-			//		{
-			//			anim_cnt = 0;
-			//		}
-			//		direction = 3;
-			//		stop_direction = 11;
-			//	}
-			//	// 下移動
-			//	else if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
-			//	{
-			//		if (direction != 0)
-			//		{
-			//			anim_cnt = 0;
-			//		}
-			//		direction = 0;
-			//		stop_direction = 8;
-			//	}
-			//}
-			
-		}
+		//	// 十字キー移動
+		//	if (stickflg == false)
+		//	{
+		//		// 上移動
+		//		if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP))
+		//		{
+		//			if (direction != 3)
+		//			{
+		//				anim_cnt = 0;
+		//			}
+		//			direction = 3;
+		//			stop_direction = 11;
+		//		}
+		//		// 下移動
+		//		else if (InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN))
+		//		{
+		//			if (direction != 0)
+		//			{
+		//				anim_cnt = 0;
+		//			}
+		//			direction = 0;
+		//			stop_direction = 8;
+		//		}
+		//	}
+		//	
+		//}
 
 	}
 
