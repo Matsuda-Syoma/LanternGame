@@ -65,7 +65,7 @@ private:
 	int addscore = 0;
 	float scoresize = 0.6;
 
-	int lifeimage;
+	int lifeimage[5];
 	int lifematchimage;
 	int closemapimage;
 	int hukidasiimage;
