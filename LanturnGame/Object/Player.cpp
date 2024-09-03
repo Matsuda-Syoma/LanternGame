@@ -163,6 +163,16 @@ void Player::Draw(CameraManager* camera) const
 
 void Player::Hit(SphereCollider* _sphere)
 {
+	if (static_cast<CharaBase*>(_sphere)->GetType() == CharaBase::TYPE::_EXPLOSION)
+	{
+		if (!hitflg)
+		{
+			gamemain->AddLife(-1);
+		}
+		SetHitFlg(true);
+		SetDamageDirectionFlg(true);
+	}
+
 }
 
 void Player::Movement()

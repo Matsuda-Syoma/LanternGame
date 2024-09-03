@@ -15,20 +15,17 @@ void CameraManager::Update(GameMain* _g)
 {
 	location = _g->GetPlayer()->GetLocation();
 
-	clsDx();
-	printfDx("%f", Distance);
-
 	if (InOutCount > 0)
 	{
 		Distance = 0.0f;
 		if (oMin.x != 0.0 || oMin.y != 0.0)
 		{
-			float CameraDistanceTemp = (GetLength(location, location - oMin) / 1200.0f) * min((InOutCount / 90.0f), 1.0f);
+			float CameraDistanceTemp = (GetLength(location, location - oMin) / 2400.0f) * min((InOutCount / 90.0f), 1.0f);
 			Distance = CameraDistanceTemp;
 		}
 		if (oMax.x != 0.0 || oMax.y != 0.0)
 		{
-			float CameraDistanceTemp = (GetLength(location, location - oMax) / 1200.0f) * min((InOutCount / 90.0f), 1.0f);
+			float CameraDistanceTemp = (GetLength(location, location - oMax) / 2400.0f) * min((InOutCount / 90.0f), 1.0f);
 			if (Distance < CameraDistanceTemp)
 			{
 				Distance = CameraDistanceTemp;
