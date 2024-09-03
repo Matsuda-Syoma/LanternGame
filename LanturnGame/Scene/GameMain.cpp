@@ -698,6 +698,25 @@ AbstractScene* GameMain::Update()
 			object[temp]->SetLocation(spawnloc);
 
 		}
+
+		int soldercnt = 0;
+		for (int i = 0; i < GM_MAX_OBJECT; i++)
+		{
+			if (object[i] != nullptr)
+			{
+				if (object[i]->GetType() == Object::TYPE::_SOLDIER)
+				{
+					soldercnt++;
+				}
+			}
+		}
+		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER - soldercnt; i++)
+		{
+			int temp = CreateObject(new Soldier);
+			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+			object[temp]->SetLocation(spawnloc);
+
+		}
 	}
 
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)
