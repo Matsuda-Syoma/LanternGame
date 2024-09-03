@@ -22,7 +22,8 @@ void Player::Initialize(GameMain* _g, int _obj_pos)
 {
 	CharaBase::Initialize(_g, _obj_pos);
 	type = (int)TYPE::_PLAYER;
-	LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
+	//LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
+	LoadDivGraph("Resources/images/newplayer.jpg", 24, 6, 4, 64, 64, playerimg);
 	deadplayer_img = LoadGraph("Resources/images/player_death.png");
 	angry_img = LoadGraph("Resources/images/angry.png");
 }
@@ -87,16 +88,16 @@ void Player::Update(GameMain* _g)
 	{
 		// プレイヤーアニメーション
 		if (direction == 0) {	// 下移動
-			MoveDown();
-		}
-		else if (direction == 2) {	// 右移動
-			MoveRight();
+			imgdirection = 1;
 		}
 		else if (direction == 1) {	// 左移動
-			MoveLeft();
+			imgdirection = 13;
+		}
+		else if (direction == 2) {	// 右移動
+			imgdirection = 7;
 		}
 		else if (direction == 3) {	// 上移動
-			MoveUp();
+			imgdirection = 19;
 		}
 		else if (direction == 4) {	// 下停止
 			imgnum = 1;
@@ -172,6 +173,7 @@ void Player::Movement()
 		if (InputControl::GetButton(XINPUT_BUTTON_DPAD_UP) || InputControl::GetButton(XINPUT_BUTTON_DPAD_DOWN) ||
 			InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT) || InputControl::GetButton(XINPUT_BUTTON_DPAD_RIGHT))
 		{
+			MoveAnim();
 			crossbuttonflg = true;
 
 			if (InputControl::GetButton(XINPUT_BUTTON_DPAD_LEFT))
@@ -217,7 +219,7 @@ void Player::Movement()
 		if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
 		{
 			stickflg = true;
-
+			MoveAnim();
 			// スティック入力
 			velocity += Vector2D(
 				InputControl::GetLeftStick().x * acceleration
@@ -340,8 +342,18 @@ void Player::Movement()
 			// スティック移動
 			if (crossbuttonflg == false)
 			{
+				// 左斜め上移動
+				if (InputControl::GetLeftStick().y >= 0.1 && InputControl::GetLeftStick().x <= -0.1)
+				{
+					if (direction != 5)
+					{
+						anim_cnt = 0;
+					}
+					direction = 5;
+					stop_direction = 13;
+				}
 				// 上移動
-				if (InputControl::GetLeftStick().y >= 0.2)
+			    else if (InputControl::GetLeftStick().y >= 0.2)
 				{
 					if (direction != 3)
 					{
@@ -466,23 +478,22 @@ void Player::KnockBack(Vector2D EX)
 }
 
 
-// 右移動アニメーション
-void Player::MoveRight()
+void Player::MoveAnim()
 {
 	anim_cnt++;
 	switch (anim_cnt)
 	{
 	case(1):
-		imgnum = 7;
+		imgnum = imgdirection;
 		break;
 	case(15):
-		imgnum = 6;
+		imgnum--;
 		break;
 	case(30):
-		imgnum = 7;
+		imgnum++;
 		break;
 	case(45):
-		imgnum = 8;
+		imgnum++;
 		break;
 	case(60):
 		anim_cnt = 0;
@@ -492,83 +503,110 @@ void Player::MoveRight()
 	}
 }
 
-// 左移動アニメーション
-void Player::MoveLeft()
-{
-	anim_cnt++;
-	switch (anim_cnt)
-	{
-	case(1):
-		imgnum = 4;
-		break;
-	case(15):
-		imgnum = 3;
-		break;
-	case(30):
-		imgnum = 4;
-		break;
-	case(45):
-		imgnum = 5;
-		break;
-	case(60):
-		anim_cnt = 0;
-		break;
-	default:
-		break;
-	}
-}
-
-// 上移動アニメーション
-void Player::MoveUp()
-{
-	anim_cnt++;
-	switch (anim_cnt)
-	{
-	case(1):
-		imgnum = 10;
-		break;
-	case(15):
-		imgnum = 9;
-		break;
-	case(30):
-		imgnum = 10;
-		break;
-	case(45):
-		imgnum = 11;
-		break;
-	case(60):
-		anim_cnt = 0;
-		break;
-	default:
-		break;
-	}
-}
-
-// 下移動アニメーション
-void Player::MoveDown()
-{
-	anim_cnt++;
-	switch (anim_cnt)
-	{
-	case(1):
-		imgnum = 0;
-		break;
-	case(15):
-		imgnum = 1;
-		break;
-	case(30):
-		imgnum = 2;
-		break;
-	case(45):
-		imgnum = 1;
-		break;
-	case(60):
-		anim_cnt = 0;
-		break;
-	default:
-		break;
-	}
-}
+//
+//// 右移動アニメーション
+//void Player::MoveRight()
+//{
+//	anim_cnt++;
+//	switch (anim_cnt)
+//	{
+//	case(1):
+//		imgnum = 7;
+//		break;
+//	case(15):
+//		imgnum = 6;
+//		break;
+//	case(30):
+//		imgnum = 7;
+//		break;
+//	case(45):
+//		imgnum = 8;
+//		break;
+//	case(60):
+//		anim_cnt = 0;
+//		break;
+//	default:
+//		break;
+//	}
+//}
+//
+//// 左移動アニメーション
+//void Player::MoveLeft()
+//{
+//	anim_cnt++;
+//	switch (anim_cnt)
+//	{
+//	case(1):
+//		imgnum = 4;
+//		break;
+//	case(15):
+//		imgnum = 3;
+//		break;
+//	case(30):
+//		imgnum = 4;
+//		break;
+//	case(45):
+//		imgnum = 5;
+//		break;
+//	case(60):
+//		anim_cnt = 0;
+//		break;
+//	default:
+//		break;
+//	}
+//}
+//
+//// 上移動アニメーション
+//void Player::MoveUp()
+//{
+//	anim_cnt++;
+//	switch (anim_cnt)
+//	{
+//	case(1):
+//		imgnum = 10;
+//		break;
+//	case(15):
+//		imgnum = 9;
+//		break;
+//	case(30):
+//		imgnum = 10;
+//		break;
+//	case(45):
+//		imgnum = 11;
+//		break;
+//	case(60):
+//		anim_cnt = 0;
+//		break;
+//	default:
+//		break;
+//	}
+//}
+//
+//// 下移動アニメーション
+//void Player::MoveDown()
+//{
+//	anim_cnt++;
+//	switch (anim_cnt)
+//	{
+//	case(1):
+//		imgnum = 0;
+//		break;
+//	case(15):
+//		imgnum = 1;
+//		break;
+//	case(30):
+//		imgnum = 2;
+//		break;
+//	case(45):
+//		imgnum = 1;
+//		break;
+//	case(60):
+//		anim_cnt = 0;
+//		break;
+//	default:
+//		break;
+//	}
+//}
 
 bool Player::GetHitFlg() const
 {

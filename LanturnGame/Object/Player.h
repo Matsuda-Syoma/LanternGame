@@ -26,11 +26,14 @@ private:
 	int anim_cnt = 0;			// アニメーションカウント用
 	int stan_cnt = 0;			// スタン時間カウント用
 	int imgnum = 1;				// 画像描画用変数
-	int playerimg[12] = {};		// プレイヤー画像
+	int imgdirection = 1;
+
+	//int playerimg[12] = {};		// プレイヤー画像
+	int playerimg[24] = {};		// プレイヤー画像
 	int deadplayer_img = 0;		// プレイヤー画像（死亡時）
 	int angry_img = 0;			// 兵隊に捕まった時の画像
-	int direction = 4;			// 現在の向き（０：下　１：左　２：右　３：上）
-	int stop_direction = 4;		// 止まったときの向き（４：下　５：左　６：右　７：上）
+	int direction = 4;			// 現在の向き（０：下　１：左　２：右　３：上　４：左斜め下　５：左斜め上　６：右斜め下　７：右斜め上）
+	int stop_direction = 4;		// 止まったときの向き（８：下　９：左　１０：右　１１：上　１２：左斜め下　１３：左斜め上　１４：右斜め下　１５：右斜め上）
 
 	float deadzone = 0.1f;
 	float acceleration = 4.f;
@@ -52,6 +55,7 @@ public:
 	void KnockBack(Vector2D EX);	// ノックバック
 
 	// アニメーション
+	void MoveAnim();
 	void MoveRight();	// 右移動
 	void MoveLeft();	// 左移動
 	void MoveUp();		// 上移動
