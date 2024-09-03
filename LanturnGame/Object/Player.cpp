@@ -106,10 +106,10 @@ void Player::Update(GameMain* _g)
 			imgnum = 7;
 		}
 		else if (direction == 5) {	// 左停止
-			imgnum = 4;
+			imgnum = 13;
 		}
 		else if (direction == 7) {	// 上停止
-			imgnum = 10;
+			imgnum = 19;
 		}
 	}
 
