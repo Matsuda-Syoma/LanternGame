@@ -88,7 +88,6 @@ void Bomb::Init(int _expsize)
 }
 void Bomb::Update(GameMain* _g)
 {
-
 	MapSize = _g->GetMapSize();
 	// 敵と敵の距離を見る
 	int temp = -1;
@@ -313,6 +312,7 @@ void Bomb::Update(GameMain* _g)
 		}
 	}
 
+	// 爆発処理
 	if (!flg)
 	{
 		int exptemp = gamemain->CreateObject(new Explosion);
@@ -327,7 +327,8 @@ void Bomb::Update(GameMain* _g)
 
 		exptemp = gamemain->CreateObject(new AddScore);
 		gamemain->GetObjectA(exptemp)->SetLocation(location);
-		static_cast<AddScore*>(gamemain->GetObjectA(exptemp))->SetScore(100);
+		gamemain->AddCombo(1);
+		static_cast<AddScore*>(gamemain->GetObjectA(exptemp))->SetScore(100 * gamemain->GetComboCount());
 
 		gamemain->DeleteObject(this, obj_pos);
 	}
@@ -389,7 +390,7 @@ void Bomb::Draw(CameraManager* camera) const
 		//	, (15 * (expsize - 2)) * ScaleFromCamera(_distance), 16, 0xffffff, false, 10 * ScaleFromCamera(_distance));
 		DrawCircleAA(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 					,location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-					,(15 * (expsize - 2)) * (1 - (camera->GetDistance())), 16, 0xffffff, false, 10 * (1 - (camera->GetDistance())));
+					,(15 * (expsize - 2)) * (1 - (camera->GetDistance())), 16, 0xffffff, false, 10 * (1 - (camera->GetDistance() * 2)));
 		SetDrawBlendMode(OldDrawMode, OldDrawParam);
 		imgnum = 2;
 	}
@@ -399,7 +400,7 @@ void Bomb::Draw(CameraManager* camera) const
 	// 敵画像を描画
 	DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 				,  location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-				,  (1.0f + (double)(max(45 - expcnt, 0) / 45.0)) * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, images[imgnum], true);
+				,  (1.0f + (double)(max(45 - expcnt, 0) / 45.0)) * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), 0.0, images[imgnum], true);
 	
 	SetDrawBright(255, 255, 255);// 全色暗くしない（デフォルト）
 }

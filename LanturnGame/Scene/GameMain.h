@@ -44,7 +44,7 @@ private:
 	unsigned int game_frametime = 0;
 	unsigned int score = 0;
 	unsigned int hiscore = 0;
-	unsigned int combo = 0;
+	unsigned int combocount = 0;
 	unsigned int oldcombo = 0;
 	unsigned int botime = 0;
 	float MapSize = GM_MAX_MAPSIZE;
@@ -140,6 +140,8 @@ public:
 	Object* GetPlayer();
 	CameraManager* GetCamera();
 	void AddLife(int i);
-	void AddScore(int i);
+	void AddGameScore(int i);
+	void AddCombo(int i);
+	int GetComboCount() const;
 };
 

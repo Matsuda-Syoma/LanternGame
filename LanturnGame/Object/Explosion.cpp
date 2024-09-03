@@ -59,7 +59,7 @@ void Explosion::Draw(CameraManager* camera) const
 {
 	DrawCircleAA(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 				,location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-				,radius * (1 - (camera->GetDistance())), 16, 0xffffff, false);
+				,radius * (1 - (camera->GetDistance() * 2)), 16, 0xffffff, false);
 }
 
 

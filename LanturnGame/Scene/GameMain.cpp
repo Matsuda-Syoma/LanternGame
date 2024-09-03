@@ -630,6 +630,8 @@ AbstractScene* GameMain::Update()
 	//	}
 	//}
 
+
+
 	for (int i = 0; i < GM_MAX_OBJECT; i++)
 	{
 		if (object[i] != nullptr)
@@ -650,6 +652,70 @@ AbstractScene* GameMain::Update()
 					}
 				}
 			}
+		}
+	}
+
+	// 爆発があるか確認
+	comboflg = false;
+	for (int i = 0; i < GM_MAX_OBJECT; i++)
+	{
+		if (object[i] != nullptr)
+		{
+
+			if (object[i]->GetType() == Object::TYPE::_EXPLOSION)
+			{
+				comboflg = true;
+				camera->SetInOutFlg(true);
+				camera->SetObjectDistance(object[i]->GetLocation(), 0);
+			}
+		}
+	}
+
+	if (comboflg)
+	{
+		
+		
+	}
+	else
+	{
+		camera->SetInOutFlg(false);
+		combocount = 0;
+		int bombcnt = 0;
+		for (int i = 0; i < GM_MAX_OBJECT; i++)
+		{
+			if (object[i] != nullptr)
+			{
+				if (object[i]->GetType() == Object::TYPE::_BOMB)
+				{
+					bombcnt++;
+				}
+			}
+		}
+		for (int i = 0; i < GM_MAX_ENEMY_BOMB - bombcnt; i++)
+		{
+			int temp = CreateObject(new Bomb);
+			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+			object[temp]->SetLocation(spawnloc);
+
+		}
+
+		int soldercnt = 0;
+		for (int i = 0; i < GM_MAX_OBJECT; i++)
+		{
+			if (object[i] != nullptr)
+			{
+				if (object[i]->GetType() == Object::TYPE::_SOLDIER)
+				{
+					soldercnt++;
+				}
+			}
+		}
+		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER - soldercnt; i++)
+		{
+			int temp = CreateObject(new Soldier);
+			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+			object[temp]->SetLocation(spawnloc);
+
 		}
 	}
 
@@ -776,7 +842,11 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 	{
 		if (object[i] != nullptr)
 		{
-			DrawCircleAA(SCREEN_WIDTH - 128 + (object[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (object[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), object[i]->GetMapRadius() / 16, 8, 0x004488, true);
+			if (object[i]->GetType() != Object::TYPE::_ADDSCORE)
+			{
+				DrawCircleAA(SCREEN_WIDTH - 128 + (object[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (object[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), object[i]->GetMapRadius() / 16, 8, 0x004488, true);
+
+			}
 		}
 	}
 
@@ -1156,8 +1226,18 @@ void GameMain::AddLife(int i)
 	life += i;
 }
 
-void GameMain::AddScore(int i)
+void GameMain::AddGameScore(int i)
 {
 	score += i;
 	scoresize = 0.8;
+}
+
+void GameMain::AddCombo(int i)
+{
+	combocount += i;
+}
+
+int GameMain::GetComboCount()const
+{
+	return combocount;
 }

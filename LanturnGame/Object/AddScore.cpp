@@ -52,6 +52,8 @@ void AddScore::Initialize(GameMain* _g, int _obj_pos)
 {
 	gamemain = _g;
 	obj_pos = _obj_pos;
+	map_radius = 0;
+	type = (int)TYPE::_ADDSCORE;
 
 	totalscorelocation = Vector2D(SCREEN_WIDTH - 140, SCREEN_HEIGHT - 230);
 	startlocation = Vector2D(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 20);
@@ -110,7 +112,7 @@ void AddScore::Update(GameMain* _g)
 	{
 		if (totalscorelocation.x <= location.x)
 		{
-			gamemain->AddScore(score);
+			gamemain->AddGameScore(score);
 			flg = false;
 			moveflg = false;
 			speed = 0;

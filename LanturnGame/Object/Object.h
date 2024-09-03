@@ -7,6 +7,13 @@ class Object : public SphereCollider
 {
 protected:
 
+	int type = -1;
+	int obj_pos = -1;
+	int map_radius = radius;
+	GameMain* gamemain;
+
+public:
+
 	enum class TYPE : int
 	{
 		_PLAYER = 0,
@@ -14,14 +21,8 @@ protected:
 		_EXPLOSION,
 		_SOLDIER,
 		_GIMMICK,
+		_ADDSCORE,
 	};
-
-	int type = -1;
-	int obj_pos = -1;
-	int map_radius = radius;
-	GameMain* gamemain;
-
-public:
 
 	virtual void Initialize(GameMain* _g, int _obj_pos) = 0;				// 
 	virtual void Finalize() = 0;							// 

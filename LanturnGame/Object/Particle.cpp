@@ -64,7 +64,7 @@ void Particle::Draw(CameraManager* camera) const
 
 			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 						, location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-				, scale * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), imageangle, images[type][lifetime], true);
+				, scale * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), imageangle, images[type][lifetime], true);
 		}
 
 		if (type == 3)

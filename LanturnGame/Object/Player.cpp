@@ -4,6 +4,7 @@
 #include "../Utility/InputControl.h"
 #include "../Utility/common.h"
 #include "../Utility/UserData.h"
+#include "../Scene/GameMain.h"
 #include "CameraManager.h"
 Player::Player()
 {
@@ -37,6 +38,8 @@ void Player::Finalize()
 
 void Player::Update(GameMain* _g)
 {
+
+	GetMapSize(gamemain->GetMapSize());
 	lastinput = 0;
 
 	Movement();
@@ -152,13 +155,13 @@ void Player::Draw(CameraManager* camera) const
 		{
 			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 						 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-						 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, playerimg[imgnum], true);
+						 , 1.0f * (1 - (((camera->GetDistance()) / DISTANCE_NUM) / 1.0f)), 0.0, playerimg[imgnum], true);
 		}
 		else {
 			SetIgnoreDrawGraphColor(TRUE);
 			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 						 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-						 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, playerimg[imgnum], true);
+						 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), 0.0, playerimg[imgnum], true);
 			SetIgnoreDrawGraphColor(FALSE);
 		}
 	}
@@ -166,14 +169,14 @@ void Player::Draw(CameraManager* camera) const
 	else if(pflg == false && hitsoldier == false) {
 		DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 					 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-					 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, deadplayer_img, true);
+					 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), 0.0, deadplayer_img, true);
 	}
 	// 兵隊に捕まっていたら
 	else if (hitsoldier == true)
 	{
 		DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 					 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-					 , 1.2f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, angry_img, true);
+					 , 1.2f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), 0.0, angry_img, true);
 	}
 	
 	// 元の描画を取得
@@ -189,6 +192,16 @@ void Player::Draw(CameraManager* camera) const
 
 void Player::Hit(SphereCollider* _sphere)
 {
+	if (static_cast<CharaBase*>(_sphere)->GetType() == CharaBase::TYPE::_EXPLOSION)
+	{
+		if (!hitflg)
+		{
+			gamemain->AddLife(-1);
+		}
+		SetHitFlg(true);
+		SetDamageDirectionFlg(true);
+	}
+
 }
 
 void Player::Movement()
@@ -286,9 +299,8 @@ void Player::Movement()
 			velocity.y = 0;
 		}
 	}
-
 	// 画面外に出ないように
-	if (location.x < -MapSize + areahitradius)
+	if (location.x < -MapSize + map_radius)
 	{
 		location.x = -MapSize + areahitradius;
 	}
