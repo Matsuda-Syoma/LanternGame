@@ -51,6 +51,6 @@ private:
 	int cnt=0;//時間を測る関数
 	int animcnt=0;//アニメーション切り替え用関数
 
-	int MyScore = 100;
+	int MyScore = 0;
 
 };
