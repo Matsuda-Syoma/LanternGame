@@ -630,6 +630,8 @@ AbstractScene* GameMain::Update()
 	//	}
 	//}
 
+
+
 	for (int i = 0; i < GM_MAX_OBJECT; i++)
 	{
 		if (object[i] != nullptr)
@@ -651,6 +653,37 @@ AbstractScene* GameMain::Update()
 				}
 			}
 		}
+	}
+
+	// 爆発があるか確認
+	comboflg = false;
+	for (int i = 0; i < GM_MAX_OBJECT; i++)
+	{
+		if (object[i] != nullptr)
+		{
+			if (object[i] == nullptr)
+			{
+				continue;
+			}
+
+			if (object[i]->GetType() == Object::TYPE::_EXPLOSION)
+			{
+				comboflg = true;
+				camera->SetInOutFlg(true);
+				camera->SetObjectDistance(object[i]->GetLocation(), 0);
+			}
+		}
+	}
+
+	if (comboflg)
+	{
+		
+		
+	}
+	else
+	{
+		camera->SetInOutFlg(false);
+		combocount = 0;
 	}
 
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)
@@ -1160,4 +1193,14 @@ void GameMain::AddScore(int i)
 {
 	score += i;
 	scoresize = 0.8;
+}
+
+void GameMain::AddCombo(int i)
+{
+	combocount += i;
+}
+
+int GameMain::GetComboCount()const
+{
+	return combocount;
 }
