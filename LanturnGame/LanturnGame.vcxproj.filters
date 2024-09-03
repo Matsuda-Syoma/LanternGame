@@ -22,8 +22,6 @@
     <ClCompile Include="Object\soldier.cpp" />
     <ClCompile Include="Object\stage.cpp" />
     <ClCompile Include="Object\AddScore.cpp" />
-    <ClCompile Include="object\conveyor_y.cpp" />
-    <ClCompile Include="Scene\credit.cpp" />
     <ClCompile Include="Description.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -52,8 +50,6 @@
     <ClInclude Include="Object\stage.h" />
     <ClInclude Include="Object\AddScore.h" />
     <ClInclude Include="Object\BoxCollider.h" />
-    <ClInclude Include="object\conveyor_y.h" />
-    <ClInclude Include="Scene\credit.h" />
     <ClInclude Include="Description.h" />
   </ItemGroup>
   <ItemGroup>

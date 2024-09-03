@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Description.cpp" />
-    <ClCompile Include="Scene\credit.cpp" />
     <ClCompile Include="Object\AddScore.cpp" />
     <ClCompile Include="object\BackGround.cpp" />
     <ClCompile Include="Object\Bomb.cpp" />
@@ -45,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Description.h" />
-    <ClInclude Include="Scene\credit.h" />
     <ClInclude Include="Object\AddScore.h" />
     <ClInclude Include="object\BackGround.h" />
     <ClInclude Include="Object\Bomb.h" />
