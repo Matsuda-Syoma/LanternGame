@@ -212,7 +212,7 @@ void Soldier::Move(Vector2D PL)
 		Velimg = 6;
 	//右下
 	if (292.6 < angle && angle < 337.5)
-		Velimg = 9;
+		Velimg = 15;
 	//下
 	if ((0.01 < angle && angle < 22.5) || (337.6 < angle && angle < 360))
 	{
@@ -231,7 +231,7 @@ void Soldier::Move(Vector2D PL)
 	//左下
 	if (112.6 < angle && angle< 157.5)
 	{
-		Velimg = 15;
+		Velimg = 3;
 	}
 
 
