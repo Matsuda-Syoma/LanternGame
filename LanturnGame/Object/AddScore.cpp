@@ -108,7 +108,7 @@ void AddScore::Update(GameMain* _g)
 
 	if (moveflg)
 	{
-		if (totalscorelocation.x <= location.x && totalscorelocation.y <= location.y)
+		if (totalscorelocation.x <= location.x)
 		{
 			gamemain->AddScore(score);
 			flg = false;
@@ -166,7 +166,6 @@ void AddScore::Hit(SphereCollider* _sphere)
 {
 	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_PLAYER)
 	{
-		//totalscore += 100;
 		if (!moveflg)
 		{
 			location = startlocation;
@@ -175,7 +174,6 @@ void AddScore::Hit(SphereCollider* _sphere)
 			moveflg = true;
 
 		}
-		//flg = false;
 	}
 }
 
