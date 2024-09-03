@@ -144,9 +144,6 @@ void Player::Update(GameMain* _g)
 
 void Player::Draw(CameraManager* camera) const
 {
-	DrawFormatString(10, 10, 0xffffff, "%d", stop_direction);
-	DrawFormatString(10, 50, 0xffffff, "x:%f", InputControl::GetLeftStick().x);
-	DrawFormatString(10, 100, 0xffffff, "y:%f", InputControl::GetLeftStick().y);
 
 	// プレイヤーが生きている かつ 兵隊に捕まっていなかったら
 	if (pflg == true && hitsoldier == false) {
