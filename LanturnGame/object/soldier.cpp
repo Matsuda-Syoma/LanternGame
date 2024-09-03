@@ -76,10 +76,10 @@ void Soldier::Hit(SphereCollider* _sphere)
 	{
 		if (CheckMode() == 1)
 		{
-
 			int score = gamemain->CreateObject(new AddScore);
 			gamemain->GetObjectA(score)->SetLocation(location);
 			static_cast<AddScore*>(gamemain->GetObjectA(score))->SetScore(MyScore);
+
 
 			SetMode(3);
 		}
@@ -88,9 +88,11 @@ void Soldier::Hit(SphereCollider* _sphere)
 
 void Soldier::Update(GameMain* _g)
 {
+	
+	PL = gamemain->GetPlayer()->GetLocation();
 	if (state == 1)
 	{
-		//Move(PL);
+		Move(PL);
 		//アニメーション切り替え
 		cnt++;
 		if ((cnt % 60) == 0)
@@ -165,7 +167,7 @@ void Soldier::Draw(CameraManager* camera)const
 
 void Soldier::Move(Vector2D PL)
 {
-	if (Movemode == false)
+	if (Movemode == true)
 	{
 		//プレイヤーとの中心座標の距離
 		length = PL - location;
@@ -173,20 +175,20 @@ void Soldier::Move(Vector2D PL)
 		move.x = ((length.x / a) * speed);
 		move.y = ((length.y / a) * speed);
 	}
-	else
-	{
-		//プレイヤーとの中心座標の距離
-		Vector2D input = InputControl::GetLeftStick() * 500;
+	//else
+	//{
+	//	//プレイヤーとの中心座標の距離
+	//	Vector2D input = InputControl::GetLeftStick() * 500;
 
-		input.y *= -1;
+	//	input.y *= -1;
 
-		Pin = (PL + input);
+	//	Pin = (PL + input);
 
-		length = Pin - location;
-		float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
-		move.x = ((length.x / a) * speed);
-		move.y = ((length.y / a) * speed);
-	}
+	//	length = Pin - location;
+	//	float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
+	//	move.x = ((length.x / a) * speed);
+	//	move.y = ((length.y / a) * speed);
+	//}
 
 	//上
 	float angle = atan2(length.x, length.y);
