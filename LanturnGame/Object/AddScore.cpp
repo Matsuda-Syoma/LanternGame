@@ -177,6 +177,18 @@ void AddScore::Hit(SphereCollider* _sphere)
 
 		}
 	}
+
+	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_SOLDIER)
+	{
+		//int soldier = gamemain->CreateObject(new Soldier);
+		int mode = static_cast<Soldier*>(_sphere)->CheckMode();
+		if (mode == 1)
+		{
+			static_cast<Soldier*>(_sphere)->SetMyScore(score);
+			flg = 0;
+		}
+		
+	}
 }
 
 void AddScore::Move()

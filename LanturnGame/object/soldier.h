@@ -28,6 +28,8 @@ public:
 
 	int GetRandom(int min,int max);
 
+	void SetMyScore(int Score);
+
 private:
 	Vector2D length = 0;
 	Vector2D move = 0;
@@ -48,5 +50,7 @@ private:
 
 	int cnt=0;//時間を測る関数
 	int animcnt=0;//アニメーション切り替え用関数
+
+	int MyScore = 0;
 
 };

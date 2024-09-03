@@ -76,6 +76,11 @@ void Soldier::Hit(SphereCollider* _sphere)
 	{
 		if (CheckMode() == 1)
 		{
+			int score = gamemain->CreateObject(new AddScore);
+			gamemain->GetObjectA(score)->SetLocation(location);
+			static_cast<AddScore*>(gamemain->GetObjectA(score))->SetScore(MyScore);
+
+
 			SetMode(3);
 		}
 	}
@@ -83,9 +88,11 @@ void Soldier::Hit(SphereCollider* _sphere)
 
 void Soldier::Update(GameMain* _g)
 {
+	
+	PL = gamemain->GetPlayer()->GetLocation();
 	if (state == 1)
 	{
-		//Move(PL);
+		Move(PL);
 		//アニメーション切り替え
 		cnt++;
 		if ((cnt % 60) == 0)
@@ -144,7 +151,7 @@ void Soldier::Draw(CameraManager* camera)const
 		//	, 1.4 * ScaleFromCamera(_distance), 0.0, soldierimg[Velimg + animcnt], true);
 		DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 					,  location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-					,  1.4f * (1 - ((camera->GetDistance() / DISTANCE_NUM))), 0.0, soldierimg[Velimg + animcnt], true);
+					,  (1.0f + (float)(MyScore/100000.0f)) * (1 - ((camera->GetDistance() / DISTANCE_NUM))), 0.0, soldierimg[Velimg + animcnt], true);
 	}
 	else
 	{
@@ -160,7 +167,7 @@ void Soldier::Draw(CameraManager* camera)const
 
 void Soldier::Move(Vector2D PL)
 {
-	if (Movemode == false)
+	if (Movemode == true)
 	{
 		//プレイヤーとの中心座標の距離
 		length = PL - location;
@@ -168,20 +175,20 @@ void Soldier::Move(Vector2D PL)
 		move.x = ((length.x / a) * speed);
 		move.y = ((length.y / a) * speed);
 	}
-	else
-	{
-		//プレイヤーとの中心座標の距離
-		Vector2D input = InputControl::GetLeftStick() * 500;
+	//else
+	//{
+	//	//プレイヤーとの中心座標の距離
+	//	Vector2D input = InputControl::GetLeftStick() * 500;
 
-		input.y *= -1;
+	//	input.y *= -1;
 
-		Pin = (PL + input);
+	//	Pin = (PL + input);
 
-		length = Pin - location;
-		float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
-		move.x = ((length.x / a) * speed);
-		move.y = ((length.y / a) * speed);
-	}
+	//	length = Pin - location;
+	//	float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
+	//	move.x = ((length.x / a) * speed);
+	//	move.y = ((length.y / a) * speed);
+	//}
 
 	//上
 	float angle = atan2(length.x, length.y);
@@ -205,7 +212,7 @@ void Soldier::Move(Vector2D PL)
 		Velimg = 6;
 	//右下
 	if (292.6 < angle && angle < 337.5)
-		Velimg = 9;
+		Velimg = 15;
 	//下
 	if ((0.01 < angle && angle < 22.5) || (337.6 < angle && angle < 360))
 	{
@@ -224,7 +231,7 @@ void Soldier::Move(Vector2D PL)
 	//左下
 	if (112.6 < angle && angle< 157.5)
 	{
-		Velimg = 15;
+		Velimg = 3;
 	}
 
 
@@ -334,4 +341,9 @@ bool Soldier::CheckDLflg()
 int Soldier::GetRandom(int min, int max)
 {
 	return min + (int)(rand() * (max - min + 1.0) / (1.0 + RAND_MAX));
+}
+
+void Soldier::SetMyScore(int Score)
+{
+	MyScore += Score;
 }
