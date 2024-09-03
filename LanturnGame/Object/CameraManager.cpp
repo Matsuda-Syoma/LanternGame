@@ -34,9 +34,9 @@ void CameraManager::Update(GameMain* _g)
 				Distance = CameraDistanceTemp;
 			}
 		}
-		if (Distance > 1.5f)
+		if (Distance > DISTANCE_MAX)
 		{
-			Distance = 1.5f;
+			Distance = DISTANCE_MAX;
 		}
 		if (oMin.x != 0.0)
 		{
