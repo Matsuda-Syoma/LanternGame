@@ -28,7 +28,7 @@
 
 #define GM_MAX_ENEMY_SOLDIER 3
 
-#define DISTANCE_MAX 1.5
+#define DISTANCE_MAX 0.725
 #define DISTANCE_NUM 1.333333
 
 #include "Vector2D.h"

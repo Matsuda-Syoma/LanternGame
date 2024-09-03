@@ -126,13 +126,13 @@ void Player::Draw(CameraManager* camera) const
 		{
 			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 						 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-						 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, playerimg[imgnum], true);
+						 , 1.0f * (1 - (((camera->GetDistance()) / DISTANCE_NUM) / 1.0f)), 0.0, playerimg[imgnum], true);
 		}
 		else {
 			SetIgnoreDrawGraphColor(TRUE);
 			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 						 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-						 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, playerimg[imgnum], true);
+						 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), 0.0, playerimg[imgnum], true);
 			SetIgnoreDrawGraphColor(FALSE);
 		}
 	}
@@ -140,14 +140,14 @@ void Player::Draw(CameraManager* camera) const
 	else if(pflg == false && hitsoldier == false) {
 		DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 					 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-					 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, deadplayer_img, true);
+					 , 1.0f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), 0.0, deadplayer_img, true);
 	}
 	// 兵隊に捕まっていたら
 	else if (hitsoldier == true)
 	{
 		DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 					 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-					 , 1.2f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 4.0f)), 0.0, angry_img, true);
+					 , 1.2f * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), 0.0, angry_img, true);
 	}
 	
 	// 元の描画を取得
