@@ -661,10 +661,6 @@ AbstractScene* GameMain::Update()
 	{
 		if (object[i] != nullptr)
 		{
-			if (object[i] == nullptr)
-			{
-				continue;
-			}
 
 			if (object[i]->GetType() == Object::TYPE::_EXPLOSION)
 			{
@@ -684,6 +680,24 @@ AbstractScene* GameMain::Update()
 	{
 		camera->SetInOutFlg(false);
 		combocount = 0;
+		int bombcnt = 0;
+		for (int i = 0; i < GM_MAX_OBJECT; i++)
+		{
+			if (object[i] != nullptr)
+			{
+				if (object[i]->GetType() == Object::TYPE::_BOMB)
+				{
+					bombcnt++;
+				}
+			}
+		}
+		for (int i = 0; i < GM_MAX_ENEMY_BOMB - bombcnt; i++)
+		{
+			int temp = CreateObject(new Bomb);
+			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+			object[temp]->SetLocation(spawnloc);
+
+		}
 	}
 
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)
@@ -809,7 +823,11 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 	{
 		if (object[i] != nullptr)
 		{
-			DrawCircleAA(SCREEN_WIDTH - 128 + (object[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (object[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), object[i]->GetMapRadius() / 16, 8, 0x004488, true);
+			if (object[i]->GetType() != Object::TYPE::_ADDSCORE)
+			{
+				DrawCircleAA(SCREEN_WIDTH - 128 + (object[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (object[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), object[i]->GetMapRadius() / 16, 8, 0x004488, true);
+
+			}
 		}
 	}
 
@@ -1189,7 +1207,7 @@ void GameMain::AddLife(int i)
 	life += i;
 }
 
-void GameMain::AddScore(int i)
+void GameMain::AddGameScore(int i)
 {
 	score += i;
 	scoresize = 0.8;

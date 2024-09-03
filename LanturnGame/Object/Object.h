@@ -21,6 +21,7 @@ public:
 		_EXPLOSION,
 		_SOLDIER,
 		_GIMMICK,
+		_ADDSCORE,
 	};
 
 	virtual void Initialize(GameMain* _g, int _obj_pos) = 0;				// 
