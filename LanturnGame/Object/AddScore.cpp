@@ -61,28 +61,6 @@ void AddScore::Initialize(GameMain* _g, int _obj_pos)
 
 void AddScore::Update(GameMain* _g)
 {
-	// 左に出ないように
-	viewlocation = location;
-
-	if (gamemain->GetCamera()->GetLocation().x - viewlocation.x > SCREEN_WIDTH / 2.f)
-	{
-		viewlocation.x = gamemain->GetCamera()->GetLocation().x - SCREEN_WIDTH / 2.f;
-	}
-	// 右に出ないように
-	if (gamemain->GetCamera()->GetLocation().x - viewlocation.x < -SCREEN_WIDTH / 2.f)
-	{
-		viewlocation.x = gamemain->GetCamera()->GetLocation().x - -SCREEN_WIDTH / 2.f;
-	}
-	// 上に出ないように
-	if (gamemain->GetCamera()->GetLocation().y - viewlocation.y > SCREEN_HEIGHT / 2.1f)
-	{
-		viewlocation.y = gamemain->GetCamera()->GetLocation().y - SCREEN_HEIGHT / 2.1f;
-	}
-	// 下に出ないように
-	if (gamemain->GetCamera()->GetLocation().y - viewlocation.y < -SCREEN_HEIGHT / 2.f)
-	{
-		viewlocation.y = gamemain->GetCamera()->GetLocation().y - -SCREEN_HEIGHT / 2.f;
-	}
 
 	if (cnt < 7)
 	{
@@ -142,8 +120,8 @@ void AddScore::Draw(CameraManager* camera) const
 
 		if (!moveflg)
 		{
-			DrawRotaGraphF(viewlocation.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2)) + (20 * (digit - 2)) - (i * 20)
-				, viewlocation.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)) + addy
+			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2)) + (20 * (digit - 2)) - (i * 20)
+				, location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)) + addy
 				, 0.5, 0.0, numimg[bufscore % 10], true);
 
 		}

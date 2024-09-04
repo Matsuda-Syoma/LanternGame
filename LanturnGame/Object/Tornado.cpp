@@ -17,7 +17,7 @@ Tornado::~Tornado()
 
 void Tornado::Update(GameMain* _g)
 {
-	if (cnt >= 60) {
+	if (cnt >= 360) {
 		cnt = 0;
 	}
 	cnt++;
