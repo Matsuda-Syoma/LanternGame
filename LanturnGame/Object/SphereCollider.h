@@ -1,6 +1,5 @@
 #pragma once
 #include "../Utility/Vector2D.h"
-
 class SphereCollider 
 {
 protected:

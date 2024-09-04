@@ -213,6 +213,15 @@ GameMain::GameMain()
 		gimmicknum++;
 	}
 
+	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
+	{
+		int temp = CreateObject(new Conveyor);
+		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+		object[temp]->SetLocation(spawnloc);
+		printfDx("%f %f\n", spawnloc.x, spawnloc.y);
+		gimmicknum++;
+	}
+
 	for (int i = 0; i < gimmicknum; i++)
 	{
 	}
@@ -460,10 +469,21 @@ AbstractScene* GameMain::Update()
 				{
 					if (object[j] != nullptr)
 					{
-						if (i != j && object[i]->HitSphere(object[j]))
+						if (!object[j]->GetBoxCol())
 						{
-							object[i]->Hit(object[j]);
-							object[j]->Hit(object[i]);
+							if (i != j && object[i]->SphereCollider::HitSphere(object[j]))
+							{
+								object[i]->Hit(object[j]);
+								object[j]->Hit(object[i]);
+							}
+						}
+						if (object[j]->GetBoxCol())
+						{
+							if (i != j && object[i]->SphereCollider::HitBox(*object[j]))
+							{
+								object[i]->Hit(object[j]);
+								object[j]->Hit(object[i]);
+							}
 						}
 					}
 				}

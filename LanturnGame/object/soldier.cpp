@@ -38,17 +38,17 @@ void Soldier::Finalize()
 
 }
 
-void Soldier::Hit(SphereCollider* _sphere)
+void Soldier::Hit(Object* _obj)
 {
 	// 兵隊とプレイヤーの当たり判定
-	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_PLAYER)
+	if (static_cast<Object*>(_obj)->GetType() == TYPE::_PLAYER)
 	{
-		if (static_cast<Player*>(_sphere)->GetHitFlg() == false && CheckMode() == 1)
+		if (static_cast<Player*>(_obj)->GetHitFlg() == false && CheckMode() == 1)
 		{
 			gamemain->AddLife(-1);
 			//hitmoment = true;
-			static_cast<Player*>(_sphere)->SetHitFlg(true);
-			static_cast<Player*>(_sphere)->SetHitSoldier(true);
+			static_cast<Player*>(_obj)->SetHitFlg(true);
+			static_cast<Player*>(_obj)->SetHitSoldier(true);
 			for (int c = 0; c < GM_MAX_OBJECT; c++)
 			{
 				if (gamemain->GetObjectA(c) != nullptr)
@@ -72,7 +72,7 @@ void Soldier::Hit(SphereCollider* _sphere)
 	//	delete soldier[i];
 	//	break;
 	//}
-	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_EXPLOSION)
+	if (static_cast<Object*>(_obj)->GetType() == TYPE::_EXPLOSION)
 	{
 		if (CheckMode() == 1)
 		{

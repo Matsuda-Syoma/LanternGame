@@ -11,7 +11,7 @@
 #include "../Object/Particle.h"
 #include "../Utility/common.h"
 #include "../Object/stage.h"
-//#include "../Object/Conveyor.h"
+#include "../Object/Conveyor.h"
 #include "../Object/Tornado.h"
 //#include "../Object/ComboEnd.h"
 #include "../Utility/TextDisp.h"

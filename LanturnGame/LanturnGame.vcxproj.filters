@@ -25,6 +25,7 @@
     <ClCompile Include="Description.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
     <ClCompile Include="Scene\credit.cpp" />
+    <ClCompile Include="Object\Conveyor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility\InputControl.h" />
@@ -55,6 +56,7 @@
     <ClInclude Include="Description.h" />
     <ClInclude Include="Scene\Title.h" />
     <ClInclude Include="Scene\credit.h" />
+    <ClInclude Include="Object\Conveyor.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico" />

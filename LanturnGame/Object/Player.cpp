@@ -194,9 +194,9 @@ void Player::Draw(CameraManager* camera) const
 
 }
 
-void Player::Hit(SphereCollider* _sphere)
+void Player::Hit(Object* _obj)
 {
-	if (static_cast<CharaBase*>(_sphere)->GetType() == CharaBase::TYPE::_EXPLOSION)
+	if (static_cast<CharaBase*>(_obj)->GetType() == CharaBase::TYPE::_EXPLOSION)
 	{
 		if (!hitflg)
 		{
@@ -205,12 +205,18 @@ void Player::Hit(SphereCollider* _sphere)
 		SetHitFlg(true);
 		SetDamageDirectionFlg(true);
 	}
-	if (static_cast<Tornado*>(_sphere)->GetType() == TYPE::_TORNADO)
+
+	if (static_cast<Tornado*>(_obj)->GetType() == TYPE::_TORNADO)
 	{
-		float length = GetLength(static_cast<Object*>(_sphere)->GetLocation() - GetLocation());
-		Vector2D vvec = (static_cast<Object*>(_sphere)->GetLocation() - GetLocation());
+		float length = GetLength(static_cast<Object*>(_obj)->GetLocation() - GetLocation());
+		Vector2D vvec = (static_cast<Object*>(_obj)->GetLocation() - GetLocation());
 		vvec /= length;
 		SetEXVelocity(vvec * 7.8f);
+	}
+
+	if (static_cast<Tornado*>(_obj)->GetType() == TYPE::_CONVEYER)
+	{
+		printfDx("ht");
 	}
 }
 

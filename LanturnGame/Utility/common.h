@@ -6,7 +6,7 @@
 #define FRAMERATE 60.0
 #define UPDATETIME 800
 
-#define GM_MAX_LIFE 2
+#define GM_MAX_LIFE 4
 
 #define GM_MAX_OBJECT 10000
 

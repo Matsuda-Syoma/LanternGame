@@ -13,7 +13,7 @@ public:
 
 	void Initialize(GameMain* _g, int _obj_pos)override;
 	void Finalize()override;
-	void Hit(SphereCollider* _sphere)override;
+	void Hit(Object* _obj)override {};
 
 	void Init(int _expsize);
 	void Update(GameMain* _g)override;

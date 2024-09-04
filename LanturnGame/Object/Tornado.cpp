@@ -30,9 +30,6 @@ void Tornado::Draw(CameraManager* camera) const
 				 , 1.5f * (1 - ((camera->GetDistance() / DISTANCE_NUM))), -(((DX_PI) / 180) * (cnt * 3)), images, true);
 }
 
-void Tornado::Hit(SphereCollider* _sphere)
-{
-}
 
 int Tornado::LoadImages() {
 	images = LoadGraph("Resources/images/tornado_2.png");

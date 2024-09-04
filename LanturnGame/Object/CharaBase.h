@@ -24,7 +24,7 @@ public:
 	void Update(GameMain* _g) override {};
 	void Draw(CameraManager* camera)const override {};
 
-	void Hit(SphereCollider* _sphere) override {};                         // “–‚½‚Á‚½‚Ìˆ—
+	void Hit(Object* _obj) override {};                         // “–‚½‚Á‚½‚Ìˆ—
 
 	void SetEXVelocity(Vector2D loc){ exvelocity = loc; }
 };
