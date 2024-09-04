@@ -235,13 +235,14 @@ GameMain::GameMain()
 	}
 
 	/*******************画像読み込み*******************/
-	lifeimage[0] = LoadGraph("Resources/images/life0.png", 0);
-	lifeimage[1] = LoadGraph("Resources/images/life1.png", 0);
-	lifeimage[2] = LoadGraph("Resources/images/life2.png", 0);
-	lifeimage[3] = LoadGraph("Resources/images/life3.png", 0);
-	lifeimage[4] = LoadGraph("Resources/images/life4.png", 0);
-	//lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
-	//lifematchimage = LoadGraph("Resources/images/match.png", 0);
+	//lifeimage[0] = LoadGraph("Resources/images/life0.png", 0);
+	//lifeimage[1] = LoadGraph("Resources/images/life1.png", 0);
+	//lifeimage[2] = LoadGraph("Resources/images/life2.png", 0);
+	//lifeimage[3] = LoadGraph("Resources/images/life3.png", 0);
+	//lifeimage[4] = LoadGraph("Resources/images/life4.png", 0);
+	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
+	lifematchimage = LoadGraph("Resources/images/match.png", 0);
+	lifematchimage_2 = LoadGraph("Resources/images/match_2.png", 0);
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
 	hukidasiimage = LoadGraph("Resources/images/hukidasi.png", 0);
 	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
@@ -704,11 +705,11 @@ void GameMain::Draw() const
 
 	}
 	//残り体力の表示
-	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage[life], true);
-	for (int i = 0; i < life; i++)
+	//DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage[life], true);
+	/*for (int i = 0; i < life; i++)
 	{
 		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
-	}
+	}*/
 
 for (int i = 0; i < GM_MAX_OBJECT; i++)
 {
@@ -758,10 +759,14 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 	}
 
 	//残り体力の表示
-	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage[life], true);
+	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
+	for (int i = 0; i < GM_MAX_LIFE; i++)
+	{
+		DrawRotaGraph(SCREEN_WIDTH  -56 - (48 * i), 360, 1.0, 0.0, lifematchimage_2, true);
+	}
 	for (int i = 0; i < life; i++)
 	{
-		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
+		DrawRotaGraph(SCREEN_WIDTH - 200 + (48 * i), 360, 1.0, 0.0, lifematchimage, true);
 	}
 
 	//ミニマップ
