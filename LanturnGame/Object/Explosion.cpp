@@ -25,9 +25,6 @@ void Explosion::Finalize()
 {
 }
 
-void Explosion::Hit(SphereCollider* _sphere)
-{
-}
 
 void Explosion::Init(int _size)
 {
