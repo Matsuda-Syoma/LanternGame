@@ -63,6 +63,8 @@ void AddScore::Initialize(GameMain* _g, int _obj_pos)
 void AddScore::Update(GameMain* _g)
 {
 
+	PL = gamemain->GetPlayer()->GetLocation();
+
 	if (cnt < 7)
 	{
 		addy += -3;
@@ -80,6 +82,29 @@ void AddScore::Update(GameMain* _g)
 	if (!flg)
 	{
 		gamemain->DeleteObject(this, obj_pos);
+		speed = 0;
+		fontsize = 0.5;
+		interval = 20.0;
+		movewait = 0;
+	}
+	else {
+		if (!moveflg)
+		{
+			if (movewait <= 30)
+			{
+				movewait++;
+			}
+			else {
+				/*location = startlocation;*/
+				fontsize = 0.8;
+				interval = 25.0;
+				moveflg = true;
+			}
+
+
+			
+
+		}
 	}
 
 	if (cnt < 7 * 2)
@@ -87,9 +112,10 @@ void AddScore::Update(GameMain* _g)
 		cnt++;
 	}
 
+
 	if (moveflg)
 	{
-		if (totalscorelocation.x <= location.x)
+		/*if (totalscorelocation.x <= location.x)
 		{
 			gamemain->AddGameScore(score);
 			flg = false;
@@ -99,15 +125,15 @@ void AddScore::Update(GameMain* _g)
 			interval = 20.0;
 		}
 		else
-		{
-			Move();
+		{*/
+			MoveTest(PL);
 			speed += 0.2;
 			if (fontsize > 0.1)
 			{
 				fontsize -= 0.02;
 				interval -= 0.5;
 			}
-		}
+	/*	}*/
 	}
 
 }
@@ -119,7 +145,7 @@ void AddScore::Draw(CameraManager* camera) const
 			//DrawRotaGraphF(DrawFromCameraX(location, _distance, loc) + (20 * (digit - 2)) - (i * 20)
 			//	, DrawFromCameraY(location, _distance, loc) + addy, 0.5, 0.0, numimg[bufscore % 10], true);
 
-		if (!moveflg)
+		/*if (!moveflg)
 		{
 			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2)) + (20 * (digit - 2)) - (i * 20)
 				, location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)) + addy
@@ -127,16 +153,21 @@ void AddScore::Draw(CameraManager* camera) const
 
 		}
 		else 
-		{
+		{*/
 			if (fontsize <= 0.1)
 			{
-				DrawCircle(location.x, location.y, 4, 0xffffff, TRUE);
+				DrawCircle(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2)),
+					location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)) + addy,
+					4, 0xffffff, TRUE);
 			}
 			else
 			{
-				DrawRotaGraphF(location.x + (interval * (digit - 2)) - (i * interval), location.y, fontsize, 0.0, numimg[bufscore % 10], true);
+				//DrawRotaGraphF(location.x + (interval * (digit - 2)) - (i * interval), location.y, fontsize, 0.0, numimg[bufscore % 10], true);
+				DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2)) + (interval * (digit - 2)) - (i * interval)
+					, location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)) + addy
+					, 0.5, 0.0, numimg[bufscore % 10], true);
 			}
-		}
+		/*}*/
 
 		bufscore /= 10;
 	}
@@ -147,14 +178,19 @@ void AddScore::Hit(SphereCollider* _sphere)
 {
 	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_PLAYER)
 	{
-		if (!moveflg)
+		flg = false;
+		gamemain->AddGameScore(score);
+		moveflg = false;
+		
+
+		/*if (!moveflg)
 		{
 			location = startlocation;
 			fontsize = 0.8;
 			interval = 25.0;
 			moveflg = true;
 
-		}
+		}*/
 	}
 
 	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_SOLDIER)
@@ -173,6 +209,16 @@ void AddScore::Hit(SphereCollider* _sphere)
 void AddScore::Move()
 {
 	length = totalscorelocation - location;
+	float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
+	move.x = ((length.x / a) * speed);
+	move.y = ((length.y / a) * speed);
+
+	location += move;
+}
+
+void AddScore::MoveTest(Vector2D PL)
+{
+	length = PL - location;
 	float a = sqrt(pow(length.x, 2) + pow(length.y, 2));
 	move.x = ((length.x / a) * speed);
 	move.y = ((length.y / a) * speed);

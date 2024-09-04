@@ -9,6 +9,7 @@ private:
 	bool flg = true;
 	bool moveflg = false;
 	int cnt = 0;
+	int movewait = 0;
 	int addy = 0;
 	int score = 0;
 	int totalscore = 0;
@@ -22,6 +23,7 @@ private:
 	Vector2D length = 0;
 	Vector2D move = 0;
 	Vector2D startlocation;
+	Vector2D PL = 0;
 
 
 public:
@@ -41,5 +43,6 @@ public:
 	void Hit(SphereCollider* _sphere) override;
 
 	void Move();
+	void MoveTest(Vector2D PL);
 };
 
