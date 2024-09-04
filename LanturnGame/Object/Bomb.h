@@ -12,7 +12,6 @@ private:
 	int expcnt = maxexpcnt;		// 爆発するまでの時間
 	int expsize = 10;			// 初期の爆発サイズ
 	Vector2D velocity = 0;		// 移動Velocity
-	Vector2D exvelocity = 0;	// 外的Velocity
 	Vector2D knockback = 0;		// ノックバックVelocity
 	Vector2D movetoloc = 0;		// 指定座標
 

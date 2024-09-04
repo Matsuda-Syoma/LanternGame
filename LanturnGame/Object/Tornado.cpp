@@ -2,7 +2,6 @@
 #include "DxLib.h"
 #include "../Utility/common.h"
 #include "CameraManager.h"
-
 int Tornado::images;
 
 Tornado::Tornado()
@@ -31,6 +30,10 @@ void Tornado::Draw(CameraManager* camera) const
 				 , 1.5f * (1 - ((camera->GetDistance() / DISTANCE_NUM))), -(((DX_PI) / 180) * (cnt * 3)), images, true);
 }
 
+void Tornado::Hit(SphereCollider* _sphere)
+{
+}
+
 int Tornado::LoadImages() {
 	images = LoadGraph("Resources/images/tornado_2.png");
 	if (images == -1) {
@@ -48,5 +51,5 @@ void Tornado::Initialize(GameMain* _g, int _obj_pos)
 {
 	gamemain = _g;
 	obj_pos = _obj_pos;
-	type = (int)TYPE::_GIMMICK;
+	type = (int)TYPE::_TORNADO;
 }

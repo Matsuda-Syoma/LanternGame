@@ -5,7 +5,6 @@ class Player : public CharaBase
 {
 private:
 	Vector2D velocity;
-	Vector2D exvelocity;
 	Vector2D lastinput = 0;
 	Vector2D knockback = 0;
 	Vector2D vvec = 0;

@@ -20,7 +20,9 @@ public:
 		_BOMB,
 		_EXPLOSION,
 		_SOLDIER,
-		_GIMMICK,
+		_TORNADO,
+		_ICEFLOOR,
+		_CONVEYER,
 		_ADDSCORE,
 	};
 

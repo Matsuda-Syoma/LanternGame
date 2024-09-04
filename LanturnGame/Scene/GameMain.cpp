@@ -694,9 +694,15 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 {
 	if (object[i] != nullptr)
 	{
-		if ((int)object[i]->GetType() == 4)
+		switch (object[i]->GetType())
 		{
+		case Object::TYPE::_TORNADO:
+		case Object::TYPE::_ICEFLOOR:
+		case Object::TYPE::_CONVEYER:
 			object[i]->Draw(camera);
+			break;
+		default:
+			break;
 		}
 	}
 }
@@ -705,12 +711,21 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 	{
 		if (object[i] != nullptr)
 		{
-			if ((int)object[i]->GetType() != 4)
+			switch (object[i]->GetType())
 			{
+			case Object::TYPE::_BOMB:
+			case Object::TYPE::_EXPLOSION:
+			case Object::TYPE::_SOLDIER:
+			case Object::TYPE::_ADDSCORE:
 				object[i]->Draw(camera);
+				break;
+			default:
+				break;
 			}
 		}
 	}
+
+	object[0]->Draw(camera);
 
 	// パーティクル
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)

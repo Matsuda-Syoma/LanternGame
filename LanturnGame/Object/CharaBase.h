@@ -6,6 +6,7 @@ protected:
 	float speed = 0;
 	float MapSize = 1000;
 	Vector2D movetoloc;
+	Vector2D exvelocity;
 public:
 	virtual void GetMapSize(float i) {
 		MapSize = i;
@@ -24,4 +25,6 @@ public:
 	void Draw(CameraManager* camera)const override {};
 
 	void Hit(SphereCollider* _sphere) override {};                         // “–‚½‚Á‚½‚Ìˆ—
+
+	void SetEXVelocity(Vector2D loc){ exvelocity = loc; }
 };

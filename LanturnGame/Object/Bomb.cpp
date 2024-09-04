@@ -73,12 +73,12 @@ void Bomb::Hit(SphereCollider* _sphere)
 	{
 		flg = false;
 	}
-	if (static_cast<Tornado*>(_sphere)->GetType() == TYPE::_GIMMICK)
+	if (static_cast<Tornado*>(_sphere)->GetType() == TYPE::_TORNADO)
 	{
 		float length = GetLength(static_cast<Object*>(_sphere)->GetLocation() - GetLocation());
 		Vector2D vvec = (static_cast<Object*>(_sphere)->GetLocation() - GetLocation());
 		vvec /= length;
-		SetEXVelocity(vvec * 0.8f);
+		SetEXVelocity(vvec * 3.8f);
 
 	}
 }

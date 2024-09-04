@@ -57,7 +57,7 @@ void Player::Update(GameMain* _g)
 		location += exvelocity;
 		location -= knockback;
 
-
+		exvelocity = 0;
 	}
 	// 兵隊に捕まっていたら
 	else if (hitsoldier == true)
@@ -205,7 +205,13 @@ void Player::Hit(SphereCollider* _sphere)
 		SetHitFlg(true);
 		SetDamageDirectionFlg(true);
 	}
-
+	if (static_cast<Tornado*>(_sphere)->GetType() == TYPE::_TORNADO)
+	{
+		float length = GetLength(static_cast<Object*>(_sphere)->GetLocation() - GetLocation());
+		Vector2D vvec = (static_cast<Object*>(_sphere)->GetLocation() - GetLocation());
+		vvec /= length;
+		SetEXVelocity(vvec * 7.8f);
+	}
 }
 
 void Player::Movement()
