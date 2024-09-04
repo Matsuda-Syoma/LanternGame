@@ -423,34 +423,34 @@ AbstractScene* GameMain::Update()
 		}
 
 		// プレイヤーが爆発に当たった かつ ダメージ演出が表示されていなかったら
-		if (static_cast<Player*>(GetPlayer())->GetIDamageDirectionFlg() == true && crackflg == false)
-		{
-			crack_alpha = 200;
-			soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
-			crackflg = true;
-		}
+		//if (static_cast<Player*>(GetPlayer())->GetIDamageDirectionFlg() == true && crackflg == false)
+		//{
+		//	crack_alpha = 200;
+		//	soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
+		//	crackflg = true;
+		//}
 
 		// ダメージ演出が表示されている かつ プレイヤーが生きていたら
-		if (crackflg == true && static_cast<Player*>(GetPlayer())->GetPlayerFlg() == true)
-		{
-			// ダメージ演出を少しずつ薄くする
+		//if (crackflg == true && static_cast<Player*>(GetPlayer())->GetPlayerFlg() == true)
+		//{
+		//	// ダメージ演出を少しずつ薄くする
 
-			if (crack_alpha > 0)
-			{
-				crack_alpha -= 1;
-			}
+		//	if (crack_alpha > 0)
+		//	{
+		//		crack_alpha -= 1;
+		//	}
 
-			if (soot_alpha > 0 && crack_alpha <= soot_alpha)
-			{
-				soot_alpha -= 1;
-			}
+		//	if (soot_alpha > 0 && crack_alpha <= soot_alpha)
+		//	{
+		//		soot_alpha -= 1;
+		//	}
 
-			if (crack_alpha == 0)
-			{
-				crackflg = false;
-			}
+		//	if (crack_alpha == 0)
+		//	{
+		//		crackflg = false;
+		//	}
 
-		}
+		//}
 
 
 
@@ -694,15 +694,15 @@ void GameMain::Draw() const
 	DrawCloseMap();
 
 	// 爆弾に当たったときのダメージ演出
-	if (crackflg == true || life == 0)
-	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, crack_alpha);
-		DrawGraph(0, 0, crackimage, true);	// ヒビ
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, soot_alpha);
-		DrawGraph(0, 0, sootimage, true);	// 煤
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//if (crackflg == true || life == 0)
+	//{
+	//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, crack_alpha);
+	//	DrawGraph(0, 0, crackimage, true);	// ヒビ
+	//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, soot_alpha);
+	//	DrawGraph(0, 0, sootimage, true);	// 煤
+	//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//}
 
-	}
 	//残り体力の表示
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage[life], true);
 	for (int i = 0; i < life; i++)
