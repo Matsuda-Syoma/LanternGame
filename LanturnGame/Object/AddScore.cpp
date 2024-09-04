@@ -52,6 +52,7 @@ void AddScore::Initialize(GameMain* _g, int _obj_pos)
 {
 	gamemain = _g;
 	obj_pos = _obj_pos;
+	radius = 96;
 	map_radius = 0;
 	type = (int)TYPE::_ADDSCORE;
 

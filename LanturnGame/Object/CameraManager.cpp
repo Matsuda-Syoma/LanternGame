@@ -125,24 +125,40 @@ void CameraManager::SetObjectDistance(Vector2D loc, bool b)
 		if (oLength.x < oMin.x)
 		{
 			oMin.x = oLength.x;
+			if (InOutCount >= 120)
+			{
+				InOutCount += -5;
+			}
 		}
 
 		// 爆発-カメラのX座標の長さが元の数値より大きいなら保存
 		if (oLength.x >= oMax.x)
 		{
 			oMax.x = oLength.x;
+			if (InOutCount >= 120)
+			{
+				InOutCount += -5;
+			}
 		}
 
 		// 爆発-カメラのY座標の長さが元の数値より小さいなら保存
 		if (oLength.y < oMin.y)
 		{
 			oMin.y = oLength.y;
+			if (InOutCount >= 120)
+			{
+				InOutCount += -5;
+			}
 		}
 
 		// 爆発-カメラのY座標の長さが元の数値より大きいなら保存
 		if (oLength.y >= oMax.y)
 		{
 			oMax.y = oLength.y;
+			if (InOutCount >= 120)
+			{
+				InOutCount += -5;
+			}
 		}
 	}
 	else
