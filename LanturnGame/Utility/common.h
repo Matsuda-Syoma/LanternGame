@@ -6,7 +6,7 @@
 #define FRAMERATE 60.0
 #define UPDATETIME 800
 
-#define GM_MAX_LIFE 5
+#define GM_MAX_LIFE 4
 
 #define GM_MAX_ENEMY_BOMB 200
 #define GM_MAX_EFFECT_EXPLOSION 200

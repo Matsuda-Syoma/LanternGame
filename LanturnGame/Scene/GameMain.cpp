@@ -1709,7 +1709,7 @@ void GameMain::Draw() const
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 	for (int i = 0; i < life; i++)
 	{
-		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
+		DrawRotaGraph(SCREEN_WIDTH - 202 + (50 * i), 360, 1.0, 0.0, lifematchimage, true);
 	}
 
 	//ミニマップ
@@ -1811,13 +1811,13 @@ void GameMain::Draw() const
 		bufscore = score;
 		for (int s = 0; s < num; s++)
 		{
-			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
+			DrawRotaGraph((SCREEN_WIDTH - 130 + (26 * num) / 2) - (26 * s), 490, 0.6, 0.0, numimage[bufscore % 10], true);
 			bufscore /= 10;
 		}
 
 		if (textdisp->GetFlg() == true)
 		{
-			descripition->Draw();
+			//descripition->Draw();
 		}
 	}
 	// リザルトなら
