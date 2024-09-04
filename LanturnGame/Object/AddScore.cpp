@@ -97,14 +97,22 @@ void AddScore::Update(GameMain* _g)
 			else {
 				/*location = startlocation;*/
 				fontsize = 0.8;
-				interval = 25.0;
+				interval = 22.0;
 				moveflg = true;
+				
+
 			}
 
+		}
+		else {
+			if (movewait <= 60)
+			{
 
-			
+				movewait++;
+			}
 
 		}
+
 	}
 
 	if (cnt < 7 * 2)
@@ -128,7 +136,7 @@ void AddScore::Update(GameMain* _g)
 		{*/
 			MoveTest(PL);
 			speed += 0.2;
-			if (fontsize > 0.1)
+			if (fontsize > 0.1 && movewait >= 60)
 			{
 				fontsize -= 0.02;
 				interval -= 0.5;
