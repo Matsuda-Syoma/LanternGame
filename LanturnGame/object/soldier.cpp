@@ -155,11 +155,11 @@ void Soldier::Draw(CameraManager* camera)const
 		//	, 1.4 * ScaleFromCamera(_distance), 0.0, soldierimg[Velimg + animcnt], true);
 		DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 					,  location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-					,  (1.0f + (float)(min(MyScore / 100000.0f, 3)) + (GetScoreAnimCnt / 20.0)) * (1 - ((camera->GetDistance() / DISTANCE_NUM))), 0.0, soldierimg[Velimg + animcnt], true);
+					,  (1.0f /*+ (float)(min(MyScore / 100000.0f, 3)) + (GetScoreAnimCnt / 20.0)*/) * (1 - ((camera->GetDistance() / DISTANCE_NUM))), 0.0, soldierimg[Velimg + animcnt], true);
 	
-		DrawCircleAA(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
-					,location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-					,radius, 16, 0xffffff, false, 3.0f);
+		//DrawCircleAA(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+		//			,location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+		//			,radius, 16, 0xffffff, false, 3.0f);
 	}
 	else
 	{
@@ -353,7 +353,7 @@ int Soldier::GetRandom(int min, int max)
 
 void Soldier::SetMyScore(int Score)
 {
-	MyScore += Score;
-	GetScoreAnimCnt = 20;
-	radius = 32 + min((MyScore / 100000.0) * 3, 16);
+	//MyScore += Score;
+	//GetScoreAnimCnt = 20;
+	//radius = 32 + min((MyScore / 100000.0) * 3, 16);
 }
