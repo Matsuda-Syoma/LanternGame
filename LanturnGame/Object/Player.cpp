@@ -140,6 +140,13 @@ void Player::Update(GameMain* _g)
 		}
 	}
 
+	//////////// プレイヤーの残機処理 ////////////
+
+	if (gamemain->GetLife() <= 0)
+	{
+		SetPlayerFlg(false);
+	}
+
 }
 
 void Player::Draw(CameraManager* camera) const

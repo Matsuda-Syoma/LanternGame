@@ -140,8 +140,10 @@ public:
 	Object* GetPlayer();
 	CameraManager* GetCamera();
 	void AddLife(int i);
+	int GetLife() const;
 	void AddGameScore(int i);
 	void AddCombo(int i);
 	int GetComboCount() const;
+	void SetResultFlg(bool b);
 };
 
