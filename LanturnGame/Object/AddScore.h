@@ -40,7 +40,8 @@ public:
 	void Finalize() override {};
 	void Update(GameMain* _g) override;
 	void Draw(CameraManager* camera)const override;
-	void Hit(SphereCollider* _sphere) override;
+	// void Hit(SphereCollider* _sphere) override;
+	void Hit(Object* _obj) override;
 
 	void Move();
 	void MoveTest(Vector2D PL);

@@ -174,9 +174,9 @@ void AddScore::Draw(CameraManager* camera) const
 
 }
 
-void AddScore::Hit(SphereCollider* _sphere)
+void AddScore::Hit(Object* _obj)
 {
-	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_PLAYER)
+	if (static_cast<Object*>(_obj)->GetType() == TYPE::_PLAYER)
 	{
 		flg = false;
 		gamemain->AddGameScore(score);
@@ -193,13 +193,13 @@ void AddScore::Hit(SphereCollider* _sphere)
 		}*/
 	}
 
-	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_SOLDIER)
+	if (static_cast<Object*>(_obj)->GetType() == TYPE::_SOLDIER)
 	{
 		//int soldier = gamemain->CreateObject(new Soldier);
-		int mode = static_cast<Soldier*>(_sphere)->CheckMode();
+		int mode = static_cast<Soldier*>(_obj)->CheckMode();
 		if (mode == 1)
 		{
-			static_cast<Soldier*>(_sphere)->SetMyScore(score);
+			static_cast<Soldier*>(_obj)->SetMyScore(score);
 			flg = 0;
 		}
 		
