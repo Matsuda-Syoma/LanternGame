@@ -28,7 +28,7 @@ void Tornado::Draw(CameraManager* camera) const
 	//DrawCircleAA(location.x + (-loc.x + SCREEN_WIDTH / 2), location.y + (-loc.y + SCREEN_HEIGHT / 2), radius, 16, GetColor(80, 0, 0), 0);
 	DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 				 , location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-				 , 1.5f * (1 - ((camera->GetDistance() / DISTANCE_NUM))), (((DX_PI) / 180) * (cnt * 3)), images, true);
+				 , 1.5f * (1 - ((camera->GetDistance() / DISTANCE_NUM))), -(((DX_PI) / 180) * (cnt * 3)), images, true);
 }
 
 int Tornado::LoadImages() {

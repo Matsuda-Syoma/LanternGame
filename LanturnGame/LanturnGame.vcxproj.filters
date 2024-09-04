@@ -23,6 +23,8 @@
     <ClCompile Include="Object\stage.cpp" />
     <ClCompile Include="Object\AddScore.cpp" />
     <ClCompile Include="Description.cpp" />
+    <ClCompile Include="Scene\Title.cpp" />
+    <ClCompile Include="Scene\credit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility\InputControl.h" />
@@ -51,6 +53,8 @@
     <ClInclude Include="Object\AddScore.h" />
     <ClInclude Include="Object\BoxCollider.h" />
     <ClInclude Include="Description.h" />
+    <ClInclude Include="Scene\Title.h" />
+    <ClInclude Include="Scene\credit.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico" />

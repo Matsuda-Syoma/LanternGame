@@ -26,6 +26,7 @@ public:
 	~Title();
 	virtual AbstractScene* Update() override;
 	void Draw() const override;
-	void SpawnParticle(int type, SphereCollider* root, bool loop, Vector2D loc, float angle, float scale, float speed);
+	int CreateParticle(int type);
+	Particle* GetParticle(int _num);
 };
 
