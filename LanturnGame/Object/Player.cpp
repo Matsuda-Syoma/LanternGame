@@ -89,55 +89,110 @@ void Player::Update(GameMain* _g)
 	// 兵隊に捕まっていなかったら
 	if (hitsoldier == false)
 	{
-		// プレイヤーアニメーション
-		if (direction == 0) {	// 下移動
+
+		switch (direction)
+		{
+		case(0):	// 下移動
 			imgdirection = 1;
-		}
-		else if (direction == 1) {	// 左移動
+			break;
+		case(1):	// 左移動
 			imgdirection = 13;
-		}
-		else if (direction == 2) {	// 右移動
+			break;
+		case(2):	// 右移動
 			imgdirection = 7;
-		}
-		else if (direction == 3) {	// 上移動
+			break;
+		case(3):	// 上移動
 			imgdirection = 19;
-		}
-		else if (direction == 4) {	// 左斜め下移動
+			break;
+		case(4):	// 左斜め下移動
 			imgdirection = 4;
-		}
-		else if (direction == 5) {	// 左斜め上移動
+			break;
+		case(5):	// 左斜め上移動
 			imgdirection = 10;
-		}
-		else if (direction == 6) {	// 右斜め下移動
+			break;
+		case(6):	// 右斜め下移動
 			imgdirection = 16;
-		}
-		else if (direction == 7) {	// 右斜め上移動
+			break;
+		case(7):	// 右斜め上移動
 			imgdirection = 22;
-		}
-		else if (direction == 8) {	// 下停止
+			break;
+		case(8):	// 下停止
 			imgnum = 1;
-		}
-		else if (direction == 9) {	// 左停止
+			break;
+		case(9):	// 左停止
 			imgnum = 13;
-		}
-		else if (direction == 10) {	// 右停止
+			break;
+		case(10):	// 右停止
 			imgnum = 7;
-		}
-		else if (direction == 11) {	// 上停止
+			break;
+		case(11):	// 上停止
 			imgnum = 19;
-		}
-		else if (direction == 12) {	// 左斜め下停止
+			break;
+		case(12):	// 左斜め下停止
 			imgnum = 4;
-		}
-		else if (direction == 13) {	// 左斜め上停止
+			break;
+		case(13):	// 左斜め上停止
 			imgnum = 10;
-		}
-		else if (direction == 14) {	// 右斜め下停止
+			break;
+		case(14):	// 右斜め下停止
 			imgnum = 16;
-		}
-		else if (direction == 15) {	// 右斜め上停止
+			break;
+		case(15):	// 右斜め上停止
 			imgnum = 22;
+			break;
+		default:
+			break;
 		}
+
+		//// プレイヤーアニメーション
+		//if (direction == 0) {	// 下移動
+		//	imgdirection = 1;
+		//}
+		//else if (direction == 1) {	// 左移動
+		//	imgdirection = 13;
+		//}
+		//else if (direction == 2) {	// 右移動
+		//	imgdirection = 7;
+		//}
+		//else if (direction == 3) {	// 上移動
+		//	imgdirection = 19;
+		//}
+		//else if (direction == 4) {	// 左斜め下移動
+		//	imgdirection = 4;
+		//}
+		//else if (direction == 5) {	// 左斜め上移動
+		//	imgdirection = 10;
+		//}
+		//else if (direction == 6) {	// 右斜め下移動
+		//	imgdirection = 16;
+		//}
+		//else if (direction == 7) {	// 右斜め上移動
+		//	imgdirection = 22;
+		//}
+		//else if (direction == 8) {	// 下停止
+		//	imgnum = 1;
+		//}
+		//else if (direction == 9) {	// 左停止
+		//	imgnum = 13;
+		//}
+		//else if (direction == 10) {	// 右停止
+		//	imgnum = 7;
+		//}
+		//else if (direction == 11) {	// 上停止
+		//	imgnum = 19;
+		//}
+		//else if (direction == 12) {	// 左斜め下停止
+		//	imgnum = 4;
+		//}
+		//else if (direction == 13) {	// 左斜め上停止
+		//	imgnum = 10;
+		//}
+		//else if (direction == 14) {	// 右斜め下停止
+		//	imgnum = 16;
+		//}
+		//else if (direction == 15) {	// 右斜め上停止
+		//	imgnum = 22;
+		//}
 	}
 
 }
