@@ -11,7 +11,7 @@
 #include "../Object/Particle.h"
 #include "../Utility/common.h"
 #include "../Object/stage.h"
-//#include "../Object/Conveyor.h"
+#include "../Object/Conveyor.h"
 #include "../Object/Tornado.h"
 //#include "../Object/ComboEnd.h"
 #include "../Utility/TextDisp.h"
@@ -140,8 +140,10 @@ public:
 	Object* GetPlayer();
 	CameraManager* GetCamera();
 	void AddLife(int i);
+	int GetLife() const;
 	void AddGameScore(int i);
 	void AddCombo(int i);
 	int GetComboCount() const;
+	void SetResultFlg(bool b);
 };
 

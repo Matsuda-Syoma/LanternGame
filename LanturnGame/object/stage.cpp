@@ -19,7 +19,7 @@ void Stage::Initialize(GameMain* _g, int _obj_pos)
 {
 	gamemain = _g;
 	obj_pos = _obj_pos;
-	type = (int)TYPE::_GIMMICK;
+	type = (int)TYPE::_ICEFLOOR;
 }
 
 void Stage::Update(GameMain* _g)

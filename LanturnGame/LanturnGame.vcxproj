@@ -24,6 +24,7 @@
     <ClCompile Include="object\BackGround.cpp" />
     <ClCompile Include="Object\Bomb.cpp" />
     <ClCompile Include="Object\CameraManager.cpp" />
+    <ClCompile Include="Object\Conveyor.cpp" />
     <ClCompile Include="Object\Explosion.cpp" />
     <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="Object\Particle.cpp" />
@@ -34,8 +35,10 @@
     <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="Object\stage.cpp" />
     <ClCompile Include="Object\Tornado.cpp" />
+    <ClCompile Include="Scene\credit.cpp" />
     <ClCompile Include="Scene\GameMain.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
+    <ClCompile Include="Scene\Title.cpp" />
     <ClCompile Include="Utility\TextDisp.cpp" />
     <ClCompile Include="Utility\UserData.cpp" />
     <ClCompile Include="Utility\FPSController.cpp" />
@@ -48,6 +51,7 @@
     <ClInclude Include="object\BackGround.h" />
     <ClInclude Include="Object\Bomb.h" />
     <ClInclude Include="Object\CameraManager.h" />
+    <ClInclude Include="Object\Conveyor.h" />
     <ClInclude Include="Object\Explosion.h" />
     <ClInclude Include="Object\Object.h" />
     <ClInclude Include="Object\Particle.h" />
@@ -59,8 +63,10 @@
     <ClInclude Include="Object\stage.h" />
     <ClInclude Include="Object\Tornado.h" />
     <ClInclude Include="Scene\AbstractScene.h" />
+    <ClInclude Include="Scene\credit.h" />
     <ClInclude Include="Scene\GameMain.h" />
     <ClInclude Include="Scene\SceneManager.h" />
+    <ClInclude Include="Scene\Title.h" />
     <ClInclude Include="Utility\TextDisp.h" />
     <ClInclude Include="Utility\UserData.h" />
     <ClInclude Include="Utility\common.h" />
