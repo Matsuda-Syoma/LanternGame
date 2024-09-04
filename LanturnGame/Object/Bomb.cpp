@@ -23,27 +23,27 @@ void Bomb::Initialize(GameMain* _g, int _obj_pos)
 void Bomb::Finalize()
 {
 }
-void Bomb::Hit(SphereCollider* _sphere)
+void Bomb::Hit(Object* _obj)
 {
-	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_PLAYER)
+	if (static_cast<Object*>(_obj)->GetType() == TYPE::_PLAYER)
 	{
 		// プレイヤーと爆弾のベクトル取得
-		Vector2D vvec = (GetLocation() - _sphere->GetLocation());
-		float length = GetLength(_sphere->GetLocation());
+		Vector2D vvec = (GetLocation() - _obj->GetLocation());
+		float length = GetLength(_obj->GetLocation());
 		vvec /= length;
 
 		// 点火してないなら
 		if (!GetExpFlg())
 		{
 			// プレイヤーの速度*20飛ばす
-			SetKnockBack(vvec, (int)max(5, static_cast<Player*>(_sphere)->GetNormalSpeed() * 20.0f));
+			SetKnockBack(vvec, (int)max(5, static_cast<Player*>(_obj)->GetNormalSpeed() * 20.0f));
 		}
 
 		// 点火しているなら
 		else
 		{
 			// プレイヤーの速度*50飛ばす
-			SetKnockBack(vvec, (int)max(5, static_cast<Player*>(_sphere)->GetNormalSpeed() * 50.0f));
+			SetKnockBack(vvec, (int)max(5, static_cast<Player*>(_obj)->GetNormalSpeed() * 50.0f));
 		}
 		// SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->
 		//GetLocation(), player->GetLocation()), 0.5f, 0.f);
@@ -69,16 +69,16 @@ void Bomb::Hit(SphereCollider* _sphere)
 		//SetCameraShake(7);
 	}
 
-	if (static_cast<Object*>(_sphere)->GetType() == TYPE::_EXPLOSION)
+	if (static_cast<Object*>(_obj)->GetType() == TYPE::_EXPLOSION)
 	{
 		flg = false;
 	}
-	if (static_cast<Tornado*>(_sphere)->GetType() == TYPE::_GIMMICK)
+	if (static_cast<Tornado*>(_obj)->GetType() == TYPE::_TORNADO)
 	{
-		float length = GetLength(static_cast<Object*>(_sphere)->GetLocation() - GetLocation());
-		Vector2D vvec = (static_cast<Object*>(_sphere)->GetLocation() - GetLocation());
+		float length = GetLength(static_cast<Object*>(_obj)->GetLocation() - GetLocation());
+		Vector2D vvec = (static_cast<Object*>(_obj)->GetLocation() - GetLocation());
 		vvec /= length;
-		SetEXVelocity(vvec * 0.8f);
+		SetEXVelocity(vvec * 3.8f);
 
 	}
 }

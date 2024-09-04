@@ -124,7 +124,10 @@ AbstractScene* Title::Update()
 	// 60フレームならパーティクル出す
 	if (fireanim == 60)
 	{
-		SpawnParticle(3, nullptr, false, bombloc, (float)GetRand(360), 2.0f, 0.0f);
+		int ptemp = CreateParticle(3);
+		GetParticle(ptemp)->SetLocation(bombloc);
+		GetParticle(ptemp)->SetAngle((float)GetRand(360));
+		GetParticle(ptemp)->SetScale(2.0f);
 		PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
 	}
 
@@ -132,10 +135,12 @@ AbstractScene* Title::Update()
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			SpawnParticle(3, nullptr, false,
-				Vector2D((SCREEN_WIDTH / 2) + (GetRand(SCREEN_WIDTH) - (SCREEN_WIDTH / 2))
-					, (SCREEN_HEIGHT / 2) + (GetRand(SCREEN_HEIGHT) - (SCREEN_HEIGHT / 2)))
-				, (float)GetRand(360), (GetRand(9) + 1) / 5.0f, 0.0f);
+			int ptemp = CreateParticle(3);
+			GetParticle(ptemp)->SetLocation(Vector2D((SCREEN_WIDTH / 2) + (GetRand(SCREEN_WIDTH) - (SCREEN_WIDTH / 2))
+													,(SCREEN_HEIGHT / 2) + (GetRand(SCREEN_HEIGHT) - (SCREEN_HEIGHT / 2))));
+			GetParticle(ptemp)->SetAngle((float)GetRand(360));
+			GetParticle(ptemp)->SetScale((GetRand(9) + 1) / 5.0f);
+			PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
 		}
 
 		PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
@@ -146,7 +151,7 @@ AbstractScene* Title::Update()
 		// パーティクルがnullptrじゃないなら
 		if (particle[i] != nullptr)
 		{
-			particle[i]->Update();
+			particle[i]->Update(nullptr);
 			if (!particle[i]->Getflg())
 			{
 				particle[i] = nullptr;
@@ -235,23 +240,30 @@ void Title::Draw() const
 	}
 }
 
-// パーティクルのスポーン(種類、親、ループ可か、スポーン座標、向く座標、大きさ
-void Title::SpawnParticle(int type, SphereCollider* root, bool loop, Vector2D loc, float angle, float scale, float speed)
+
+int Title::CreateParticle(int type)
 {
+	int num = -1;
 	for (int j = 0; j < GM_MAX_PARTICLE; j++)
 	{
 		if (particle[j] == nullptr)
 		{
 			particle[j] = new Particle();
-			particle[j]->Init(type, root, loop, scale);
-			if (root != nullptr)
-			{
-				particle[j]->SetRootLocation(loc);
-			}
-			particle[j]->SetLocation(loc);
-			particle[j]->SetAngle(angle);
-			particle[j]->SetSpeed(speed);
+			particle[j]->Init(type, j);
+			particle[j]->SetRoot(nullptr);
+			particle[j]->SetLoop(false);
+			particle[j]->SetScale(1.0f);
+			particle[j]->SetLocation(0.0f);
+			particle[j]->SetAngle(0.0f);
+			particle[j]->SetSpeed(0.0f);
+			num = j;
 			break;
 		}
 	}
+	return num;
+}
+
+Particle* Title::GetParticle(int _num)
+{
+	return particle[_num];
 }

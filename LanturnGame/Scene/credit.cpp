@@ -3,7 +3,7 @@
 
 Credit::Credit()
 {
-	ComboEnd::LoadImages();
+	//ComboEnd::LoadImages();
 
 	creditimg = LoadGraph("Resources/images/brick.png");
 	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);

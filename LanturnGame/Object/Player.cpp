@@ -24,7 +24,7 @@ void Player::Initialize(GameMain* _g, int _obj_pos)
 	CharaBase::Initialize(_g, _obj_pos);
 	type = (int)TYPE::_PLAYER;
 	//LoadDivGraph("Resources/images/player.png", 12, 3, 4, 64, 64, playerimg);
-	LoadDivGraph("Resources/images/newplayer.jpg", 24, 6, 4, 64, 64, playerimg);
+	LoadDivGraph("Resources/images/newplayer.png", 24, 6, 4, 64, 64, playerimg);
 	deadplayer_img = LoadGraph("Resources/images/player_death.png");
 	angry_img = LoadGraph("Resources/images/angry.png");
 }
@@ -57,7 +57,7 @@ void Player::Update(GameMain* _g)
 		location += exvelocity;
 		location -= knockback;
 
-
+		exvelocity = 0;
 	}
 	// 兵隊に捕まっていたら
 	else if (hitsoldier == true)
@@ -195,6 +195,13 @@ void Player::Update(GameMain* _g)
 		//}
 	}
 
+	//////////// プレイヤーの残機処理 ////////////
+
+	if (gamemain->GetLife() <= 0)
+	{
+		SetPlayerFlg(false);
+	}
+
 }
 
 void Player::Draw(CameraManager* camera) const
@@ -242,9 +249,9 @@ void Player::Draw(CameraManager* camera) const
 
 }
 
-void Player::Hit(SphereCollider* _sphere)
+void Player::Hit(Object* _obj)
 {
-	if (static_cast<CharaBase*>(_sphere)->GetType() == CharaBase::TYPE::_EXPLOSION)
+	if (static_cast<CharaBase*>(_obj)->GetType() == CharaBase::TYPE::_EXPLOSION)
 	{
 		if (!hitflg)
 		{
@@ -254,6 +261,18 @@ void Player::Hit(SphereCollider* _sphere)
 		SetDamageDirectionFlg(true);
 	}
 
+	if (static_cast<Tornado*>(_obj)->GetType() == TYPE::_TORNADO)
+	{
+		float length = GetLength(static_cast<Object*>(_obj)->GetLocation() - GetLocation());
+		Vector2D vvec = (static_cast<Object*>(_obj)->GetLocation() - GetLocation());
+		vvec /= length;
+		SetEXVelocity(vvec * 7.8f);
+	}
+
+	if (static_cast<Tornado*>(_obj)->GetType() == TYPE::_CONVEYER)
+	{
+		printfDx("ht");
+	}
 }
 
 void Player::Movement()

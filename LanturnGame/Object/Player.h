@@ -5,7 +5,6 @@ class Player : public CharaBase
 {
 private:
 	Vector2D velocity;
-	Vector2D exvelocity;
 	Vector2D lastinput = 0;
 	Vector2D knockback = 0;
 	Vector2D vvec = 0;
@@ -48,7 +47,7 @@ public:
 	void Finalize()override;
 	void Update(GameMain* _g)override;
 	void Draw(CameraManager* camera)const override;
-	void Hit(SphereCollider* _sphere)override;
+	void Hit(Object* _obj)override;
 	void Movement();
 	void Invincible();	// –³“GŽžŠÔ
 	void Blinking();	// “_–Å

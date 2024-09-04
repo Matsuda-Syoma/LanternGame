@@ -1,29 +1,24 @@
 #pragma once
-#include "BoxCollider.h"
+#include "Object.h"
 
-class Conveyor : public BoxCollider
+class GameMain;
+class CameraManager;
+
+class Conveyor : public Object
 {
 private:
     int images;
+    int finalimage;
     float width = 600.0f;
     float height = 100.0f;
-    Vector2D location;
-    int image_con;
-    int image_belt;
-    int image_line;
-    int image_left;
-    int flame;
-    int maxexpcnt = 80;
-    int expcnt = maxexpcnt;
     int scroll;
 public:
-    Conveyor();    //�R���X�g���N�^
-    ~Conveyor();   //�f�X�g���N�^
+    Conveyor();
+    ~Conveyor();
 
-    void Update();      //�`��ȊO�̏���
-    void Draw(Vector2D loc, float _distance)const;   //�`�揈��
-    void Draw_left(Vector2D loc, float _distance)const;
-    Vector2D GetLocation() const;
-    void SetLocation(Vector2D loc);
-    float GetScale(int i);
+    void Initialize(GameMain* _g, int _obj_pos) override;
+    void Finalize() override {};
+    void Update(GameMain* _g) override;
+    void Draw(CameraManager* camera)const override;
+    void Hit(Object* _obj) override {};                         // 当たった時の処理
 };

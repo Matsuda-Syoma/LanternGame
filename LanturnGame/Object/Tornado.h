@@ -7,6 +7,7 @@ class Tornado : public Object
 private:
 	static int images;
 	int cnt = 0;
+	float power = 15.0f;
 public:
 	Tornado();
 	~Tornado();
@@ -17,6 +18,6 @@ public:
 	void Finalize() override {};
 	void Update(GameMain* _g) override;
 	void Draw(CameraManager* camera)const override;
-	void Hit(SphereCollider* _sphere) override {};                         // “–‚½‚Á‚½‚Ìˆ—
+	void Hit(Object* _obj) override {};                         // “–‚½‚Á‚½‚Ìˆ—
 };
 
