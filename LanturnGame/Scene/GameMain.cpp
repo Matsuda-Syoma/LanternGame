@@ -660,13 +660,13 @@ AbstractScene* GameMain::Update()
 		}
 	}
 
-	// 爆発があるか確認
+	// オブジェクトがあるか確認
 	comboflg = false;
 	for (int i = 0; i < GM_MAX_OBJECT; i++)
 	{
 		if (object[i] != nullptr)
 		{
-
+			// 爆発の確認
 			if (object[i]->GetType() == Object::TYPE::_EXPLOSION)
 			{
 				comboflg = true;
@@ -686,13 +686,21 @@ AbstractScene* GameMain::Update()
 		camera->SetInOutFlg(false);
 		combocount = 0;
 		int bombcnt = 0;
+		int soldercnt = 0;
 		for (int i = 0; i < GM_MAX_OBJECT; i++)
 		{
 			if (object[i] != nullptr)
 			{
+				// 爆弾の確認
 				if (object[i]->GetType() == Object::TYPE::_BOMB)
 				{
 					bombcnt++;
+				}
+
+				// 兵隊の確認
+				if (object[i]->GetType() == Object::TYPE::_SOLDIER)
+				{
+					soldercnt++;
 				}
 			}
 		}
@@ -704,17 +712,6 @@ AbstractScene* GameMain::Update()
 
 		}
 
-		int soldercnt = 0;
-		for (int i = 0; i < GM_MAX_OBJECT; i++)
-		{
-			if (object[i] != nullptr)
-			{
-				if (object[i]->GetType() == Object::TYPE::_SOLDIER)
-				{
-					soldercnt++;
-				}
-			}
-		}
 		for (int i = 0; i < GM_MAX_ENEMY_SOLDIER - soldercnt; i++)
 		{
 			int temp = CreateObject(new Soldier);
