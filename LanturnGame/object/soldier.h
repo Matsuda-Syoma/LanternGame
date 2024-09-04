@@ -52,5 +52,5 @@ private:
 	int animcnt=0;//アニメーション切り替え用関数
 
 	int MyScore = 0;
-
+	int GetScoreAnimCnt = 0;
 };
