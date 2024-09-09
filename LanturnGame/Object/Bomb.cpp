@@ -32,10 +32,11 @@ void Bomb::Hit(Object* _obj)
 		Vector2D vvec = (GetLocation() - _obj->GetLocation());
 		float length = GetLength(_obj->GetLocation());
 		vvec /= length;
-
-		//触れた瞬間SEを鳴らす
-		PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
-
+		
+		if (CheckSoundMem(Sounds::SE_Hit) == 0)
+		{
+			PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
+		}
 		// 点火してないなら
 		if (!GetExpFlg())
 		{
