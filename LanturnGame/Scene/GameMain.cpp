@@ -246,7 +246,8 @@ GameMain::GameMain()
 	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
 	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
 	resultimage = LoadGraph("Resources/images/result.png", 0);
-	highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
+	highscoreimage = LoadGraph("Resources/images/result.png", 0);
+	//highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
 	blackimage = LoadGraph("Resources/images/black.png", 0);
 	crackimage = LoadGraph("Resources/images/crack1.png", 0);
 	sootimage = LoadGraph("Resources/images/soot.png", 0);
