@@ -4,6 +4,7 @@
 #include <math.h>
 #include "../Scene/GameMain.h"
 #include "CameraManager.h"
+#include "../Utility/LoadSounds.h"
 int Bomb::images[3];
 Bomb::Bomb()
 {
@@ -31,7 +32,11 @@ void Bomb::Hit(Object* _obj)
 		Vector2D vvec = (GetLocation() - _obj->GetLocation());
 		float length = GetLength(_obj->GetLocation());
 		vvec /= length;
-
+		
+		if (CheckSoundMem(Sounds::SE_Hit) == 0)
+		{
+			PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
+		}
 		// 点火してないなら
 		if (!GetExpFlg())
 		{
