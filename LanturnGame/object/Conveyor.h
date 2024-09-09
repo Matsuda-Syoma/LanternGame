@@ -8,9 +8,9 @@ class Conveyor : public Object
 {
 private:
     int images;
-    int finalimage;
-    float width = 600.0f;
-    float height = 100.0f;
+    int finalimage[3];
+    float width = 1024.0f;
+    float height = 256.0f;
     int scroll;
 public:
     Conveyor();

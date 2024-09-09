@@ -271,7 +271,7 @@ void Player::Hit(Object* _obj)
 
 	if (static_cast<Tornado*>(_obj)->GetType() == TYPE::_CONVEYER)
 	{
-		printfDx("ht");
+		
 	}
 }
 

@@ -216,9 +216,9 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 	{
 		int temp = CreateObject(new Conveyor);
-		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-		object[temp]->SetLocation(spawnloc);
-		printfDx("%f %f\n", spawnloc.x, spawnloc.y);
+		//Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
+		//object[temp]->SetLocation(spawnloc);
+		//printfDx("%f %f\n", spawnloc.x, spawnloc.y);
 		gimmicknum++;
 	}
 

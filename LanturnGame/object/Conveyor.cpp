@@ -9,7 +9,7 @@ Conveyor::Conveyor()
 	box.top = location.y;
 	box.right = box.left + width;
 	box.bottom = box.top + height;
-	images = LoadGraph("Resources/images/conveyor1.png", 0);
+	images = LoadGraph("Resources/images/n_conv.png", 0);
 }
 
 
@@ -60,28 +60,41 @@ void Conveyor::Update(GameMain* _g)
 	box.right = box.left + width;
 	box.bottom = box.top + height;
 
-	if (scroll <= 55)
+	if (scroll <= 511)
 	{
-		scroll = scroll + 2;
+		scroll = scroll + 1;
 	}
 	else {
 		scroll = 0;
 	}
-	finalimage = DerivationGraph(scroll, 0, 600, 100, images);
+	finalimage[0] = DerivationGraph(0, 0, 1024 - (scroll * 2), 256, images);
+	finalimage[2] = DerivationGraph(1024 - (scroll * 2), 0, 1024, 256, images);
 
 }
 
 void Conveyor::Draw(CameraManager* camera) const
 {
+
+
+	//DrawRotaGraphF((box.left + (width / 2) + scroll) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+	//			 , (box.top + (height / 2)) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+	//			 , 1.0f * (1.0f - ((camera->GetDistance()))), 0.0, finalimage[0], true);
+
+	//DrawRotaGraphF((box.left + (scroll)) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+	//			 , (box.top + (height / 2)) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+	//			 , 1.0f * (1.0f - ((camera->GetDistance()))), 0.0, finalimage[2], true);
+
+	//DrawRotaGraphF((box.right - (width / 2) + (-scroll)) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+	//	, (box.top + (height / 2)) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+	//	, 1.0f * (1.0f - ((camera->GetDistance()))), DX_PI, finalimage[0], true);
+
+	DrawRotaGraphF((box.right + -scroll) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+		, (box.top + (height / 2)) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+		, 1.0f * (1.0f - ((camera->GetDistance()))), DX_PI, finalimage[2], true);
+
 	DrawBoxAA(box.left * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 		, box.top * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
 		, box.right * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 		, box.bottom * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-		, 0x00ffff, true);
-
-	DrawRotaGraphF((box.left + (width / 2) + scroll) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
-				 , (box.top + (height / 2)) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-				 , 1.0f * (1.0f - ((camera->GetDistance()))), 0.0, finalimage, true);
-
-
+		, 0x00ffff, false, 3.0f);
 }
