@@ -91,6 +91,7 @@ private:
 	bool PauseFlg = false;
 	bool CameraFlg = false;
 	bool ActionFlg = true;
+	bool BGMcheck = false;
 
 	__int8 ui_combo_framecount = 0;
 

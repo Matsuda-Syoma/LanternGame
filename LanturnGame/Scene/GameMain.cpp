@@ -18,9 +18,7 @@ GameMain::GameMain()
 	// ハイスコア読み込み
 	hiscore = (int)UserData::LoadData(UserData::Type::HISCORE);		// ハイスコア読み込み
 
-	// BGMをループしながら再生する
-	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
-
+	
 	/*******************初期化*******************/
 	textdisp = new TextDisp;
 	textdisp->LoadText(0);
@@ -272,7 +270,12 @@ AbstractScene* GameMain::Update()
 	////スコア描画の中心の値を求める
 	//ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
 
-	//	
+	// BGMをループしながら再生する
+	if (CheckSoundMem(Sounds::BGM_GMain) == 0)
+	{
+		PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
+	}
+	
 
 	//// リザルトじゃない かつ カウントダウンが終わっているとき
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) 
