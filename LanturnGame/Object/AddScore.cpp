@@ -163,7 +163,7 @@ void AddScore::Draw(CameraManager* camera) const
 			else
 			{
 
-				// 描画輝度を赤のみにセット
+				// 描画輝度を黄色にセット
 				SetDrawBright(255, 255, 0);
 
 

@@ -825,7 +825,10 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 
 		if (score == 0)
 		{
+			// 描画輝度を黄色にセット
+			SetDrawBright(255, 255, 0);
 			DrawRotaGraph(SCREEN_WIDTH - 125, 490, 0.6, 0.0, numimage[0], true);
+			SetDrawBright(255, 255, 255);
 		}
 
 		//スコアの表示
@@ -839,7 +842,11 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 		bufscore = score;
 		for (int s = 0; s < num; s++)
 		{
+			// 描画輝度を黄色にセット
+			SetDrawBright(255, 255, 0);
 			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, scoresize, 0.0, numimage[bufscore % 10], true);
+			SetDrawBright(255, 255, 255);
+
 			bufscore /= 10;
 		}
 
