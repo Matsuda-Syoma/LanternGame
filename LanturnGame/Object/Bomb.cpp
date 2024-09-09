@@ -320,6 +320,11 @@ void Bomb::Update(GameMain* _g)
 	// 爆発処理
 	if (!flg)
 	{
+
+		if (CheckSoundMem(Sounds::SE_ED_Soldier) == 0)
+		{
+			PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
+		}
 		int exptemp = gamemain->CreateObject(new Explosion);
 		gamemain->GetObjectA(exptemp)->SetLocation(location);
 
