@@ -1,4 +1,5 @@
-﻿#include "soldier.h"
+﻿
+#include "soldier.h"
 #include "../Utility/common.h"
 #include "../Utility/InputControl.h"
 #include "../Utility/LoadSounds.h"
@@ -89,6 +90,8 @@ void Soldier::Hit(Object* _obj)
 void Soldier::Update(GameMain* _g)
 {
 	
+	MapSize = _g->GetMapSize();
+
 	PL = gamemain->GetPlayer()->GetLocation();
 	if (state == 1)
 	{
@@ -171,6 +174,8 @@ void Soldier::Draw(CameraManager* camera)const
 
 void Soldier::Move(Vector2D PL)
 {
+	//printfDx("X:%f,Y:%f\n", location.x, location.y);
+	//printfDx("X:%f,Y:%f\n", PL.x, PL.y);
 	if (Movemode == true)
 	{
 		//プレイヤーとの中心座標の距離

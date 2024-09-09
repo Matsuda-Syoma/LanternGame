@@ -376,6 +376,7 @@ void Bomb::Update(GameMain* _g)
 	{
 		location.y = MapSize - radius;
 	}
+
 }
 
 void Bomb::Draw(CameraManager* camera) const
