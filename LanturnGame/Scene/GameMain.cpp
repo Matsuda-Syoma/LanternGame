@@ -182,6 +182,7 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_ENEMY_BOMB; i++)
 	{
 		int temp = CreateObject(new Bomb);
+		static_cast<CharaBase*>(object[temp])->SpawnEvent();
 		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 		object[temp]->SetLocation(spawnloc);
 	}
@@ -542,6 +543,7 @@ AbstractScene* GameMain::Update()
 			for (int i = 0; i < GM_MAX_ENEMY_BOMB - bombcnt; i++)
 			{
 				int temp = CreateObject(new Bomb);
+				static_cast<CharaBase*>(object[temp])->SpawnEvent();
 				Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
 				object[temp]->SetLocation(spawnloc);
 

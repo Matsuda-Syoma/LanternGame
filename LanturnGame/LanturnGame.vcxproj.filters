@@ -26,6 +26,7 @@
     <ClCompile Include="Scene\Title.cpp" />
     <ClCompile Include="Scene\credit.cpp" />
     <ClCompile Include="Object\Conveyor.cpp" />
+    <ClCompile Include="Object\CharaBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility\InputControl.h" />

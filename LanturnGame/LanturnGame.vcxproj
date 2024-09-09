@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Object\CharaBase.cpp" />
     <ClCompile Include="Description.cpp" />
     <ClCompile Include="Object\AddScore.cpp" />
     <ClCompile Include="object\BackGround.cpp" />

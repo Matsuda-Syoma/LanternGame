@@ -93,6 +93,7 @@ void Bomb::Init(int _expsize)
 }
 void Bomb::Update(GameMain* _g)
 {
+	CharaBase::Update(_g);
 	MapSize = _g->GetMapSize();
 	// 敵と敵の距離を見る
 	int temp = -1;
@@ -348,9 +349,13 @@ void Bomb::Update(GameMain* _g)
 	}
 
 	// locationに座標を足す
-	location += velocity * speed;
-	location += knockback;
-	location += exvelocity;
+
+	if (!spawnev)
+	{
+		location += velocity * speed;
+		location += knockback;
+		location += exvelocity;
+	}
 
 	exvelocity = 0.0f;
 
@@ -375,41 +380,57 @@ void Bomb::Update(GameMain* _g)
 
 void Bomb::Draw(CameraManager* camera) const
 {
-
-	// 生存時間が14のあまり7以下なら
-	if (expcnt % 14 > 7 && expflg)
+	CharaBase::Draw(camera);
+	if (!spawnev)
 	{
-		SetDrawBright(255, 0, 0);// 赤以外を暗くする
+		// 生存時間が14のあまり7以下なら
+		if (expcnt % 14 > 7 && expflg)
+		{
+			SetDrawBright(255, 0, 0);// 赤以外を暗くする
+		}
+
+
+		int imgnum = 0;
+
+		// 点火しているなら
+		if (expflg)
+		{
+			int OldDrawMode;
+			int OldDrawParam;
+			GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 63);
+			// Alpha値63の爆発範囲の円を描画
+			DrawCircleAA(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+				, location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+				, (15 * (expsize - 2)) * (1 - (camera->GetDistance())), 16, 0xffffff, false, 10 * (1 - (camera->GetDistance() * 2)));
+			SetDrawBlendMode(OldDrawMode, OldDrawParam);
+			imgnum = 2;
+		}
+
+
+		// 敵画像を描画
+		DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+			, location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+			, (1.0f + (double)(max(45 - expcnt, 0) / 45.0)) * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), 0.0, images[imgnum], true);
+		
 	}
-
-
-	int imgnum = 0;
-
-	// 点火しているなら
-	if (expflg)
+	else
 	{
 		int OldDrawMode;
 		int OldDrawParam;
 		GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 63);
-		// Alpha値63の爆発範囲の円を描画
-		//DrawCircleAA(DrawFromCameraX(location, _distance, loc)
-		//	, DrawFromCameraY(location, _distance, loc)
-		//	, (15 * (expsize - 2)) * ScaleFromCamera(_distance), 16, 0xffffff, false, 10 * ScaleFromCamera(_distance));
-		DrawCircleAA(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
-					,location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-					,(15 * (expsize - 2)) * (1 - (camera->GetDistance())), 16, 0xffffff, false, 10 * (1 - (camera->GetDistance() * 2)));
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, lifetime);
+
+		DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
+			, location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
+			, (2 - (lifetime / 60.0)) * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), 0.0, images[0], true);
+
 		SetDrawBlendMode(OldDrawMode, OldDrawParam);
-		imgnum = 2;
 	}
 
-	
 
-	// 敵画像を描画
-	DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
-				,  location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-				,  (1.0f + (double)(max(45 - expcnt, 0) / 45.0)) * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), 0.0, images[imgnum], true);
-	
+
+
 	SetDrawBright(255, 255, 255);// 全色暗くしない（デフォルト）
 }
 
