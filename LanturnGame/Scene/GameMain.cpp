@@ -18,9 +18,7 @@ GameMain::GameMain()
 	// ハイスコア読み込み
 	hiscore = (int)UserData::LoadData(UserData::Type::HISCORE);		// ハイスコア読み込み
 
-	// BGMをループしながら再生する
-	//PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
-
+	
 	/*******************初期化*******************/
 	textdisp = new TextDisp;
 	textdisp->LoadText(0);
@@ -235,19 +233,21 @@ GameMain::GameMain()
 	}
 
 	/*******************画像読み込み*******************/
-	lifeimage[0] = LoadGraph("Resources/images/life0.png", 0);
-	lifeimage[1] = LoadGraph("Resources/images/life1.png", 0);
-	lifeimage[2] = LoadGraph("Resources/images/life2.png", 0);
-	lifeimage[3] = LoadGraph("Resources/images/life3.png", 0);
-	lifeimage[4] = LoadGraph("Resources/images/life4.png", 0);
-	//lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
-	//lifematchimage = LoadGraph("Resources/images/match.png", 0);
+	//lifeimage[0] = LoadGraph("Resources/images/life0.png", 0);
+	//lifeimage[1] = LoadGraph("Resources/images/life1.png", 0);
+	//lifeimage[2] = LoadGraph("Resources/images/life2.png", 0);
+	//lifeimage[3] = LoadGraph("Resources/images/life3.png", 0);
+	//lifeimage[4] = LoadGraph("Resources/images/life4.png", 0);
+	lifeimage = LoadGraph("Resources/images/lifebar.png", 0);
+	lifematchimage = LoadGraph("Resources/images/match.png", 0);
+	lifematchimage_2 = LoadGraph("Resources/images/match_2.png", 0);
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
 	hukidasiimage = LoadGraph("Resources/images/hukidasi.png", 0);
 	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
 	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
 	resultimage = LoadGraph("Resources/images/result.png", 0);
-	highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
+	highscoreimage = LoadGraph("Resources/images/result.png", 0);
+	//highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
 	blackimage = LoadGraph("Resources/images/black.png", 0);
 	crackimage = LoadGraph("Resources/images/crack1.png", 0);
 	sootimage = LoadGraph("Resources/images/soot.png", 0);
@@ -271,7 +271,12 @@ AbstractScene* GameMain::Update()
 	////スコア描画の中心の値を求める
 	//ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
 
-	//	
+	// BGMをループしながら再生する
+	if (CheckSoundMem(Sounds::BGM_GMain) == 0)
+	{
+		PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
+	}
+	
 
 	//// リザルトじゃない かつ カウントダウンが終わっているとき
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) 
@@ -423,34 +428,34 @@ AbstractScene* GameMain::Update()
 		}
 
 		// プレイヤーが爆発に当たった かつ ダメージ演出が表示されていなかったら
-		if (static_cast<Player*>(GetPlayer())->GetIDamageDirectionFlg() == true && crackflg == false)
-		{
-			crack_alpha = 200;
-			soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
-			crackflg = true;
-		}
+		//if (static_cast<Player*>(GetPlayer())->GetIDamageDirectionFlg() == true && crackflg == false)
+		//{
+		//	crack_alpha = 200;
+		//	soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
+		//	crackflg = true;
+		//}
 
 		// ダメージ演出が表示されている かつ プレイヤーが生きていたら
-		if (crackflg == true && static_cast<Player*>(GetPlayer())->GetPlayerFlg() == true)
-		{
-			// ダメージ演出を少しずつ薄くする
+		//if (crackflg == true && static_cast<Player*>(GetPlayer())->GetPlayerFlg() == true)
+		//{
+		//	// ダメージ演出を少しずつ薄くする
 
-			if (crack_alpha > 0)
-			{
-				crack_alpha -= 1;
-			}
+		//	if (crack_alpha > 0)
+		//	{
+		//		crack_alpha -= 1;
+		//	}
 
-			if (soot_alpha > 0 && crack_alpha <= soot_alpha)
-			{
-				soot_alpha -= 1;
-			}
+		//	if (soot_alpha > 0 && crack_alpha <= soot_alpha)
+		//	{
+		//		soot_alpha -= 1;
+		//	}
 
-			if (crack_alpha == 0)
-			{
-				crackflg = false;
-			}
+		//	if (crack_alpha == 0)
+		//	{
+		//		crackflg = false;
+		//	}
 
-		}
+		//}
 
 
 
@@ -694,21 +699,21 @@ void GameMain::Draw() const
 	DrawCloseMap();
 
 	// 爆弾に当たったときのダメージ演出
-	if (crackflg == true || life == 0)
-	{
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, crack_alpha);
-		DrawGraph(0, 0, crackimage, true);	// ヒビ
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, soot_alpha);
-		DrawGraph(0, 0, sootimage, true);	// 煤
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//if (crackflg == true || life == 0)
+	//{
+	//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, crack_alpha);
+	//	DrawGraph(0, 0, crackimage, true);	// ヒビ
+	//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, soot_alpha);
+	//	DrawGraph(0, 0, sootimage, true);	// 煤
+	//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//}
 
-	}
 	//残り体力の表示
-	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage[life], true);
-	for (int i = 0; i < life; i++)
+	//DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage[life], true);
+	/*for (int i = 0; i < life; i++)
 	{
 		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
-	}
+	}*/
 
 for (int i = 0; i < GM_MAX_OBJECT; i++)
 {
@@ -758,10 +763,14 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 	}
 
 	//残り体力の表示
-	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage[life], true);
+	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
+	for (int i = 0; i < GM_MAX_LIFE; i++)
+	{
+		DrawRotaGraph(SCREEN_WIDTH  -56 - (48 * i), 360, 1.0, 0.0, lifematchimage_2, true);
+	}
 	for (int i = 0; i < life; i++)
 	{
-		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
+		DrawRotaGraph(SCREEN_WIDTH - 200 + (48 * i), 360, 1.0, 0.0, lifematchimage, true);
 	}
 
 	//ミニマップ
@@ -820,7 +829,10 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 
 		if (score == 0)
 		{
+			// 描画輝度を黄色にセット
+			SetDrawBright(255, 255, 0);
 			DrawRotaGraph(SCREEN_WIDTH - 125, 490, 0.6, 0.0, numimage[0], true);
+			SetDrawBright(255, 255, 255);
 		}
 
 		//スコアの表示
@@ -834,7 +846,11 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 		bufscore = score;
 		for (int s = 0; s < num; s++)
 		{
+			// 描画輝度を黄色にセット
+			SetDrawBright(255, 255, 0);
 			DrawRotaGraph((SCREEN_WIDTH - 140 + (26 * num) / 2) - (26 * s), 490, scoresize, 0.0, numimage[bufscore % 10], true);
+			SetDrawBright(255, 255, 255);
+
 			bufscore /= 10;
 		}
 

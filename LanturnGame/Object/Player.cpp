@@ -258,6 +258,7 @@ void Player::Hit(Object* _obj)
 			gamemain->AddLife(-1);
 		}
 		SetHitFlg(true);
+		KnockBack(static_cast<Object*>(_obj)->GetLocation());
 		SetDamageDirectionFlg(true);
 	}
 
@@ -714,7 +715,7 @@ void Player::KnockBack(Vector2D EX)
 		length = GetLength(EX);
 		vvec /= length;
 
-		SetKnockBack(vvec, (int)max(5, 25.f));
+		SetKnockBack(vvec, (int)max(5, 15.f));
 
 	}
 }

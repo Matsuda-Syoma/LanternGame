@@ -85,7 +85,6 @@ void Particle::Draw() const
 		if (type == 3)
 		{
 
-			SetDrawBright(color[0], color[1], color[2]);
 			//SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
 
 		}
@@ -112,7 +111,8 @@ int Particle::LoadImages()
 	int ret = LoadDivGraph("Resources/images/impact.png", 30, 6, 5, 128, 128, images[0]);
 	ret = LoadDivGraph("Resources/images/fire.png", 30, 6, 5, 64, 64, images[1]);
 	ret = LoadDivGraph("Resources/images/explosion_2.png", 30, 6, 5, 128, 128, images[2]);
-	ret = LoadDivGraph("Resources/images/exp.png", 30, 6, 5, 256, 256, images[3]);
+	//ret = LoadDivGraph("Resources/images/exp.png", 30, 6, 5, 256, 256, images[3]);
+	ret = LoadDivGraph("Resources/images/exp.png", 16, 4, 4, 128, 128, images[3]);
 	ret = LoadDivGraph("Resources/images/smoke.png", 30, 6, 5, 32, 32, images[4]);
 	for (int i = 0; i < 30; i++)
 	{

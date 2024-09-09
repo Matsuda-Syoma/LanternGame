@@ -52,7 +52,7 @@ void AddScore::Initialize(GameMain* _g, int _obj_pos)
 {
 	gamemain = _g;
 	obj_pos = _obj_pos;
-	radius = 96;
+	radius = 50;
 	map_radius = 0;
 	type = (int)TYPE::_ADDSCORE;
 
@@ -97,14 +97,14 @@ void AddScore::Update(GameMain* _g)
 			else {
 				/*location = startlocation;*/
 				fontsize = 0.8;
-				interval = 25.0;
+				interval = 22.0;
 				moveflg = true;
+				
+
 			}
 
-
-			
-
 		}
+
 	}
 
 	if (cnt < 7 * 2)
@@ -127,10 +127,10 @@ void AddScore::Update(GameMain* _g)
 		else
 		{*/
 			MoveTest(PL);
-			speed += 0.2;
-			if (fontsize > 0.1)
+			speed += 0.5;
+			if (fontsize > 0.05)
 			{
-				fontsize -= 0.02;
+				fontsize -= 0.05;
 				interval -= 0.5;
 			}
 	/*	}*/
@@ -154,18 +154,26 @@ void AddScore::Draw(CameraManager* camera) const
 		}
 		else 
 		{*/
-			if (fontsize <= 0.1)
+			if (fontsize <= 0.05)
 			{
 				DrawCircle(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2)),
 					location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)) + addy,
-					4, 0xffffff, TRUE);
+					4, 0xffff00, TRUE);
 			}
 			else
 			{
+
+				// 描画輝度を黄色にセット
+				SetDrawBright(255, 255, 0);
+
+
 				//DrawRotaGraphF(location.x + (interval * (digit - 2)) - (i * interval), location.y, fontsize, 0.0, numimg[bufscore % 10], true);
 				DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2)) + (interval * (digit - 2)) - (i * interval)
 					, location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)) + addy
 					, 0.5, 0.0, numimg[bufscore % 10], true);
+
+				SetDrawBright(255, 255, 255);
+
 			}
 		/*}*/
 
@@ -193,17 +201,17 @@ void AddScore::Hit(Object* _obj)
 		}*/
 	}
 
-	if (static_cast<Object*>(_obj)->GetType() == TYPE::_SOLDIER)
-	{
-		//int soldier = gamemain->CreateObject(new Soldier);
-		int mode = static_cast<Soldier*>(_obj)->CheckMode();
-		if (mode == 1)
-		{
-			static_cast<Soldier*>(_obj)->SetMyScore(score);
-			flg = 0;
-		}
-		
-	}
+	//if (static_cast<Object*>(_obj)->GetType() == TYPE::_SOLDIER)
+	//{
+	//	//int soldier = gamemain->CreateObject(new Soldier);
+	//	int mode = static_cast<Soldier*>(_obj)->CheckMode();
+	//	if (mode == 1)
+	//	{
+	//		static_cast<Soldier*>(_obj)->SetMyScore(score);
+	//		flg = 0;
+	//	}
+	//	
+	//}
 }
 
 void AddScore::Move()

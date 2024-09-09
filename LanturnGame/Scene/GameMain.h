@@ -65,8 +65,10 @@ private:
 	int addscore = 0;
 	float scoresize = 0.6;
 
-	int lifeimage[5];
+	//int lifeimage[5];
+	int lifeimage;
 	int lifematchimage;
+	int lifematchimage_2;
 	int closemapimage;
 	int hukidasiimage;
 	int numimage[10];
@@ -89,6 +91,7 @@ private:
 	bool PauseFlg = false;
 	bool CameraFlg = false;
 	bool ActionFlg = true;
+	bool BGMcheck = false;
 
 	__int8 ui_combo_framecount = 0;
 

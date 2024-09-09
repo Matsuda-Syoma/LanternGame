@@ -349,7 +349,7 @@ int Soldier::GetRandom(int min, int max)
 
 void Soldier::SetMyScore(int Score)
 {
-	MyScore += Score;
-	GetScoreAnimCnt = 20;
-	radius = 32 + min((MyScore / 100000.0) * 3, 16);
+	//MyScore += Score;
+	//GetScoreAnimCnt = 20;
+	//radius = 32 + min((MyScore / 100000.0) * 3, 16);
 }
