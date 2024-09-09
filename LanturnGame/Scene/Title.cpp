@@ -128,7 +128,7 @@ AbstractScene* Title::Update()
 		GetParticle(ptemp)->SetLocation(bombloc);
 		GetParticle(ptemp)->SetAngle((float)GetRand(360));
 		GetParticle(ptemp)->SetScale(2.0f);
-		PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
+		PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
 	}
 
 	if (fireanim > 60 && fireanim % 3 == 0)
@@ -140,10 +140,11 @@ AbstractScene* Title::Update()
 													,(SCREEN_HEIGHT / 2) + (GetRand(SCREEN_HEIGHT) - (SCREEN_HEIGHT / 2))));
 			GetParticle(ptemp)->SetAngle((float)GetRand(360));
 			GetParticle(ptemp)->SetScale((GetRand(9) + 1) / 5.0f);
-			PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
+			PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
 		}
 
-		PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
+		//PlaySoundMem(Sounds::SE_ED_Soldier, DX_PLAYTYPE_BACK);
+		PlaySoundMem(Sounds::SE_Explosion[GetRand(4)], DX_PLAYTYPE_BACK, true);
 	}
 
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)
