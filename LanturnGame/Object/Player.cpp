@@ -314,7 +314,7 @@ void Player::Movement()
 		}
 
 		// Aボタンで火の付ける/消す
-		if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
+		/*if (InputControl::GetButtonDown(XINPUT_BUTTON_A))
 		{
 			if (!ignitionflg)
 			{
@@ -325,7 +325,7 @@ void Player::Movement()
 				ignitionflg = false;
 				acceleration = 4.f;
 			}
-		}
+		}*/
 
 
 		if (fabsf(InputControl::GetLeftStick().x) > deadzone || fabsf(InputControl::GetLeftStick().y) > deadzone)
