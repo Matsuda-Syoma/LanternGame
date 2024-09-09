@@ -19,7 +19,7 @@ GameMain::GameMain()
 	hiscore = (int)UserData::LoadData(UserData::Type::HISCORE);		// ハイスコア読み込み
 
 	// BGMをループしながら再生する
-	//PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
+	PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 
 	/*******************初期化*******************/
 	textdisp = new TextDisp;
