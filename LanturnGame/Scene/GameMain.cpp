@@ -632,6 +632,7 @@ AbstractScene* GameMain::Update()
 	// リザルトフラグがたっているなら
 	if (resultflg == true)
 	{
+		StopSoundMem(Sounds::BGM_GMain);
 
 		if (CheckSoundMem(Sounds::BGM_Title) == 0)
 		{
