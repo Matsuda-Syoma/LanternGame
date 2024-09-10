@@ -11,6 +11,8 @@ private:
 	int titleimage;
 	int titlebombimage;
 	int titlenameimage[2];
+	int titlenameimag;
+
 	int menuimage[4];
 	int cursorimage;
 	int alphabetimage[26];

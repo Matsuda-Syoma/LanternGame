@@ -20,9 +20,10 @@ Title::Title()
 	}
 	cursorimage = LoadGraph("Resources/images/match.png", 0);
 	titleimage = LoadGraph("Resources/images/Title.png", 0);
-	LoadDivGraph("Resources/images/Titlename.png", 2, 1, 2, 272, 128, titlenameimage);
+	//LoadDivGraph("Resources/images/Titlename.png", 1, 1, 1, 131, 128, titlenameimage);
+	titlenameimag = LoadGraph("Resources/images/Titlename.png",0);
 	titlebombimage = LoadGraph("Resources/images/titlebomb.png", 0);
-	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
+	LoadDivGraph("Resources/images/alphabet.png", 26, 6, 5, 64,64, alphabetimage);
 	particle = new Particle * [GM_MAX_PARTICLE];
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)
 	{
@@ -117,9 +118,13 @@ AbstractScene* Title::Update()
 	}
 
 	// lerp処理
-	Vector2D qw = (Vector2D(886.0f, 128.0f) * (float)clamp(1.0f - (fireanim / 60.0f), 0.0f, 1.0f));
+	/*Vector2D qw = (Vector2D(886.00f, 128.0f + (cursor_last * 65.0f)) * (float)clamp(1.0f - (fireanim / 60.0f), 0.0f, 1.0f));
 	Vector2D qw2 = (Vector2D(800.0f, 380.0f + (cursor_last * 65.0f)) * (float)clamp((fireanim / 60.0f), 0.0f, 1.0f));
-	bombloc = qw + qw2;
+	bombloc = qw + qw2;*/
+
+	bombloc = Vector2D(800.0f, 380.0f + (cursor_last * 65.0f));
+
+
 
 	// 60フレームならパーティクル出す
 	if (fireanim == 60)
@@ -178,7 +183,7 @@ void Title::Draw() const
 	DrawGraph(0, 0, titleimage,true);
 
 	// タイトル名を描画
-	DrawRotaGraph(980, 180, 1.5, 0.0, titlenameimage[1], true);
+	DrawRotaGraph(980, 180, 1.5, 0.0, titlenameimag, true);
 
 	// 数値を一時保存
 	int OldBlendMode, OldBlendParam;
