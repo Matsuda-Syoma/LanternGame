@@ -246,7 +246,7 @@ GameMain::GameMain()
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
 	hukidasiimage = LoadGraph("Resources/images/hukidasi.png", 0);
 	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
-	LoadDivGraph("Resources/images/alphabet.png", 26, 7, 4, 64, 64, alphabetimage);
+	LoadDivGraph("Resources/images/alphabet_2.png", 26, 7, 4, 64, 64, alphabetimage);
 	resultimage = LoadGraph("Resources/images/result.png", 0);
 	highscoreimage = LoadGraph("Resources/images/result.png", 0);
 	//highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
