@@ -22,18 +22,25 @@ void Particle::Update(GameMain* _g)
 	velocity.y = (speed * sinf(angle));
 	location += velocity;
 
-	if (root != nullptr) {
+	if (root != nullptr)
+	{
 		SetLocation(root->GetLocation() + addloc);
 	}
-	if (flg) {
-		if (lifetime >= 29) {
+	if (flg)
+	{
+
+		if (lifetime >= maxlifetime - 1)
+		{
 			if (!loopflg) {
 				flg = false;
 			}
-			else {
-				lifetime = 0;
-			}
 		}
+
+		if (changealphaflg)
+		{
+			alpha = (1 - ((float)lifetime / (float)maxlifetime)) * 255;
+		}
+
 		lifetime++;
 	}
 	else
@@ -64,7 +71,7 @@ void Particle::Draw(CameraManager* camera) const
 
 			DrawRotaGraphF(location.x * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 						, location.y * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))
-				, scale * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), imageangle, images[type][lifetime], true);
+				, scale * (1 - ((camera->GetDistance() / DISTANCE_NUM) / 1.0f)), imageangle, images[type][lifetime % 30], true);
 		}
 
 		if (type == 3)
@@ -91,7 +98,7 @@ void Particle::Draw() const
 		}
 		if (visible)
 		{
-			DrawRotaGraphF(location.x,location.y, scale, imageangle, images[type][lifetime], true);
+			DrawRotaGraphF(location.x,location.y, scale, imageangle, images[type][lifetime % 30], true);
 		}
 		if (type == 3)
 		{
@@ -197,4 +204,14 @@ void Particle::SetVisible(bool b)
 void Particle::SetAlpha(int i)
 {
 	alpha = i;
+}
+
+void Particle::SetChangeAlphaFlg(bool b)
+{
+	changealphaflg = b;
+}
+
+void Particle::SetLifeTime(int i)
+{
+	maxlifetime = i;
 }

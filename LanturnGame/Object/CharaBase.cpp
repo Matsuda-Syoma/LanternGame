@@ -14,7 +14,9 @@ void CharaBase::Update(GameMain* _g)
 				int temp = gamemain->CreateParticle(4);
 				gamemain->GetParticle(temp)->SetLocation(location);
 				gamemain->GetParticle(temp)->SetAngle((90 * i) + GetRand(90));
-				gamemain->GetParticle(temp)->SetSpeed(4);
+				gamemain->GetParticle(temp)->SetSpeed((GetRand(30) / 10) + 1);
+				gamemain->GetParticle(temp)->SetLifeTime(GetRand(30) + 10);
+				gamemain->GetParticle(temp)->SetChangeAlphaFlg(true);
 			}
 		}
 	}

@@ -11,10 +11,12 @@ private:
 	unsigned int type = 0;
 	static int images[][30];
 	unsigned int lifetime = 0;
+	unsigned int maxlifetime = 30;
 	float imageangle = 0.f;
 	float angle = 0.f;
 	float speed = 0.f;
 	int alpha = 255;
+	bool changealphaflg = false;
 	SphereCollider* root = nullptr;
 	bool loopflg = false;
 	float scale = 1.f;
@@ -46,6 +48,10 @@ public:
 	void SetVisible(bool b);
 
 	void SetAlpha(int i);
+
+	void SetChangeAlphaFlg(bool b);
+
+	void SetLifeTime(int i);
 
 };
 

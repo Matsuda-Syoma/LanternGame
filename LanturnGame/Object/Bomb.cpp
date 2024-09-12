@@ -52,12 +52,15 @@ void Bomb::Hit(Object* _obj)
 		}
 		// SpawnParticle(0, nullptr, false, bomb[i]->GetLocation(), 90.0f - Normalize(bomb[i]->
 		//GetLocation(), player->GetLocation()), 0.5f, 0.f);
-		int pt = gamemain->CreateParticle(0);
-		gamemain->GetParticle(pt)->SetLocation(location);
-		gamemain->GetParticle(pt)->SetAngle(90.0f - Normalize(location, gamemain->GetPlayer()->GetLocation()));
-		gamemain->GetParticle(pt)->SetScale(0.5f);
+		if (!spawnev)
+		{
+			int pt = gamemain->CreateParticle(0);
+			gamemain->GetParticle(pt)->SetLocation(location);
+			gamemain->GetParticle(pt)->SetAngle(90.0f - Normalize(location, gamemain->GetPlayer()->GetLocation()));
+			gamemain->GetParticle(pt)->SetScale(0.5f);
 
-		gamemain->GetCamera()->SetCameraShake(vvec, 1, 10);
+			gamemain->GetCamera()->SetCameraShake(vvec, 1, 10);
+		}
 		// 点火フラグ立てる
 		SetExpFlg(true);
 		// 効果音フラグ立てる
