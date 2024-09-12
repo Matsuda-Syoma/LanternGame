@@ -246,7 +246,8 @@ GameMain::GameMain()
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
 	hukidasiimage = LoadGraph("Resources/images/hukidasi.png", 0);
 	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
-	LoadDivGraph("Resources/images/alphabet_2.png", 26, 7, 4, 64, 64, alphabetimage);
+	//LoadDivGraph("Resources/images/alphabet_2.png", 26, 7, 4, 64, 64, alphabetimage);
+	LoadDivGraph("Resources/images/alphabet.png", 26, 6, 5, 64, 64, alphabetimage);
 	resultimage = LoadGraph("Resources/images/result.png", 0);
 	highscoreimage = LoadGraph("Resources/images/result.png", 0);
 	//highscoreimage = LoadGraph("Resources/images/highscore.png", 0);
@@ -828,7 +829,7 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 		for (int i = 0; i < sizeof(chr_score); i++)
 		{
 			int chr = chr_score[i] - 'a';
-			DrawRotaGraph((SCREEN_WIDTH - 190) + 33 * i, 440, 0.6, 0.0, alphabetimage[chr], true);
+			DrawRotaGraph((SCREEN_WIDTH - 195) + 33 * i, 440, 0.8, 0.0, alphabetimage[chr], true);
 		}
 
 		if (score == 0)

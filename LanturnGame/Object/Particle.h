@@ -14,6 +14,7 @@ private:
 	float imageangle = 0.f;
 	float angle = 0.f;
 	float speed = 0.f;
+	int alpha = 255;
 	SphereCollider* root = nullptr;
 	bool loopflg = false;
 	float scale = 1.f;
@@ -43,6 +44,8 @@ public:
 	void SetSpeed(float _speed);
 
 	void SetVisible(bool b);
+
+	void SetAlpha(int i);
 
 };
 

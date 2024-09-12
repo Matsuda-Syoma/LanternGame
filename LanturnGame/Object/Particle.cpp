@@ -49,11 +49,11 @@ void Particle::Draw(CameraManager* camera) const
 		int OldDrawMode;
 		int OldDrawParam;
 		GetDrawBlendMode(&OldDrawMode, &OldDrawParam);
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		if (type == 3)
 		{
 
 			SetDrawBright(color[0], color[1], color[2]);
-			//SetDrawBlendMode(DX_BLENDMODE_INVSRC, 255);
 
 		}
 		if (visible)
@@ -71,6 +71,7 @@ void Particle::Draw(CameraManager* camera) const
 		{
 			SetDrawBright(255, 255, 255);
 		}
+
 		SetDrawBlendMode(OldDrawMode, OldDrawParam);
 	}
 
@@ -191,4 +192,9 @@ void Particle::SetSpeed(float _speed)
 void Particle::SetVisible(bool b)
 {
 	visible = b;
+}
+
+void Particle::SetAlpha(int i)
+{
+	alpha = i;
 }
