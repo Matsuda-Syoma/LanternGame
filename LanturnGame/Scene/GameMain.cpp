@@ -245,7 +245,8 @@ GameMain::GameMain()
 	lifematchimage_2 = LoadGraph("Resources/images/match_2.png", 0);
 	closemapimage = LoadGraph("Resources/images/warning.png", 0);
 	hukidasiimage = LoadGraph("Resources/images/hukidasi.png", 0);
-	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
+	LoadDivGraph("Resources/images/number_2.png", 10, 5, 2, 90, 100, numimage);
+	//LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimage);
 	//LoadDivGraph("Resources/images/alphabet_2.png", 26, 7, 4, 64, 64, alphabetimage);
 	LoadDivGraph("Resources/images/alphabet.png", 26, 6, 5, 64, 64, alphabetimage);
 	resultimage = LoadGraph("Resources/images/result.png", 0);

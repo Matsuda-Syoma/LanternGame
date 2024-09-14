@@ -24,7 +24,8 @@ AddScore::~AddScore()
 
 void AddScore::LoadImages()
 {
-	LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimg);
+	// LoadDivGraph("Resources/images/number.png", 10, 10, 1, 64, 64, numimg);
+	LoadDivGraph("Resources/images/number_2.png", 10, 5, 2, 90, 100, numimg);
 }
 
 void AddScore::DeleteImages()
