@@ -10,8 +10,8 @@ private:
     int angle = 0;      // 0:右 1:下 2:左 3:上
     int images;
     int finalimage[3];
-    float width = 128.0f;
-    float height = 512.0f;
+    float width = 512.0f;
+    float height = 128.0f;
     int scroll;
 public:
     Conveyor();

@@ -30,6 +30,7 @@ void Soldier::Initialize(GameMain* _g, int _obj_pos)
 	type = (int)TYPE::_SOLDIER;
 	state = 1;
 	deleteFlg = false;
+	map_color = 0xff0000;
 	LoadDivGraph("Resources/images/Soldier.png", 24, 6, 4, 64, 64, soldierimg);
 	soldierDetimg = LoadGraph("Resources/images/d_Soldier.png");
 }

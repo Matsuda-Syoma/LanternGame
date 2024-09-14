@@ -12,6 +12,7 @@ protected:
 	int type = -1;
 	int obj_pos = -1;
 	int map_radius = radius;
+	int map_color = 0xffffff;
 	GameMain* gamemain;
 
 public:
@@ -52,4 +53,5 @@ public:
 	}
 
 	bool GetBoxCol()const { return boxcol; }
+	int GetMapColor() const { return map_color; }
 };

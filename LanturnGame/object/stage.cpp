@@ -20,6 +20,7 @@ void Stage::Initialize(GameMain* _g, int _obj_pos)
 	gamemain = _g;
 	obj_pos = _obj_pos;
 	type = (int)TYPE::_ICEFLOOR;
+	map_color = 0x0000ff;
 }
 
 void Stage::Update(GameMain* _g)

@@ -789,7 +789,9 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 		{
 			if (object[i]->GetType() != Object::TYPE::_ADDSCORE)
 			{
-				DrawCircleAA(SCREEN_WIDTH - 128 + (object[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 128 + (object[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), object[i]->GetMapRadius() / 16, 8, 0x004488, true);
+				DrawCircleAA(SCREEN_WIDTH - 128 + (object[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16)))
+										  , 128 + (object[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), object[i]->GetMapRadius() / 16, 8
+										  , object[i]->GetMapColor(), true);
 
 			}
 		}

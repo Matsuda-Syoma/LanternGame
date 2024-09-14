@@ -27,6 +27,7 @@ void Player::Initialize(GameMain* _g, int _obj_pos)
 	LoadDivGraph("Resources/images/newplayer.png", 24, 6, 4, 64, 64, playerimg);
 	deadplayer_img = LoadGraph("Resources/images/player_death.png");
 	angry_img = LoadGraph("Resources/images/angry.png");
+	map_color = 0x4444ff;
 }
 
 void Player::Finalize()

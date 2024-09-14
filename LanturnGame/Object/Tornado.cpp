@@ -49,4 +49,5 @@ void Tornado::Initialize(GameMain* _g, int _obj_pos)
 	gamemain = _g;
 	obj_pos = _obj_pos;
 	type = (int)TYPE::_TORNADO;
+	map_color = 0x008800;
 }

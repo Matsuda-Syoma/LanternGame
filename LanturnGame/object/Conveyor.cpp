@@ -24,6 +24,7 @@ void Conveyor::Initialize(GameMain* _g, int _obj_pos)
 	type = (int)TYPE::_CONVEYER;
 
 	boxcol = true;
+	SetAngle(GetRand(3));
 }
 
 //void Conveyor::Update() {
@@ -77,7 +78,7 @@ void Conveyor::Draw(CameraManager* camera) const
 
 	switch (angle)
 	{
-	case 0
+	case 0:
 		// ‰E
 		DrawRotaGraphF((box.left + (width / 2) + scroll) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2))
 			, (box.top + (height / 2)) * (1 - ((camera->GetDistance() / 1.0f))) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))

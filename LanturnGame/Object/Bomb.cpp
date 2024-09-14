@@ -20,6 +20,8 @@ void Bomb::Initialize(GameMain* _g, int _obj_pos)
 	CharaBase::Initialize(_g, _obj_pos);
 
 	mode = RandType(GetRand(99)) + 1;
+
+	map_color = 0x000000;
 }
 void Bomb::Finalize()
 {
