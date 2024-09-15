@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Object\CharaBase.cpp" />
-    <ClCompile Include="Description.cpp" />
+    <ClCompile Include="Utility\Description.cpp" />
     <ClCompile Include="Object\AddScore.cpp" />
     <ClCompile Include="object\BackGround.cpp" />
     <ClCompile Include="Object\Bomb.cpp" />
@@ -47,7 +47,7 @@
     <ClCompile Include="Utility\LoadSounds.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Description.h" />
+    <ClInclude Include="Utility\Description.h" />
     <ClInclude Include="Object\AddScore.h" />
     <ClInclude Include="object\BackGround.h" />
     <ClInclude Include="Object\Bomb.h" />

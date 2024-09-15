@@ -122,7 +122,7 @@ AbstractScene* Title::Update()
 	Vector2D qw2 = (Vector2D(800.0f, 380.0f + (cursor_last * 65.0f)) * (float)clamp((fireanim / 60.0f), 0.0f, 1.0f));
 	bombloc = qw + qw2;*/
 
-	bombloc = Vector2D(800.0f, 380.0f + (cursor_last * 65.0f));
+	bombloc = Vector2D(800.0f, 375.0f + (cursor_last * 65.0f));
 
 
 
@@ -192,7 +192,7 @@ void Title::Draw() const
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, max(255 - (int)(clamp((fireanim / 30.0f), 0.0f, 1.0f) * 511.0f), 0));
 	
 	// ƒ^ƒCƒgƒ‹–¼‚Ì”š’e‚ð•`‰æ
-	DrawRotaGraph(800, 380 + (cursor_last * 65), 1.0, 0.0, titlebombimage, true);
+	//DrawRotaGraph(800, 380 + (cursor_last * 65), 1.0, 0.0, titlebombimage, true);
 
 	SetDrawBlendMode(OldBlendMode, OldBlendParam);
 

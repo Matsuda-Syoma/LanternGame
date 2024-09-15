@@ -22,7 +22,7 @@
     <ClCompile Include="Object\soldier.cpp" />
     <ClCompile Include="Object\stage.cpp" />
     <ClCompile Include="Object\AddScore.cpp" />
-    <ClCompile Include="Description.cpp" />
+    <ClCompile Include="Utility\Description.cpp" />
     <ClCompile Include="Scene\Title.cpp" />
     <ClCompile Include="Scene\credit.cpp" />
     <ClCompile Include="Object\Conveyor.cpp" />
@@ -54,7 +54,7 @@
     <ClInclude Include="Object\stage.h" />
     <ClInclude Include="Object\AddScore.h" />
     <ClInclude Include="Object\BoxCollider.h" />
-    <ClInclude Include="Description.h" />
+    <ClInclude Include="Utility\Description.h" />
     <ClInclude Include="Scene\Title.h" />
     <ClInclude Include="Scene\credit.h" />
     <ClInclude Include="Object\Conveyor.h" />

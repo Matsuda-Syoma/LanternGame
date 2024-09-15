@@ -1,6 +1,6 @@
 #include "Description.h"
 #include "DxLib.h"
-#include "Utility/InputControl.h"
+#include "InputControl.h"
 #include "DxLib.h"
 
 #define PI 3.1415926535897932384626433832795f

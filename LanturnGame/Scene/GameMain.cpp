@@ -22,6 +22,7 @@ GameMain::GameMain()
 	/*******************初期化*******************/
 	textdisp = new TextDisp;
 	textdisp->LoadText(0);
+	description = new Description;
 
 	//conveyor = new Conveyor * [GM_MAX_CONVEYOR];
 	//{
@@ -44,7 +45,6 @@ GameMain::GameMain()
 	//			Vector2D center = (Vector2D((float)((int)MapSize) - 1500, (float)((int)MapSize) - 1500));
 	//textdisp = new TextDisp;
 	//textdisp->LoadText(0);
-	//description = new Description;
 	//player = new Player;
 	
 
@@ -279,7 +279,8 @@ AbstractScene* GameMain::Update()
 	{
 		PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
 	}
-	
+	//操作方法の説明画像の描画
+	description->Update();
 
 	//// リザルトじゃない かつ カウントダウンが終わっているとき
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) 
@@ -864,6 +865,7 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 		if (textdisp->GetFlg() == true)
 		{
 			textdisp->Draw();
+			description->Draw();
 		}
 	}
 	// リザルトなら
@@ -962,6 +964,8 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, fadeout_alpha);
 	DrawGraph(0, 0, blackimage, false);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	
 
 }
 
