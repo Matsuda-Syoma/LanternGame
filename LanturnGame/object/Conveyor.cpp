@@ -140,3 +140,43 @@ void Conveyor::SetAngle(int i)
 		height = tempwidth;
 	}
 }
+
+void Conveyor::Hit(Object* _obj)
+{
+
+	Vector2D addloc;
+	float power = 2.0f;
+	if (angle == 0)
+	{
+		addloc = Vector2D(power, 0);
+	}
+	if (angle == 1)
+	{
+		addloc = Vector2D(0, power);
+	}
+	if (angle == 2)
+	{
+		addloc = Vector2D(-power, 0);
+	}
+	if (angle == 3)
+	{
+		addloc = Vector2D(0, -power);
+	}
+
+	switch (_obj->GetType())
+	{
+	case TYPE::_PLAYER:
+	case TYPE::_BOMB:
+	case TYPE::_SOLDIER:
+		_obj->SetLocation(_obj->GetLocation() + addloc);
+		break;
+
+	default:
+		break;
+	}
+}
+
+Vector2D Conveyor::GetScale() const
+{
+	return Vector2D(width, height);
+}

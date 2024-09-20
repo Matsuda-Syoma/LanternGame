@@ -22,5 +22,6 @@ public:
     void Update(GameMain* _g) override;
     void Draw(CameraManager* camera)const override;
     void SetAngle(int i);
-    void Hit(Object* _obj) override {};                         // 当たった時の処理
+    void Hit(Object* _obj) override;                         // 当たった時の処理
+    Vector2D GetScale()const;
 };

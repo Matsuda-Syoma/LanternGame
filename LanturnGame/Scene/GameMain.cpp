@@ -216,9 +216,9 @@ GameMain::GameMain()
 	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
 	{
 		int temp = CreateObject(new Conveyor);
-		//Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-		//object[temp]->SetLocation(spawnloc);
-		//printfDx("%f %f\n", spawnloc.x, spawnloc.y);
+		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 1.5) - MapSize, (float)GetRand((int)MapSize * 1.5) - MapSize));
+		object[temp]->SetLocation(spawnloc);
+		printfDx("%f %f\n", spawnloc.x, spawnloc.y);
 		gimmicknum++;
 	}
 
@@ -788,12 +788,19 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 	{
 		if (object[i] != nullptr)
 		{
-			if (object[i]->GetType() != Object::TYPE::_ADDSCORE)
+			if (object[i]->GetType() != Object::TYPE::_ADDSCORE && object[i]->GetType() != Object::TYPE::_CONVEYER)
 			{
 				DrawCircleAA(SCREEN_WIDTH - 128 + (object[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16)))
 										  , 128 + (object[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), object[i]->GetMapRadius() / 16, 8
 										  , object[i]->GetMapColor(), true);
 
+			}
+			if (object[i]->GetType() == Object::TYPE::_CONVEYER)
+			{
+				DrawBoxAA(SCREEN_WIDTH - 128 + (object[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+										 128 + (object[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+						  SCREEN_WIDTH - 128 + ((object[i]->GetLocation().x + static_cast<Conveyor*>(object[i])->GetScale().x) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
+										 128 + ((object[i]->GetLocation().y + static_cast<Conveyor*>(object[i])->GetScale().y) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
 			}
 		}
 	}
