@@ -271,7 +271,7 @@ void Player::Hit(Object* _obj)
 		SetEXVelocity(vvec * 7.8f);
 	}
 
-	if (static_cast<Tornado*>(_obj)->GetType() == TYPE::_CONVEYER)
+	if (static_cast<Conveyor*>(_obj)->GetType() == TYPE::_CONVEYER)
 	{
 		
 	}
