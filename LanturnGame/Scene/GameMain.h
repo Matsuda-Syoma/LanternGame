@@ -65,8 +65,8 @@ private:
 	int addscore = 0;
 	float scoresize = 0.6;
 
-	//int lifeimage[5];
-	int lifeimage;
+	int lifeimage[5];
+	//int lifeimage;
 	int lifematchimage;
 	int lifematchimage_2;
 	int closemapimage;
