@@ -24,127 +24,6 @@ GameMain::GameMain()
 	textdisp->LoadText(0);
 	description = new Description;
 
-	//conveyor = new Conveyor * [GM_MAX_CONVEYOR];
-	//{
-	//	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
-	//	{
-	//		conveyor[i] = nullptr;
-	//	}
-	//	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
-	//	{
-	//		conveyor[i] = new Conveyor;
-	//	}
-	//	for (int i = 0; i < GM_MAX_CONVEYOR; i++)
-	//	{
-	//		while (1)
-	//		{
-	//			// 初期値
-	//			float length = 65535;
-	//			bool ret = false;
-	//			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-	//			Vector2D center = (Vector2D((float)((int)MapSize) - 1500, (float)((int)MapSize) - 1500));
-	//textdisp = new TextDisp;
-	//textdisp->LoadText(0);
-	//player = new Player;
-	
-
-	//			// コンベアを見る
-	//			for (int j = 0; j < GM_MAX_CONVEYOR; j++)
-	//			{
-	//				// 自分以外なら
-	//				if (j != i)
-	//				{
-	//					// 距離を計算
-	//					length = GetLength(conveyor[j]->GetLocation(), spawnloc);
-	//					// 360より短いならだめ:フラグon
-	//					if (length < 500) {
-	//						ret = true;
-	//						break;
-	//					}
-	//				}
-
-	//				length = GetLength(center, spawnloc);
-	//				if (length > 600) {
-	//						ret = true;
-	//						break;
-	//				}
-	//			}
-	//			if (!ret)
-	//			{
-	//				conveyor[i]->SetLocation(spawnloc);
-	//				conveyor[i]->Update();
-	//				break;
-	//			}
-	//		}
-
-	//	}
-	//}
-
-	//conveyor_y = new Conveyor_y * [GM_MAX_CONVEYOR_Y];
-	//{
-	//	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
-	//	{
-	//		conveyor_y[i] = nullptr;
-	//	}
-	//	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
-	//	{
-	//		conveyor_y[i] = new Conveyor_y;
-	//	}
-	//	for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
-	//	{
-	//		while (1)
-	//		{
-	//			// 初期値
-	//			float length = 65535;
-	//			bool ret = false;
-	//			bool rat = false;
-	//			Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 2) - MapSize, (float)GetRand((int)MapSize * 2) - MapSize));
-	//			Vector2D center = (Vector2D((float)((int)MapSize) - 1500, (float)((int)MapSize) - 1500));
-
-	//			// コンベアを見る
-	//			for (int j = 0; j < GM_MAX_CONVEYOR_Y; j++)
-	//			{
-	//				// 自分以外なら
-	//				if (j != i)
-	//				{
-	//					// 距離を計算
-	//					length = GetLength(conveyor_y[j]->GetLocation(), spawnloc);
-	//					// 360より短いならだめ:フラグon
-	//					if (length < 600) {
-	//						ret = true;
-	//						break;
-	//					}
-	//				}
-	//				for (int j = 0; j < GM_MAX_CONVEYOR; j++)
-	//				{
-	//					// 距離を計算
-	//					length = GetLength(conveyor[j]->GetLocation(), spawnloc);
-	//					// 360より短いなら:フラグon
-	//					if (length < 800) {
-	//						ret = true;
-	//						break;
-	//					}
-	//				}
-	//				length = GetLength(center, spawnloc);
-	//				if (length > 900) {
-	//						rat = true;
-	//						break;
-	//				}
-	//			}
-	//			if (!ret)
-	//			{
-	//				if (!rat) {
-	//					conveyor_y[i]->SetLocation(spawnloc);
-	//					conveyor_y[i]->Update();
-	//					break;
-	//				}
-	//			}
-	//			
-	//		}
-
-	//	}
-	//}
-
 	// 背景の初期化(マップサイズ/64を正の無限大へ丸めて、二倍にする。そのあと二乗する)
 	background = new BackGround * [(int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2 + 2, 2)];
 	for (int i = 0; i < (int)pow((int)ceil(GM_MAX_MAPSIZE / 64.f) * 2 + 2, 2); i++)
@@ -171,10 +50,6 @@ GameMain::GameMain()
 	{
 		particle[i] = nullptr;
 	}
-
-	//// プレイヤーの位置に炎を出現
-	//SpawnParticle(1, player, true,
-	//	Vector2D(player->GetLocation().x + 15, player->GetLocation().y), 0.f, 1.0, 0.f);
 
 
 	CreateObject(new Player);
@@ -218,7 +93,6 @@ GameMain::GameMain()
 		int temp = CreateObject(new Conveyor);
 		Vector2D spawnloc = (Vector2D((float)GetRand((int)MapSize * 1.5) - MapSize, (float)GetRand((int)MapSize * 1.5) - MapSize));
 		object[temp]->SetLocation(spawnloc);
-		//printfDx("%f %f\n", spawnloc.x, spawnloc.y);
 		gimmicknum++;
 	}
 
@@ -260,10 +134,7 @@ GameMain::GameMain()
 // デストラクタ
 GameMain::~GameMain()
 {
-	/*Bomb::DeleteImages();
-	Explosion::DeleteImages();
-	BackGround::DeleteImages();
-	AddScore::DeleteImages();*/
+
 }
 
 /********************ゲームの更新処理********************/
@@ -271,8 +142,6 @@ AbstractScene* GameMain::Update()
 {
 	//// 文字の表示
 	textdisp->Update();
-	////スコア描画の中心の値を求める
-	//ScoreCenter = GetDrawStringWidth("%d,", score) / 2;
 
 	// BGMをループしながら再生する
 	if (CheckSoundMem(Sounds::BGM_GMain) == 0)
@@ -285,116 +154,6 @@ AbstractScene* GameMain::Update()
 	//// リザルトじゃない かつ カウントダウンが終わっているとき
 	if (resultflg == false && !textdisp->GetFlg() && countdownflg == false) 
 	{
-
-		//	
-		//	//ポーズ画面
-		//	if (InputControl::GetButtonDown(XINPUT_BUTTON_START))
-		//	{
-		//			PauseFlg = !PauseFlg;
-		//	}
-		//	// 曲が鳴っていないなら鳴らす
-		//	if (player->GetPlayerFlg() == true && CheckSoundMem(Sounds::BGM_GMain) == 0)
-		//	{
-		//		PlaySoundMem(Sounds::BGM_GMain, DX_PLAYTYPE_BACK);
-		//	}
-		//	if(!PauseFlg)
-		//	{
-		//	// プレイヤーが生きている&兵士が当たってないとき
-		//	if (player->GetPlayerFlg() && !player->GetHitSoldier())
-		//	{
-		//		// 炎を表示する
-		//		particle[0]->SetVisible(true);
-		//		switch (player->GetDirection())
-		//		{
-		//		case 0:
-		//		case 4:
-		//			// プレイヤーの位置に煙を出現
-		//			SpawnParticle(4, nullptr, false,
-		//				Vector2D(player->GetLocation().x + 15.f, player->GetLocation().y - 10.f),
-		//				(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
-		//			particle[0]->SetRootLocation(Vector2D(15, -15));
-		//			break;
-		//		case 1:
-		//		case 5:
-		//			// プレイヤーの位置に煙を出現
-		//			SpawnParticle(4, nullptr, false,
-		//				Vector2D(player->GetLocation().x - 15.f, player->GetLocation().y - 10.f),
-		//				(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
-		//			particle[0]->SetRootLocation(Vector2D(-15, -15));
-		//			break;
-		//		case 2:
-		//		case 6:
-		//			// プレイヤーの位置に煙を出現
-		//			SpawnParticle(4, nullptr, false,
-		//				Vector2D(player->GetLocation().x + 15.f, player->GetLocation().y - 10.f),
-		//				(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
-		//			particle[0]->SetRootLocation(Vector2D(15, -15));
-		//			break;
-		//		case 3:
-		//		case 7:
-		//			// プレイヤーの位置に煙を出現
-		//			SpawnParticle(4, nullptr, false,
-		//				Vector2D(player->GetLocation().x - 15.f, player->GetLocation().y - 10.f),
-		//				(float)GetRand(30) - 15.f, (GetRand(4) + 1) / 10.f, (float)(GetRand(1) + 1.f));
-		//			particle[0]->SetRootLocation(Vector2D(-15, -15));
-		//			break;
-		//		default:
-		//			break;
-		//		}
-		//	}
-		//	else
-		//	{
-		//		// 炎を表示しない
-		//		particle[0]->SetVisible(false);
-		//	}
-
-		//	// 効果音のフラグがたっているなら
-		//	if (SE_HitFlg)
-		//	{
-		//		// 一度もなっていないなら
-		//		if (!SE_NewHitFlg)
-		//		{
-		//			PlaySoundMem(Sounds::SE_Hit, DX_PLAYTYPE_BACK);
-		//			SE_NewHitFlg = true;
-		//		}
-		//	}
-		//	// フラグがたっていないならフラグを下げる
-		//	else {
-		//		SE_NewHitFlg = false;
-		//	}
-
-		//	// コンボのフラグがたっていないならコンボ数を0する
-		//	if (!comboflg)
-		//	{
-		//		if (combo != 0)
-		//		{
-
-		//			// ここに効果音
-		//			//PlaySoundMem(Sounds::SE_ComboEnd, DX_PLAYTYPE_BACK);
-		//			oldcombo = combo;
-		//			for (int i = 0; i < GM_MAX_COMBOEND; i++)
-		//			{
-		//				if (comboend[i] == nullptr)
-		//				{
-		//					//comboend[i] = new ComboEnd(oldcombo);
-		//					break;
-		//				}
-		//			}
-		//			// 何か効果音
-		//		}
-		//		combo = 0;
-		//	}
-
-		//	// 0以上ならコンボ継続時間を下げる
-		//	if (ui_combo_framecount > 0)
-		//	{
-		//		ui_combo_framecount--;
-		//	}
-
-		//	if (botime > 0)
-		//	{
-		//		botime--;
-		//	}
 
 		//	// マップサイズの変更
 		ChangeMapSize();
@@ -430,36 +189,6 @@ AbstractScene* GameMain::Update()
 			}
 
 		}
-
-		// プレイヤーが爆発に当たった かつ ダメージ演出が表示されていなかったら
-		//if (static_cast<Player*>(GetPlayer())->GetIDamageDirectionFlg() == true && crackflg == false)
-		//{
-		//	crack_alpha = 200;
-		//	soot_alpha = 255 - life * 51;	// 残りライフに応じて薄さを変える
-		//	crackflg = true;
-		//}
-
-		// ダメージ演出が表示されている かつ プレイヤーが生きていたら
-		//if (crackflg == true && static_cast<Player*>(GetPlayer())->GetPlayerFlg() == true)
-		//{
-		//	// ダメージ演出を少しずつ薄くする
-
-		//	if (crack_alpha > 0)
-		//	{
-		//		crack_alpha -= 1;
-		//	}
-
-		//	if (soot_alpha > 0 && crack_alpha <= soot_alpha)
-		//	{
-		//		soot_alpha -= 1;
-		//	}
-
-		//	if (crack_alpha == 0)
-		//	{
-		//		crackflg = false;
-		//	}
-
-		//}
 
 
 
@@ -676,22 +405,6 @@ void GameMain::Draw() const
 		}
 	}
 
-	////ギミック(コンベア)
-	//for (int i = 0; i < GM_MAX_CONVEYOR; i++)
-	//{
-	//	if (conveyor[i] != nullptr)
-	//	{
-	//		conveyor[0]->Draw(Camera, CameraDistance);
-	//		conveyor[1]->Draw_left(Camera, CameraDistance);
-	//	}
-	//}
-
-	//for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
-	//{
-	//		conveyor_y[0]->Draw(Camera, CameraDistance);
-	//		conveyor_y[1]->Draw_up(Camera, CameraDistance);
-	//}
-
 	// マップの範囲
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 127);
 	float Scale = (float)(1 - ((camera->GetDistance() / DISTANCE_MAX) / 1.385));
@@ -701,25 +414,10 @@ void GameMain::Draw() const
 	DrawBoxAA((float)(-(MapSize * Scale) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2)) - (16 + (GM_MAX_MAPSIZE - MapSize))), (float)(-(MapSize * Scale) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2))), (float)((MapSize * Scale) + (-camera->GetLocation().x + (SCREEN_WIDTH / 2)) + (16 + (GM_MAX_MAPSIZE - MapSize))), (float)(-(GM_MAX_MAPSIZE * Scale) + (-camera->GetLocation().y + (SCREEN_HEIGHT / 2)) - 16), 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-
 	DrawCloseMap();
-
-	// 爆弾に当たったときのダメージ演出
-	//if (crackflg == true || life == 0)
-	//{
-	//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, crack_alpha);
-	//	DrawGraph(0, 0, crackimage, true);	// ヒビ
-	//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, soot_alpha);
-	//	DrawGraph(0, 0, sootimage, true);	// 煤
-	//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	//}
 
 	//残り体力の表示
 	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage[life], true);
-	/*for (int i = 0; i < life; i++)
-	{
-		DrawRotaGraph(SCREEN_WIDTH - 180 + (24 * i), 360, 1.0, 0.0, lifematchimage, true);
-	}*/
 
 for (int i = 0; i < GM_MAX_OBJECT; i++)
 {
@@ -769,7 +467,6 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 	}
 
 	//残り体力の表示
-	//DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage, true);
 	for (int i = 0; i < GM_MAX_LIFE; i++)
 	{
 		DrawRotaGraph(SCREEN_WIDTH  -56 - (48 * i), 360, 1.0, 0.0, lifematchimage_2, true);
@@ -804,29 +501,6 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 			}
 		}
 	}
-
-	////ミニマップ(ギミック(コンベア))
-	//for (int i = 0; i < GM_MAX_CONVEYOR; i++)
-	//{
-	//	if (conveyor[i] != nullptr)
-	//	{
-	//		DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			128 + (conveyor[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			SCREEN_WIDTH - 128 + (conveyor[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			128 + (conveyor[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
-	//	}
-	//}
-
-	//for (int i = 0; i < GM_MAX_CONVEYOR_Y; i++)
-	//{
-	//	if (conveyor_y[i] != nullptr)
-	//	{
-	//		DrawBoxAA(SCREEN_WIDTH - 128 + (conveyor_y[i]->GetLocation().x / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			128 + (conveyor_y[i]->GetLocation().y / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			SCREEN_WIDTH - 128 + (conveyor_y[i]->GetSize(2) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))),
-	//			128 + (conveyor_y[i]->GetSize(3) / (GM_MAX_MAPSIZE / (GM_MAX_MAPSIZE / 16))), 0x004488, true);
-	//	}
-	//}
 
 	// リザルトじゃないなら
 	if (resultflg == false)
@@ -869,7 +543,8 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 			bufscore /= 10;
 		}
 
-		if (textdisp->GetFlg() == true)
+		//ゲームが始まる前
+		if (textdisp->GetFlg())
 		{
 			textdisp->Draw();
 			description->Draw();
@@ -960,12 +635,6 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 			DrawRotaGraph((SCREEN_WIDTH - 750) + 56 * i, 270, countsize, 0.0, alphabetimage[chr], true);
 		}
 	}
-
-	//if (PauseFlg)
-	//{
-	//	DrawPause();
-	//}
-
 
 	// フェードアウト
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, fadeout_alpha);
