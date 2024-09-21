@@ -416,9 +416,6 @@ void GameMain::Draw() const
 
 	DrawCloseMap();
 
-	//残り体力の表示
-	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage[life], true);
-
 for (int i = 0; i < GM_MAX_OBJECT; i++)
 {
 	if (object[i] != nullptr)
@@ -455,6 +452,9 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 	}
 
 	object[0]->Draw(camera);
+
+	//残り体力の表示
+	DrawRotaGraph(SCREEN_WIDTH - 128, 328, 1.0, 0.0, lifeimage[life], true);
 
 	// パーティクル
 	for (int i = 0; i < GM_MAX_PARTICLE; i++)
