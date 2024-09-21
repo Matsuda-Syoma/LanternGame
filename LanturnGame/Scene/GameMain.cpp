@@ -416,23 +416,23 @@ void GameMain::Draw() const
 
 	DrawCloseMap();
 
-for (int i = 0; i < GM_MAX_OBJECT; i++)
-{
-	if (object[i] != nullptr)
+	for (int i = 0; i < GM_MAX_OBJECT; i++)
 	{
-		switch (object[i]->GetType())
+		if (object[i] != nullptr)
 		{
-		case Object::TYPE::_TORNADO:
-		case Object::TYPE::_ICEFLOOR:
-		case Object::TYPE::_CONVEYER:
-			object[i]->Draw(camera);
-			break;
-		default:
-			break;
+			switch (object[i]->GetType())
+			{
+			case Object::TYPE::_TORNADO:
+			case Object::TYPE::_ICEFLOOR:
+			case Object::TYPE::_CONVEYER:
+				object[i]->Draw(camera);
+				break;
+			default:
+				break;
+			}
 		}
 	}
-}
-
+	
 	for (int i = 0; i < GM_MAX_OBJECT; i++)
 	{
 		if (object[i] != nullptr)
@@ -451,6 +451,7 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 		}
 	}
 
+
 	object[0]->Draw(camera);
 
 	//残り体力の表示
@@ -464,16 +465,6 @@ for (int i = 0; i < GM_MAX_OBJECT; i++)
 		{
 			particle[i]->Draw(camera);
 		}
-	}
-
-	//残り体力の表示
-	for (int i = 0; i < GM_MAX_LIFE; i++)
-	{
-		DrawRotaGraph(SCREEN_WIDTH  -56 - (48 * i), 360, 1.0, 0.0, lifematchimage_2, true);
-	}
-	for (int i = 0; i < life; i++)
-	{
-		DrawRotaGraph(SCREEN_WIDTH - 200 + (48 * i), 360, 1.0, 0.0, lifematchimage, true);
 	}
 
 	//ミニマップ
