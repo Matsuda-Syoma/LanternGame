@@ -58,7 +58,7 @@ void Description::Update()
 
 void Description::Draw()
 {
-	DrawBox(10, 10, 1270, 340, 0xffffff, true);
+	DrawBox(10, 10, 1270, 340, 0x917357, true);
 
 	//‰æ‘œ‚Ì•`‰æ
 	DrawRotaGraph((980 - (thousand * 0)) + Movepng, 170, 0.7, 0.0, touchbomb, TRUE);

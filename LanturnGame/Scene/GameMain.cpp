@@ -538,7 +538,7 @@ void GameMain::Draw() const
 		if (textdisp->GetFlg())
 		{
 			textdisp->Draw();
-			description->Draw();
+			//description->Draw();
 		}
 	}
 	// リザルトなら
