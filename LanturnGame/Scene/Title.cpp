@@ -183,7 +183,7 @@ void Title::Draw() const
 	DrawGraph(0, 0, titleimage,true);
 
 	// タイトル名を描画
-	DrawRotaGraph(930, 180, 1.3, 0.0, titlenameimag, true);
+	DrawRotaGraph(930, 180, 0.3, 0.0, titlenameimag, true);
 
 	// 数値を一時保存
 	int OldBlendMode, OldBlendParam;
